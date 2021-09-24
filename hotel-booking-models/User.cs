@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_models
 {
-    public class Users : IdentityUser
+    public class User : IdentityUser
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

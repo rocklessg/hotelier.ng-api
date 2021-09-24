@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace hotel_booking_models
 {
-    public class Hotels : BaseModel
+    public class Hotel : BaseEntity
     {
         public string ManagerId { get; set; }
         public string Name { get; set; }
@@ -16,10 +16,10 @@ namespace hotel_booking_models
         public string City { get; set; }
         public string State { get; set; }
         public Manager Manager { get; set; }
-        public ICollection<WishLists> WishList { get; set; }
-        public ICollection<Reviews> Review { get; set; }
-        public ICollection<Ratings> Rating { get; set; }
-        public ICollection<RoomTypes> RoomType { get; set; }
-        public ICollection<Amenities> Amenity { get; set; }
+        public ICollection<WishList> WishLists { get; set; }
+        public ICollection<Review> Reviews { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
+        public ICollection<RoomType> RoomTypes { get; set; }
+        public ICollection<Amenity> Amenities { get; set; }
     }
 }

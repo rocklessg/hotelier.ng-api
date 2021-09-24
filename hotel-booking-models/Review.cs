@@ -2,14 +2,14 @@
 
 namespace hotel_booking_models
 {
-    public class Reviews : BaseModel
+    public class Review : BaseEntity
     {
      
         [DataType(DataType.Text)]
-        public string Review { get; set; }
+        public string Reviews { get; set; }
         public string HotelId { get; set; }
         public string CustomerId { get; set; }
-        public Hotels Hotel { get; set; }
+        public Hotel Hotel { get; set; }
         public Customer Customer { get; set; }
     }
 }

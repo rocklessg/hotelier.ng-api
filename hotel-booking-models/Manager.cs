@@ -13,7 +13,7 @@ namespace hotel_booking_models
         public string AccountName { get; set; }
         public string AccountNumber { get; set; }
 
-        public Users User { get; set; }
-        public ICollection<Hotels> Hotel { get; set; }
+        public User User { get; set; }
+        public ICollection<Hotel> Hotels { get; set; }
     }
 }

@@ -12,10 +12,10 @@ namespace hotel_booking_models
         public string CreditCard { get; set; }
         public string Address { get; set; }
         public string State { get; set; }
-        public Users User { get; set; }
-        public ICollection<Bookings> Booking { get; set; }
-        public ICollection<WishLists> WishList { get; set; }
-        public ICollection<Reviews> Review { get; set; }
-        public ICollection<Ratings> Rating { get; set; }
+        public User User { get; set; }
+        public ICollection<Booking> Bookings { get; set; }
+        public ICollection<WishList> WishLists { get; set; }
+        public ICollection<Review> Reviews { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
     }
 }
