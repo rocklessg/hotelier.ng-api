@@ -1,11 +1,11 @@
 ﻿namespace hotel_booking_models
 {
-    public class Ratings : BaseModel
+    public class Rating : BaseEntity
     {
-        public int Rating { get; set; }
+        public int Rate { get; set; }
         public string HotelId { get; set; }
         public string CustomerId { get; set; }
-        public Hotels Hotel { get; set; }
+        public Hotel Hotel { get; set; }
         public Customer Customer { get; set; }
     }
 }

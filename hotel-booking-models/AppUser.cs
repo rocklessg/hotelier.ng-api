@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_models
 {
-    public class Users : IdentityUser
+    public class AppUser : IdentityUser
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -18,9 +18,6 @@ namespace hotel_booking_models
         public string Avatar { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
-        public Customer Customer { get; set; }
-
-        public Manager Manager { get; set; }
 
 
     }
