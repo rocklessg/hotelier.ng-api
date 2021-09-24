@@ -2,7 +2,7 @@
 
 namespace hotel_booking_models
 {
-    public class Booking : BaseModel
+    public class Booking : BaseEntity
     {
         public string CustomerId { get; set; }
         public string BookingReference { get; set; }

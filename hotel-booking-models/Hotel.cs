@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace hotel_booking_models
 {
-    public class Hotel : BaseModel
+    public class Hotel : BaseEntity
     {
         public string ManagerId { get; set; }
         public string Name { get; set; }

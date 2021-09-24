@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_models
 {
-    public class Payment : BaseModel
+    public class Payment : BaseEntity
     {
         public string BookingId { get; set; }
         public string TransactionReference { get; set; }

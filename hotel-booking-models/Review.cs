@@ -2,7 +2,7 @@
 
 namespace hotel_booking_models
 {
-    public class Review : BaseModel
+    public class Review : BaseEntity
     {
      
         [DataType(DataType.Text)]

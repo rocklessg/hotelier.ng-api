@@ -1,6 +1,6 @@
 ﻿namespace hotel_booking_models
 {
-    public class Amenity : BaseModel
+    public class Amenity : BaseEntity
     {
         public string HotelId  { get; set; }
         public string Name { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_models
 {
-    public class Customer : BaseModel
+    public class Customer : BaseEntity
     {
         public string CreditCard { get; set; }
         public string Address { get; set; }

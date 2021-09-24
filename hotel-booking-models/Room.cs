@@ -1,6 +1,6 @@
 ﻿namespace hotel_booking_models
 {
-    public class Room : BaseModel
+    public class Room : BaseEntity
     {
         public string RoomTypeId { get; set; }
         public string RoomNo { get; set; }
