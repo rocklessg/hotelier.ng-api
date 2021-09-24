@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace hotel_booking_models
 {
-    public class Manager
+    public class Manager : BaseEntity
     {
-        public string UserId { get; set; }
         public string CompanyName { get; set; }
         public string BusinessEmail { get; set; }
         public string BusinessPhone { get; set; }
@@ -13,7 +13,7 @@ namespace hotel_booking_models
         public string AccountName { get; set; }
         public string AccountNumber { get; set; }
 
-        public User User { get; set; }
+        public AppUser AppUser { get; set; }
         public ICollection<Hotel> Hotels { get; set; }
     }
 }

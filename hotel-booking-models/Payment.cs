@@ -10,7 +10,7 @@ namespace hotel_booking_models
     {
         public string BookingId { get; set; }
         public string TransactionReference { get; set; }
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
         public string Status { get; set; }
         public string MethodOfPayment { get; set; }
         public Booking Booking { get; set; }
