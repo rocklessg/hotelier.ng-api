@@ -1,8 +1,15 @@
-﻿namespace hotel_booking_models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace hotel_booking_models
 {
     public class Reviews : BaseModel
     {
+     
+        [DataType(DataType.Text)]
         public string Review { get; set; }
+        public string HotelId { get; set; }
+        public string CustomerId { get; set; }
+        public Hotels Hotel { get; set; }
         public Customer Customer { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace hotel_booking_models
+﻿using System.Collections.Generic;
+
+namespace hotel_booking_models
 {
     public class Manager
     {
@@ -12,5 +14,6 @@
         public string AccountNumber { get; set; }
 
         public Users User { get; set; }
+        public ICollection<Hotels> Hotel { get; set; }
     }
 }

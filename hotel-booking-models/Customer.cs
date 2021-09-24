@@ -16,5 +16,6 @@ namespace hotel_booking_models
         public ICollection<Bookings> Booking { get; set; }
         public ICollection<WishLists> WishList { get; set; }
         public ICollection<Reviews> Review { get; set; }
+        public ICollection<Ratings> Rating { get; set; }
     }
 }
