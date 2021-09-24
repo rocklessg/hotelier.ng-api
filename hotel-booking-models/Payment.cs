@@ -13,7 +13,7 @@ namespace hotel_booking_models
         public double Amount { get; set; }
         public string Status { get; set; }
         public string MethodOfPayment { get; set; }
-        public Bookings Booking { get; set; }
+        public Booking Booking { get; set; }
         
     }
 }

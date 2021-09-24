@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace hotel_booking_models
 {
-    public class Customer
+    public class Customer : BaseModel
     {
-        public string UsersId { get; set; }
         public string CreditCard { get; set; }
         public string Address { get; set; }
         public string State { get; set; }
-        public Users User { get; set; }
-        public ICollection<Bookings> Booking { get; set; }
-        public ICollection<WishLists> WishList { get; set; }
-        public ICollection<Reviews> Review { get; set; }
-        public ICollection<Ratings> Rating { get; set; }
+        public AppUser User { get; set; }
+        public ICollection<Booking> Booking { get; set; }
+        public ICollection<WishList> WishList { get; set; }
+        public ICollection<Review> Review { get; set; }
+        public ICollection<Rating> Rating { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace hotel_booking_models
 {
-    public class RoomTypes : BaseModel
+    public class RoomType : BaseModel
     {
         public string HotelId { get; set; }
         public string Name { get; set; }
@@ -12,7 +12,7 @@ namespace hotel_booking_models
         public string Description { get; set; }
         public double Price { get; set; } = 0.00;
         public double Discount { get; set; } = 0.00;
-        public Hotels Hotel { get; set; }
-        public ICollection<Rooms> Room { get; set; }
+        public Hotel Hotel { get; set; }
+        public ICollection<Room> Room { get; set; }
     }
 }

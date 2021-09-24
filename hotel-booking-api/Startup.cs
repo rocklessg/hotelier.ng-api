@@ -26,7 +26,7 @@ namespace hotel_booking_api
             services.AddDbContext<HbaDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("default"))
                 );
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<HbaDbContext>().AddDefaultTokenProviders();
+            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<HbaDbContext>().AddDefaultTokenProviders();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
