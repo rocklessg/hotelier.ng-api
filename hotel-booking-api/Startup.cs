@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using hotel_booking_data.Contexts;
+using hotel_booking_models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace hotel_booking_api
@@ -26,7 +23,10 @@ namespace hotel_booking_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<HbaDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("default"))
+                );
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<HbaDbContext>().AddDefaultTokenProviders();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
