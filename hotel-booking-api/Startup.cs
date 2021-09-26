@@ -1,5 +1,6 @@
 using hotel_booking_api.Extensions;
 using hotel_booking_data.Contexts;
+using hotel_booking_data.Seeder;
 using hotel_booking_models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,7 +42,8 @@ namespace hotel_booking_api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            HbaDbContext dbContext, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -49,6 +51,8 @@ namespace hotel_booking_api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "hotel_booking_api v1"));
             }
+
+            HbaSeeder.SeedData(dbContext, userManager, roleManager).Wait();
 
             app.UseHttpsRedirection();
 
