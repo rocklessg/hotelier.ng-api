@@ -251,6 +251,76 @@
     "Phone": "253-436-6991",
     "Address": "61 Mallard Avenue",
     "City": "Tacoma",
+    "RoomTypes": [
+      {
+        "id": "1",
+        "Name": "Single",
+        "Description": "Metatars/tars inj op NOS",
+        "Price": "$0.36",
+        "Discount": 0.1,
+        "Rooms": [
+          {
+            "id": "4",
+            "RoomNo": "304",
+            "IsBooked": true,
+            "CreatedAt": "5/6/2021",
+            "UpdatedAt": "10/19/2020"
+          },
+          {
+            "id": "5",
+            "RoomNo": "305",
+            "IsBooked": false,
+            "CreatedAt": "1/1/2021",
+            "UpdatedAt": "11/23/2020"
+          }
+        ],
+        "CreatedAt": "10/13/2020",
+        "UpdatedAt": "12/20/2020"
+      },
+      {
+        "id": "3",
+        "Name": "Executive",
+        "Description": "Scarification of pleura",
+        "Price": "$9.29",
+        "Discount": 0.1,
+        "Rooms": [
+          {
+            "Id": "6",
+            "RoomNo": 9,
+            "IsBooked": true,
+            "CreatedAt": "4/17/2021",
+            "UpdatedAt": "7/5/2021"
+          },
+          {
+            "Id": "7",
+            "RoomNo": 10,
+            "IsBooked": false,
+            "CreatedAt": "10/16/2020",
+            "UpdatedAt": "6/13/2021"
+          }
+        ],
+        "CreatedAt": "1/21/2021",
+        "UpdatedAt": "4/23/2021"
+      }
+    ],
+    "Amenities": [
+      {
+        "Id": "1",
+        "Name": "Gym",
+        "Price": "$6.78",
+        "Discount": 0.1,
+        "CreatedAt": "10/29/2020",
+        "UpdatedAt": "11/9/2020"
+      },
+      {
+        "Id": "2",
+        "Name": "Pool",
+        "Price": "$4.68",
+        "Discount": 0.1,
+        "CreatedAt": "8/28/2021",
+        "UpdatedAt": "2/19/2021"
+      }
+    ],
     "State": "Washington",
     "CreatedAt": "2/6/2021",
     "UpdatedAt": "12/11/2020"
@@ -263,6 +333,170 @@
     "Phone": "404-897-5110",
     "Address": "5 Hooker Point",
     "City": "Atlanta",
+    "RoomTypes": [
+      {
+        "id": "1",
+        "Name": "Single",
+        "Description": "Metatars/tars inj op NOS",
+        "Price": "$0.36",
+        "Discount": 0.1,
+        "CreatedAt": "10/13/2020",
+        "Rooms": [
+          {
+            "Id": "8",
+            "RoomNo": 11,
+            "IsBooked": false,
+            "CreatedAt": "2/17/2021",
+            "UpdatedAt": "6/3/2021"
+          },
+          {
+            "Id": "9",
+            "RoomNo": 12,
+            "IsBooked": true,
+            "CreatedAt": "11/5/2020",
+            "UpdatedAt": "1/27/2021"
+          },
+          {
+            "Id": "10",
+            "RoomNo": 13,
+            "IsBooked": false,
+            "CreatedAt": "7/6/2021",
+            "UpdatedAt": "8/27/2021"
+          }
+        ],
+        "UpdatedAt": "12/20/2020"
+      },
+      {
+        "id": "2",
+        "Name": "Double",
+        "Description": "Patellar biopsy",
+        "Price": "$7.42",
+        "Discount": 0.1,
+        "Rooms": [
+          {
+            "Id": "11",
+            "RoomNo": 14,
+            "IsBooked": false,
+            "CreatedAt": "5/26/2021",
+            "UpdatedAt": "4/29/2021"
+          },
+          {
+            "Id": "12",
+            "RoomNo": 15,
+            "IsBooked": false,
+            "CreatedAt": "11/2/2020",
+            "UpdatedAt": "9/23/2021"
+          },
+          {
+            "Id": "13",
+            "RoomNo": 16,
+            "IsBooked": false,
+            "CreatedAt": "4/28/2021",
+            "UpdatedAt": "12/13/2020"
+          }
+        ],
+        "CreatedAt": "10/16/2020",
+        "UpdatedAt": "5/12/2021"
+      },
+      {
+        "id": "3",
+        "Name": "Executive",
+        "Description": "Scarification of pleura",
+        "Price": "$9.29",
+        "Discount": 0.1,
+        "Rooms": [
+          {
+            "Id": "14",
+            "RoomNo": 17,
+            "IsBooked": false,
+            "CreatedAt": "2/23/2021",
+            "UpdatedAt": "7/5/2021"
+          },
+          {
+            "Id": "15",
+            "RoomNo": 18,
+            "IsBooked": true,
+            "CreatedAt": "1/16/2021",
+            "UpdatedAt": "9/29/2020"
+          },
+          {
+            "Id": "16",
+            "RoomNo": 19,
+            "IsBooked": true,
+            "CreatedAt": "1/22/2021",
+            "UpdatedAt": "12/16/2020"
+          }
+        ],
+        "CreatedAt": "1/21/2021",
+        "UpdatedAt": "4/23/2021"
+      },
+      {
+        "id": "4",
+        "Name": "Presidential",
+        "Description": "Limb lengthen proc NEC",
+        "Price": "$1.74",
+        "Discount": 0.1,
+        "Rooms": [
+          {
+            "Id": "17",
+            "RoomNo": 20,
+            "IsBooked": true,
+            "CreatedAt": "11/28/2020",
+            "UpdatedAt": "7/18/2021"
+          },
+          {
+            "Id": "18",
+            "RoomNo": 21,
+            "IsBooked": false,
+            "CreatedAt": "11/4/2020",
+            "UpdatedAt": "6/30/2021"
+          },
+          {
+            "Id": "19",
+            "RoomNo": 22,
+            "IsBooked": true,
+            "CreatedAt": "1/26/2021",
+            "UpdatedAt": "5/14/2021"
+          }
+        ],
+        "CreatedAt": "5/6/2021",
+        "UpdatedAt": "10/19/2020"
+      }
+    ],
+    "Amenities": [
+      {
+        "Id": "1",
+        "Name": "Gym",
+        "Price": "$6.78",
+        "Discount": 0.1,
+        "CreatedAt": "10/29/2020",
+        "UpdatedAt": "11/9/2020"
+      },
+      {
+        "Id": "2",
+        "Name": "Pool",
+        "Price": "$4.68",
+        "Discount": 0.1,
+        "CreatedAt": "8/28/2021",
+        "UpdatedAt": "2/19/2021"
+      },
+      {
+        "Id": "3",
+        "Name": "Conference Hall",
+        "Price": "$0.99",
+        "Discount": 0.1,
+        "CreatedAt": "4/4/2021",
+        "UpdatedAt": "7/30/2021"
+      },
+      {
+        "Id": "4",
+        "Name": "Internet Access",
+        "Price": "$0.36",
+        "Discount": 0.1,
+        "CreatedAt": "12/8/2020",
+        "UpdatedAt": "6/6/2021"
+      }
+    ],
     "State": "Georgia",
     "CreatedAt": "3/10/2021",
     "UpdatedAt": "12/31/2020"
@@ -276,68 +510,153 @@
     "Address": "9 Badeau Junction",
     "City": "Baton Rouge",
     "State": "Louisiana",
+    "Amenities": [
+      {
+        "Id": "2",
+        "Name": "Pool",
+        "Price": "$4.68",
+        "Discount": 0.1,
+        "CreatedAt": "8/28/2021",
+        "UpdatedAt": "2/19/2021"
+      },
+      {
+        "Id": "3",
+        "Name": "Conference Hall",
+        "Price": "$0.99",
+        "Discount": 0.1,
+        "CreatedAt": "4/4/2021",
+        "UpdatedAt": "7/30/2021"
+      },
+      {
+        "Id": "4",
+        "Name": "Internet Access",
+        "Price": "$0.36",
+        "Discount": 0.1,
+        "CreatedAt": "12/8/2020",
+        "UpdatedAt": "6/6/2021"
+      }
+    ],
+    "RoomTypes": [
+      {
+        "id": "1",
+        "Name": "Single",
+        "Description": "Metatars/tars inj op NOS",
+        "Price": "$0.36",
+        "Discount": 0.1,
+        "Rooms": [
+          {
+            "id": "1",
+            "RoomNo": "301",
+            "IsBooked": false,
+            "CreatedAt": "10/13/2020",
+            "UpdatedAt": "12/20/2020"
+          },
+          {
+            "id": "2",
+            "RoomNo": "302",
+            "IsBooked": true,
+            "CreatedAt": "10/16/2020",
+            "UpdatedAt": "5/12/2021"
+          },
+          {
+            "id": "3",
+            "RoomNo": "303",
+            "IsBooked": false,
+            "CreatedAt": "1/21/2021",
+            "UpdatedAt": "4/23/2021"
+          },
+          {
+            "id": "4",
+            "RoomNo": "304",
+            "IsBooked": true,
+            "CreatedAt": "5/6/2021",
+            "UpdatedAt": "10/19/2020"
+          }
+        ],
+        "CreatedAt": "10/13/2020",
+        "UpdatedAt": "12/20/2020"
+      },
+      {
+        "id": "3",
+        "Name": "Executive",
+        "Description": "Scarification of pleura",
+        "Price": "$9.29",
+        "Discount": 0.1,
+        "Rooms": [
+          {
+            "id": "5",
+            "RoomNo": "305",
+            "IsBooked": false,
+            "CreatedAt": "1/1/2021",
+            "UpdatedAt": "11/23/2020"
+          },
+          {
+            "Id": "6",
+            "RoomNo": 9,
+            "IsBooked": true,
+            "CreatedAt": "4/17/2021",
+            "UpdatedAt": "7/5/2021"
+          },
+          {
+            "Id": "7",
+            "RoomNo": 10,
+            "IsBooked": false,
+            "CreatedAt": "10/16/2020",
+            "UpdatedAt": "6/13/2021"
+          },
+          {
+            "Id": "8",
+            "RoomNo": 11,
+            "IsBooked": false,
+            "CreatedAt": "2/17/2021",
+            "UpdatedAt": "6/3/2021"
+          }
+        ],
+        "CreatedAt": "1/21/2021",
+        "UpdatedAt": "4/23/2021"
+      },
+      {
+        "id": "4",
+        "Name": "Presidential",
+        "Description": "Limb lengthen proc NEC",
+        "Price": "$1.74",
+        "Discount": 0.1,
+        "Rooms": [
+          {
+            "Id": "9",
+            "RoomNo": 12,
+            "IsBooked": true,
+            "CreatedAt": "11/5/2020",
+            "UpdatedAt": "1/27/2021"
+          },
+          {
+            "Id": "10",
+            "RoomNo": 13,
+            "IsBooked": false,
+            "CreatedAt": "7/6/2021",
+            "UpdatedAt": "8/27/2021"
+          },
+          {
+            "Id": "11",
+            "RoomNo": 14,
+            "IsBooked": false,
+            "CreatedAt": "5/26/2021",
+            "UpdatedAt": "4/29/2021"
+          },
+          {
+            "Id": "12",
+            "RoomNo": 15,
+            "IsBooked": false,
+            "CreatedAt": "11/2/2020",
+            "UpdatedAt": "9/23/2021"
+          }
+        ],
+        "CreatedAt": "5/6/2021",
+        "UpdatedAt": "10/19/2020"
+      }
+    ],
     "CreatedAt": "1/15/2021",
     "UpdatedAt": "1/22/2021"
-  },
-  {
-    "id": "0ebe22a8-b758-40be-8e25-376dcd76718d",
-    "Name": "Murray-Padberg",
-    "Description": "2ndry exent cavity graft",
-    "Email": "jchaloner5@google.cn",
-    "Phone": "239-280-2490",
-    "Address": "5 Summer Ridge Alley",
-    "City": "Naples",
-    "State": "Florida",
-    "CreatedAt": "12/22/2020",
-    "UpdatedAt": "12/20/2020"
-  },
-  {
-    "id": "aa15e58c-468f-4ca4-a158-78e04fb279ac",
-    "Name": "Olson Inc",
-    "Description": "Micro exam-blood NEC",
-    "Email": "mleamy6@bbc.co.uk",
-    "Phone": "515-429-5829",
-    "Address": "9948 Prairie Rose Trail",
-    "City": "Des Moines",
-    "State": "Iowa",
-    "CreatedAt": "10/17/2020",
-    "UpdatedAt": "9/23/2021"
-  },
-  {
-    "id": "7a786267-6cec-42b1-9178-b0c84eb09466",
-    "Name": "Littel-Bradtke",
-    "Description": "Micro exam-lower GI NEC",
-    "Email": "lhambribe7@opensource.org",
-    "Phone": "828-116-6214",
-    "Address": "160 Thierer Drive",
-    "City": "Asheville",
-    "State": "North Carolina",
-    "CreatedAt": "3/22/2021",
-    "UpdatedAt": "10/20/2020"
-  },
-  {
-    "id": "43fba4a3-1a1a-4988-abda-1b6ae9599742",
-    "Name": "Altenwerth-Mertz",
-    "Description": "Nonexc destruc iris les",
-    "Email": "vborn8@delicious.com",
-    "Phone": "818-894-4450",
-    "Address": "97992 Moose Trail",
-    "City": "Brea",
-    "State": "California",
-    "CreatedAt": "7/26/2021",
-    "UpdatedAt": "7/26/2021"
-  },
-  {
-    "id": "65d33167-cdb8-49d1-b6e5-5f5a9d46e896",
-    "Name": "Greenfelder-Skiles",
-    "Description": "Rev jt repl low ext NEC",
-    "Email": "kbrimfield9@arstechnica.com",
-    "Phone": "843-921-6758",
-    "Address": "1654 Victoria Hill",
-    "City": "Florence",
-    "State": "South Carolina",
-    "CreatedAt": "7/19/2021",
-    "UpdatedAt": "3/4/2021"
-  }
+  } 
 ]
 

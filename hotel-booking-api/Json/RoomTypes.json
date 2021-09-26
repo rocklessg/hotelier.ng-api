@@ -34,14 +34,5 @@
     "Discount": 0.1,
     "CreatedAt": "5/6/2021",
     "UpdatedAt": "10/19/2020"
-  },
-  {
-    "id": "5",
-    "Name": "Apartment",
-    "Description": "Vaginal obliteration",
-    "Price": "$7.69",
-    "Discount": 0.1,
-    "CreatedAt": "1/1/2021",
-    "UpdatedAt": "11/23/2020"
   }
 ]
