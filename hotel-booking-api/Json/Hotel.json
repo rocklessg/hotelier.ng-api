@@ -8,6 +8,29 @@
     "Address": "7163 Walton Crossing",
     "City": "Houston",
     "State": "Texas",
+    "Reviews": [
+      {
+        "Id": "07cecbeb-c5d8-4eb8-9e92-527401d997bf",
+        "CustomerId" :  "",
+        "Review": "Lacrimal gland biopsy",
+        "CreatedAT": "8/27/2021",
+        "UpdatedAt": "1/16/2021"
+      },
+      {
+        "Id": "a442ed36-387e-4cce-ba3a-f5a174091cd8",
+        "CustomerId": "",
+        "Review": "Fallopian tube op NEC",
+        "CreatedAT": "3/6/2021",
+        "UpdatedAt": "6/13/2021"
+      },
+      {
+        "Id": "1a3c1ced-3cfa-4065-aa67-5a1c6a482944",
+        "CustomerId": "",
+        "Review": "Abltn renal les/tiss NEC",
+        "CreatedAT": "10/5/2020",
+        "UpdatedAt": "6/6/2021"
+      }
+    ],
     "Amenities": [
       {
         "Id": "1",
@@ -123,6 +146,36 @@
     "Phone": "515-142-4144",
     "Address": "44 Express Lane",
     "City": "Des Moines",
+    "Reviews": [
+      {
+        "Id": "9e220bb6-843a-4594-add4-9b957e397887",
+        "CustomerId": "",
+        "Review": "Surg collaps of lung NEC",
+        "CreatedAT": "5/29/2021",
+        "UpdatedAt": "7/22/2021"
+      },
+      {
+        "Id": "abcda2cb-ec93-43a5-91b9-03bff911167b",
+        "CustomerId": "",
+        "Review": "Closed thyroid gland bx",
+        "CreatedAT": "10/27/2020",
+        "UpdatedAt": "10/9/2020"
+      },
+      {
+        "Id": "6464c1a1-5356-4763-ade1-6c86a4d89225",
+        "CustomerId": "",
+        "Review": "Ins drug-elut coronry st",
+        "CreatedAT": "5/28/2021",
+        "UpdatedAt": "5/1/2021"
+      },
+      {
+        "Id": "7ad23ca8-4921-41c1-bc0b-1412434dd689",
+        "CustomerId": "",
+        "Review": "Lg bowel-abd wall fixat",
+        "CreatedAT": "8/2/2021",
+        "UpdatedAt": "10/10/2020"
+      }
+    ],
     "Amenities": [
       {
         "Id": "2",
@@ -251,6 +304,36 @@
     "Phone": "253-436-6991",
     "Address": "61 Mallard Avenue",
     "City": "Tacoma",
+    "Reviews": [
+      {
+        "Id": "96c9f8d3-13de-4871-bf1d-600e1b9cf542",
+        "CustomerId": "",
+        "Review": "Fit up arm/should prosth",
+        "CreatedAT": "1/6/2021",
+        "UpdatedAt": "1/9/2021"
+      },
+      {
+        "Id": "53a1157d-2b76-431a-b82f-855d642ab885",
+        "CustomerId": "",
+        "Review": "Elbow synovectomy",
+        "CreatedAT": "5/29/2021",
+        "UpdatedAt": "11/1/2020"
+      },
+      {
+        "Id": "ba53be55-85ee-4bb2-81af-f3c48170a104",
+        "CustomerId": "",
+        "Review": "Repair of pleura",
+        "CreatedAT": "7/6/2021",
+        "UpdatedAt": "12/8/2020"
+      },
+      {
+        "Id": "cdfa61fb-484f-41c4-871b-27d26677bde8",
+        "CustomerId": "",
+        "Review": "Contrast x-ray of sinus",
+        "CreatedAT": "3/13/2021",
+        "UpdatedAt": "2/9/2021"
+      }
+    ],
     "RoomTypes": [
       {
         "id": "1",
@@ -333,6 +416,36 @@
     "Phone": "404-897-5110",
     "Address": "5 Hooker Point",
     "City": "Atlanta",
+    "Reviews": [
+      {
+        "Id": "98ee9a64-6286-4887-93d1-895da742c370",
+        "CustomerId": "",
+        "Review": "Limb shorten-tib/fibula",
+        "CreatedAT": "4/24/2021",
+        "UpdatedAt": "2/1/2021"
+      },
+      {
+        "Id": "62259a48-7ea1-434f-8788-a29dd1f3938d",
+        "CustomerId": "",
+        "Review": "Application of splint",
+        "CreatedAT": "9/20/2021",
+        "UpdatedAt": "7/17/2021"
+      },
+      {
+        "Id": "b8fcdd17-0c48-48a8-8a2e-facbde00ffe2",
+        "CustomerId": "",
+        "Review": "Parasitology-endocrine",
+        "CreatedAT": "10/16/2020",
+        "UpdatedAt": "1/13/2021"
+      },
+      {
+        "Id": "2b881246-42c3-475a-af32-d60c1c3f3dd3",
+        "CustomerId": "",
+        "Review": "Open red-int fix humerus",
+        "CreatedAT": "4/25/2021",
+        "UpdatedAt": "3/9/2021"
+      }
+    ],
     "RoomTypes": [
       {
         "id": "1",
@@ -510,6 +623,36 @@
     "Address": "9 Badeau Junction",
     "City": "Baton Rouge",
     "State": "Louisiana",
+    "Review": [
+      {
+        "Id": "610f529f-cdf1-4327-a328-48ee0c96baff",
+        "CustomerId": "",
+        "Review": "Esophag stricture repair",
+        "CreatedAT": "10/18/2020",
+        "UpdatedAt": "9/5/2021"
+      },
+      {
+        "Id": "a055434d-b580-4ba0-940b-c93ea9240090",
+        "CustomerId": "",
+        "Review": "Micro exam-periton NEC",
+        "CreatedAT": "4/9/2021",
+        "UpdatedAt": "12/19/2020"
+      },
+      {
+        "Id": "063a0920-879c-4166-a453-9ae6022b8101",
+        "CustomerId": "",
+        "Review": "Metatarsophalangeal fus",
+        "CreatedAT": "6/16/2021",
+        "UpdatedAt": "11/24/2020"
+      },
+      {
+        "Id": "b6eef143-3269-463b-ba86-cf366dd5ac97",
+        "CustomerId": "",
+        "Review": "Incis rectal stricture",
+        "CreatedAT": "8/31/2021",
+        "UpdatedAt": "10/1/2020"
+      }
+    ],
     "Amenities": [
       {
         "Id": "2",
