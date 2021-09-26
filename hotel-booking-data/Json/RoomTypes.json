@@ -1,10 +1,11 @@
 [
   {
     "id": "0af440dd-ed3d-4800-9cb4-b7fdf1d492dc",
-    "Name" :  "Single",
+    "Name": "Single",
     "Description": "Metatars/tars inj op NOS",
     "Price": "$0.36",
-    "Discount" :  "10%",
+    "Discount": "10%",
+    "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79",
     "CreatedAt": "10/13/2020",
     "UpdatedAt": "12/20/2020"
   },
