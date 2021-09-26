@@ -8,6 +8,36 @@
     "Address": "7163 Walton Crossing",
     "City": "Houston",
     "State": "Texas",
+    "Ratings": [
+      {
+        "Id": "5788ebb6-7943-424f-be65-418816e632bc",
+        "CustomerId" :  "",
+        "Rating": 4,
+        "CreatedAT": "6/28/2021",
+        "UpdatedAt": "1/21/2021"
+      },
+      {
+        "Id": "3fcc4e1b-89ef-46a8-9ddd-64dea28fcb2e",
+        "CustomerId": "",
+        "Rating": 5,
+        "CreatedAT": "4/21/2021",
+        "UpdatedAt": "6/1/2021"
+      },
+      {
+        "Id": "b97e3515-6ee7-41e5-b550-e1b676895232",
+        "CustomerId": "",
+        "Rating": 5,
+        "CreatedAT": "8/4/2021",
+        "UpdatedAt": "9/3/2021"
+      },
+      {
+        "Id": "70eacb8c-0bc2-4857-869c-08adffa34405",
+        "CustomerId": "",
+        "Rating": 4,
+        "CreatedAT": "9/4/2021",
+        "UpdatedAt": "9/21/2021"
+      }
+    ],
     "Reviews": [
       {
         "Id": "07cecbeb-c5d8-4eb8-9e92-527401d997bf",
@@ -146,6 +176,36 @@
     "Phone": "515-142-4144",
     "Address": "44 Express Lane",
     "City": "Des Moines",
+    "Ratings": [
+      {
+        "Id": "13e8aa7a-ac4d-428d-b040-3e7f4cdb1323",
+        "CustomerId": "",
+        "Rating": 4,
+        "CreatedAT": "10/18/2020",
+        "UpdatedAt": "5/9/2021"
+      },
+      {
+        "Id": "277d64b2-741c-452e-be9a-c28b1fb516cd",
+        "CustomerId": "",
+        "Rating": 5,
+        "CreatedAT": "7/16/2021",
+        "UpdatedAt": "6/27/2021"
+      },
+      {
+        "Id": "c6ec68c2-6f21-438f-9cbb-7cb2733bdc1c",
+        "CustomerId": "",
+        "Rating": 5,
+        "CreatedAT": "8/16/2021",
+        "UpdatedAt": "1/9/2021"
+      },
+      {
+        "Id": "04c2aafe-6790-496d-a12a-9990d837652d",
+        "CustomerId": "",
+        "Rating": 3,
+        "CreatedAT": "12/10/2020",
+        "UpdatedAt": "12/16/2020"
+      }
+    ],
     "Reviews": [
       {
         "Id": "9e220bb6-843a-4594-add4-9b957e397887",
@@ -304,6 +364,36 @@
     "Phone": "253-436-6991",
     "Address": "61 Mallard Avenue",
     "City": "Tacoma",
+    "Ratings": [
+      {
+        "Id": "04c2aafe-6790-496d-a12a-9990d837652d",
+        "CustomerId": "",
+        "Rating": 3,
+        "CreatedAT": "12/10/2020",
+        "UpdatedAt": "12/16/2020"
+      },
+      {
+        "Id": "7e2b5de7-8ddb-4969-b187-d547aa0170cd",
+        "CustomerId": "",
+        "Rating": 4,
+        "CreatedAT": "4/18/2021",
+        "UpdatedAt": "1/4/2021"
+      },
+      {
+        "Id": "4c754a5e-60bf-403d-b6ca-bbdbbe28af98",
+        "CustomerId": "",
+        "Rating": 2,
+        "CreatedAT": "10/9/2020",
+        "UpdatedAt": "3/18/2021"
+      },
+      {
+        "Id": "af421fc1-e081-4ec9-96c4-816e12d3bec1",
+        "CustomerId": "",
+        "Rating": 2,
+        "CreatedAT": "3/20/2021",
+        "UpdatedAt": "8/14/2021"
+      }
+    ],
     "Reviews": [
       {
         "Id": "96c9f8d3-13de-4871-bf1d-600e1b9cf542",
@@ -416,6 +506,36 @@
     "Phone": "404-897-5110",
     "Address": "5 Hooker Point",
     "City": "Atlanta",
+    "Ratings": [
+      {
+        "Id": "3162f79c-2754-49cf-abeb-4fb06e41f383",
+        "CustomerId": "",
+        "Rating": 3,
+        "CreatedAT": "12/25/2020",
+        "UpdatedAt": "8/24/2021"
+      },
+      {
+        "Id": "86a23ffe-275c-4286-b4ef-b89d01a5eff4",
+        "CustomerId": "",
+        "Rating": 4,
+        "CreatedAT": "5/30/2021",
+        "UpdatedAt": "9/20/2021"
+      },
+      {
+        "Id": "5788ebb6-7943-424f-be65-418816e632bc",
+        "CustomerId": "",
+        "Rating": 4,
+        "CreatedAT": "6/28/2021",
+        "UpdatedAt": "1/21/2021"
+      },
+      {
+        "Id": "3fcc4e1b-89ef-46a8-9ddd-64dea28fcb2e",
+        "CustomerId": "",
+        "Rating": 5,
+        "CreatedAT": "4/21/2021",
+        "UpdatedAt": "6/1/2021"
+      }
+    ],
     "Reviews": [
       {
         "Id": "98ee9a64-6286-4887-93d1-895da742c370",
@@ -623,6 +743,36 @@
     "Address": "9 Badeau Junction",
     "City": "Baton Rouge",
     "State": "Louisiana",
+    "Ratings": [
+      {
+        "Id": "439610db-19f6-4023-81ac-98666e494586",
+        "CustomerId": "",
+        "Rating": 3,
+        "CreatedAT": "10/31/2020",
+        "UpdatedAt": "3/27/2021"
+      },
+      {
+        "Id": "b651dd53-600e-4abd-b38f-a2b41a3793b6",
+        "CustomerId": "",
+        "Rating": 5,
+        "CreatedAT": "12/24/2020",
+        "UpdatedAt": "3/26/2021"
+      },
+      {
+        "Id": "c8c02372-4140-4d33-b68a-e0dd9800253e",
+        "CustomerId": "",
+        "Rating": 2,
+        "CreatedAT": "3/24/2021",
+        "UpdatedAt": "11/24/2020"
+      },
+      {
+        "Id": "45da2438-89ec-417c-a827-18095545ecb1",
+        "CustomerId": "",
+        "Rating": 3,
+        "CreatedAT": "5/1/2021",
+        "UpdatedAt": "10/21/2020"
+      }
+    ],
     "Review": [
       {
         "Id": "610f529f-cdf1-4327-a328-48ee0c96baff",
