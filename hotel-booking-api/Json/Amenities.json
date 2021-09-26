@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "1",
+    "Name": "Gym",
+    "Price": "$6.78",
+    "Discount":  0.1,
+    "CreatedAt": "10/29/2020",
+    "UpdatedAt": "11/9/2020"
+  },
+  {
+    "Id": "2",
+    "Name": "Pool",
+    "Price": "$4.68",
+    "Discount": 0.1,
+    "CreatedAt": "8/28/2021",
+    "UpdatedAt": "2/19/2021"
+  },
+  {
+    "Id": "3",
+    "Name": "Conference Hall",
+    "Price": "$0.99",
+    "Discount": 0.1,
+    "CreatedAt": "4/4/2021",
+    "UpdatedAt": "7/30/2021"
+  },
+  {
+    "Id": "4",
+    "Name": "Internet Access",
+    "Price": "$0.36",
+    "Discount": 0.1,
+    "CreatedAt": "12/8/2020",
+    "UpdatedAt": "6/6/2021"
+  }
+]

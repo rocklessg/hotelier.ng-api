@@ -1,0 +1,142 @@
+[
+  {
+    "id": "1",
+    "RoomNo": "301",
+    "IsBooked": false,
+    "CreatedAt": "10/13/2020",
+    "UpdatedAt": "12/20/2020"
+  },
+  {
+    "id": "2",
+    "RoomNo": "302",
+    "IsBooked": true,
+    "CreatedAt": "10/16/2020",
+    "UpdatedAt": "5/12/2021"
+  },
+  {
+    "id": "3",
+    "RoomNo": "303",
+    "IsBooked": false,
+    "CreatedAt": "1/21/2021",
+    "UpdatedAt": "4/23/2021"
+  },
+  {
+    "id": "4",
+    "RoomNo": "304",
+    "IsBooked": true,
+    "CreatedAt": "5/6/2021",
+    "UpdatedAt": "10/19/2020"
+  },
+  {
+    "id": "5",
+    "RoomNo": "305",
+    "IsBooked": false,
+    "CreatedAt": "1/1/2021",
+    "UpdatedAt": "11/23/2020"
+  },
+  {
+    "Id": "6",
+    "RoomNo": 9,
+    "IsBooked": true,
+    "CreatedAt": "4/17/2021",
+    "UpdatedAt": "7/5/2021"
+  },
+  {
+    "Id": "7",
+    "RoomNo": 10,
+    "IsBooked": false,
+    "CreatedAt": "10/16/2020",
+    "UpdatedAt": "6/13/2021"
+  },
+  {
+    "Id": "8",
+    "RoomNo": 11,
+    "IsBooked": false,
+    "CreatedAt": "2/17/2021",
+    "UpdatedAt": "6/3/2021"
+  },
+  {
+    "Id": "9",
+    "RoomNo": 12,
+    "IsBooked": true,
+    "CreatedAt": "11/5/2020",
+    "UpdatedAt": "1/27/2021"
+  },
+  {
+    "Id": "10",
+    "RoomNo": 13,
+    "IsBooked": false,
+    "CreatedAt": "7/6/2021",
+    "UpdatedAt": "8/27/2021"
+  },
+  {
+    "Id": "11",
+    "RoomNo": 14,
+    "IsBooked": false,
+    "CreatedAt": "5/26/2021",
+    "UpdatedAt": "4/29/2021"
+  },
+  {
+    "Id": "12",
+    "RoomNo": 15,
+    "IsBooked": false,
+    "CreatedAt": "11/2/2020",
+    "UpdatedAt": "9/23/2021"
+  },
+  {
+    "Id": "13",
+    "RoomNo": 16,
+    "IsBooked": false,
+    "CreatedAt": "4/28/2021",
+    "UpdatedAt": "12/13/2020"
+  },
+  {
+    "Id": "14",
+    "RoomNo": 17,
+    "IsBooked": false,
+    "CreatedAt": "2/23/2021",
+    "UpdatedAt": "7/5/2021"
+  },
+  {
+    "Id": "15",
+    "RoomNo": 18,
+    "IsBooked": true,
+    "CreatedAt": "1/16/2021",
+    "UpdatedAt": "9/29/2020"
+  },
+  {
+    "Id": "16",
+    "RoomNo": 19,
+    "IsBooked": true,
+    "CreatedAt": "1/22/2021",
+    "UpdatedAt": "12/16/2020"
+  },
+  {
+    "Id": "17",
+    "RoomNo": 20,
+    "IsBooked": true,
+    "CreatedAt": "11/28/2020",
+    "UpdatedAt": "7/18/2021"
+  },
+  {
+    "Id": "18",
+    "RoomNo": 21,
+    "IsBooked": false,
+    "CreatedAt": "11/4/2020",
+    "UpdatedAt": "6/30/2021"
+  },
+  {
+    "Id": "19",
+    "RoomNo": 22,
+    "IsBooked": true,
+    "CreatedAt": "1/26/2021",
+    "UpdatedAt": "5/14/2021"
+  },
+  {
+    "Id": "20",
+    "RoomNo": 23,
+    "IsBooked": true,
+    "CreatedAt": "6/27/2021",
+    "UpdatedAt": "7/3/2021"
+  }
+]
