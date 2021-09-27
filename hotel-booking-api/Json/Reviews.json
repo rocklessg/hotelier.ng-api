@@ -1,0 +1,202 @@
+[
+  {
+    "Id": "465bc6ce-3c13-47cf-82f0-32008454f6ba",
+    "Comment": "Reattachment of Right Upper Leg Tendon, Open Approach",
+    "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79",
+    "CustomerId": "fbd7c884-5c49-40d2-a84b-26e3d1b8ecce",
+    "CreatedAt": "7/22/2021",
+    "UpdatedAt": "4/21/2021"
+  },
+  {
+    "Id": "5f5a3777-35b2-4f0e-a7c7-eb705e39b0f5",
+    "Comment": "Dilation of 2 Cor Art with 4 Drug-elut, Open Approach",
+    "CreatedAt": "8/27/2021",
+    "HotelId": "e9963012-3081-4c12-8deb-31f10b4091e5",
+    "CustomerId": "fbd7c884-5c49-40d2-a84b-26e3d1b8ecce",
+    "UpdatedAt": "5/12/2021"
+  },
+  {
+    "Id": "6d08c2ad-9db3-4cef-939e-ca7556005b68",
+    "Comment": "Drainage of R Up Leg Muscle with Drain Dev, Perc Approach",
+    "CreatedAt": "3/20/2021",
+    "HotelId": "5b9371cb-4a47-4a6c-a99f-bc0aa879655b",
+    "CustomerId": "fbd7c884-5c49-40d2-a84b-26e3d1b8ecce",
+    "UpdatedAt": "7/30/2021"
+  },
+  {
+    "Id": "97aff548-50d8-4408-a7c3-6e437333e044",
+    "Comment": "Revision of Nonaut Sub in R Tarsal Jt, Extern Approach",
+    "CreatedAt": "9/22/2021",
+    "HotelId": "c338dbe3-3e48-4109-bf0d-3ccf042519a2",
+    "CustomerId": "fbd7c884-5c49-40d2-a84b-26e3d1b8ecce",
+    "UpdatedAt": "1/31/2021"
+  },
+  {
+    "Id": "1b903656-330c-4982-90a2-6a08428262c7",
+    "Comment": "Fragmentation in Descending Colon, Open Approach",
+    "CreatedAt": "9/29/2020",
+    "HotelId": "e89f90ef-b560-4d00-b919-080fed7495ff",
+    "CustomerId": "fbd7c884-5c49-40d2-a84b-26e3d1b8ecce",
+    "UpdatedAt": "5/30/2021"
+  },
+  {
+    "Id": "4c7e413f-ca34-4661-b123-42566a47e9f4",
+    "Comment": "Drainage of Uterus with Drainage Device, Perc Endo Approach",
+    "CreatedAt": "7/14/2021",
+    "HotelId": "0ebe22a8-b758-40be-8e25-376dcd76718d",
+    "CustomerId": "d60a79a3-fcd5-473f-a98c-ac1d9d19d8a0",
+    "UpdatedAt": "7/8/2021"
+  },
+  {
+    "Id": "7b552776-6da5-4aaf-9164-1e722a16a102",
+    "Comment": "Repair Lower Esophagus, Via Natural or Artificial Opening",
+    "CreatedAt": "10/23/2020",
+    "HotelId": "aa15e58c-468f-4ca4-a158-78e04fb279ac",
+    "CustomerId": "d60a79a3-fcd5-473f-a98c-ac1d9d19d8a0",
+    "UpdatedAt": "2/26/2021"
+  },
+  {
+    "Id": "d08f36aa-9e10-4cfe-884a-092457682e39",
+    "Comment": "Extirpate matter from Access Pancr Duct, Perc Endo",
+    "CreatedAt": "4/29/2021",
+    "HotelId": "7a786267-6cec-42b1-9178-b0c84eb09466",
+    "CustomerId": "d60a79a3-fcd5-473f-a98c-ac1d9d19d8a0",
+    "UpdatedAt": "3/8/2021"
+  },
+  {
+    "Id": "d9a58fbd-c126-4fa0-afcf-ff60f2a16be7",
+    "Comment": "Dilation of R Popl Art, Bifurc, Perc Endo Approach",
+    "CreatedAt": "12/30/2020",
+    "HotelId": "43fba4a3-1a1a-4988-abda-1b6ae9599742",
+    "CustomerId": "d60a79a3-fcd5-473f-a98c-ac1d9d19d8a0",
+    "UpdatedAt": "8/12/2021"
+  },
+  {
+    "Id": "e24ef8e7-4acf-4427-a81f-a60bed4947ae",
+    "Comment": "Release Tongue, Palate, Pharynx Muscle, Open Approach",
+    "CreatedAt": "3/5/2021",
+    "HotelId": "65d33167-cdb8-49d1-b6e5-5f5a9d46e896",
+    "CustomerId": "d60a79a3-fcd5-473f-a98c-ac1d9d19d8a0",
+    "UpdatedAt": "1/8/2021"
+  },
+  {
+    "Id": "2f8351ac-8a73-41a5-beb6-572a1fb9cff8",
+    "Comment": "Remove Drain Dev from Low Intest Tract, Perc Endo",
+    "CreatedAt": "10/31/2020",
+    "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79",
+    "CustomerId": "0292370a-c708-4b83-9b7f-eacf7522a798",
+    "UpdatedAt": "11/28/2020"
+  },
+  {
+    "Id": "31af80eb-c6ed-447b-b179-7033f82d84b0",
+    "Comment": "Bypass Bi Vas Deferens to L Epidid w Nonaut Sub, Perc Endo",
+    "CreatedAt": "7/16/2021",
+    "HotelId": "e9963012-3081-4c12-8deb-31f10b4091e5",
+    "CustomerId": "0292370a-c708-4b83-9b7f-eacf7522a798",
+    "UpdatedAt": "10/29/2020"
+  },
+  {
+    "Id": "0bb7efa3-4c1c-41d9-be34-26597d2f892c",
+    "Comment": "Osteopathic Treatment of Abdomen using Fascial Release",
+    "CreatedAt": "9/7/2021",
+    "HotelId": "5b9371cb-4a47-4a6c-a99f-bc0aa879655b",
+    "CustomerId": "0292370a-c708-4b83-9b7f-eacf7522a798",
+    "UpdatedAt": "1/21/2021"
+  },
+  {
+    "Id": "d69dbf4a-7c7a-4a8c-a97c-3ba7dbe6e53b",
+    "Comment": "Removal of Monitoring Device from Low Art, Open Approach",
+    "CreatedAt": "9/23/2021",
+    "HotelId": "c338dbe3-3e48-4109-bf0d-3ccf042519a2",
+    "CustomerId": "0292370a-c708-4b83-9b7f-eacf7522a798",
+    "UpdatedAt": "1/29/2021"
+  },
+  {
+    "Id": "ca690f9b-68ec-4b10-b1ce-23748ea8253c",
+    "Comment": "Repair Right Scapula, External Approach",
+    "CreatedAt": "2/12/2021",
+    "HotelId": "e89f90ef-b560-4d00-b919-080fed7495ff",
+    "CustomerId": "0292370a-c708-4b83-9b7f-eacf7522a798",
+    "UpdatedAt": "12/3/2020"
+  },
+  {
+    "Id": "e259c6b6-e540-4f77-8eda-484cb445e433",
+    "Comment": "CT Scan Sella Tur/Pituitary w L Osm Contrast, Unenh, Enhance",
+    "CreatedAt": "1/21/2021",
+    "HotelId": "0ebe22a8-b758-40be-8e25-376dcd76718d",
+    "CustomerId": "7b03a36d-8db7-4fad-bbc9-62094292df3d",
+    "UpdatedAt": "9/9/2021"
+  },
+  {
+    "Id": "7b4fe480-d1ed-4a7b-9a62-0a517ab9df91",
+    "Comment": "Drainage of Anus, Via Natural or Artificial Opening",
+    "CreatedAt": "12/12/2020",
+    "HotelId": "aa15e58c-468f-4ca4-a158-78e04fb279ac",
+    "CustomerId": "7b03a36d-8db7-4fad-bbc9-62094292df3d",
+    "UpdatedAt": "7/4/2021"
+  },
+  {
+    "Id": "91002232-2346-40ae-946f-e123ad1896dd",
+    "Comment": "Supplement R Abd Tendon with Autol Sub, Perc Endo Approach",
+    "CreatedAt": "11/23/2020",
+    "HotelId": "7a786267-6cec-42b1-9178-b0c84eb09466",
+    "CustomerId": "7b03a36d-8db7-4fad-bbc9-62094292df3d",
+    "UpdatedAt": "12/23/2020"
+  },
+  {
+    "Id": "63dee410-90e5-4def-a35c-84621fe091d4",
+    "Comment": "Transfer Tibial Nerve to Tibial Nerve, Open Approach",
+    "CreatedAt": "5/22/2021",
+    "HotelId": "43fba4a3-1a1a-4988-abda-1b6ae9599742",
+    "CustomerId": "7b03a36d-8db7-4fad-bbc9-62094292df3d",
+    "UpdatedAt": "1/23/2021"
+  },
+  {
+    "Id": "a4a51034-3336-4666-8d5c-6693e63ecccf",
+    "Comment": "Drainage of Spleen with Drainage Device, Perc Endo Approach",
+    "CreatedAt": "3/12/2021",
+    "HotelId": "65d33167-cdb8-49d1-b6e5-5f5a9d46e896",
+    "CustomerId": "7b03a36d-8db7-4fad-bbc9-62094292df3d",
+    "UpdatedAt": "11/11/2020"
+  },
+  {
+    "Id": "276115b8-2f9d-4041-a610-0cd6b6d66adb",
+    "Comment": "Reposition Left Radius with Hybrid Ext Fix, Perc Approach",
+    "CreatedAt": "3/9/2021",
+    "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79",
+    "CustomerId": "5ae61a56-4382-4ebc-9fd1-641d5da2ad0e",
+    "UpdatedAt": "12/8/2020"
+  },
+  {
+    "Id": "80d6d640-6f4f-4d0f-8c1f-c4256608a452",
+    "Comment": "Removal of Intralum Dev from Up Intest Tract, Perc Approach",
+    "CreatedAt": "11/13/2020",
+    "HotelId": "e9963012-3081-4c12-8deb-31f10b4091e5",
+    "CustomerId": "5ae61a56-4382-4ebc-9fd1-641d5da2ad0e",
+    "UpdatedAt": "6/23/2021"
+  },
+  {
+    "Id": "c69b5dee-78d4-4f30-bdbd-ca7f29d21c0c",
+    "Comment": "Destruction of Parathyroid Gland, Percutaneous Approach",
+    "CreatedAt": "12/11/2020",
+    "HotelId": "5b9371cb-4a47-4a6c-a99f-bc0aa879655b",
+    "CustomerId": "5ae61a56-4382-4ebc-9fd1-641d5da2ad0e",
+    "UpdatedAt": "2/14/2021"
+  },
+  {
+    "Id": "8ee95b71-4854-442e-8dac-98b2820506ba",
+    "Comment": "Fragmentation in Bladder, Open Approach",
+    "CreatedAt": "12/11/2020",
+    "HotelId": "c338dbe3-3e48-4109-bf0d-3ccf042519a2",
+    "CustomerId": "5ae61a56-4382-4ebc-9fd1-641d5da2ad0e",
+    "UpdatedAt": "11/22/2020"
+  },
+  {
+    "Id": "586f8bdc-a27f-4ab1-8bbc-ffb67d1d3e49",
+    "Comment": "LDR Brachytherapy of Trachea using Palladium 103",
+    "CreatedAt": "7/6/2021",
+    "HotelId": "e89f90ef-b560-4d00-b919-080fed7495ff",
+    "CustomerId": "5ae61a56-4382-4ebc-9fd1-641d5da2ad0e",
+    "UpdatedAt": "1/31/2021"
+  } 
+]

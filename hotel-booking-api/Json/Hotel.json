@@ -8,60 +8,7 @@
     "Address": "7163 Walton Crossing",
     "City": "Houston",
     "State": "Texas",
-    "ManagerId": "",
-    "Ratings": [
-      {
-        "Id": "5788ebb6-7943-424f-be65-418816e632bc",
-        "CustomerId": "",
-        "Rating": 4,
-        "CreatedAT": "6/28/2021",
-        "UpdatedAt": "1/21/2021"
-      },
-      {
-        "Id": "3fcc4e1b-89ef-46a8-9ddd-64dea28fcb2e",
-        "CustomerId": "",
-        "Rating": 5,
-        "CreatedAT": "4/21/2021",
-        "UpdatedAt": "6/1/2021"
-      },
-      {
-        "Id": "b97e3515-6ee7-41e5-b550-e1b676895232",
-        "CustomerId": "",
-        "Rating": 5,
-        "CreatedAT": "8/4/2021",
-        "UpdatedAt": "9/3/2021"
-      },
-      {
-        "Id": "70eacb8c-0bc2-4857-869c-08adffa34405",
-        "CustomerId": "",
-        "Rating": 4,
-        "CreatedAT": "9/4/2021",
-        "UpdatedAt": "9/21/2021"
-      }
-    ],
-    "Reviews": [
-      {
-        "Id": "07cecbeb-c5d8-4eb8-9e92-527401d997bf",
-        "CustomerId": "",
-        "Review": "Lacrimal gland biopsy",
-        "CreatedAT": "8/27/2021",
-        "UpdatedAt": "1/16/2021"
-      },
-      {
-        "Id": "a442ed36-387e-4cce-ba3a-f5a174091cd8",
-        "CustomerId": "",
-        "Review": "Fallopian tube op NEC",
-        "CreatedAT": "3/6/2021",
-        "UpdatedAt": "6/13/2021"
-      },
-      {
-        "Id": "1a3c1ced-3cfa-4065-aa67-5a1c6a482944",
-        "CustomerId": "",
-        "Review": "Abltn renal les/tiss NEC",
-        "CreatedAT": "10/5/2020",
-        "UpdatedAt": "6/6/2021"
-      }
-    ],
+    "ManagerId": "4a47b248-38c6-4607-bde0-3d15e0ee3e67",
     "Amenities": [
       {
         "Id": "1",
@@ -177,67 +124,7 @@
     "Phone": "515-142-4144",
     "Address": "44 Express Lane",
     "City": "Des Moines",
-    "ManagerId": "",
-    "Ratings": [
-      {
-        "Id": "13e8aa7a-ac4d-428d-b040-3e7f4cdb1323",
-        "CustomerId": "",
-        "Rating": 4,
-        "CreatedAT": "10/18/2020",
-        "UpdatedAt": "5/9/2021"
-      },
-      {
-        "Id": "277d64b2-741c-452e-be9a-c28b1fb516cd",
-        "CustomerId": "",
-        "Rating": 5,
-        "CreatedAT": "7/16/2021",
-        "UpdatedAt": "6/27/2021"
-      },
-      {
-        "Id": "c6ec68c2-6f21-438f-9cbb-7cb2733bdc1c",
-        "CustomerId": "",
-        "Rating": 5,
-        "CreatedAT": "8/16/2021",
-        "UpdatedAt": "1/9/2021"
-      },
-      {
-        "Id": "04c2aafe-6790-496d-a12a-9990d837652d",
-        "CustomerId": "",
-        "Rating": 3,
-        "CreatedAT": "12/10/2020",
-        "UpdatedAt": "12/16/2020"
-      }
-    ],
-    "Reviews": [
-      {
-        "Id": "9e220bb6-843a-4594-add4-9b957e397887",
-        "CustomerId": "",
-        "Review": "Surg collaps of lung NEC",
-        "CreatedAT": "5/29/2021",
-        "UpdatedAt": "7/22/2021"
-      },
-      {
-        "Id": "abcda2cb-ec93-43a5-91b9-03bff911167b",
-        "CustomerId": "",
-        "Review": "Closed thyroid gland bx",
-        "CreatedAT": "10/27/2020",
-        "UpdatedAt": "10/9/2020"
-      },
-      {
-        "Id": "6464c1a1-5356-4763-ade1-6c86a4d89225",
-        "CustomerId": "",
-        "Review": "Ins drug-elut coronry st",
-        "CreatedAT": "5/28/2021",
-        "UpdatedAt": "5/1/2021"
-      },
-      {
-        "Id": "7ad23ca8-4921-41c1-bc0b-1412434dd689",
-        "CustomerId": "",
-        "Review": "Lg bowel-abd wall fixat",
-        "CreatedAT": "8/2/2021",
-        "UpdatedAt": "10/10/2020"
-      }
-    ],
+    "ManagerId": "c2f4d528-b38d-49a3-8193-cf3dafc82824",
     "Amenities": [
       {
         "Id": "2",
@@ -366,67 +253,7 @@
     "Phone": "253-436-6991",
     "Address": "61 Mallard Avenue",
     "City": "Tacoma",
-    "ManagerId": "",
-    "Ratings": [
-      {
-        "Id": "04c2aafe-6790-496d-a12a-9990d837652d",
-        "CustomerId": "",
-        "Rating": 3,
-        "CreatedAT": "12/10/2020",
-        "UpdatedAt": "12/16/2020"
-      },
-      {
-        "Id": "7e2b5de7-8ddb-4969-b187-d547aa0170cd",
-        "CustomerId": "",
-        "Rating": 4,
-        "CreatedAT": "4/18/2021",
-        "UpdatedAt": "1/4/2021"
-      },
-      {
-        "Id": "4c754a5e-60bf-403d-b6ca-bbdbbe28af98",
-        "CustomerId": "",
-        "Rating": 2,
-        "CreatedAT": "10/9/2020",
-        "UpdatedAt": "3/18/2021"
-      },
-      {
-        "Id": "af421fc1-e081-4ec9-96c4-816e12d3bec1",
-        "CustomerId": "",
-        "Rating": 2,
-        "CreatedAT": "3/20/2021",
-        "UpdatedAt": "8/14/2021"
-      }
-    ],
-    "Reviews": [
-      {
-        "Id": "96c9f8d3-13de-4871-bf1d-600e1b9cf542",
-        "CustomerId": "",
-        "Review": "Fit up arm/should prosth",
-        "CreatedAT": "1/6/2021",
-        "UpdatedAt": "1/9/2021"
-      },
-      {
-        "Id": "53a1157d-2b76-431a-b82f-855d642ab885",
-        "CustomerId": "",
-        "Review": "Elbow synovectomy",
-        "CreatedAT": "5/29/2021",
-        "UpdatedAt": "11/1/2020"
-      },
-      {
-        "Id": "ba53be55-85ee-4bb2-81af-f3c48170a104",
-        "CustomerId": "",
-        "Review": "Repair of pleura",
-        "CreatedAT": "7/6/2021",
-        "UpdatedAt": "12/8/2020"
-      },
-      {
-        "Id": "cdfa61fb-484f-41c4-871b-27d26677bde8",
-        "CustomerId": "",
-        "Review": "Contrast x-ray of sinus",
-        "CreatedAT": "3/13/2021",
-        "UpdatedAt": "2/9/2021"
-      }
-    ],
+    "ManagerId": "659e5790-2370-420b-b824-721da549c9fe",
     "RoomTypes": [
       {
         "id": "1",
@@ -509,67 +336,7 @@
     "Phone": "404-897-5110",
     "Address": "5 Hooker Point",
     "City": "Atlanta",
-    "ManagerId": "",
-    "Ratings": [
-      {
-        "Id": "3162f79c-2754-49cf-abeb-4fb06e41f383",
-        "CustomerId": "",
-        "Rating": 3,
-        "CreatedAT": "12/25/2020",
-        "UpdatedAt": "8/24/2021"
-      },
-      {
-        "Id": "86a23ffe-275c-4286-b4ef-b89d01a5eff4",
-        "CustomerId": "",
-        "Rating": 4,
-        "CreatedAT": "5/30/2021",
-        "UpdatedAt": "9/20/2021"
-      },
-      {
-        "Id": "5788ebb6-7943-424f-be65-418816e632bc",
-        "CustomerId": "",
-        "Rating": 4,
-        "CreatedAT": "6/28/2021",
-        "UpdatedAt": "1/21/2021"
-      },
-      {
-        "Id": "3fcc4e1b-89ef-46a8-9ddd-64dea28fcb2e",
-        "CustomerId": "",
-        "Rating": 5,
-        "CreatedAT": "4/21/2021",
-        "UpdatedAt": "6/1/2021"
-      }
-    ],
-    "Reviews": [
-      {
-        "Id": "98ee9a64-6286-4887-93d1-895da742c370",
-        "CustomerId": "",
-        "Review": "Limb shorten-tib/fibula",
-        "CreatedAT": "4/24/2021",
-        "UpdatedAt": "2/1/2021"
-      },
-      {
-        "Id": "62259a48-7ea1-434f-8788-a29dd1f3938d",
-        "CustomerId": "",
-        "Review": "Application of splint",
-        "CreatedAT": "9/20/2021",
-        "UpdatedAt": "7/17/2021"
-      },
-      {
-        "Id": "b8fcdd17-0c48-48a8-8a2e-facbde00ffe2",
-        "CustomerId": "",
-        "Review": "Parasitology-endocrine",
-        "CreatedAT": "10/16/2020",
-        "UpdatedAt": "1/13/2021"
-      },
-      {
-        "Id": "2b881246-42c3-475a-af32-d60c1c3f3dd3",
-        "CustomerId": "",
-        "Review": "Open red-int fix humerus",
-        "CreatedAT": "4/25/2021",
-        "UpdatedAt": "3/9/2021"
-      }
-    ],
+    "ManagerId": "385a8031-ecc3-48a3-a1a6-e47f71eed45f",
     "RoomTypes": [
       {
         "id": "1",
@@ -747,67 +514,7 @@
     "Address": "9 Badeau Junction",
     "City": "Baton Rouge",
     "State": "Louisiana",
-    "ManagerId": "",
-    "Ratings": [
-      {
-        "Id": "439610db-19f6-4023-81ac-98666e494586",
-        "CustomerId": "",
-        "Rating": 3,
-        "CreatedAT": "10/31/2020",
-        "UpdatedAt": "3/27/2021"
-      },
-      {
-        "Id": "b651dd53-600e-4abd-b38f-a2b41a3793b6",
-        "CustomerId": "",
-        "Rating": 5,
-        "CreatedAT": "12/24/2020",
-        "UpdatedAt": "3/26/2021"
-      },
-      {
-        "Id": "c8c02372-4140-4d33-b68a-e0dd9800253e",
-        "CustomerId": "",
-        "Rating": 2,
-        "CreatedAT": "3/24/2021",
-        "UpdatedAt": "11/24/2020"
-      },
-      {
-        "Id": "45da2438-89ec-417c-a827-18095545ecb1",
-        "CustomerId": "",
-        "Rating": 3,
-        "CreatedAT": "5/1/2021",
-        "UpdatedAt": "10/21/2020"
-      }
-    ],
-    "Review": [
-      {
-        "Id": "610f529f-cdf1-4327-a328-48ee0c96baff",
-        "CustomerId": "",
-        "Review": "Esophag stricture repair",
-        "CreatedAT": "10/18/2020",
-        "UpdatedAt": "9/5/2021"
-      },
-      {
-        "Id": "a055434d-b580-4ba0-940b-c93ea9240090",
-        "CustomerId": "",
-        "Review": "Micro exam-periton NEC",
-        "CreatedAT": "4/9/2021",
-        "UpdatedAt": "12/19/2020"
-      },
-      {
-        "Id": "063a0920-879c-4166-a453-9ae6022b8101",
-        "CustomerId": "",
-        "Review": "Metatarsophalangeal fus",
-        "CreatedAT": "6/16/2021",
-        "UpdatedAt": "11/24/2020"
-      },
-      {
-        "Id": "b6eef143-3269-463b-ba86-cf366dd5ac97",
-        "CustomerId": "",
-        "Review": "Incis rectal stricture",
-        "CreatedAT": "8/31/2021",
-        "UpdatedAt": "10/1/2020"
-      }
-    ],
+    "ManagerId": "a0b1272b-a00f-4513-b961-8cb7dfb51ab0",
     "Amenities": [
       {
         "Id": "2",
@@ -963,6 +670,7 @@
     "Email": "jchaloner5@google.cn",
     "Phone": "239-280-2490",
     "Address": "5 Summer Ridge Alley",
+    "ManagerId": "4a47b248-38c6-4607-bde0-3d15e0ee3e67",
     "City": "Naples",
     "State": "Florida",
     "Amenities": [
@@ -981,58 +689,6 @@
         "Discount": 0.1,
         "CreatedAt": "8/28/2021",
         "UpdatedAt": "2/19/2021"
-      }
-    ],
-    "Ratings": [
-      {
-        "Id": "71eb8b4f-22b4-4481-af64-16466c803806",
-        "Rating": 2,
-        "CreatedAT": "1/18/2021",
-        "UpdatedAt": "10/8/2020"
-      },
-      {
-        "Id": "cff6c1d7-af38-46ee-b29d-905437b26174",
-        "Rating": 3,
-        "CreatedAT": "1/25/2021",
-        "UpdatedAt": "12/18/2020"
-      },
-      {
-        "Id": "36793b81-58da-46a0-9fb6-d8eeb558c522",
-        "Rating": 4,
-        "CreatedAT": "3/19/2021",
-        "UpdatedAt": "9/11/2021"
-      },
-      {
-        "Id": "23ba483d-453d-4e51-b8e7-97c93506fdeb",
-        "Rating": 5,
-        "CreatedAT": "8/26/2021",
-        "UpdatedAt": "4/9/2021"
-      }
-    ],
-    "Reviews": [
-      {
-        "Id": "9982d243-5c4d-4ebc-9a5a-cbba8b0d77ed",
-        "Review": "Tot abd colectmy NEC/NOS",
-        "CreatedAT": "3/3/2021",
-        "UpdatedAt": "5/12/2021"
-      },
-      {
-        "Id": "d68ae323-3882-4fa8-831f-846d1d6b563c",
-        "Review": "Skin defect tattooing",
-        "CreatedAT": "11/17/2020",
-        "UpdatedAt": "8/13/2021"
-      },
-      {
-        "Id": "acb05069-2cf2-4438-82be-8d5768f816a3",
-        "Review": "Partial hepatectomy",
-        "CreatedAT": "4/29/2021",
-        "UpdatedAt": "5/13/2021"
-      },
-      {
-        "Id": "ed0111bc-4c5d-4de8-ae90-13b0379f64a9",
-        "Review": "Bact smear-peritoneum",
-        "CreatedAT": "11/20/2020",
-        "UpdatedAt": "2/24/2021"
       }
     ],
     "RoomTypes": [
@@ -1119,6 +775,7 @@
     "Phone": "515-429-5829",
     "Address": "9948 Prairie Rose Trail",
     "City": "Des Moines",
+    "ManagerId": "c2f4d528-b38d-49a3-8193-cf3dafc82824",
     "State": "Iowa",
     "Amenities": [
       {
@@ -1136,52 +793,6 @@
         "Discount": 0.1,
         "CreatedAt": "4/4/2021",
         "UpdatedAt": "7/30/2021"
-      }
-    ],
-    "Ratings": [
-      {
-        "Id": "c1fba51b-1cd6-4776-9154-b8ee1bfcbee6",
-        "Rating": 5,
-        "CreatedAT": "9/22/2021",
-        "UpdatedAt": "9/13/2021"
-      },
-      {
-        "Id": "bde2fc44-fb03-4fb3-8e85-c4ac700d8440",
-        "Rating": 4,
-        "CreatedAT": "3/30/2021",
-        "UpdatedAt": "4/27/2021"
-      },
-      {
-        "Id": "f8254c8a-f93d-4a44-ba08-5ca38f07e754",
-        "Rating": 3,
-        "CreatedAT": "10/9/2020",
-        "UpdatedAt": "4/29/2021"
-      },
-      {
-        "Id": "6b55d4c4-c119-4f09-9f2b-9a43c4093a6c",
-        "Rating": 2,
-        "CreatedAT": "5/25/2021",
-        "UpdatedAt": "12/4/2020"
-      }
-    ],
-    "Reviews": [
-      {
-        "Id": "d68ae323-3882-4fa8-831f-846d1d6b563c",
-        "Review": "Skin defect tattooing",
-        "CreatedAT": "11/17/2020",
-        "UpdatedAt": "8/13/2021"
-      },
-      {
-        "Id": "acb05069-2cf2-4438-82be-8d5768f816a3",
-        "Review": "Partial hepatectomy",
-        "CreatedAT": "4/29/2021",
-        "UpdatedAt": "5/13/2021"
-      },
-      {
-        "Id": "ed0111bc-4c5d-4de8-ae90-13b0379f64a9",
-        "Review": "Bact smear-peritoneum",
-        "CreatedAT": "11/20/2020",
-        "UpdatedAt": "2/24/2021"
       }
     ],
     "RoomTypes": [
@@ -1281,6 +892,7 @@
     "Email": "lhambribe7@opensource.org",
     "Phone": "828-116-6214",
     "Address": "160 Thierer Drive",
+    "ManagerId": "659e5790-2370-420b-b824-721da549c9fe",
     "City": "Asheville",
     "State": "North Carolina",
     "Amenities": [
@@ -1309,52 +921,6 @@
         "UpdatedAt": "6/6/2021"
       }
 
-    ],
-    "Ratings": [
-      {
-        "Id": "653bf960-e8ba-4da7-9a34-97aea080664f",
-        "Rating": 4,
-        "CreatedAT": "4/28/2021",
-        "UpdatedAt": "1/11/2021"
-      },
-      {
-        "Id": "13e8aa7a-ac4d-428d-b040-3e7f4cdb1323",
-        "Rating": 4,
-        "CreatedAT": "10/18/2020",
-        "UpdatedAt": "5/9/2021"
-      },
-      {
-        "Id": "277d64b2-741c-452e-be9a-c28b1fb516cd",
-        "Rating": 5,
-        "CreatedAT": "7/16/2021",
-        "UpdatedAt": "6/27/2021"
-      },
-      {
-        "Id": "c6ec68c2-6f21-438f-9cbb-7cb2733bdc1c",
-        "Rating": 5,
-        "CreatedAT": "8/16/2021",
-        "UpdatedAt": "1/9/2021"
-      }
-    ],
-    "Reviews": [
-      {
-        "Id": "f7fad44c-54af-4554-85b7-518c932a7dc5",
-        "Review": "Loc exc bone les humerus",
-        "CreatedAT": "3/12/2021",
-        "UpdatedAt": "2/4/2021"
-      },
-      {
-        "Id": "e838d84b-124c-4373-ac7e-6da62d755962",
-        "Review": "Peripheral nerve ops NEC",
-        "CreatedAT": "9/5/2021",
-        "UpdatedAt": "3/8/2021"
-      },
-      {
-        "Id": "db4506ec-b165-4118-8dad-0c0eb7f52cb3",
-        "Review": "Lower limb artery incis",
-        "CreatedAT": "7/5/2021",
-        "UpdatedAt": "7/22/2021"
-      }
     ],
     "RoomTypes": [
       {
@@ -1485,6 +1051,7 @@
     "Email": "vborn8@delicious.com",
     "Phone": "818-894-4450",
     "Address": "97992 Moose Trail",
+    "ManagerId": "c2f4d528-b38d-49a3-8193-cf3dafc82824",
     "City": "Brea",
     "State": "California",
     "Amenities": [
@@ -1519,70 +1086,6 @@
         "Discount": 0.1,
         "CreatedAt": "12/8/2020",
         "UpdatedAt": "6/6/2021"
-      }
-    ],
-    "Reviews": [
-      {
-        "Id": "9982d243-5c4d-4ebc-9a5a-cbba8b0d77ed",
-        "Review": "Tot abd colectmy NEC/NOS",
-        "CreatedAT": "3/3/2021",
-        "UpdatedAt": "5/12/2021"
-      },
-      {
-        "Id": "d68ae323-3882-4fa8-831f-846d1d6b563c",
-        "Review": "Skin defect tattooing",
-        "CreatedAT": "11/17/2020",
-        "UpdatedAt": "8/13/2021"
-      },
-      {
-        "Id": "acb05069-2cf2-4438-82be-8d5768f816a3",
-        "Review": "Partial hepatectomy",
-        "CreatedAT": "4/29/2021",
-        "UpdatedAt": "5/13/2021"
-      },
-      {
-        "Id": "ed0111bc-4c5d-4de8-ae90-13b0379f64a9",
-        "Review": "Bact smear-peritoneum",
-        "CreatedAT": "11/20/2020",
-        "UpdatedAt": "2/24/2021"
-      },
-      {
-        "Id": "cfd3bdbc-b39a-42eb-8095-3b7b57b6bbcf",
-        "Review": "Other chest wall repair",
-        "CreatedAT": "7/11/2021",
-        "UpdatedAt": "3/21/2021"
-      }
-    ],
-    "Ratings": [
-      {
-        "Id": "36793b81-58da-46a0-9fb6-d8eeb558c522",
-        "Rating": 4,
-        "CreatedAT": "3/19/2021",
-        "UpdatedAt": "9/11/2021"
-      },
-      {
-        "Id": "23ba483d-453d-4e51-b8e7-97c93506fdeb",
-        "Rating": 5,
-        "CreatedAT": "8/26/2021",
-        "UpdatedAt": "4/9/2021"
-      },
-      {
-        "Id": "c1fba51b-1cd6-4776-9154-b8ee1bfcbee6",
-        "Rating": 5,
-        "CreatedAT": "9/22/2021",
-        "UpdatedAt": "9/13/2021"
-      },
-      {
-        "Id": "bde2fc44-fb03-4fb3-8e85-c4ac700d8440",
-        "Rating": 4,
-        "CreatedAT": "3/30/2021",
-        "UpdatedAt": "4/27/2021"
-      },
-      {
-        "Id": "f8254c8a-f93d-4a44-ba08-5ca38f07e754",
-        "Rating": 3,
-        "CreatedAT": "10/9/2020",
-        "UpdatedAt": "4/29/2021"
       }
     ],
     "RoomTypes": [
@@ -1689,6 +1192,7 @@
     "Email": "kbrimfield9@arstechnica.com",
     "Phone": "843-921-6758",
     "Address": "1654 Victoria Hill",
+    "ManagerId": "4a47b248-38c6-4607-bde0-3d15e0ee3e67",
     "City": "Florence",
     "State": "South Carolina",
     "Amenities": [
@@ -1715,70 +1219,6 @@
         "Discount": 0.1,
         "CreatedAt": "12/8/2020",
         "UpdatedAt": "6/6/2021"
-      }
-    ],
-    "Reviews": [
-      {
-        "Id": "acb05069-2cf2-4438-82be-8d5768f816a3",
-        "Review": "Partial hepatectomy",
-        "CreatedAT": "4/29/2021",
-        "UpdatedAt": "5/13/2021"
-      },
-      {
-        "Id": "ed0111bc-4c5d-4de8-ae90-13b0379f64a9",
-        "Review": "Bact smear-peritoneum",
-        "CreatedAT": "11/20/2020",
-        "UpdatedAt": "2/24/2021"
-      },
-      {
-        "Id": "cfd3bdbc-b39a-42eb-8095-3b7b57b6bbcf",
-        "Review": "Other chest wall repair",
-        "CreatedAT": "7/11/2021",
-        "UpdatedAt": "3/21/2021"
-      },
-      {
-        "Id": "f7fad44c-54af-4554-85b7-518c932a7dc5",
-        "Review": "Loc exc bone les humerus",
-        "CreatedAT": "3/12/2021",
-        "UpdatedAt": "2/4/2021"
-      },
-      {
-        "Id": "e838d84b-124c-4373-ac7e-6da62d755962",
-        "Review": "Peripheral nerve ops NEC",
-        "CreatedAT": "9/5/2021",
-        "UpdatedAt": "3/8/2021"
-      }
-    ],
-    "Ratings": [
-      {
-        "Id": "8dfd612a-5da2-4fab-9cc6-838df43fc781",
-        "Rating": 3,
-        "CreatedAT": "6/15/2021",
-        "UpdatedAt": "12/30/2020"
-      },
-      {
-        "Id": "2e8f3331-14d3-4843-ba5d-1c8e015215ef",
-        "Rating": 3,
-        "CreatedAT": "6/14/2021",
-        "UpdatedAt": "8/15/2021"
-      },
-      {
-        "Id": "653bf960-e8ba-4da7-9a34-97aea080664f",
-        "Rating": 4,
-        "CreatedAT": "4/28/2021",
-        "UpdatedAt": "1/11/2021"
-      },
-      {
-        "Id": "13e8aa7a-ac4d-428d-b040-3e7f4cdb1323",
-        "Rating": 4,
-        "CreatedAT": "10/18/2020",
-        "UpdatedAt": "5/9/2021"
-      },
-      {
-        "Id": "277d64b2-741c-452e-be9a-c28b1fb516cd",
-        "Rating": 5,
-        "CreatedAT": "7/16/2021",
-        "UpdatedAt": "6/27/2021"
       }
     ],
     "RoomTypes": [
