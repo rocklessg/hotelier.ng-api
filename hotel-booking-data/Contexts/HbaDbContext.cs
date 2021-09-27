@@ -45,7 +45,5 @@ namespace hotel_booking_data.Contexts
             }
             return await base.SaveChangesAsync(cancellationToken);
         }
-
-        
     }
 }
