@@ -1,0 +1,67 @@
+[
+  {
+    "Id": "4a47b248-38c6-4607-bde0-3d15e0ee3e67",
+    "CompanyName": "Skinix",
+    "BusinessEmail": "gedington0@sina.com.cn",
+    "BusinessPhone": "436-781-0562",
+    "CompanyAddress": "699 Nevada Center",
+    "State": null,
+    "AccountName": "Vipe",
+    "AccountNumber": 3083597937,
+    "CreatedAt": "10/3/2020",
+    "UpdatedAt": "12/20/2020",
+    "UserId": "5765c13a-f609-4f8e-96b5-08a0f7c146ac"
+  },
+  {
+    "Id": "c2f4d528-b38d-49a3-8193-cf3dafc82824",
+    "CompanyName": "Vimbo",
+    "BusinessEmail": "pbohler1@reverbnation.com",
+    "BusinessPhone": "585-426-6484",
+    "CompanyAddress": "3506 Northland Way",
+    "State": "New York",
+    "AccountName": "Dabtype",
+    "AccountNumber": 3450098285,
+    "CreatedAt": "4/22/2021",
+    "UpdatedAt": "11/1/2020",
+    "UserId": "a84d25d7-a7ba-4b99-b757-8a52a25f61d5"
+  },
+  {
+    "Id": "659e5790-2370-420b-b824-721da549c9fe",
+    "CompanyName": "Zoovu",
+    "BusinessEmail": "tlongrigg2@reference.com",
+    "BusinessPhone": "694-239-2216",
+    "CompanyAddress": "16 Maple Way",
+    "State": null,
+    "AccountName": "Gabvine",
+    "AccountNumber": 4638913017,
+    "CreatedAt": "11/12/2020",
+    "UpdatedAt": "12/16/2020",
+    "UserId": "d7638183-f0a4-4188-9fa1-517ee2c2dbdf"
+  },
+  {
+    "Id": "385a8031-ecc3-48a3-a1a6-e47f71eed45f",
+    "CompanyName": "Topicstorm",
+    "BusinessEmail": "rgopsell3@google.co.jp",
+    "BusinessPhone": "602-638-2422",
+    "CompanyAddress": "60048 Lawn Lane",
+    "State": null,
+    "AccountName": "Feedbug",
+    "AccountNumber": 13564482,
+    "CreatedAt": "5/13/2021",
+    "UpdatedAt": "4/7/2021",
+    "UserId": "e495a8d1-6fd6-4bc8-b23a-b6d4e6b6623c"
+  },
+  {
+    "Id": "a0b1272b-a00f-4513-b961-8cb7dfb51ab0",
+    "CompanyName": "Devpulse",
+    "BusinessEmail": "jmarchent4@webeden.co.uk",
+    "BusinessPhone": "415-815-5005",
+    "CompanyAddress": "1307 Rockefeller Avenue",
+    "State": null,
+    "AccountName": "Skimia",
+    "AccountNumber": 3584199276,
+    "CreatedAt": "3/25/2021",
+    "UpdatedAt": "3/12/2021",
+    "UserId": "390e272d-a264-4d7b-b3af-8bdc2a1f92f3"
+  }
+]

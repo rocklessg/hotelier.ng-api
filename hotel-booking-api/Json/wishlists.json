@@ -1,0 +1,22 @@
+[
+  {
+    "CustomerId": "fbd7c884-5c49-40d2-a84b-26e3d1b8ecce",
+    "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79"
+  },
+  {
+    "CustomerId": "d60a79a3-fcd5-473f-a98c-ac1d9d19d8a0",
+    "HotelId": "e9963012-3081-4c12-8deb-31f10b4091e5"
+  },
+  {
+    "CustomerId": "0292370a-c708-4b83-9b7f-eacf7522a798",
+    "HotelId": "5b9371cb-4a47-4a6c-a99f-bc0aa879655b"
+  },
+  {
+    "CustomerId": "7b03a36d-8db7-4fad-bbc9-62094292df3d",
+    "HotelId": "c338dbe3-3e48-4109-bf0d-3ccf042519a2"
+  },
+  {
+    "CustomerId": "5ae61a56-4382-4ebc-9fd1-641d5da2ad0e",
+    "HotelId": "e89f90ef-b560-4d00-b919-080fed7495ff"
+  }
+]

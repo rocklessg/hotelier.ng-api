@@ -1,0 +1,62 @@
+[
+  {
+    "Id": "a343b8ba-0466-4a86-9bdd-4d35ee59b1cd",
+    "CustomerId": "fbd7c884-5c49-40d2-a84b-26e3d1b8ecce",
+    "BookingReference": "Impetigo",
+    "CheckIn": "4/11/2021",
+    "CheckOut": "9/1/2021",
+    "NoOfPeople": 2,
+    "ServiceName": "Jetwire",
+    "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79",
+    "CreatedAt": "3/29/2021",
+    "UpdatedAt": "10/8/2020"
+  },
+  {
+    "Id": "d0835b23-f781-48ce-8e68-2685cc34d756",
+    "CustomerId": "7b03a36d-8db7-4fad-bbc9-62094292df3d",
+    "BookingReference": "Acute otitis externa NEC",
+    "CheckIn": "7/14/2021",
+    "CheckOut": "8/28/2021",
+    "NoOfPeople": 1,
+    "ServiceName": "Voonix",
+    "HotelId": "e9963012-3081-4c12-8deb-31f10b4091e5",
+    "CreatedAt": "1/25/2021",
+    "UpdatedAt": "6/8/2021"
+  },
+  {
+    "Id": "280cf08a-eced-43f5-b582-9397b2515ec8",
+    "CustomerId": "d60a79a3-fcd5-473f-a98c-ac1d9d19d8a0",
+    "BookingReference": "Alternating esotropia",
+    "CheckIn": "5/14/2021",
+    "CheckOut": "10/28/2020",
+    "NoOfPeople": 4,
+    "ServiceName": "Realcube",
+    "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79",
+    "CreatedAt": "12/6/2020",
+    "UpdatedAt": "11/8/2020"
+  },
+  {
+    "Id": "fc429054-9c4b-427d-841f-1523f784feff",
+    "CustomerId": "d60a79a3-fcd5-473f-a98c-ac1d9d19d8a0",
+    "BookingReference": "Dicalc phos cry-site NEC",
+    "CheckIn": "5/17/2021",
+    "CheckOut": "6/23/2021",
+    "NoOfPeople": 1,
+    "ServiceName": "Ailane",
+    "HotelId": "e89f90ef-b560-4d00-b919-080fed7495ff",
+    "CreatedAt": "10/7/2020",
+    "UpdatedAt": "5/22/2021"
+  },
+  {
+    "Id": "00e165b8-0a45-4e55-bda8-479c258196ab",
+    "CustomerId": "d60a79a3-fcd5-473f-a98c-ac1d9d19d8a0",
+    "BookingReference": "Tooth formation disturb",
+    "CheckIn": "2/21/2021",
+    "CheckOut": "3/17/2021",
+    "NoOfPeople": 3,
+    "ServiceName": "Vipe",
+    "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79",
+    "CreatedAt": "11/25/2020",
+    "UpdatedAt": "10/29/2020"
+  }
+]

@@ -52,7 +52,9 @@ namespace hotel_booking_api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "hotel_booking_api v1"));
             }
 
+
             HbaSeeder.SeedData(dbContext, userManager, roleManager).Wait();
+
 
             app.UseHttpsRedirection();
 
