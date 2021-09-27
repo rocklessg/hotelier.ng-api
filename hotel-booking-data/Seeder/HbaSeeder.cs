@@ -21,7 +21,7 @@ namespace hotel_booking_data.Seeder
             await dbContext.Database.EnsureCreatedAsync();
             if (!dbContext.Users.Any())
             {
-                List<string> roles = new List<string> { "Admin", "Manager", "Regular" };
+                List<string> roles = new List<string> { "Admin", "Manager", "Customer" };
 
                 foreach (var role in roles)
                 {
@@ -60,18 +60,11 @@ namespace hotel_booking_data.Seeder
                         await userManager.AddToRoleAsync(hbaUsers[i], "Manager");
                         continue;
                     }
-                    await userManager.AddToRoleAsync(hbaUsers[i], "Regular");
+                    await userManager.AddToRoleAsync(hbaUsers[i], "Customer");
                 }
             }
 
-            // Amenities
-            //if (!dbContext.Amenities.Any())
-            //{
-            //    var path = File.ReadAllText(baseDir + @"/json/Amenities.json");
-
-            //    var amenities = JsonConvert.DeserializeObject<List<Amenity>>(path);
-            //    await dbContext.Amenities.AddRangeAsync(amenities);
-            //}
+            
 
             // Bookings
             if (!dbContext.Bookings.Any())
@@ -83,17 +76,6 @@ namespace hotel_booking_data.Seeder
             }
 
 
-
-            // Customers
-            //if (!dbContext.Customers.Any())
-            //{
-            //    var path = File.ReadAllText(baseDir + @"/json/customers.json");
-
-            //    var customers = JsonConvert.DeserializeObject<List<Customer>>(path);
-            //    await dbContext.Customers.AddRangeAsync(customers);
-            //}
-
-
             // Hotels, roomtypes n rooms
             if (!dbContext.Hotels.Any())
             {
@@ -103,16 +85,6 @@ namespace hotel_booking_data.Seeder
                 await dbContext.Hotels.AddRangeAsync(hotels);
             }
 
-            // Manager
-            //if (!dbContext.Managers.Any())
-            //{
-            //    var path = File.ReadAllText(baseDir + @"/json/managers.json");
-
-            //    var managers = JsonConvert.DeserializeObject<List<Manager>>(path);
-            //    await dbContext.Managers.AddRangeAsync(managers);
-            //}
-
-
             // Payments
             if (!dbContext.Payments.Any())
             {
@@ -121,26 +93,6 @@ namespace hotel_booking_data.Seeder
                 var payments = JsonConvert.DeserializeObject<List<Payment>>(path);
                 await dbContext.Payments.AddRangeAsync(payments);
             }
-
-            // Rooms
-            //if (!dbContext.Rooms.Any())
-            //{
-            //    var path = File.ReadAllText(baseDir + @"/json/Rooms.json");
-
-            //    var rooms = JsonConvert.DeserializeObject<List<Room>>(path);
-            //    await dbContext.Rooms.AddRangeAsync(rooms);
-            //}
-
-
-            // Roomtypes
-            //if (!dbContext.RoomTypes.Any())
-            //{
-            //    var path = File.ReadAllText(baseDir + @"/json/RoomTypes.json");
-
-            //    var roomTypes = JsonConvert.DeserializeObject<List<RoomType>>(path);
-            //    await dbContext.RoomTypes.AddRangeAsync(roomTypes);
-            //}
-
 
             // Whishlist
             if (!dbContext.WishLists.Any())
