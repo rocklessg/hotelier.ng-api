@@ -8,10 +8,11 @@
     "Address": "7163 Walton Crossing",
     "City": "Houston",
     "State": "Texas",
+    "ManagerId": "",
     "Ratings": [
       {
         "Id": "5788ebb6-7943-424f-be65-418816e632bc",
-        "CustomerId" :  "",
+        "CustomerId": "",
         "Rating": 4,
         "CreatedAT": "6/28/2021",
         "UpdatedAt": "1/21/2021"
@@ -41,7 +42,7 @@
     "Reviews": [
       {
         "Id": "07cecbeb-c5d8-4eb8-9e92-527401d997bf",
-        "CustomerId" :  "",
+        "CustomerId": "",
         "Review": "Lacrimal gland biopsy",
         "CreatedAT": "8/27/2021",
         "UpdatedAt": "1/16/2021"
@@ -134,7 +135,7 @@
             "CreatedAt": "5/6/2021",
             "UpdatedAt": "10/19/2020"
           }
-          
+
         ],
         "CreatedAt": "10/16/2020",
         "UpdatedAt": "5/12/2021"
@@ -159,7 +160,7 @@
             "IsBooked": true,
             "CreatedAt": "5/6/2021",
             "UpdatedAt": "10/19/2020"
-          }       
+          }
         ],
         "CreatedAt": "1/21/2021",
         "UpdatedAt": "4/23/2021"
@@ -176,6 +177,7 @@
     "Phone": "515-142-4144",
     "Address": "44 Express Lane",
     "City": "Des Moines",
+    "ManagerId": "",
     "Ratings": [
       {
         "Id": "13e8aa7a-ac4d-428d-b040-3e7f4cdb1323",
@@ -364,6 +366,7 @@
     "Phone": "253-436-6991",
     "Address": "61 Mallard Avenue",
     "City": "Tacoma",
+    "ManagerId": "",
     "Ratings": [
       {
         "Id": "04c2aafe-6790-496d-a12a-9990d837652d",
@@ -506,6 +509,7 @@
     "Phone": "404-897-5110",
     "Address": "5 Hooker Point",
     "City": "Atlanta",
+    "ManagerId": "",
     "Ratings": [
       {
         "Id": "3162f79c-2754-49cf-abeb-4fb06e41f383",
@@ -743,6 +747,7 @@
     "Address": "9 Badeau Junction",
     "City": "Baton Rouge",
     "State": "Louisiana",
+    "ManagerId" :  "",
     "Ratings": [
       {
         "Id": "439610db-19f6-4023-81ac-98666e494586",
