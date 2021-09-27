@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using hotel_booking_utilities;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using hotel_booking_api.Extensions;
@@ -10,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace hotel_booking_api
@@ -20,39 +18,21 @@ namespace hotel_booking_api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            StaticConfig = configuration;
         }
 
+        public static IConfiguration StaticConfig { get; private set; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateAudience = true,
-                    ValidateIssuer = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidAudience = Configuration["JwtSettings:Audience"],
-                    ValidIssuer = Configuration["JwtSettings:Issuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding
-                    .UTF8.GetBytes(Configuration["JwtSettings:SecretKey"])),
-                    ClockSkew = TimeSpan.Zero
-                };
-            });
-
             services.AddDbContext<HbaDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("default"))
                 );
 
+            // Add Jwt Authentication and Authorization
+            services.ConfigureAuthentication();
 
             // Configure Identity
             services.ConfigureIdentity();
