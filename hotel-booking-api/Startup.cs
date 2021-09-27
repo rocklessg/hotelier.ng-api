@@ -8,14 +8,18 @@ using hotel_booking_core.Interface;
 using hotel_booking_core.Services;
 using hotel_booking_models.Cloudinary;
 using hotel_booking_models.Mail;
+
+using hotel_booking_api.Extensions;
+using hotel_booking_data.Contexts;
+using hotel_booking_models;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace hotel_booking_api
@@ -32,8 +36,19 @@ namespace hotel_booking_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IMailService, MailService>();
+
+            services.AddDbContext<HbaDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("default"))
+                );
+
+
+            // Configure Identity
+            services.ConfigureIdentity();
+
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
