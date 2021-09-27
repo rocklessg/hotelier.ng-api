@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace hotel_booking_models
+
 {
     public class WishList
     {

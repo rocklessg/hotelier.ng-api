@@ -75,6 +75,24 @@ namespace hotel_booking_data.Seeder
                 await dbContext.Bookings.AddRangeAsync(bookings);
             }
 
+            //Ratings
+            if (!dbContext.Ratings.Any())
+            {
+                var path = File.ReadAllText(baseDir + @"/json/Ratings.json");
+
+                var ratings = JsonConvert.DeserializeObject<List<Rating>>(path);
+                await dbContext.Ratings.AddRangeAsync(ratings);
+            }
+
+            //Reviews
+            if (!dbContext.Reviews.Any())
+            {
+                var path = File.ReadAllText(baseDir + @"/json/Reviews.json");
+
+                var review = JsonConvert.DeserializeObject<List<Review>>(path);
+                await dbContext.Reviews.AddRangeAsync(review);
+            }
+
 
             // Hotels, roomtypes n rooms
             if (!dbContext.Hotels.Any())

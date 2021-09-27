@@ -1,27 +1,22 @@
 [
   {
-    "Id": "26f3e1b9-8e32-4877-947d-dd2d4b481e22",
-    "CustomerId": "fbd7c884-5c49-40d2-a84b-26e3d1b8ecce",
+    "CustomerId": "846e8182-9829-416d-9b66-e3e51b0206b3",
     "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79"
   },
   {
-    "Id": "1693726d-7a54-47e0-b2fb-7a251ab27b07",
-    "CustomerId": "d60a79a3-fcd5-473f-a98c-ac1d9d19d8a0",
+    "CustomerId": "59d2d94c-79bf-4aaa-825e-d84a6b80e168",
     "HotelId": "e9963012-3081-4c12-8deb-31f10b4091e5"
   },
   {
-    "Id": "e5c769bb-5eeb-42f5-8f8f-0dfa32ac517c",
-    "CustomerId": "0292370a-c708-4b83-9b7f-eacf7522a798",
+    "CustomerId": "922daede-c5ba-48c2-84c4-8b58aae2ddc5",
     "HotelId": "5b9371cb-4a47-4a6c-a99f-bc0aa879655b"
   },
   {
-    "Id": "4cb79d52-9e39-43c0-914d-a9d789336cc1",
-    "CustomerId": "7b03a36d-8db7-4fad-bbc9-62094292df3d",
+    "CustomerId": "d296434c-13bc-4f44-a8d7-4426bf0cbd56",
     "HotelId": "c338dbe3-3e48-4109-bf0d-3ccf042519a2"
   },
   {
-    "Id": "2931fa1e-050d-430c-8dda-f36e4b3fad77",
-    "CustomerId": "5ae61a56-4382-4ebc-9fd1-641d5da2ad0e",
+    "CustomerId": "810042ea-ac3c-48c0-a7a2-8a94a192aaea",
     "HotelId": "e89f90ef-b560-4d00-b919-080fed7495ff"
   }
 ]
