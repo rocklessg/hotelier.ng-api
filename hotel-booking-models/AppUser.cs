@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace hotel_booking_models
 {
@@ -17,8 +13,10 @@ namespace hotel_booking_models
         public bool IsActive { get; set; }
         public string PublicId { get; set; }
         public string Avatar { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public Manager Manager { get; set; }
+        public Customer Customer { get; set; }
 
 
     }
