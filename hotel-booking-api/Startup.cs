@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,23 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+=======
+using hotel_booking_api.Extensions;
+using hotel_booking_data.Contexts;
+using hotel_booking_models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+>>>>>>> 7bd9ef5647437e68d10661e5672265a04bea85f7
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+<<<<<<< HEAD
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+=======
+>>>>>>> 7bd9ef5647437e68d10661e5672265a04bea85f7
 using Microsoft.OpenApi.Models;
 
 namespace hotel_booking_api
@@ -34,6 +46,7 @@ namespace hotel_booking_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+<<<<<<< HEAD
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -55,6 +68,16 @@ namespace hotel_booking_api
                     ClockSkew = TimeSpan.Zero
                 };
             });
+=======
+            services.AddDbContext<HbaDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("default"))
+                );
+
+
+            // Configure Identity
+            services.ConfigureIdentity();
+
+>>>>>>> 7bd9ef5647437e68d10661e5672265a04bea85f7
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
