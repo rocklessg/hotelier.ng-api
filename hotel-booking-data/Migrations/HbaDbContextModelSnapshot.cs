@@ -157,8 +157,8 @@ namespace hotel_booking_data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<double>("Discount")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("HotelId")
                         .HasColumnType("text");
@@ -166,8 +166,8 @@ namespace hotel_booking_data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -290,8 +290,14 @@ namespace hotel_booking_data.Migrations
                     b.Property<string>("CustomerId")
                         .HasColumnType("text");
 
+                    b.Property<string>("HotelId")
+                        .HasColumnType("text");
+
                     b.Property<int>("NoOfPeople")
                         .HasColumnType("integer");
+
+                    b.Property<string>("ServiceName")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -300,19 +306,18 @@ namespace hotel_booking_data.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("HotelId");
+
                     b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Customer", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("AppUserId")
                         .HasColumnType("text");
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("CreditCard")
                         .HasColumnType("text");
@@ -320,15 +325,7 @@ namespace hotel_booking_data.Migrations
                     b.Property<string>("State")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
+                    b.HasKey("AppUserId");
 
                     b.ToTable("Customers");
                 });
@@ -377,7 +374,7 @@ namespace hotel_booking_data.Migrations
 
             modelBuilder.Entity("hotel_booking_models.Manager", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("AppUserId")
                         .HasColumnType("text");
 
                     b.Property<string>("AccountName")
@@ -398,35 +395,21 @@ namespace hotel_booking_data.Migrations
                     b.Property<string>("CompanyName")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("State")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
+                    b.HasKey("AppUserId");
 
                     b.ToTable("Managers");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Payment", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("double precision");
-
                     b.Property<string>("BookingId")
                         .HasColumnType("text");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -443,10 +426,7 @@ namespace hotel_booking_data.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookingId")
-                        .IsUnique();
+                    b.HasKey("BookingId");
 
                     b.ToTable("Payments");
                 });
@@ -465,7 +445,7 @@ namespace hotel_booking_data.Migrations
                     b.Property<string>("HotelId")
                         .HasColumnType("text");
 
-                    b.Property<int>("Rate")
+                    b.Property<int>("Ratings")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -485,6 +465,9 @@ namespace hotel_booking_data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
+                    b.Property<string>("Comment")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
@@ -492,9 +475,6 @@ namespace hotel_booking_data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("HotelId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ReviewMessage")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -547,8 +527,8 @@ namespace hotel_booking_data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<double>("Discount")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("HotelId")
                         .HasColumnType("text");
@@ -556,8 +536,8 @@ namespace hotel_booking_data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -571,24 +551,19 @@ namespace hotel_booking_data.Migrations
 
             modelBuilder.Entity("hotel_booking_models.WishList", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("CustomerId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("CustomerId")
+                    b.Property<string>("CustomerAppUserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("HotelId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.HasKey("CustomerId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerAppUserId");
 
                     b.HasIndex("HotelId");
 
@@ -649,7 +624,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Amenity", b =>
                 {
                     b.HasOne("hotel_booking_models.Hotel", "Hotel")
-                        .WithMany("Amenity")
+                        .WithMany("Amenities")
                         .HasForeignKey("HotelId");
 
                     b.Navigation("Hotel");
@@ -658,25 +633,33 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Booking", b =>
                 {
                     b.HasOne("hotel_booking_models.Customer", "Customer")
-                        .WithMany("Booking")
+                        .WithMany("Bookings")
                         .HasForeignKey("CustomerId");
 
+                    b.HasOne("hotel_booking_models.Hotel", "Hotel")
+                        .WithMany("Bookings")
+                        .HasForeignKey("HotelId");
+
                     b.Navigation("Customer");
+
+                    b.Navigation("Hotel");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Customer", b =>
                 {
-                    b.HasOne("hotel_booking_models.AppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.HasOne("hotel_booking_models.AppUser", "AppUser")
+                        .WithOne("Customer")
+                        .HasForeignKey("hotel_booking_models.Customer", "AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Hotel", b =>
                 {
                     b.HasOne("hotel_booking_models.Manager", "Manager")
-                        .WithMany("Hotel")
+                        .WithMany("Hotels")
                         .HasForeignKey("ManagerId");
 
                     b.Navigation("Manager");
@@ -684,18 +667,22 @@ namespace hotel_booking_data.Migrations
 
             modelBuilder.Entity("hotel_booking_models.Manager", b =>
                 {
-                    b.HasOne("hotel_booking_models.AppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.HasOne("hotel_booking_models.AppUser", "AppUser")
+                        .WithOne("Manager")
+                        .HasForeignKey("hotel_booking_models.Manager", "AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Payment", b =>
                 {
                     b.HasOne("hotel_booking_models.Booking", "Booking")
                         .WithOne("Payment")
-                        .HasForeignKey("hotel_booking_models.Payment", "BookingId");
+                        .HasForeignKey("hotel_booking_models.Payment", "BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Booking");
                 });
@@ -703,11 +690,11 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Rating", b =>
                 {
                     b.HasOne("hotel_booking_models.Customer", "Customer")
-                        .WithMany("Rating")
+                        .WithMany("Ratings")
                         .HasForeignKey("CustomerId");
 
                     b.HasOne("hotel_booking_models.Hotel", "Hotel")
-                        .WithMany("Rating")
+                        .WithMany("Ratings")
                         .HasForeignKey("HotelId");
 
                     b.Navigation("Customer");
@@ -718,11 +705,11 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Review", b =>
                 {
                     b.HasOne("hotel_booking_models.Customer", "Customer")
-                        .WithMany("Review")
+                        .WithMany("Reviews")
                         .HasForeignKey("CustomerId");
 
                     b.HasOne("hotel_booking_models.Hotel", "Hotel")
-                        .WithMany("Review")
+                        .WithMany("Reviews")
                         .HasForeignKey("HotelId");
 
                     b.Navigation("Customer");
@@ -733,7 +720,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Room", b =>
                 {
                     b.HasOne("hotel_booking_models.RoomType", "Roomtype")
-                        .WithMany("Room")
+                        .WithMany("Rooms")
                         .HasForeignKey("RoomTypeId");
 
                     b.Navigation("Roomtype");
@@ -742,7 +729,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.RoomType", b =>
                 {
                     b.HasOne("hotel_booking_models.Hotel", "Hotel")
-                        .WithMany("RoomType")
+                        .WithMany("RoomTypes")
                         .HasForeignKey("HotelId");
 
                     b.Navigation("Hotel");
@@ -751,16 +738,25 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.WishList", b =>
                 {
                     b.HasOne("hotel_booking_models.Customer", "Customer")
-                        .WithMany("WishList")
-                        .HasForeignKey("CustomerId");
+                        .WithMany("WishLists")
+                        .HasForeignKey("CustomerAppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("hotel_booking_models.Hotel", "Hotel")
-                        .WithMany("WishList")
+                        .WithMany("WishLists")
                         .HasForeignKey("HotelId");
 
                     b.Navigation("Customer");
 
                     b.Navigation("Hotel");
+                });
+
+            modelBuilder.Entity("hotel_booking_models.AppUser", b =>
+                {
+                    b.Navigation("Customer");
+
+                    b.Navigation("Manager");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Booking", b =>
@@ -770,36 +766,38 @@ namespace hotel_booking_data.Migrations
 
             modelBuilder.Entity("hotel_booking_models.Customer", b =>
                 {
-                    b.Navigation("Booking");
+                    b.Navigation("Bookings");
 
-                    b.Navigation("Rating");
+                    b.Navigation("Ratings");
 
-                    b.Navigation("Review");
+                    b.Navigation("Reviews");
 
-                    b.Navigation("WishList");
+                    b.Navigation("WishLists");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Hotel", b =>
                 {
-                    b.Navigation("Amenity");
+                    b.Navigation("Amenities");
 
-                    b.Navigation("Rating");
+                    b.Navigation("Bookings");
 
-                    b.Navigation("Review");
+                    b.Navigation("Ratings");
 
-                    b.Navigation("RoomType");
+                    b.Navigation("Reviews");
 
-                    b.Navigation("WishList");
+                    b.Navigation("RoomTypes");
+
+                    b.Navigation("WishLists");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Manager", b =>
                 {
-                    b.Navigation("Hotel");
+                    b.Navigation("Hotels");
                 });
 
             modelBuilder.Entity("hotel_booking_models.RoomType", b =>
                 {
-                    b.Navigation("Room");
+                    b.Navigation("Rooms");
                 });
 #pragma warning restore 612, 618
         }
