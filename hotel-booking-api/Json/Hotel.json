@@ -8,7 +8,7 @@
     "Address": "7163 Walton Crossing",
     "City": "Houston",
     "State": "Texas",
-    "ManagerId": "4a47b248-38c6-4607-bde0-3d15e0ee3e67",
+    "ManagerId": "390e272d-a264-4d7b-b3af-8bdc2a1f92f3",
     "Amenities": [
       {
         "Id": "d7c9f840-f3d9-41a9-8a1d-326f5c251c8f",
@@ -124,7 +124,7 @@
     "Phone": "515-142-4144",
     "Address": "44 Express Lane",
     "City": "Des Moines",
-    "ManagerId": "c2f4d528-b38d-49a3-8193-cf3dafc82824",
+    "ManagerId": "5765c13a-f609-4f8e-96b5-08a0f7c146ac",
     "Amenities": [
       {
         "Id": "ffcc32f3-3a5a-4962-88ab-17b8c4c64022",
@@ -253,7 +253,7 @@
     "Phone": "253-436-6991",
     "Address": "61 Mallard Avenue",
     "City": "Tacoma",
-    "ManagerId": "659e5790-2370-420b-b824-721da549c9fe",
+    "ManagerId": "a84d25d7-a7ba-4b99-b757-8a52a25f61d5",
     "RoomTypes": [
       {
         "id": "1f35ecc0-60a0-4344-96f8-0005ab00978a",
@@ -336,7 +336,7 @@
     "Phone": "404-897-5110",
     "Address": "5 Hooker Point",
     "City": "Atlanta",
-    "ManagerId": "385a8031-ecc3-48a3-a1a6-e47f71eed45f",
+    "ManagerId": "d7638183-f0a4-4188-9fa1-517ee2c2dbdf",
     "RoomTypes": [
       {
         "id": "257f4adc-ac32-422f-b75e-7a0ba7c7e026",
@@ -514,7 +514,7 @@
     "Address": "9 Badeau Junction",
     "City": "Baton Rouge",
     "State": "Louisiana",
-    "ManagerId": "a0b1272b-a00f-4513-b961-8cb7dfb51ab0",
+    "ManagerId": "e495a8d1-6fd6-4bc8-b23a-b6d4e6b6623c",
     "Amenities": [
       {
         "Id": "7085b937-cc92-4a17-986f-268c3ef4a337",
@@ -670,7 +670,7 @@
     "Email": "jchaloner5@google.cn",
     "Phone": "239-280-2490",
     "Address": "5 Summer Ridge Alley",
-    "ManagerId": "4a47b248-38c6-4607-bde0-3d15e0ee3e67",
+    "ManagerId": "390e272d-a264-4d7b-b3af-8bdc2a1f92f3",
     "City": "Naples",
     "State": "Florida",
     "Amenities": [
@@ -775,7 +775,7 @@
     "Phone": "515-429-5829",
     "Address": "9948 Prairie Rose Trail",
     "City": "Des Moines",
-    "ManagerId": "c2f4d528-b38d-49a3-8193-cf3dafc82824",
+    "ManagerId": "5765c13a-f609-4f8e-96b5-08a0f7c146ac",
     "State": "Iowa",
     "Amenities": [
       {
@@ -892,7 +892,7 @@
     "Email": "lhambribe7@opensource.org",
     "Phone": "828-116-6214",
     "Address": "160 Thierer Drive",
-    "ManagerId": "659e5790-2370-420b-b824-721da549c9fe",
+    "ManagerId": "a84d25d7-a7ba-4b99-b757-8a52a25f61d5",
     "City": "Asheville",
     "State": "North Carolina",
     "Amenities": [
@@ -1051,7 +1051,7 @@
     "Email": "vborn8@delicious.com",
     "Phone": "818-894-4450",
     "Address": "97992 Moose Trail",
-    "ManagerId": "385a8031-ecc3-48a3-a1a6-e47f71eed45f",
+    "ManagerId": "d7638183-f0a4-4188-9fa1-517ee2c2dbdf",
     "City": "Brea",
     "State": "California",
     "Amenities": [
@@ -1192,7 +1192,7 @@
     "Email": "kbrimfield9@arstechnica.com",
     "Phone": "843-921-6758",
     "Address": "1654 Victoria Hill",
-    "ManagerId": "a0b1272b-a00f-4513-b961-8cb7dfb51ab0",
+    "ManagerId": "e495a8d1-6fd6-4bc8-b23a-b6d4e6b6623c",
     "City": "Florence",
     "State": "South Carolina",
     "Amenities": [

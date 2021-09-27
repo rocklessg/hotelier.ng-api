@@ -21,7 +21,7 @@ namespace hotel_booking_data.Seeder
             await dbContext.Database.EnsureCreatedAsync();
             if (!dbContext.Users.Any())
             {
-                List<string> roles = new List<string> { "Admin", "Manager", "Regular" };
+                List<string> roles = new List<string> { "Admin", "Manager", "Customer" };
 
                 foreach (var role in roles)
                 {
@@ -60,7 +60,7 @@ namespace hotel_booking_data.Seeder
                         await userManager.AddToRoleAsync(hbaUsers[i], "Manager");
                         continue;
                     }
-                    await userManager.AddToRoleAsync(hbaUsers[i], "Regular");
+                    await userManager.AddToRoleAsync(hbaUsers[i], "Customer");
                 }
             }
 
@@ -80,6 +80,24 @@ namespace hotel_booking_data.Seeder
 
                 var bookings = JsonConvert.DeserializeObject<List<Booking>>(path);
                 await dbContext.Bookings.AddRangeAsync(bookings);
+            }
+
+            //Ratings
+            if (!dbContext.Ratings.Any())
+            {
+                var path = File.ReadAllText(baseDir + @"/json/Ratings.json");
+
+                var ratings = JsonConvert.DeserializeObject<List<Rating>>(path);
+                await dbContext.Ratings.AddRangeAsync(ratings);
+            }
+
+            //Reviews
+            if (!dbContext.Reviews.Any())
+            {
+                var path = File.ReadAllText(baseDir + @"/json/Reviews.json");
+
+                var review = JsonConvert.DeserializeObject<List<Review>>(path);
+                await dbContext.Reviews.AddRangeAsync(review);
             }
 
 
