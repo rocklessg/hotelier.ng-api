@@ -14,9 +14,9 @@ namespace hotel_booking_utilities
     public class TokenGenerator : ITokenGenerator
     {
         private readonly IConfiguration _configuration;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public TokenGenerator(IConfiguration configuration, UserManager<User> userManager)
+        public TokenGenerator(IConfiguration configuration, UserManager<AppUser> userManager)
         {
             _configuration = configuration;
             _userManager = userManager;
@@ -27,7 +27,7 @@ namespace hotel_booking_utilities
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task<string> GenerateToken(User user)
+        public async Task<string> GenerateToken(AppUser user)
         {
             var authClaims = new List<Claim>
             {

@@ -6,15 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.10" />
-=======
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
->>>>>>> 7bd9ef5647437e68d10661e5672265a04bea85f7
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
@@ -24,10 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\hotel-booking-data\hotel-booking-data.csproj" />
-<<<<<<< HEAD
     <ProjectReference Include="..\hotel-booking-utilities\hotel-booking-utilities.csproj" />
-=======
->>>>>>> 7bd9ef5647437e68d10661e5672265a04bea85f7
   </ItemGroup>
 
 </Project>
