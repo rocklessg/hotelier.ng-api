@@ -1,4 +1,8 @@
-﻿namespace hotel_booking_models
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
+namespace hotel_booking_models
+
 {
     public class WishList
     {
