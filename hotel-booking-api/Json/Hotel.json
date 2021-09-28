@@ -9,10 +9,38 @@
     "City": "Houston",
     "State": "Texas",
     "ManagerId": "390e272d-a264-4d7b-b3af-8bdc2a1f92f3",
+    "Reviews": [
+      {
+        "Id": "465bc6ce-3c13-47cf-82f0-32008454f6ba",
+        "Comment": "Reattachment of Right Upper Leg Tendon, Open Approach",
+        "CustomerId": "bd4760cf-c01c-4aac-8fde-4071b238241c",
+        "CreatedAt": "7/22/2021",
+        "UpdatedAt": "4/21/2021"
+      },
+      {
+        "Id": "5f5a3777-35b2-4f0e-a7c7-eb705e39b0f5",
+        "Comment": "Dilation of 2 Cor Art with 4 Drug-elut, Open Approach",
+        "CreatedAt": "8/27/2021",
+        "CustomerId": "2ccd5586-51f2-444c-aa63-e13012748dfa",
+        "UpdatedAt": "5/12/2021"
+      }
+    ],
     "Ratings": [
       {
-
+        "Id": "507eb708-16b8-48b9-8e3e-8cc8cfe5a37d",
+        "Ratings": 3,
+        "CustomerId": "ac2df452-4d8b-463a-9303-af2321238879",
+        "CreatedAt": "7/23/2021",
+        "UpdatedAt": "5/20/2021"
+      },
+      {
+        "Id": "f67f2976-94a7-41f8-a70d-3e422683170f",
+        "Ratings": 4,
+        "CustomerId": "74f07007-cf49-4d55-bd60-3bdbdbc6c084",
+        "CreatedAt": "3/17/2021",
+        "UpdatedAt": "10/22/2020"
       }
+
     ],
     "Amenities": [
       {
@@ -129,6 +157,38 @@
     "Phone": "515-142-4144",
     "Address": "44 Express Lane",
     "City": "Des Moines",
+    "Reviews": [
+      {
+        "Id": "6d08c2ad-9db3-4cef-939e-ca7556005b68",
+        "Comment": "Drainage of R Up Leg Muscle with Drain Dev, Perc Approach",
+        "CreatedAt": "3/20/2021",
+        "CustomerId": "c96777aa-0bbf-416d-aedb-5063abc67590",
+        "UpdatedAt": "7/30/2021"
+      },
+      {
+        "Id": "97aff548-50d8-4408-a7c3-6e437333e044",
+        "Comment": "Revision of Nonaut Sub in R Tarsal Jt, Extern Approach",
+        "CreatedAt": "9/22/2021",
+        "CustomerId": "6c0998e8-f505-49c0-8efc-0d5d90a50152",
+        "UpdatedAt": "1/31/2021"
+      }
+    ],
+    "Ratings": [
+      {
+        "Id": "26da3afa-6d29-4fab-bb28-f06a91f88fa2",
+        "Ratings": 3,
+        "CustomerId": "846e8182-9829-416d-9b66-e3e51b0206b3",
+        "CreatedAt": "6/24/2021",
+        "UpdatedAt": "8/22/2021"
+      },
+      {
+        "Id": "a8b01c2e-957e-4af5-8ade-42aa36c1b6bb",
+        "Ratings": 5,
+        "CustomerId": "922daede-c5ba-48c2-84c4-8b58aae2ddc5",
+        "CreatedAt": "10/28/2020",
+        "UpdatedAt": "7/25/2021"
+      }
+    ],
     "ManagerId": "5765c13a-f609-4f8e-96b5-08a0f7c146ac",
     "Amenities": [
       {
@@ -258,6 +318,38 @@
     "Phone": "253-436-6991",
     "Address": "61 Mallard Avenue",
     "City": "Tacoma",
+    "Reviews": [
+      {
+        "Id": "1b903656-330c-4982-90a2-6a08428262c7",
+        "Comment": "Fragmentation in Descending Colon, Open Approach",
+        "CreatedAt": "9/29/2020",
+        "CustomerId": "ac2df452-4d8b-463a-9303-af2321238879",
+        "UpdatedAt": "5/30/2021"
+      },
+      {
+        "Id": "4c7e413f-ca34-4661-b123-42566a47e9f4",
+        "Comment": "Drainage of Uterus with Drainage Device, Perc Endo Approach",
+        "CreatedAt": "7/14/2021",
+        "CustomerId": "74f07007-cf49-4d55-bd60-3bdbdbc6c084",
+        "UpdatedAt": "7/8/2021"
+      }
+    ],
+    "Ratings": [
+      {
+        "Id": "6d1edeac-0be1-47a8-9658-62a9178416c1",
+        "Ratings": 5,
+        "CustomerId": "d296434c-13bc-4f44-a8d7-4426bf0cbd56",
+        "CreatedAt": "12/25/2020",
+        "UpdatedAt": "5/18/2021"
+      },
+      {
+        "Id": "a16fa3ec-7506-42ef-9530-f364bc920492",
+        "Ratings": 2,
+        "CustomerId": "810042ea-ac3c-48c0-a7a2-8a94a192aaea",
+        "CreatedAt": "5/8/2021",
+        "UpdatedAt": "12/24/2020"
+      }
+    ],
     "ManagerId": "a84d25d7-a7ba-4b99-b757-8a52a25f61d5",
     "RoomTypes": [
       {
@@ -341,6 +433,38 @@
     "Phone": "404-897-5110",
     "Address": "5 Hooker Point",
     "City": "Atlanta",
+    "Reviews": [
+      {
+        "Id": "7b552776-6da5-4aaf-9164-1e722a16a102",
+        "Comment": "Repair Lower Esophagus, Via Natural or Artificial Opening",
+        "CreatedAt": "10/23/2020",
+        "CustomerId": "7a535491-de50-445d-a615-7e9a1023e48e",
+        "UpdatedAt": "2/26/2021"
+      },
+      {
+        "Id": "d08f36aa-9e10-4cfe-884a-092457682e39",
+        "Comment": "Extirpate matter from Access Pancr Duct, Perc Endo",
+        "CreatedAt": "4/29/2021",
+        "CustomerId": "846e8182-9829-416d-9b66-e3e51b0206b3",
+        "UpdatedAt": "3/8/2021"
+      }
+    ],
+    "Ratings": [
+      {
+        "Id": "82c693ce-2ae2-4a22-af21-ce8af0dedff6",
+        "Ratings": 4,
+        "CustomerId": "d9b0dfd2-6c4b-47f3-ae3d-1d6cea4ad365",
+        "CreatedAt": "12/12/2020",
+        "UpdatedAt": "7/7/2021"
+      },
+      {
+        "Id": "e9de76b2-27ad-4c2a-b531-cfe880c12973",
+        "Ratings": 3,
+        "CustomerId": "ba4a08e2-62dc-4bfb-bfc9-972ce952102e",
+        "CreatedAt": "11/6/2020",
+        "UpdatedAt": "8/30/2021"
+      }
+    ],
     "ManagerId": "d7638183-f0a4-4188-9fa1-517ee2c2dbdf",
     "RoomTypes": [
       {
@@ -519,6 +643,38 @@
     "Address": "9 Badeau Junction",
     "City": "Baton Rouge",
     "State": "Louisiana",
+    "Reviews": [
+      {
+        "Id": "d9a58fbd-c126-4fa0-afcf-ff60f2a16be7",
+        "Comment": "Dilation of R Popl Art, Bifurc, Perc Endo Approach",
+        "CreatedAt": "12/30/2020",
+        "CustomerId": "59d2d94c-79bf-4aaa-825e-d84a6b80e168",
+        "UpdatedAt": "8/12/2021"
+      },
+      {
+        "Id": "e24ef8e7-4acf-4427-a81f-a60bed4947ae",
+        "Comment": "Release Tongue, Palate, Pharynx Muscle, Open Approach",
+        "CreatedAt": "3/5/2021",
+        "CustomerId": "922daede-c5ba-48c2-84c4-8b58aae2ddc5",
+        "UpdatedAt": "1/8/2021"
+      }
+    ],
+    "Ratings": [
+      {
+        "Id": "ea514cbd-9c20-4448-b8a6-5053488ddb79",
+        "Ratings": 3,
+        "CustomerId": "d60e65f7-738d-42d8-a960-fccaced0e4a4",
+        "CreatedAt": "3/29/2021",
+        "UpdatedAt": "8/12/2021"
+      },
+      {
+        "Id": "f069d7fe-0297-4d53-88c9-5ce5fee2f975",
+        "Ratings": 1,
+        "CustomerId": "2ccd5586-51f2-444c-aa63-e13012748dfa",
+        "CreatedAt": "5/31/2021",
+        "UpdatedAt": "5/27/2021"
+      }
+    ],
     "ManagerId": "e495a8d1-6fd6-4bc8-b23a-b6d4e6b6623c",
     "Amenities": [
       {
@@ -678,6 +834,38 @@
     "ManagerId": "390e272d-a264-4d7b-b3af-8bdc2a1f92f3",
     "City": "Naples",
     "State": "Florida",
+    "Reviews": [
+      {
+        "Id": "2f8351ac-8a73-41a5-beb6-572a1fb9cff8",
+        "Comment": "Remove Drain Dev from Low Intest Tract, Perc Endo",
+        "CreatedAt": "10/31/2020",
+        "CustomerId": "d296434c-13bc-4f44-a8d7-4426bf0cbd56",
+        "UpdatedAt": "11/28/2020"
+      },
+      {
+        "Id": "31af80eb-c6ed-447b-b179-7033f82d84b0",
+        "Comment": "Bypass Bi Vas Deferens to L Epidid w Nonaut Sub, Perc Endo",
+        "CreatedAt": "7/16/2021",
+        "CustomerId": "810042ea-ac3c-48c0-a7a2-8a94a192aaea",
+        "UpdatedAt": "10/29/2020"
+      }
+    ],
+    "Ratings": [
+      {
+        "Id": "4ecfef32-194f-4b4b-a242-0b21132d5b78",
+        "Ratings": 3,
+        "CustomerId": "c96777aa-0bbf-416d-aedb-5063abc67590",
+        "CreatedAt": "4/15/2021",
+        "UpdatedAt": "2/27/2021"
+      },
+      {
+        "Id": "cdabc346-66d6-4023-ac51-37d9f88b804e",
+        "Ratings": 2,
+        "CustomerId": "6c0998e8-f505-49c0-8efc-0d5d90a50152",
+        "CreatedAt": "10/20/2020",
+        "UpdatedAt": "3/27/2021"
+      }
+    ],
     "Amenities": [
       {
         "Id": "f6ff020c-4b90-493e-8bee-6b3d0f9e7c5d",
@@ -782,6 +970,38 @@
     "City": "Des Moines",
     "ManagerId": "5765c13a-f609-4f8e-96b5-08a0f7c146ac",
     "State": "Iowa",
+    "Reviews": [
+      {
+        "Id": "0bb7efa3-4c1c-41d9-be34-26597d2f892c",
+        "Comment": "Osteopathic Treatment of Abdomen using Fascial Release",
+        "CreatedAt": "9/7/2021",
+        "CustomerId": "d9b0dfd2-6c4b-47f3-ae3d-1d6cea4ad365",
+        "UpdatedAt": "1/21/2021"
+      },
+      {
+        "Id": "d69dbf4a-7c7a-4a8c-a97c-3ba7dbe6e53b",
+        "Comment": "Removal of Monitoring Device from Low Art, Open Approach",
+        "CreatedAt": "9/23/2021",
+        "CustomerId": "ba4a08e2-62dc-4bfb-bfc9-972ce952102e",
+        "UpdatedAt": "1/29/2021"
+      }
+    ],
+    "Ratings": [
+      {
+        "Id": "048d6271-d740-4379-9118-ba8c01b05b6e",
+        "Ratings": 3,
+        "CustomerId": "74f07007-cf49-4d55-bd60-3bdbdbc6c084",
+        "CreatedAt": "2/1/2021",
+        "UpdatedAt": "8/25/2021"
+      },
+      {
+        "Id": "11b18238-8783-4bc8-989e-1899bd6d044e",
+        "Ratings": 5,
+        "CustomerId": "846e8182-9829-416d-9b66-e3e51b0206b3",
+        "CreatedAt": "2/21/2021",
+        "UpdatedAt": "12/24/2020"
+      }
+    ],
     "Amenities": [
       {
         "Id": "a7d9728e-4d1f-446c-96b9-067ab37ee8c3",
@@ -900,6 +1120,38 @@
     "ManagerId": "a84d25d7-a7ba-4b99-b757-8a52a25f61d5",
     "City": "Asheville",
     "State": "North Carolina",
+    "Reviews": [
+      {
+        "Id": "ca690f9b-68ec-4b10-b1ce-23748ea8253c",
+        "Comment": "Repair Right Scapula, External Approach",
+        "CreatedAt": "2/12/2021",
+        "CustomerId": "d60e65f7-738d-42d8-a960-fccaced0e4a4",
+        "UpdatedAt": "12/3/2020"
+      },
+      {
+        "Id": "e259c6b6-e540-4f77-8eda-484cb445e433",
+        "Comment": "CT Scan Sella Tur/Pituitary w L Osm Contrast, Unenh, Enhance",
+        "CreatedAt": "1/21/2021",
+        "CustomerId": "bd4760cf-c01c-4aac-8fde-4071b238241c",
+        "UpdatedAt": "9/9/2021"
+      }
+    ],
+    "Ratings": [
+      {
+        "Id": "5d4a83d3-cdfe-4413-ab5c-5c101b34d015",
+        "Ratings": 5,
+        "CustomerId": "59d2d94c-79bf-4aaa-825e-d84a6b80e168",
+        "CreatedAt": "5/13/2021",
+        "UpdatedAt": "5/31/2021"
+      },
+      {
+        "Id": "88d229e4-a624-4bf0-b55b-6daa57bf0283",
+        "Ratings": 4,
+        "CustomerId": "922daede-c5ba-48c2-84c4-8b58aae2ddc5",
+        "CreatedAt": "4/27/2021",
+        "UpdatedAt": "2/4/2021"
+      }
+    ],
     "Amenities": [
       {
         "Id": "455639aa-c713-46fd-84c9-268aca54f06c",
@@ -1059,6 +1311,38 @@
     "ManagerId": "d7638183-f0a4-4188-9fa1-517ee2c2dbdf",
     "City": "Brea",
     "State": "California",
+    "Reviews": [
+      {
+        "Id": "7b4fe480-d1ed-4a7b-9a62-0a517ab9df91",
+        "Comment": "Drainage of Anus, Via Natural or Artificial Opening",
+        "CreatedAt": "12/12/2020",
+        "CustomerId": "2ccd5586-51f2-444c-aa63-e13012748dfa",
+        "UpdatedAt": "7/4/2021"
+      },
+      {
+        "Id": "91002232-2346-40ae-946f-e123ad1896dd",
+        "Comment": "Supplement R Abd Tendon with Autol Sub, Perc Endo Approach",
+        "CreatedAt": "11/23/2020",
+        "CustomerId": "c96777aa-0bbf-416d-aedb-5063abc67590",
+        "UpdatedAt": "12/23/2020"
+      }
+    ],
+    "Ratings": [
+      {
+        "Id": "4c5081c3-9d62-4381-b570-bd2d4958ca2f",
+        "Ratings": 5,
+        "CustomerId": "d296434c-13bc-4f44-a8d7-4426bf0cbd56",
+        "CreatedAt": "12/12/2020",
+        "UpdatedAt": "5/4/2021"
+      },
+      {
+        "Id": "08505cd7-c4d7-4b9e-a6fb-9478afeac10f",
+        "Ratings": 4,
+        "CustomerId": "810042ea-ac3c-48c0-a7a2-8a94a192aaea",
+        "CreatedAt": "8/20/2021",
+        "UpdatedAt": "6/19/2021"
+      }
+    ],
     "Amenities": [
       {
         "Id": "a64926ac-d4a7-4b88-83b9-65390a52e660",
@@ -1200,6 +1484,38 @@
     "ManagerId": "e495a8d1-6fd6-4bc8-b23a-b6d4e6b6623c",
     "City": "Florence",
     "State": "South Carolina",
+    "Reviews": [
+      {
+        "Id": "63dee410-90e5-4def-a35c-84621fe091d4",
+        "Comment": "Transfer Tibial Nerve to Tibial Nerve, Open Approach",
+        "CreatedAt": "5/22/2021",
+        "CustomerId": "6c0998e8-f505-49c0-8efc-0d5d90a50152",
+        "UpdatedAt": "1/23/2021"
+      },
+      {
+        "Id": "a4a51034-3336-4666-8d5c-6693e63ecccf",
+        "Comment": "Drainage of Spleen with Drainage Device, Perc Endo Approach",
+        "CreatedAt": "3/12/2021",
+        "CustomerId": "ac2df452-4d8b-463a-9303-af2321238879",
+        "UpdatedAt": "11/11/2020"
+      }
+    ],
+    "Ratings": [
+      {
+        "Id": "8746c9f1-f126-4fbc-a2f0-a5fa254ee527",
+        "Ratings": 3,
+        "CustomerId": "ac2df452-4d8b-463a-9303-af2321238879",
+        "CreatedAt": "7/10/2021",
+        "UpdatedAt": "5/20/2021"
+      },
+      {
+        "Id": "1391f990-c38d-495a-91d7-09120be2fd58",
+        "Ratings": 4,
+        "CustomerId": "74f07007-cf49-4d55-bd60-3bdbdbc6c084",
+        "CreatedAt": "3/10/2021",
+        "UpdatedAt": "10/22/2020"
+      }
+    ],
     "Amenities": [
       {
         "Id": "7cb40090-080e-4c16-a125-2cbedecaf9dc",

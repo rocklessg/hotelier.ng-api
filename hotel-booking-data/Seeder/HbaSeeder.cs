@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace hotel_booking_data.Seeder
@@ -85,22 +84,22 @@ namespace hotel_booking_data.Seeder
             }
 
             //Ratings
-            if (!dbContext.Ratings.Any())
-            {
-                var path = File.ReadAllText(baseDir + @"/json/Ratings.json");
+            //if (!dbContext.Ratings.Any())
+            //{
+            //    var path = File.ReadAllText(baseDir + @"/json/Ratings.json");
 
-                var ratings = JsonConvert.DeserializeObject<List<Rating>>(path);
-                await dbContext.Ratings.AddRangeAsync(ratings);
-            }
+            //    var ratings = JsonConvert.DeserializeObject<List<Rating>>(path);
+            //    await dbContext.Ratings.AddRangeAsync(ratings);
+            //}
 
             //Reviews
-            if (!dbContext.Reviews.Any())
-            {
-                var path = File.ReadAllText(baseDir + @"/json/Reviews.json");
+            //if (!dbContext.Reviews.Any())
+            //{
+            //    var path = File.ReadAllText(baseDir + @"/json/Reviews.json");
 
-                var review = JsonConvert.DeserializeObject<List<Review>>(path);
-                await dbContext.Reviews.AddRangeAsync(review);
-            }
+            //    var review = JsonConvert.DeserializeObject<List<Review>>(path);
+            //    await dbContext.Reviews.AddRangeAsync(review);
+            //}
 
             // Whishlist
             if (!dbContext.WishLists.Any())
