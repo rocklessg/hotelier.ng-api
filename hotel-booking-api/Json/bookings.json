@@ -9,7 +9,15 @@
     "ServiceName": "Jetwire",
     "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79",
     "CreatedAt": "3/29/2021",
-    "UpdatedAt": "10/8/2020"
+    "UpdatedAt": "10/8/2020",
+    "Payment": {
+      "TransactionReference": "Ankle fusion",
+      "Amount": 9563.59,
+      "Status": "Success",
+      "MethodOfPayment": "POS",
+      "CreatedAt": "6/24/2021",
+      "UpdatedAt": "12/21/2020"
+    }
   },
   {
     "Id": "d0835b23-f781-48ce-8e68-2685cc34d756",
@@ -21,7 +29,15 @@
     "ServiceName": "Voonix",
     "HotelId": "e9963012-3081-4c12-8deb-31f10b4091e5",
     "CreatedAt": "1/25/2021",
-    "UpdatedAt": "6/8/2021"
+    "UpdatedAt": "6/8/2021",
+    "Payment": {
+      "TransactionReference": "Entral infus nutrit sub",
+      "Amount": 9290.18,
+      "Status": "Pending",
+      "MethodOfPayment": "POS",
+      "CreatedAt": "4/30/2021",
+      "UpdatedAt": "6/25/2021"
+    }
   },
   {
     "Id": "280cf08a-eced-43f5-b582-9397b2515ec8",
@@ -33,7 +49,15 @@
     "ServiceName": "Realcube",
     "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79",
     "CreatedAt": "12/6/2020",
-    "UpdatedAt": "11/8/2020"
+    "UpdatedAt": "11/8/2020",
+    "Payment": {
+      "TransactionReference": "Rev knee replace-patella",
+      "Amount": 8520.62,
+      "Status": "Processing",
+      "MethodOfPayment": "Cash",
+      "CreatedAt": "11/27/2020",
+      "UpdatedAt": "12/22/2020"
+    }
   },
   {
     "Id": "fc429054-9c4b-427d-841f-1523f784feff",
@@ -45,7 +69,15 @@
     "ServiceName": "Ailane",
     "HotelId": "e89f90ef-b560-4d00-b919-080fed7495ff",
     "CreatedAt": "10/7/2020",
-    "UpdatedAt": "5/22/2021"
+    "UpdatedAt": "5/22/2021",
+    "Payment": {
+      "TransactionReference": "Uterine repair NEC",
+      "Amount": 79950.97,
+      "Status": "Success",
+      "MethodOfPayment": "Cash",
+      "CreatedAt": "5/16/2021",
+      "UpdatedAt": "12/31/2020"
+    }
   },
   {
     "Id": "00e165b8-0a45-4e55-bda8-479c258196ab",
@@ -57,7 +89,15 @@
     "ServiceName": "Vipe",
     "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79",
     "CreatedAt": "11/25/2020",
-    "UpdatedAt": "10/29/2020"
+    "UpdatedAt": "10/29/2020",
+    "Payment": {
+      "TransactionReference": "Hemispherectomy",
+      "Amount": 89000.76,
+      "Status": "Pending",
+      "MethodOfPayment": "Cash",
+      "CreatedAt": "4/3/2021",
+      "UpdatedAt": "12/9/2020"
+    }
   },
   {
     "Id": "dd009dd9-9d38-41ec-ae61-3f2e86433923",
@@ -69,7 +109,15 @@
     "ServiceName": "Vipery",
     "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79",
     "CreatedAt": "11/25/2020",
-    "UpdatedAt": "10/29/2020"
+    "UpdatedAt": "10/29/2020",
+    "Payment": {
+      "TransactionReference": "Hemispherectomy",
+      "Amount": 8900.76,
+      "Status": "Pending",
+      "MethodOfPayment": "Cash",
+      "CreatedAt": "4/3/2021",
+      "UpdatedAt": "12/9/2020"
+    }
   },
   {
     "Id": "05c21943-d63f-4813-bf9a-fad6d933ba10",
@@ -81,6 +129,14 @@
     "ServiceName": "Vipe",
     "HotelId": "83fe8f03-40af-4dbe-b61b-5c6e7782cf79",
     "CreatedAt": "11/25/2020",
-    "UpdatedAt": "10/29/2020"
+    "UpdatedAt": "10/29/2020",
+    "Payment": {
+      "TransactionReference": "Hemispherectomy",
+      "Amount": 69000.76,
+      "Status": "Successful",
+      "MethodOfPayment": "POS",
+      "CreatedAt": "4/3/2021",
+      "UpdatedAt": "12/9/2020"
+    }
   }
 ]

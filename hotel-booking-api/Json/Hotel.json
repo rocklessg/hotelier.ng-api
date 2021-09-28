@@ -9,6 +9,11 @@
     "City": "Houston",
     "State": "Texas",
     "ManagerId": "390e272d-a264-4d7b-b3af-8bdc2a1f92f3",
+    "Ratings": [
+      {
+
+      }
+    ],
     "Amenities": [
       {
         "Id": "d7c9f840-f3d9-41a9-8a1d-326f5c251c8f",

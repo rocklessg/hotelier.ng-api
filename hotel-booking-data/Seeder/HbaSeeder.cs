@@ -66,13 +66,22 @@ namespace hotel_booking_data.Seeder
 
             
 
-            // Bookings
+            // Bookings and Payment
             if (!dbContext.Bookings.Any())
             {
                 var path = File.ReadAllText(baseDir + @"/json/bookings.json");
 
                 var bookings = JsonConvert.DeserializeObject<List<Booking>>(path);
                 await dbContext.Bookings.AddRangeAsync(bookings);
+            }
+
+            // Hotels, roomtypes n rooms
+            if (!dbContext.Hotels.Any())
+            {
+                var path = File.ReadAllText(baseDir + @"/json/Hotel.json");
+
+                var hotels = JsonConvert.DeserializeObject<List<Hotel>>(path);
+                await dbContext.Hotels.AddRangeAsync(hotels);
             }
 
             //Ratings
@@ -91,25 +100,6 @@ namespace hotel_booking_data.Seeder
 
                 var review = JsonConvert.DeserializeObject<List<Review>>(path);
                 await dbContext.Reviews.AddRangeAsync(review);
-            }
-
-
-            // Hotels, roomtypes n rooms
-            if (!dbContext.Hotels.Any())
-            {
-                var path = File.ReadAllText(baseDir + @"/json/Hotel.json");
-
-                var hotels = JsonConvert.DeserializeObject<List<Hotel>>(path);
-                await dbContext.Hotels.AddRangeAsync(hotels);
-            }
-
-            // Payments
-            if (!dbContext.Payments.Any())
-            {
-                var path = File.ReadAllText(baseDir + @"/json/payments.json");
-
-                var payments = JsonConvert.DeserializeObject<List<Payment>>(path);
-                await dbContext.Payments.AddRangeAsync(payments);
             }
 
             // Whishlist

@@ -1,6 +1,5 @@
 [
   {
-    "Id": "fc24ea48-86a0-4a0a-806c-d30f0ec6f277",
     "BookingId": "a343b8ba-0466-4a86-9bdd-4d35ee59b1cd",
     "TransactionReference": "Ankle fusion",
     "Amount": 9563.59,
@@ -10,7 +9,6 @@
     "UpdatedAt": "12/21/2020"
   },
   {
-    "Id": "1f3fcaf1-5e84-4d1b-a7b2-bcdbfecb1864",
     "BookingId": "d0835b23-f781-48ce-8e68-2685cc34d756",
     "TransactionReference": "Entral infus nutrit sub",
     "Amount": 9290.18,
@@ -20,7 +18,6 @@
     "UpdatedAt": "6/25/2021"
   },
   {
-    "Id": "9f6ff04a-2c2d-4450-b17a-e33986b90c76",
     "BookingId": "280cf08a-eced-43f5-b582-9397b2515ec8",
     "TransactionReference": "Rev knee replace-patella",
     "Amount": 8520.62,
@@ -30,7 +27,6 @@
     "UpdatedAt": "12/22/2020"
   },
   {
-    "Id": "7ab99303-7401-407d-a534-844bb2e79128",
     "BookingId": "fc429054-9c4b-427d-841f-1523f784feff",
     "TransactionReference": "Uterine repair NEC",
     "Amount": 79950.97,
@@ -40,7 +36,6 @@
     "UpdatedAt": "12/31/2020"
   },
   {
-    "Id": "665861ab-3835-426e-96cd-cb3e6ec939d4",
     "BookingId": "00e165b8-0a45-4e55-bda8-479c258196ab",
     "TransactionReference": "Hemispherectomy",
     "Amount": 89000.76,
@@ -50,7 +45,6 @@
     "UpdatedAt": "12/9/2020"
   },
   {
-    "Id": "f6d40a19-f1bc-48c7-8518-98439c87077d",
     "BookingId": "dd009dd9-9d38-41ec-ae61-3f2e86433923",
     "TransactionReference": "Ins/rep mul pul gn,rechg",
     "Amount": 35500.72,
@@ -60,7 +54,6 @@
     "UpdatedAt": "10/15/2020"
   },
   {
-    "Id": "829d2406-54a3-4101-8b14-ce9ed7b1218e",
     "BookingId": "05c21943-d63f-4813-bf9a-fad6d933ba10",
     "TransactionReference": "Artif rupt membranes NEC",
     "Amount": 16920.62,
