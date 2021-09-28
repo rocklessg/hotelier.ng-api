@@ -4,11 +4,11 @@ using hotel_booking_core.CloudinaryService.Interface;
 using hotel_booking_models.Cloudinary;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.CloudinaryService.Service
@@ -18,7 +18,7 @@ namespace hotel_booking_core.CloudinaryService.Service
         private readonly IConfiguration _config;
         private readonly Cloudinary cloudinary;
         private readonly ImageUploadSettings _accountSettings;
-        public ImageService(IConfiguration config, IOptions<ImageUploadSettings> accountSettings)
+        public ImageService(IConfiguration config, IOptions<ImageUploadSettings> accountSettings )
         {
             _accountSettings = accountSettings.Value;
             _config = config;
@@ -43,7 +43,6 @@ namespace hotel_booking_core.CloudinaryService.Service
                     pictureFormat = true;
                     break;
                 }
-
             }
 
             if (pictureFormat == false)
@@ -52,19 +51,49 @@ namespace hotel_booking_core.CloudinaryService.Service
             }
 
             var uploadResult = new ImageUploadResult();
+           // DelResResult deleteImage = new DelResResult();
 
             //fetch the image using image stream
             using (var imageStream = image.OpenReadStream())
             {
                 string filename = Guid.NewGuid().ToString() + image.FileName;
+                 
                 uploadResult = await cloudinary.UploadAsync(new ImageUploadParams()
                 {
                     File = new FileDescription(filename + Guid.NewGuid().ToString(), imageStream),
                     PublicId = "Hotel Listings/" + filename,
+                    
                     Transformation = new Transformation().Crop("thumb").Gravity("face").Width(150)
-                });;
+                });
             }
+            var s = uploadResult.PublicId;
+
             return uploadResult;
         }
+
+        public async Task<DelResResult> DeleteResourcesAsync(string publicId) 
+        {
+            DelResParams delParams = new DelResParams
+            {
+                PublicIds = new List<string> { publicId },
+                All = true,
+                KeepOriginal = false,
+                Invalidate = true
+            };
+            //CancellationTokenSource cts = new CancellationTokenSource();
+
+            DelResResult deletionResult =await cloudinary.DeleteResourcesAsync(delParams);
+            if(deletionResult.Error != null )
+            {
+                throw new ApplicationException($"" +
+                    $"an error occured in method: " +
+                    $"{nameof(DeleteResourcesAsync)}" +
+                    $" class: {nameof(ImageService)}");
+            }
+
+            return deletionResult;
+        }
+
+        
     }
 }
