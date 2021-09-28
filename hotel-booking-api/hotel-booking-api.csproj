@@ -11,15 +11,22 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="RavenDB.Client" Version="5.2.2" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.RavenDB" Version="3.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Logs\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\hotel-booking-data\hotel-booking-data.csproj" />
+    <ProjectReference Include="..\hotel-booking-dto\hotel-booking-dtos.csproj" />
   </ItemGroup>
 
 </Project>

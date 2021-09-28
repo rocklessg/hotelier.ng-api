@@ -1,4 +1,5 @@
 using hotel_booking_api.Extensions;
+using hotel_booking_api.Middleware;
 using hotel_booking_data.Contexts;
 using hotel_booking_models;
 using Microsoft.AspNetCore.Builder;
@@ -51,6 +52,8 @@ namespace hotel_booking_api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseRouting();
 

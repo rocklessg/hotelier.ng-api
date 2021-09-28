@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using hotel_booking_api.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace hotel_booking_api
@@ -15,15 +11,22 @@ namespace hotel_booking_api
     {
         public static void Main(string[] args)
         {
-            LogSettings.SetupSerilog();
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var isDevelopment = env == Environments.Development;
+
+            IConfiguration config = ConfigurationSetup.GetConfig(isDevelopment);
+
+            LogSettings.SetupSerilog(config);
             try
             {
-                Log.Information("Application is starting");
-                CreateHostBuilder(args).Build().Run();
+                Log.Information("Application is starting...");
+                CreateHostBuilder(args)
+                    .Build()
+                    .Run();
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Application failed to start");
+                Log.Fatal(ex.StackTrace, "Application failed to start");
             }
             finally
             {
@@ -37,5 +40,6 @@ namespace hotel_booking_api
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+                
     }
 }
