@@ -34,7 +34,7 @@ namespace hotel_booking_api
 
                 // Depending on if in development or production, use either Heroku-provided
                 // connection string, or development connection string from env var.
-                if (env == "Dvelopment")
+                if (env == "Development")
                 {
                     connStr = Configuration.GetConnectionString("default");
                 }
