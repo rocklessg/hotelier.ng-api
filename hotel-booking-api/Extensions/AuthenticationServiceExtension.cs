@@ -14,7 +14,7 @@ namespace hotel_booking_api.Extensions
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection ConfigureAuthentication(this IServiceCollection services)
+        public static void ConfigureAuthentication(this IServiceCollection services)
         {
             services.AddAuthentication(options =>
             {
@@ -37,17 +37,6 @@ namespace hotel_booking_api.Extensions
                    ClockSkew = TimeSpan.Zero
                };
            });
-
-            // Sets up Policy Based Authorization Service
-            services.AddAuthorization(options => 
-            {   options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-                options.AddPolicy("HotelManager", policy => policy.RequireRole("HotelManager"));
-                options.AddPolicy("RegularUser", policy => policy.RequireRole("RegularUser"));
-                options.AddPolicy("Admin&HotelManager", policy => policy.RequireRole("Admin", "HotelManager"));
-                options.AddPolicy("HotelManager&RegularUser", policy => policy.RequireRole("HotelManager", "RegularUser"));
-            });
-
-            return services;
         }
     }
 }

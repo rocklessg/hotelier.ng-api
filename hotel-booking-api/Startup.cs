@@ -34,6 +34,9 @@ namespace hotel_booking_api
             // Add Jwt Authentication and Authorization
             services.ConfigureAuthentication();
 
+            // Adds our Authorization Policies to the Dependecy Injection Container
+            services.AddPolicyAuthorization();
+
             // Configure Identity
             services.ConfigureIdentity();
 
