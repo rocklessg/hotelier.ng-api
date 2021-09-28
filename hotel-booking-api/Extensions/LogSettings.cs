@@ -12,9 +12,8 @@ namespace hotel_booking_api.Extensions
         public static void SetupSerilog(IConfiguration config)
         {
             var ravenDbSettings = config.GetSection("RavenDBConfigurations");
-            //var ravenDBPassword = Environment.GetEnvironmentVariable("RavenDbPassword");
-            var ravenDBPassword = "Coding@Edo123";
-
+            var ravenDBPassword = Environment.GetEnvironmentVariable("RavenDbPassword");
+            
             DocumentStore ravenStore = new()
             {
                 Urls = new string[] { ravenDbSettings.GetSection("ConnectionURL").Value },
