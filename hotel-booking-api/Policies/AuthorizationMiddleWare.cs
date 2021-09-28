@@ -10,9 +10,9 @@ namespace hotel_booking_api
             {
                 configure.AddPolicy(Policies.Admin, Policies.AdminPolicy());
                 configure.AddPolicy(Policies.HotelManager, Policies.HotelManagerPolicy());
-                configure.AddPolicy(Policies.RegularUser, Policies.RegularUserPolicy());
+                configure.AddPolicy(Policies.Customer, Policies.CustomerPolicy());
                 configure.AddPolicy(Policies.AdminAndHotelManager, Policies.AdminAndHotelManagerPolicy());
-                configure.AddPolicy(Policies.HotelManagerAndRegularUser, Policies.HotelManagerAndRegularUserPolicy());
+                configure.AddPolicy(Policies.HotelManagerAndCustomer, Policies.HotelManagerAndCustomerPolicy());
             });
         }
     }
