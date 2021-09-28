@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace hotel_booking_data.Migrations
 {
-    public partial class initialmig : Migration
+    public partial class InitialMig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -373,15 +373,14 @@ namespace hotel_booking_data.Migrations
                 columns: table => new
                 {
                     CustomerId = table.Column<string>(type: "text", nullable: false),
-                    HotelId = table.Column<string>(type: "text", nullable: true),
-                    CustomerAppUserId = table.Column<string>(type: "text", nullable: false)
+                    HotelId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WishLists", x => x.CustomerId);
+                    table.PrimaryKey("PK_WishLists", x => new { x.CustomerId, x.HotelId });
                     table.ForeignKey(
-                        name: "FK_WishLists_Customers_CustomerAppUserId",
-                        column: x => x.CustomerAppUserId,
+                        name: "FK_WishLists_Customers_CustomerId",
+                        column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "AppUserId",
                         onDelete: ReferentialAction.Cascade);
@@ -390,7 +389,7 @@ namespace hotel_booking_data.Migrations
                         column: x => x.HotelId,
                         principalTable: "Hotels",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -524,11 +523,6 @@ namespace hotel_booking_data.Migrations
                 name: "IX_RoomTypes_HotelId",
                 table: "RoomTypes",
                 column: "HotelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WishLists_CustomerAppUserId",
-                table: "WishLists",
-                column: "CustomerAppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WishLists_HotelId",

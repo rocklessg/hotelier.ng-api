@@ -1,21 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using hotel_booking_core.CloudinaryService.Interface;
-using hotel_booking_core.CloudinaryService.Service;
-using hotel_booking_core.Interface;
-using hotel_booking_core.Services;
-using hotel_booking_models.Cloudinary;
-using hotel_booking_models.Mail;
 
 using hotel_booking_api.Extensions;
-using hotel_booking_data.Contexts;
-using hotel_booking_models;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
