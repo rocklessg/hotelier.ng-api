@@ -51,9 +51,7 @@ namespace hotel_booking_core.CloudinaryService.Service
             }
 
             var uploadResult = new ImageUploadResult();
-           // DelResResult deleteImage = new DelResResult();
-
-            //fetch the image using image stream
+           
             using (var imageStream = image.OpenReadStream())
             {
                 string filename = Guid.NewGuid().ToString() + image.FileName;
@@ -80,7 +78,7 @@ namespace hotel_booking_core.CloudinaryService.Service
                 KeepOriginal = false,
                 Invalidate = true
             };
-            //CancellationTokenSource cts = new CancellationTokenSource();
+            
 
             DelResResult deletionResult =await cloudinary.DeleteResourcesAsync(delParams);
             if(deletionResult.Error != null )
