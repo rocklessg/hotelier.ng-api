@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\hotel-booking-models\hotel-booking-models.csproj" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>
