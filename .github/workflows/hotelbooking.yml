@@ -1,0 +1,19 @@
+name: DecadevDotnetSQ008
+on:
+  pull_request:
+    branches: [ develop ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: hotel management app for DotNet SQ008
+      env:
+        HEROKU_API_KEY: 57cffc83-9da3-4327-bdda-7db6d87d387c
+        APP_NAME: hoteldotnet
+      run: |
+        docker build -t hoteldotnet .
+        docker tag hoteldotnet registry.heroku.com
+        docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+        heroku container:push web -a $APP_NAME
+        heroku container:release web -a $APP_NAME
