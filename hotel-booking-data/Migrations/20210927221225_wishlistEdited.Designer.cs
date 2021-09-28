@@ -10,8 +10,8 @@ using hotel_booking_data.Contexts;
 namespace hotel_booking_data.Migrations
 {
     [DbContext(typeof(HbaDbContext))]
-    [Migration("20210927164517_initial-mig")]
-    partial class initialmig
+    [Migration("20210927221225_wishlistEdited")]
+    partial class wishlistEdited
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -556,16 +556,10 @@ namespace hotel_booking_data.Migrations
                     b.Property<string>("CustomerId")
                         .HasColumnType("text");
 
-                    b.Property<string>("CustomerAppUserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("HotelId")
                         .HasColumnType("text");
 
-                    b.HasKey("CustomerId");
-
-                    b.HasIndex("CustomerAppUserId");
+                    b.HasKey("CustomerId", "HotelId");
 
                     b.HasIndex("HotelId");
 
@@ -741,13 +735,15 @@ namespace hotel_booking_data.Migrations
                 {
                     b.HasOne("hotel_booking_models.Customer", "Customer")
                         .WithMany("WishLists")
-                        .HasForeignKey("CustomerAppUserId")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("hotel_booking_models.Hotel", "Hotel")
                         .WithMany("WishLists")
-                        .HasForeignKey("HotelId");
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
 
