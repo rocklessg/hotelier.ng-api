@@ -20,14 +20,6 @@ namespace hotel_booking_api
         /// Policy for a Regular User role
         /// </summary>
         public const string RegularUser = "RegularUser";
-        /// <summary>
-        /// Policy for an Admin and a Hotel Manager
-        /// </summary>
-        public const string AdminAndHotelManager = "AdminAndHotelManager";
-        /// <summary>
-        /// policy for a Hotel Manager and a Regular User
-        /// </summary>
-        public const string HotelManagerAndRegularUser = "HotelManagerAndRegularUser";
 
         /// <summary>
         /// Grants Admin User Rights
@@ -62,7 +54,7 @@ namespace hotel_booking_api
         /// <returns></returns>
         public static AuthorizationPolicy AdminAndHotelManagerPolicy()
         {
-            return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(AdminAndHotelManager).Build();
+            return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(Admin, HotelManager).Build();
         }
 
         /// <summary>
@@ -71,7 +63,7 @@ namespace hotel_booking_api
         /// <returns></returns>
         public static AuthorizationPolicy HotelManagerAndRegularUserPolicy()
         {
-            return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(HotelManagerAndRegularUser).Build();
+            return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(HotelManager, RegularUser).Build();
         }
     }
 }
