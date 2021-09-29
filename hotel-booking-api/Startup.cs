@@ -58,7 +58,7 @@ namespace hotel_booking_api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "hotel_booking_api", Version = "v1" });
             });
 
-            services.AddScoped<ITokenGenerator, TokenGenerator>();
+            services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             services.AddScoped<IImageService, ImageService>();
             services.Configure<ImageUploadSettings>(Configuration.GetSection("ImageUploadSettings"));
 
