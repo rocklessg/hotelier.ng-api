@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Models; 
 
 namespace hotel_booking_api
 {
@@ -29,16 +29,13 @@ namespace hotel_booking_api
                 options.UseNpgsql(Configuration.GetConnectionString("default"))
                 );
 
-
             // Configure Identity
             services.ConfigureIdentity();
 
-
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "hotel_booking_api", Version = "v1" });
-            });
+
+            //Configure Swagger
+            services.AddSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,9 +49,7 @@ namespace hotel_booking_api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "hotel_booking_api v1"));
             }
 
-
             HbaSeeder.SeedData(dbContext, userManager, roleManager).Wait();
-
 
             app.UseHttpsRedirection();
 
