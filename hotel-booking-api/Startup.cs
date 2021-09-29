@@ -4,11 +4,14 @@ using hotel_booking_api.Extensions;
 using hotel_booking_core.Interface;
 using hotel_booking_core.Services;
 using hotel_booking_data.Contexts;
+using hotel_booking_data.Seeder;
+using hotel_booking_models;
 using hotel_booking_models.Cloudinary;
 using hotel_booking_models.Mail;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,26 +22,25 @@ namespace hotel_booking_api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
             StaticConfig = configuration;
+            Environment = environment;
         }
 
         public static IConfiguration StaticConfig { get; private set; }
+        public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContextAndConfigurations(Environment, Configuration);
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IMailService, MailService>();
             services.AddScoped<IImageService, ImageService>();
-
-            services.AddDbContext<HbaDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("default"))
-                );
 
             // Add Jwt Authentication and Authorization
             services.ConfigureAuthentication();
@@ -67,7 +69,8 @@ namespace hotel_booking_api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            HbaDbContext dbContext, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -75,6 +78,8 @@ namespace hotel_booking_api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "hotel_booking_api v1"));
             }
+
+            HbaSeeder.SeedData(dbContext, userManager, roleManager).Wait();
 
             app.UseHttpsRedirection();
 
