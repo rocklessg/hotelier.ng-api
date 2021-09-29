@@ -1,8 +1,15 @@
+using System;
+using System.Text;
 using hotel_booking_api.Extensions;
+using hotel_booking_core.Interface;
+using hotel_booking_core.Services;
 using hotel_booking_api.Middleware;
 using hotel_booking_data.Contexts;
 using hotel_booking_data.Seeder;
 using hotel_booking_models;
+using hotel_booking_models.Cloudinary;
+using hotel_booking_models.Mail;
+using hotel_booking_utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -11,42 +18,36 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
 
 namespace hotel_booking_api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            StaticConfig = configuration;
+            Environment = environment;
         }
 
+        public static IConfiguration StaticConfig { get; private set; }
+        public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<HbaDbContext>(options => 
-            {
-                var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            services.AddDbContextAndConfigurations(Environment, Configuration);
 
-                string connStr;
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddTransient<IMailService, MailService>();
+            services.AddScoped<IImageService, ImageService>();
 
-                // Depending on if in development or production, use either Heroku-provided
-                // connection string, or development connection string from env var.
-                if (env == "Development")
-                {
-                    connStr = Configuration.GetConnectionString("default");
-                }
-                else
-                {
-                    connStr = GetHerokuConnectionString();
-                }
+            // Add Jwt Authentication and Authorization
+            services.ConfigureAuthentication();
 
-                options.UseNpgsql(connStr);
-            });
-
+            // Adds our Authorization Policies to the Dependecy Injection Container
+            services.AddPolicyAuthorization();
 
             // Configure Identity
             services.ConfigureIdentity();
@@ -56,6 +57,15 @@ namespace hotel_booking_api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "hotel_booking_api", Version = "v1" });
+            });
+
+            services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
+            services.AddScoped<IImageService, ImageService>();
+            services.Configure<ImageUploadSettings>(Configuration.GetSection("ImageUploadSettings"));
+
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
         }
 
@@ -70,9 +80,7 @@ namespace hotel_booking_api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "hotel_booking_api v1"));
             }
 
-
             HbaSeeder.SeedData(dbContext, userManager, roleManager).Wait();
-
 
             app.UseHttpsRedirection();
 
@@ -80,6 +88,7 @@ namespace hotel_booking_api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -87,7 +96,6 @@ namespace hotel_booking_api
                 endpoints.MapControllers();
             });
         }
-
 
         private static string GetHerokuConnectionString()
         {
