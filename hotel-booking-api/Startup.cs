@@ -1,5 +1,9 @@
-
 using hotel_booking_api.Extensions;
+using hotel_booking_core.Interface;
+using hotel_booking_core.Services;
+using hotel_booking_data.Contexts;
+using hotel_booking_models.Cloudinary;
+using hotel_booking_models.Mail;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +29,7 @@ namespace hotel_booking_api
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IMailService, MailService>();
+            services.AddScoped<IImageService, ImageService>();
 
             services.AddDbContext<HbaDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("default"))
