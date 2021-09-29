@@ -1,4 +1,4 @@
-﻿using hotel_booking_core.CloudinaryService.Interface;
+﻿using hotel_booking_core.Interface;
 using hotel_booking_models.Cloudinary;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

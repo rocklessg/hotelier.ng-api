@@ -1,11 +1,14 @@
-﻿using hotel_booking_core.Mail.Interface;
+﻿using hotel_booking_core.Interface;
 using hotel_booking_models.Mail;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.Services
