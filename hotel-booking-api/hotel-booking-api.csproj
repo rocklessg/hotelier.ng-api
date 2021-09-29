@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.10" />
 
     <PackageReference Include="CloudinaryDotNet" Version="1.15.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
@@ -27,7 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\hotel-booking-core\hotel-booking-core.csproj" />
     <ProjectReference Include="..\hotel-booking-data\hotel-booking-data.csproj" />
+    <ProjectReference Include="..\hotel-booking-utilities\hotel-booking-utilities.csproj" />
     <ProjectReference Include="..\hotel-booking-models\hotel-booking-models.csproj" />
   </ItemGroup>
 

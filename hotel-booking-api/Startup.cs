@@ -1,9 +1,12 @@
+using System;
+using System.Text;
 using hotel_booking_api.Extensions;
 using hotel_booking_core.Interface;
 using hotel_booking_core.Services;
 using hotel_booking_data.Contexts;
 using hotel_booking_models.Cloudinary;
 using hotel_booking_models.Mail;
+using hotel_booking_utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +22,10 @@ namespace hotel_booking_api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            StaticConfig = configuration;
         }
 
+        public static IConfiguration StaticConfig { get; private set; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -35,10 +40,14 @@ namespace hotel_booking_api
                 options.UseNpgsql(Configuration.GetConnectionString("default"))
                 );
 
+            // Add Jwt Authentication and Authorization
+            services.ConfigureAuthentication();
+
+            // Adds our Authorization Policies to the Dependecy Injection Container
+            services.AddPolicyAuthorization();
 
             // Configure Identity
             services.ConfigureIdentity();
-
 
 
             services.AddControllers();
@@ -47,6 +56,7 @@ namespace hotel_booking_api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "hotel_booking_api", Version = "v1" });
             });
 
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IImageService, ImageService>();
             services.Configure<ImageUploadSettings>(Configuration.GetSection("ImageUploadSettings"));
 
@@ -70,6 +80,7 @@ namespace hotel_booking_api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
