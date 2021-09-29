@@ -3,7 +3,7 @@ using System.IO;
 
 namespace hotel_booking_api.Extensions
 {
-    public static class ConfigurationSetup
+    public static class ConfigurationSetupExtension
     {
         public static IConfiguration GetConfig(bool isDevelopment)
         {

@@ -1,19 +1,13 @@
-using System;
-using System.Text;
 using hotel_booking_api.Extensions;
-using hotel_booking_core.Interface;
-using hotel_booking_core.Services;
 using hotel_booking_api.Middleware;
 using hotel_booking_data.Contexts;
 using hotel_booking_data.Seeder;
 using hotel_booking_models;
 using hotel_booking_models.Cloudinary;
 using hotel_booking_models.Mail;
-using hotel_booking_utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -39,9 +33,8 @@ namespace hotel_booking_api
         {
             services.AddDbContextAndConfigurations(Environment, Configuration);
 
-            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
-            services.AddTransient<IMailService, MailService>();
-            services.AddScoped<IImageService, ImageService>();
+            // Configure Mailing Service
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));            
 
             // Add Jwt Authentication and Authorization
             services.ConfigureAuthentication();
@@ -52,21 +45,24 @@ namespace hotel_booking_api
             // Configure Identity
             services.ConfigureIdentity();
 
+            // Configure Cloudinary
+            services.Configure<ImageUploadSettings>(Configuration.GetSection("CloudSettings"));
+            services.AddCloudinary(CloudinaryServiceExtension.GetAccount(Configuration));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "hotel_booking_api", Version = "v1" });
-            });
-
-            services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
-            services.AddScoped<IImageService, ImageService>();
-            services.Configure<ImageUploadSettings>(Configuration.GetSection("ImageUploadSettings"));
+            });                       
 
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
+
+            // Register Dependency Injection Service Extension
+            services.AddDependencyInjection();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,16 +93,5 @@ namespace hotel_booking_api
             });
         }
 
-        private static string GetHerokuConnectionString()
-        {
-            // Get the Database URL from the ENV variables in Heroku
-            string connectionUrl = Environment.GetEnvironmentVariable("DECADEVDOTNET_008");
-            // parse the connection string
-            var databaseUri = new Uri(connectionUrl);
-            string db = databaseUri.LocalPath.TrimStart('/');
-            string[] userInfo = databaseUri.UserInfo.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-            return $"User ID={userInfo[0]};Password={userInfo[1]};Host={databaseUri.Host};Port={databaseUri.Port};" +
-            $"Database={db};Pooling=true;SSL Mode=Require;Trust Server Certificate=True;";
-        }
     }
 }

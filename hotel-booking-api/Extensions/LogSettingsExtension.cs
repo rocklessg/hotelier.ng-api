@@ -7,7 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace hotel_booking_api.Extensions
 {
-    public static class LogSettings
+    public static class LogSettingsExtension
     {
         public static void SetupSerilog(IConfiguration config)
         {

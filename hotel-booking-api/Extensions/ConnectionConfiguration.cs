@@ -5,9 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace hotel_booking_api.Extensions
 {
@@ -33,7 +30,7 @@ namespace hotel_booking_api.Extensions
             {
                 string connStr;
 
-                if (env.IsDevelopment())
+                if (env.IsProduction())
                 {
                     connStr = GetHerokuConnectionString();
                 }

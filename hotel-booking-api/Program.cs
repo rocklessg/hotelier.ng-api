@@ -14,9 +14,9 @@ namespace hotel_booking_api
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var isDevelopment = env == Environments.Development;
 
-            IConfiguration config = ConfigurationSetup.GetConfig(isDevelopment);
+            IConfiguration config = ConfigurationSetupExtension.GetConfig(isDevelopment);
 
-            LogSettings.SetupSerilog(config);
+            LogSettingsExtension.SetupSerilog(config);
             try
             {
                 Log.Information("Application is starting...");
