@@ -16,14 +16,11 @@ namespace hotel_booking_core.Services
     public class ImageService : IImageService
     {
         private readonly IConfiguration _config;
-        private readonly Cloudinary cloudinary;
-        private readonly ImageUploadSettings _accountSettings;
-        public ImageService(IConfiguration config, IOptions<ImageUploadSettings> accountSettings)
+        private readonly Cloudinary _cloudinary;
+        public ImageService(IConfiguration config, Cloudinary cloudinary)
         {
-            _accountSettings = accountSettings.Value;
             _config = config;
-            cloudinary = new Cloudinary(new Account(_accountSettings.CloudName,
-                _accountSettings.ApiKey, _accountSettings.ApiSecret));
+            _cloudinary = cloudinary;
         }
         public async Task<UploadResult> UploadAsync(IFormFile image)
         {
@@ -56,7 +53,7 @@ namespace hotel_booking_core.Services
             {
                 string filename = Guid.NewGuid().ToString() + image.FileName;
 
-                uploadResult = await cloudinary.UploadAsync(new ImageUploadParams()
+                uploadResult = await _cloudinary.UploadAsync(new ImageUploadParams()
                 {
                     File = new FileDescription(filename + Guid.NewGuid().ToString(), imageStream),
                     PublicId = "Hotel Listings/" + filename,
@@ -80,7 +77,7 @@ namespace hotel_booking_core.Services
             };
 
 
-            DelResResult deletionResult = await cloudinary.DeleteResourcesAsync(delParams);
+            DelResResult deletionResult = await _cloudinary.DeleteResourcesAsync(delParams);
             if (deletionResult.Error != null)
             {
                 throw new ApplicationException($"" +

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_utilities
 {
-    public interface ITokenGenerator
+    public interface ITokenGeneratorService
     {
         Task<string> GenerateToken(AppUser user);
     }

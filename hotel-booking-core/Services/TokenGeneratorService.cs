@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_utilities
 {
-    public class TokenGenerator : ITokenGenerator
+    public class TokenGeneratorService : ITokenGeneratorService
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<AppUser> _userManager;
 
-        public TokenGenerator(IConfiguration configuration, UserManager<AppUser> userManager)
+        public TokenGeneratorService(IConfiguration configuration, UserManager<AppUser> userManager)
         {
             _configuration = configuration;
             _userManager = userManager;
