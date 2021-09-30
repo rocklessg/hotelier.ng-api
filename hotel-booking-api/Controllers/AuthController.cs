@@ -11,5 +11,6 @@ namespace hotel_booking_api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+
     }
 }

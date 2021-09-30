@@ -1,11 +1,13 @@
 using hotel_booking_api.Extensions;
+using hotel_booking_api.Middleware;
 using hotel_booking_data.Contexts;
 using hotel_booking_data.Seeder;
 using hotel_booking_models;
+using hotel_booking_models.Cloudinary;
+using hotel_booking_models.Mail;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,27 +17,53 @@ namespace hotel_booking_api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            StaticConfig = configuration;
+            Environment = environment;
         }
 
+        public static IConfiguration StaticConfig { get; private set; }
+        public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<HbaDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("default"))
-                );
+            services.AddDbContextAndConfigurations(Environment, Configuration);
+
+            // Configure Mailing Service
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));            
+
+            // Add Jwt Authentication and Authorization
+            services.ConfigureAuthentication();
+
+            // Adds our Authorization Policies to the Dependecy Injection Container
+            services.AddPolicyAuthorization();
 
             // Configure Identity
             services.ConfigureIdentity();
 
-            services.AddControllers();
+            // Configure Cloudinary
+            services.Configure<ImageUploadSettings>(Configuration.GetSection("CloudSettings"));
+            services.AddCloudinary(CloudinaryServiceExtension.GetAccount(Configuration));
 
-            //Configure Swagger
-            services.AddSwagger();
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "hotel_booking_api", Version = "v1" });
+            });                       
+
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
+
+            // Register Dependency Injection Service Extension
+            services.AddDependencyInjection();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,8 +81,11 @@ namespace hotel_booking_api
 
             app.UseHttpsRedirection();
 
+            app.UseMiddleware<ExceptionMiddleware>();
+
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -62,5 +93,6 @@ namespace hotel_booking_api
                 endpoints.MapControllers();
             });
         }
+
     }
 }
