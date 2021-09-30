@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Models; 
 
 namespace hotel_booking_api
 {
@@ -62,6 +62,7 @@ namespace hotel_booking_api
 
             // Register Dependency Injection Service Extension
             services.AddDependencyInjection();
+
 
         }
 
