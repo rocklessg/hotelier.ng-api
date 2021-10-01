@@ -151,6 +151,7 @@
         ],
         "Galleries": [
             {
+                "Id": "3e3ed157-85bf-481e-956d-c7814dea8e2a",
                 "ImageUrl": "https://res.cloudinary.com/decagonsq008/image/upload/v1633102414/Hotel%20Listings/hotel20_n9eafl.jpg",
                 "IsFeature": true
             }
@@ -320,6 +321,7 @@
         ],
         "Galleries": [
             {
+                "Id": "6e4b1f70-f239-4f83-91e0-ff3e74ad21e6",
                 "ImageUrl": "https://res.cloudinary.com/decagonsq008/image/upload/v1633102413/Hotel%20Listings/hotel8_cpbsfz.jpg",
                 "IsFeature": true
             }
@@ -443,6 +445,7 @@
         ],
         "Galleries": [
             {
+                "Id": "35494e11-d768-4704-b290-0a8706f7fe9b",
                 "ImageUrl": "https://res.cloudinary.com/decagonsq008/image/upload/v1633102413/Hotel%20Listings/hotel9_xdtnat.jpg",
                 "IsFeature": true
             }
@@ -628,6 +631,7 @@
         ],
         "Galleries": [
             {
+                "Id": "be55b98f-8098-458e-a07a-513c8d20912c",
                 "ImageUrl": "https://res.cloudinary.com/decagonsq008/image/upload/v1633102413/Hotel%20Listings/hotel10_usiwqf.jpg",
                 "IsFeature": true
             }
@@ -862,6 +866,7 @@
         ],
         "Galleries": [
             {
+                "Id": "02d986bc-5be5-49bc-b9a8-12fc4c2defd7",
                 "ImageUrl": "https://res.cloudinary.com/decagonsq008/image/upload/v1633102413/Hotel%20Listings/hotel7_k1ua6r.jpg",
                 "IsFeature": true
             }
@@ -1006,6 +1011,7 @@
         ],
         "Galleries": [
             {
+                "Id": "19485916-56c4-4e07-8662-311d7d21c9ee",
                 "ImageUrl": "https://res.cloudinary.com/decagonsq008/image/upload/v1633102413/Hotel%20Listings/hotel1_u5uf5f.jpg",
                 "IsFeature": true
             }
@@ -1164,6 +1170,7 @@
         ],
         "Galleries": [
             {
+                "Id": "2916811b-5ea6-41e8-8fcf-0237be0d8956",
                 "ImageUrl": "https://res.cloudinary.com/decagonsq008/image/upload/v1633102412/Hotel%20Listings/hotel6_frp4hz.jpg",
                 "IsFeature": true
             }
@@ -1364,6 +1371,7 @@
         ],
         "Galleries": [
             {
+                "Id": "6189a523-9ef7-40f0-933b-0ff83edf097f",
                 "ImageUrl": "https://res.cloudinary.com/decagonsq008/image/upload/v1633102412/Hotel%20Listings/hotel5_ujhpz8.jpg",
                 "IsFeature": true
             }
@@ -1545,6 +1553,7 @@
         ],
         "Galleries": [
             {
+                "Id": "44c29414-7714-4e35-b5f9-e52803b59d3c",
                 "ImageUrl": "https://res.cloudinary.com/decagonsq008/image/upload/v1633102412/Hotel%20Listings/hotel3_zqmcb3.jpg",
                 "IsFeature": true
             }
@@ -1732,6 +1741,7 @@
         ],
         "Galleries": [
             {
+                "Id": "33d3ca34-970e-4678-8abb-ca3278c43f68",
                 "ImageUrl": "https://res.cloudinary.com/decagonsq008/image/upload/v1633102412/Hotel%20Listings/hotel4_dseozb.jpg",
                 "IsFeature": true
             }
