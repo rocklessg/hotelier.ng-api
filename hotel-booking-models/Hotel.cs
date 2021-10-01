@@ -22,5 +22,6 @@ namespace hotel_booking_models
         public ICollection<RoomType> RoomTypes { get; set; }
         public ICollection<Amenity> Amenities { get; set; }
         public ICollection<Booking> Bookings { get; set; }
+        public ICollection<Gallery> Galleries { get; set; }
     }
 }
