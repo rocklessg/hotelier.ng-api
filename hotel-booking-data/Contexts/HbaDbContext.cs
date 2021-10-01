@@ -57,7 +57,7 @@ namespace hotel_booking_data.Contexts
             modelBuilder.Entity<WishList>()
                 .HasOne(bc => bc.Customer)
                 .WithMany(b => b.WishLists)
-                .HasForeignKey(bc => bc.Customer.AppUserId);
+                .HasForeignKey(bc => bc.CustomerId);
             modelBuilder.Entity<WishList>()
                 .HasOne(bc => bc.Hotel)
                 .WithMany(c => c.WishLists)
