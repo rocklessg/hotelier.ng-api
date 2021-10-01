@@ -69,82 +69,85 @@
       }
     ],
     "RoomTypes": [
-      {
-        "id": "8ec7948d-658c-45b1-b440-844c5c8634e5",
-        "Name": "Single",
-        "Description": "Metatars/tars inj op NOS",
-        "Price": 5430.36,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "id": "9c3c04ed-9106-48ec-b97d-40b9a99eb897",
-            "RoomNo": "301",
-            "IsBooked": false,
+        {
+            "id": "8ec7948d-658c-45b1-b440-844c5c8634e5",
+            "Name": "Single",
+            "Description": "Metatars/tars inj op NOS",
+            "Price": 5430.36,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098448/Hotel%20Listings/single8_vdu0gs.jpg",
+            "Rooms": [
+                {
+                    "id": "9c3c04ed-9106-48ec-b97d-40b9a99eb897",
+                    "RoomNo": "301",
+                    "IsBooked": false,
+                    "CreatedAt": "10/13/2020",
+                    "UpdatedAt": "12/20/2020"
+                },
+                {
+                    "id": "f007b50a-05dd-48c7-94ff-20a6babba72e",
+                    "RoomNo": "302",
+                    "IsBooked": true,
+                    "CreatedAt": "10/16/2020",
+                    "UpdatedAt": "5/12/2021"
+                }
+            ],
             "CreatedAt": "10/13/2020",
             "UpdatedAt": "12/20/2020"
-          },
-          {
-            "id": "f007b50a-05dd-48c7-94ff-20a6babba72e",
-            "RoomNo": "302",
-            "IsBooked": true,
+        },
+        {
+            "id": "7b58bd86-9f44-4e6a-aa84-7aa7b3555681",
+            "Name": "Double",
+            "Description": "Patellar biopsy",
+            "Price": 45720.42,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098446/Hotel%20Listings/double8_pxptem.jpg",
+            "Rooms": [
+                {
+                    "id": "3b95ab7d-bd3f-4d73-85d9-2f43ecd0452d",
+                    "RoomNo": "303",
+                    "IsBooked": false,
+                    "CreatedAt": "1/21/2021",
+                    "UpdatedAt": "4/23/2021"
+                },
+                {
+                    "id": "e507a4fe-d414-4222-b0ad-d524a1da2b9a",
+                    "RoomNo": "304",
+                    "IsBooked": true,
+                    "CreatedAt": "5/6/2021",
+                    "UpdatedAt": "10/19/2020"
+                }
+
+            ],
             "CreatedAt": "10/16/2020",
             "UpdatedAt": "5/12/2021"
-          }
-        ],
-        "CreatedAt": "10/13/2020",
-        "UpdatedAt": "12/20/2020"
-      },
-      {
-        "id": "7b58bd86-9f44-4e6a-aa84-7aa7b3555681",
-        "Name": "Double",
-        "Description": "Patellar biopsy",
-        "Price": 45720.42,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "id": "3b95ab7d-bd3f-4d73-85d9-2f43ecd0452d",
-            "RoomNo": "303",
-            "IsBooked": false,
+        },
+        {
+            "id": "5a650c0e-dfcc-4671-be98-93f055232b59",
+            "Name": "Executive",
+            "Description": "Scarification of pleura",
+            "Price": 5499.29,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098447/Hotel%20Listings/executive6_zkwif8.jpg",
+            "Rooms": [
+                {
+                    "id": "3462fc26-93a9-4e29-a4b2-5c87bdf203f9",
+                    "RoomNo": "306",
+                    "IsBooked": false,
+                    "CreatedAt": "1/21/2021",
+                    "UpdatedAt": "4/23/2021"
+                },
+                {
+                    "id": "7322b0f3-2946-472b-b124-a06602611d73",
+                    "RoomNo": "307",
+                    "IsBooked": true,
+                    "CreatedAt": "5/6/2021",
+                    "UpdatedAt": "10/19/2020"
+                }
+            ],
             "CreatedAt": "1/21/2021",
             "UpdatedAt": "4/23/2021"
-          },
-          {
-            "id": "e507a4fe-d414-4222-b0ad-d524a1da2b9a",
-            "RoomNo": "304",
-            "IsBooked": true,
-            "CreatedAt": "5/6/2021",
-            "UpdatedAt": "10/19/2020"
-          }
-
-        ],
-        "CreatedAt": "10/16/2020",
-        "UpdatedAt": "5/12/2021"
-      },
-      {
-        "id": "5a650c0e-dfcc-4671-be98-93f055232b59",
-        "Name": "Executive",
-        "Description": "Scarification of pleura",
-        "Price": 5499.29,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "id": "3462fc26-93a9-4e29-a4b2-5c87bdf203f9",
-            "RoomNo": "306",
-            "IsBooked": false,
-            "CreatedAt": "1/21/2021",
-            "UpdatedAt": "4/23/2021"
-          },
-          {
-            "id": "7322b0f3-2946-472b-b124-a06602611d73",
-            "RoomNo": "307",
-            "IsBooked": true,
-            "CreatedAt": "5/6/2021",
-            "UpdatedAt": "10/19/2020"
-          }
-        ],
-        "CreatedAt": "1/21/2021",
-        "UpdatedAt": "4/23/2021"
-      }
+        }
     ],
     "CreatedAt": "5/17/2021",
     "UpdatedAt": "4/16/2021"
@@ -209,102 +212,105 @@
       }
     ],
     "RoomTypes": [
-      {
-        "id": "d872c22c-1887-4a38-a83d-57ef485758ce",
-        "Name": "Single",
-        "Description": "Metatars/tars inj op NOS",
-        "Price": 9880.36,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "102a4e0a-991d-4c62-bbf2-19d1682c1fab",
-            "RoomNo": "19",
-            "IsBooked": true,
-            "CreatedAt": "1/22/2021",
-            "UpdatedAt": "12/16/2020"
-          },
-          {
-            "Id": "eca965e7-ae6c-4eb2-a9fd-91b0cb4aeb34",
-            "RoomNo": "20",
-            "IsBooked": true,
-            "CreatedAt": "11/28/2020",
-            "UpdatedAt": "7/18/2021"
-          },
-          {
-            "Id": "0e354703-5ebb-4bde-a5f0-b3d502457684",
-            "RoomNo": "21",
-            "IsBooked": false,
-            "CreatedAt": "11/4/2020",
-            "UpdatedAt": "6/30/2021"
-          }
-        ],
-        "CreatedAt": "10/13/2020",
-        "UpdatedAt": "12/20/2020"
-      },
-      {
-        "id": "885bf52a-6170-4ee5-81ea-835ceb3e3f58",
-        "Name": "Executive",
-        "Description": "Scarification of pleura",
-        "Price": 93469.29,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "751c3de8-e9d2-4528-a98f-35fd524c9ea9",
-            "RoomNo": "19",
-            "IsBooked": true,
-            "CreatedAt": "1/22/2021",
-            "UpdatedAt": "12/16/2020"
-          },
-          {
-            "Id": "ae73ff16-8571-4c6b-bcd4-88f750fd392f",
-            "RoomNo": "20",
-            "IsBooked": true,
-            "CreatedAt": "11/28/2020",
-            "UpdatedAt": "7/18/2021"
-          },
-          {
-            "Id": "5974f722-3f21-4c75-8fe5-036ca0539a20",
-            "RoomNo": "21",
-            "IsBooked": false,
-            "CreatedAt": "11/4/2020",
-            "UpdatedAt": "6/30/2021"
-          }
-        ],
-        "CreatedAt": "1/21/2021",
-        "UpdatedAt": "4/23/2021"
-      },
-      {
-        "id": "025a5ccd-5ffb-4264-ad10-b614dc739046",
-        "Name": "Presidential",
-        "Description": "Limb lengthen proc NEC",
-        "Price": 98310.74,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "d66490af-ec7c-44c8-92c0-adca8d41b83f",
-            "RoomNo": "19",
-            "IsBooked": true,
-            "CreatedAt": "1/22/2021",
-            "UpdatedAt": "12/16/2020"
-          },
-          {
-            "Id": "14b9f6ec-7116-470d-8525-efdd0f8ffcbe",
-            "RoomNo": "20",
-            "IsBooked": true,
-            "CreatedAt": "11/28/2020",
-            "UpdatedAt": "7/18/2021"
-          },
-          {
-            "Id": "095146fd-6ec1-41f6-9f41-8762060b7444",
-            "RoomNo": "21",
-            "IsBooked": false,
-            "CreatedAt": "11/4/2020",
-            "UpdatedAt": "6/30/2021"
-          }
-        ],
-        "CreatedAt": "5/6/2021",
-        "UpdatedAt": "10/19/2020"
-      }
+        {
+            "id": "d872c22c-1887-4a38-a83d-57ef485758ce",
+            "Name": "Single",
+            "Description": "Metatars/tars inj op NOS",
+            "Price": 9880.36,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098448/Hotel%20Listings/single6_dv0nzh.jpg",
+            "Rooms": [
+                {
+                    "Id": "102a4e0a-991d-4c62-bbf2-19d1682c1fab",
+                    "RoomNo": "19",
+                    "IsBooked": true,
+                    "CreatedAt": "1/22/2021",
+                    "UpdatedAt": "12/16/2020"
+                },
+                {
+                    "Id": "eca965e7-ae6c-4eb2-a9fd-91b0cb4aeb34",
+                    "RoomNo": "20",
+                    "IsBooked": true,
+                    "CreatedAt": "11/28/2020",
+                    "UpdatedAt": "7/18/2021"
+                },
+                {
+                    "Id": "0e354703-5ebb-4bde-a5f0-b3d502457684",
+                    "RoomNo": "21",
+                    "IsBooked": false,
+                    "CreatedAt": "11/4/2020",
+                    "UpdatedAt": "6/30/2021"
+                }
+            ],
+            "CreatedAt": "10/13/2020",
+            "UpdatedAt": "12/20/2020"
+        },
+        {
+            "id": "885bf52a-6170-4ee5-81ea-835ceb3e3f58",
+            "Name": "Executive",
+            "Description": "Scarification of pleura",
+            "Price": 93469.29,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098447/Hotel%20Listings/executive5_irv2dd.jpg",
+            "Rooms": [
+                {
+                    "Id": "751c3de8-e9d2-4528-a98f-35fd524c9ea9",
+                    "RoomNo": "19",
+                    "IsBooked": true,
+                    "CreatedAt": "1/22/2021",
+                    "UpdatedAt": "12/16/2020"
+                },
+                {
+                    "Id": "ae73ff16-8571-4c6b-bcd4-88f750fd392f",
+                    "RoomNo": "20",
+                    "IsBooked": true,
+                    "CreatedAt": "11/28/2020",
+                    "UpdatedAt": "7/18/2021"
+                },
+                {
+                    "Id": "5974f722-3f21-4c75-8fe5-036ca0539a20",
+                    "RoomNo": "21",
+                    "IsBooked": false,
+                    "CreatedAt": "11/4/2020",
+                    "UpdatedAt": "6/30/2021"
+                }
+            ],
+            "CreatedAt": "1/21/2021",
+            "UpdatedAt": "4/23/2021"
+        },
+        {
+            "id": "025a5ccd-5ffb-4264-ad10-b614dc739046",
+            "Name": "Presidential",
+            "Description": "Limb lengthen proc NEC",
+            "Price": 98310.74,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098448/Hotel%20Listings/presidential5_qgujsn.jpg",
+            "Rooms": [
+                {
+                    "Id": "d66490af-ec7c-44c8-92c0-adca8d41b83f",
+                    "RoomNo": "19",
+                    "IsBooked": true,
+                    "CreatedAt": "1/22/2021",
+                    "UpdatedAt": "12/16/2020"
+                },
+                {
+                    "Id": "14b9f6ec-7116-470d-8525-efdd0f8ffcbe",
+                    "RoomNo": "20",
+                    "IsBooked": true,
+                    "CreatedAt": "11/28/2020",
+                    "UpdatedAt": "7/18/2021"
+                },
+                {
+                    "Id": "095146fd-6ec1-41f6-9f41-8762060b7444",
+                    "RoomNo": "21",
+                    "IsBooked": false,
+                    "CreatedAt": "11/4/2020",
+                    "UpdatedAt": "6/30/2021"
+                }
+            ],
+            "CreatedAt": "5/6/2021",
+            "UpdatedAt": "10/19/2020"
+        }
     ],
     "State": "Iowa",
     "CreatedAt": "1/6/2021",
@@ -352,56 +358,58 @@
     ],
     "ManagerId": "a84d25d7-a7ba-4b99-b757-8a52a25f61d5",
     "RoomTypes": [
-      {
-        "id": "1f35ecc0-60a0-4344-96f8-0005ab00978a",
-        "Name": "Single",
-        "Description": "Metatars/tars inj op NOS",
-        "Price": 4520.36,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "id": "cd2b636d-25c8-4a19-9a35-9688b83b68fc",
-            "RoomNo": "304",
-            "IsBooked": true,
-            "CreatedAt": "5/6/2021",
-            "UpdatedAt": "10/19/2020"
-          },
-          {
-            "id": "411db5c2-bd44-49f5-8b8c-7eba9e88d8c7",
-            "RoomNo": "305",
-            "IsBooked": false,
-            "CreatedAt": "1/1/2021",
-            "UpdatedAt": "11/23/2020"
-          }
-        ],
-        "CreatedAt": "10/13/2020",
-        "UpdatedAt": "12/20/2020"
-      },
-      {
-        "id": "93968342-394d-406c-8d2a-eb250dc3d817",
-        "Name": "Executive",
-        "Description": "Scarification of pleura",
-        "Price": 8279.29,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "bb9b7629-f36c-4141-9d1d-ca3fb40e4a01",
-            "RoomNo": "9",
-            "IsBooked": true,
-            "CreatedAt": "4/17/2021",
-            "UpdatedAt": "7/5/2021"
-          },
-          {
-            "Id": "65aa9280-48ca-464f-bdc3-89ce0fdf68c7",
-            "RoomNo": "10",
-            "IsBooked": false,
-            "CreatedAt": "10/16/2020",
-            "UpdatedAt": "6/13/2021"
-          }
-        ],
-        "CreatedAt": "1/21/2021",
-        "UpdatedAt": "4/23/2021"
-      }
+        {
+            "id": "1f35ecc0-60a0-4344-96f8-0005ab00978a",
+            "Name": "Single",
+            "Description": "Metatars/tars inj op NOS",
+            "Price": 4520.36,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098448/Hotel%20Listings/single1_gxgx1n.png",
+            "Rooms": [
+                {
+                    "id": "cd2b636d-25c8-4a19-9a35-9688b83b68fc",
+                    "RoomNo": "304",
+                    "IsBooked": true,
+                    "CreatedAt": "5/6/2021",
+                    "UpdatedAt": "10/19/2020"
+                },
+                {
+                    "id": "411db5c2-bd44-49f5-8b8c-7eba9e88d8c7",
+                    "RoomNo": "305",
+                    "IsBooked": false,
+                    "CreatedAt": "1/1/2021",
+                    "UpdatedAt": "11/23/2020"
+                }
+            ],
+            "CreatedAt": "10/13/2020",
+            "UpdatedAt": "12/20/2020"
+        },
+        {
+            "id": "93968342-394d-406c-8d2a-eb250dc3d817",
+            "Name": "Executive",
+            "Description": "Scarification of pleura",
+            "Price": 8279.29,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098446/Hotel%20Listings/executive2_tgdoch.jpg",
+            "Rooms": [
+                {
+                    "Id": "bb9b7629-f36c-4141-9d1d-ca3fb40e4a01",
+                    "RoomNo": "9",
+                    "IsBooked": true,
+                    "CreatedAt": "4/17/2021",
+                    "UpdatedAt": "7/5/2021"
+                },
+                {
+                    "Id": "65aa9280-48ca-464f-bdc3-89ce0fdf68c7",
+                    "RoomNo": "10",
+                    "IsBooked": false,
+                    "CreatedAt": "10/16/2020",
+                    "UpdatedAt": "6/13/2021"
+                }
+            ],
+            "CreatedAt": "1/21/2021",
+            "UpdatedAt": "4/23/2021"
+        }
     ],
     "Amenities": [
       {
@@ -467,134 +475,138 @@
     ],
     "ManagerId": "d7638183-f0a4-4188-9fa1-517ee2c2dbdf",
     "RoomTypes": [
-      {
-        "id": "257f4adc-ac32-422f-b75e-7a0ba7c7e026",
-        "Name": "Single",
-        "Description": "Metatars/tars inj op NOS",
-        "Price": 98310.36,
-        "Discount": 0.1,
-        "CreatedAt": "10/13/2020",
-        "Rooms": [
-          {
-            "Id": "93ad8dea-af8d-49c4-8395-e8cd4cfaa445",
-            "RoomNo": "11",
-            "IsBooked": false,
-            "CreatedAt": "2/17/2021",
-            "UpdatedAt": "6/3/2021"
-          },
-          {
-            "Id": "d3172065-6efa-4ec4-b9d9-dbd3ed65936d",
-            "RoomNo": "12",
-            "IsBooked": true,
-            "CreatedAt": "11/5/2020",
-            "UpdatedAt": "1/27/2021"
-          },
-          {
-            "Id": "a50dfffa-ecf4-4c76-9f0f-9f2ce25dc7b6",
-            "RoomNo": "13",
-            "IsBooked": false,
-            "CreatedAt": "7/6/2021",
-            "UpdatedAt": "8/27/2021"
-          }
-        ],
-        "UpdatedAt": "12/20/2020"
-      },
-      {
-        "id": "50b8d0e1-36c5-4a7a-865f-8bff9f9facd7",
-        "Name": "Double",
-        "Description": "Patellar biopsy",
-        "Price": 9307.42,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "51163fed-68d2-4d1a-89d0-6f3884a4a1de",
-            "RoomNo": "14",
-            "IsBooked": false,
-            "CreatedAt": "5/26/2021",
-            "UpdatedAt": "4/29/2021"
-          },
-          {
-            "Id": "bd5571d7-6fc3-4f05-aacb-99435689c01c",
-            "RoomNo": "15",
-            "IsBooked": false,
-            "CreatedAt": "11/2/2020",
-            "UpdatedAt": "9/23/2021"
-          },
-          {
-            "Id": "6298dad1-24c3-4ec4-a67e-cb72046c648e",
-            "RoomNo": "16",
-            "IsBooked": false,
-            "CreatedAt": "4/28/2021",
-            "UpdatedAt": "12/13/2020"
-          }
-        ],
-        "CreatedAt": "10/16/2020",
-        "UpdatedAt": "5/12/2021"
-      },
-      {
-        "id": "57b54afc-b5d1-4f31-a509-e4c5261e0e5f",
-        "Name": "Executive",
-        "Description": "Scarification of pleura",
-        "Price": 3339.29,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "e25f96e1-ed89-4c56-9330-fa3e458ad381",
-            "RoomNo": "17",
-            "IsBooked": false,
-            "CreatedAt": "2/23/2021",
-            "UpdatedAt": "7/5/2021"
-          },
-          {
-            "Id": "2d18d4ee-b35a-4300-93f3-f656205f1bd6",
-            "RoomNo": "18",
-            "IsBooked": true,
-            "CreatedAt": "1/16/2021",
-            "UpdatedAt": "9/29/2020"
-          },
-          {
-            "Id": "de581bab-4edb-4211-ad20-eee05cca3380",
-            "RoomNo": "19",
-            "IsBooked": true,
-            "CreatedAt": "1/22/2021",
-            "UpdatedAt": "12/16/2020"
-          }
-        ],
-        "CreatedAt": "1/21/2021",
-        "UpdatedAt": "4/23/2021"
-      },
-      {
-        "id": "0e46e121-4f8b-4d87-aeb8-1efa45ad7b30",
-        "Name": "Presidential",
-        "Description": "Limb lengthen proc NEC",
-        "Price": 19310.74,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "ab77c4ee-2c2c-4aa9-b106-6a64c3b6b1da",
-            "RoomNo": "20",
-            "IsBooked": true,
-            "CreatedAt": "11/28/2020",
-            "UpdatedAt": "7/18/2021"
-          },
-          {
-            "Id": "71fa30f9-24f0-4534-8afe-8d8062274d17",
-            "RoomNo": "21",
-            "IsBooked": false,
-            "CreatedAt": "11/4/2020",
-            "UpdatedAt": "6/30/2021"
-          },
-          {
-            "Id": "fc4d0263-a238-4922-8d86-b721ab0abfc4",
-            "RoomNo": "22",
-            "IsBooked": true,
-            "CreatedAt": "1/26/2021",
-            "UpdatedAt": "5/14/2021"
-          }
-        ],
-        "CreatedAt": "5/6/2021",
-        "UpdatedAt": "10/19/2020"
-      }
+        {
+            "id": "257f4adc-ac32-422f-b75e-7a0ba7c7e026",
+            "Name": "Single",
+            "Description": "Metatars/tars inj op NOS",
+            "Price": 98310.36,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098448/Hotel%20Listings/single3_tzirko.jpg",
+            "CreatedAt": "10/13/2020",
+            "Rooms": [
+                {
+                    "Id": "93ad8dea-af8d-49c4-8395-e8cd4cfaa445",
+                    "RoomNo": "11",
+                    "IsBooked": false,
+                    "CreatedAt": "2/17/2021",
+                    "UpdatedAt": "6/3/2021"
+                },
+                {
+                    "Id": "d3172065-6efa-4ec4-b9d9-dbd3ed65936d",
+                    "RoomNo": "12",
+                    "IsBooked": true,
+                    "CreatedAt": "11/5/2020",
+                    "UpdatedAt": "1/27/2021"
+                },
+                {
+                    "Id": "a50dfffa-ecf4-4c76-9f0f-9f2ce25dc7b6",
+                    "RoomNo": "13",
+                    "IsBooked": false,
+                    "CreatedAt": "7/6/2021",
+                    "UpdatedAt": "8/27/2021"
+                }
+            ],
+            "UpdatedAt": "12/20/2020"
+        },
+        {
+            "id": "50b8d0e1-36c5-4a7a-865f-8bff9f9facd7",
+            "Name": "Double",
+            "Description": "Patellar biopsy",
+            "Price": 9307.42,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098446/Hotel%20Listings/double4_g4dqnh.jpg",
+            "Rooms": [
+                {
+                    "Id": "51163fed-68d2-4d1a-89d0-6f3884a4a1de",
+                    "RoomNo": "14",
+                    "IsBooked": false,
+                    "CreatedAt": "5/26/2021",
+                    "UpdatedAt": "4/29/2021"
+                },
+                {
+                    "Id": "bd5571d7-6fc3-4f05-aacb-99435689c01c",
+                    "RoomNo": "15",
+                    "IsBooked": false,
+                    "CreatedAt": "11/2/2020",
+                    "UpdatedAt": "9/23/2021"
+                },
+                {
+                    "Id": "6298dad1-24c3-4ec4-a67e-cb72046c648e",
+                    "RoomNo": "16",
+                    "IsBooked": false,
+                    "CreatedAt": "4/28/2021",
+                    "UpdatedAt": "12/13/2020"
+                }
+            ],
+            "CreatedAt": "10/16/2020",
+            "UpdatedAt": "5/12/2021"
+        },
+        {
+            "id": "57b54afc-b5d1-4f31-a509-e4c5261e0e5f",
+            "Name": "Executive",
+            "Description": "Scarification of pleura",
+            "Price": 3339.29,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098447/Hotel%20Listings/executive4_i4aiym.jpg",
+            "Rooms": [
+                {
+                    "Id": "e25f96e1-ed89-4c56-9330-fa3e458ad381",
+                    "RoomNo": "17",
+                    "IsBooked": false,
+                    "CreatedAt": "2/23/2021",
+                    "UpdatedAt": "7/5/2021"
+                },
+                {
+                    "Id": "2d18d4ee-b35a-4300-93f3-f656205f1bd6",
+                    "RoomNo": "18",
+                    "IsBooked": true,
+                    "CreatedAt": "1/16/2021",
+                    "UpdatedAt": "9/29/2020"
+                },
+                {
+                    "Id": "de581bab-4edb-4211-ad20-eee05cca3380",
+                    "RoomNo": "19",
+                    "IsBooked": true,
+                    "CreatedAt": "1/22/2021",
+                    "UpdatedAt": "12/16/2020"
+                }
+            ],
+            "CreatedAt": "1/21/2021",
+            "UpdatedAt": "4/23/2021"
+        },
+        {
+            "id": "0e46e121-4f8b-4d87-aeb8-1efa45ad7b30",
+            "Name": "Presidential",
+            "Description": "Limb lengthen proc NEC",
+            "Price": 19310.74,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098447/Hotel%20Listings/presidential4_gk219u.jpg",
+            "Rooms": [
+                {
+                    "Id": "ab77c4ee-2c2c-4aa9-b106-6a64c3b6b1da",
+                    "RoomNo": "20",
+                    "IsBooked": true,
+                    "CreatedAt": "11/28/2020",
+                    "UpdatedAt": "7/18/2021"
+                },
+                {
+                    "Id": "71fa30f9-24f0-4534-8afe-8d8062274d17",
+                    "RoomNo": "21",
+                    "IsBooked": false,
+                    "CreatedAt": "11/4/2020",
+                    "UpdatedAt": "6/30/2021"
+                },
+                {
+                    "Id": "fc4d0263-a238-4922-8d86-b721ab0abfc4",
+                    "RoomNo": "22",
+                    "IsBooked": true,
+                    "CreatedAt": "1/26/2021",
+                    "UpdatedAt": "5/14/2021"
+                }
+            ],
+            "CreatedAt": "5/6/2021",
+            "UpdatedAt": "10/19/2020"
+        }
     ],
     "Amenities": [
       {
@@ -703,123 +715,126 @@
       }
     ],
     "RoomTypes": [
-      {
-        "id": "f2f95d5a-b51a-4a24-b7c0-723fa32b1ffa",
-        "Name": "Single",
-        "Description": "Metatars/tars inj op NOS",
-        "Price": 9800.36,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "id": "8ed53ce7-3594-4374-909e-88343a97e8b2",
-            "RoomNo": "301",
-            "IsBooked": false,
+        {
+            "id": "f2f95d5a-b51a-4a24-b7c0-723fa32b1ffa",
+            "Name": "Single",
+            "Description": "Metatars/tars inj op NOS",
+            "Price": 9800.36,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098448/Hotel%20Listings/single7_k8nzqy.jpg",
+            "Rooms": [
+                {
+                    "id": "8ed53ce7-3594-4374-909e-88343a97e8b2",
+                    "RoomNo": "301",
+                    "IsBooked": false,
+                    "CreatedAt": "10/13/2020",
+                    "UpdatedAt": "12/20/2020"
+                },
+                {
+                    "id": "5581c853-f9bb-4cc7-949b-0e6907ade985",
+                    "RoomNo": "302",
+                    "IsBooked": true,
+                    "CreatedAt": "10/16/2020",
+                    "UpdatedAt": "5/12/2021"
+                },
+                {
+                    "id": "9500c8f0-0c4b-4fa1-9a92-e77555b1cf6f",
+                    "RoomNo": "303",
+                    "IsBooked": false,
+                    "CreatedAt": "1/21/2021",
+                    "UpdatedAt": "4/23/2021"
+                },
+                {
+                    "id": "e8bac523-decb-4ace-ac24-8aaf061dc22a",
+                    "RoomNo": "304",
+                    "IsBooked": true,
+                    "CreatedAt": "5/6/2021",
+                    "UpdatedAt": "10/19/2020"
+                }
+            ],
             "CreatedAt": "10/13/2020",
             "UpdatedAt": "12/20/2020"
-          },
-          {
-            "id": "5581c853-f9bb-4cc7-949b-0e6907ade985",
-            "RoomNo": "302",
-            "IsBooked": true,
-            "CreatedAt": "10/16/2020",
-            "UpdatedAt": "5/12/2021"
-          },
-          {
-            "id": "9500c8f0-0c4b-4fa1-9a92-e77555b1cf6f",
-            "RoomNo": "303",
-            "IsBooked": false,
+        },
+        {
+            "id": "7866f539-898a-43f8-b908-69f577f683e7",
+            "Name": "Executive",
+            "Description": "Scarification of pleura",
+            "Price": 29309.29,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098446/Hotel%20Listings/executive3_rh6een.jpg",
+            "Rooms": [
+                {
+                    "id": "f2bbd1af-f7e1-490e-bf92-1090a75f18a1",
+                    "RoomNo": "305",
+                    "IsBooked": false,
+                    "CreatedAt": "1/1/2021",
+                    "UpdatedAt": "11/23/2020"
+                },
+                {
+                    "Id": "a2fc6183-0510-4932-8234-87a1e4e14d2d",
+                    "RoomNo": "9",
+                    "IsBooked": true,
+                    "CreatedAt": "4/17/2021",
+                    "UpdatedAt": "7/5/2021"
+                },
+                {
+                    "Id": "513e937c-b73f-4152-9832-0c5a9d6d74df",
+                    "RoomNo": "10",
+                    "IsBooked": false,
+                    "CreatedAt": "10/16/2020",
+                    "UpdatedAt": "6/13/2021"
+                },
+                {
+                    "Id": "beb4b286-f985-494b-9180-0c42f12f3c20",
+                    "RoomNo": "11",
+                    "IsBooked": false,
+                    "CreatedAt": "2/17/2021",
+                    "UpdatedAt": "6/3/2021"
+                }
+            ],
             "CreatedAt": "1/21/2021",
             "UpdatedAt": "4/23/2021"
-          },
-          {
-            "id": "e8bac523-decb-4ace-ac24-8aaf061dc22a",
-            "RoomNo": "304",
-            "IsBooked": true,
+        },
+        {
+            "id": "b0160b1a-643f-4b6c-9dc0-1c4448f6cd04",
+            "Name": "Presidential",
+            "Description": "Limb lengthen proc NEC",
+            "Price": 92810.74,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098447/Hotel%20Listings/presidential3_s3tuyi.jpg",
+            "Rooms": [
+                {
+                    "Id": "19137c99-1416-4dd9-baaf-1f0d434aadaa",
+                    "RoomNo": "12",
+                    "IsBooked": true,
+                    "CreatedAt": "11/5/2020",
+                    "UpdatedAt": "1/27/2021"
+                },
+                {
+                    "Id": "fc741dfe-f7ce-4a66-899d-a322b1326112",
+                    "RoomNo": "13",
+                    "IsBooked": false,
+                    "CreatedAt": "7/6/2021",
+                    "UpdatedAt": "8/27/2021"
+                },
+                {
+                    "Id": "65ee43a9-fde2-407e-87af-49feab88afe4",
+                    "RoomNo": "14",
+                    "IsBooked": false,
+                    "CreatedAt": "5/26/2021",
+                    "UpdatedAt": "4/29/2021"
+                },
+                {
+                    "Id": "c326bf0e-71e2-479e-9bc7-17d9343a0c2e",
+                    "RoomNo": "15",
+                    "IsBooked": false,
+                    "CreatedAt": "11/2/2020",
+                    "UpdatedAt": "9/23/2021"
+                }
+            ],
             "CreatedAt": "5/6/2021",
             "UpdatedAt": "10/19/2020"
-          }
-        ],
-        "CreatedAt": "10/13/2020",
-        "UpdatedAt": "12/20/2020"
-      },
-      {
-        "id": "7866f539-898a-43f8-b908-69f577f683e7",
-        "Name": "Executive",
-        "Description": "Scarification of pleura",
-        "Price": 29309.29,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "id": "f2bbd1af-f7e1-490e-bf92-1090a75f18a1",
-            "RoomNo": "305",
-            "IsBooked": false,
-            "CreatedAt": "1/1/2021",
-            "UpdatedAt": "11/23/2020"
-          },
-          {
-            "Id": "a2fc6183-0510-4932-8234-87a1e4e14d2d",
-            "RoomNo": "9",
-            "IsBooked": true,
-            "CreatedAt": "4/17/2021",
-            "UpdatedAt": "7/5/2021"
-          },
-          {
-            "Id": "513e937c-b73f-4152-9832-0c5a9d6d74df",
-            "RoomNo": "10",
-            "IsBooked": false,
-            "CreatedAt": "10/16/2020",
-            "UpdatedAt": "6/13/2021"
-          },
-          {
-            "Id": "beb4b286-f985-494b-9180-0c42f12f3c20",
-            "RoomNo": "11",
-            "IsBooked": false,
-            "CreatedAt": "2/17/2021",
-            "UpdatedAt": "6/3/2021"
-          }
-        ],
-        "CreatedAt": "1/21/2021",
-        "UpdatedAt": "4/23/2021"
-      },
-      {
-        "id": "b0160b1a-643f-4b6c-9dc0-1c4448f6cd04",
-        "Name": "Presidential",
-        "Description": "Limb lengthen proc NEC",
-        "Price": 92810.74,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "19137c99-1416-4dd9-baaf-1f0d434aadaa",
-            "RoomNo": "12",
-            "IsBooked": true,
-            "CreatedAt": "11/5/2020",
-            "UpdatedAt": "1/27/2021"
-          },
-          {
-            "Id": "fc741dfe-f7ce-4a66-899d-a322b1326112",
-            "RoomNo": "13",
-            "IsBooked": false,
-            "CreatedAt": "7/6/2021",
-            "UpdatedAt": "8/27/2021"
-          },
-          {
-            "Id": "65ee43a9-fde2-407e-87af-49feab88afe4",
-            "RoomNo": "14",
-            "IsBooked": false,
-            "CreatedAt": "5/26/2021",
-            "UpdatedAt": "4/29/2021"
-          },
-          {
-            "Id": "c326bf0e-71e2-479e-9bc7-17d9343a0c2e",
-            "RoomNo": "15",
-            "IsBooked": false,
-            "CreatedAt": "11/2/2020",
-            "UpdatedAt": "9/23/2021"
-          }
-        ],
-        "CreatedAt": "5/6/2021",
-        "UpdatedAt": "10/19/2020"
-      }
+        }
     ],
     "CreatedAt": "1/15/2021",
     "UpdatedAt": "1/22/2021"
@@ -885,77 +900,79 @@
       }
     ],
     "RoomTypes": [
-      {
-        "id": "c4a263d1-e965-42a6-a929-560e0e00c4e4",
-        "Name": "Single",
-        "Description": "Metatars/tars inj op NOS",
-        "Price": 35190.36,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "id": "1f60a101-8ccc-432d-ae08-785751fdc052",
-            "RoomNo": "303",
-            "IsBooked": false,
-            "CreatedAt": "1/21/2021",
-            "UpdatedAt": "4/23/2021"
-          },
-          {
-            "id": "d37f26f0-f550-45b1-a203-550733f842f7",
-            "RoomNo": "304",
-            "IsBooked": true,
-            "CreatedAt": "5/6/2021",
-            "UpdatedAt": "10/19/2020"
-          },
-          {
-            "id": "62683e8c-eabb-4f87-a046-b2f54d0bc0e0",
-            "RoomNo": "305",
-            "IsBooked": false,
-            "CreatedAt": "1/1/2021",
-            "UpdatedAt": "11/23/2020"
-          },
-          {
-            "Id": "9b3ec86c-2410-4ad8-b554-95e4f7efdc51",
-            "RoomNo": "9",
-            "IsBooked": true,
-            "CreatedAt": "4/17/2021",
-            "UpdatedAt": "7/5/2021"
-          },
-          {
-            "Id": "e67eefd2-c3d7-425a-b848-4008c613f9e7",
-            "RoomNo": "10",
-            "IsBooked": false,
+        {
+            "id": "c4a263d1-e965-42a6-a929-560e0e00c4e4",
+            "Name": "Single",
+            "Description": "Metatars/tars inj op NOS",
+            "Price": 35190.36,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098448/Hotel%20Listings/single4_aazzsk.jpg",
+            "Rooms": [
+                {
+                    "id": "1f60a101-8ccc-432d-ae08-785751fdc052",
+                    "RoomNo": "303",
+                    "IsBooked": false,
+                    "CreatedAt": "1/21/2021",
+                    "UpdatedAt": "4/23/2021"
+                },
+                {
+                    "id": "d37f26f0-f550-45b1-a203-550733f842f7",
+                    "RoomNo": "304",
+                    "IsBooked": true,
+                    "CreatedAt": "5/6/2021",
+                    "UpdatedAt": "10/19/2020"
+                },
+                {
+                    "id": "62683e8c-eabb-4f87-a046-b2f54d0bc0e0",
+                    "RoomNo": "305",
+                    "IsBooked": false,
+                    "CreatedAt": "1/1/2021",
+                    "UpdatedAt": "11/23/2020"
+                },
+                {
+                    "Id": "9b3ec86c-2410-4ad8-b554-95e4f7efdc51",
+                    "RoomNo": "9",
+                    "IsBooked": true,
+                    "CreatedAt": "4/17/2021",
+                    "UpdatedAt": "7/5/2021"
+                },
+                {
+                    "Id": "e67eefd2-c3d7-425a-b848-4008c613f9e7",
+                    "RoomNo": "10",
+                    "IsBooked": false,
+                    "CreatedAt": "10/16/2020",
+                    "UpdatedAt": "6/13/2021"
+                }
+            ],
+            "CreatedAt": "10/13/2020",
+            "UpdatedAt": "12/20/2020"
+        },
+        {
+            "id": "3cfea1da-f2e7-469b-be64-f5202bf26bae",
+            "Name": "Double",
+            "Description": "Patellar biopsy",
+            "Price": 48307.42,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098446/Hotel%20Listings/double2_kdlqde.png",
+            "Rooms": [
+                {
+                    "Id": "d8bfb0a7-1720-492e-be1a-87aa73acb5ea",
+                    "RoomNo": "11",
+                    "IsBooked": false,
+                    "CreatedAt": "2/17/2021",
+                    "UpdatedAt": "6/3/2021"
+                },
+                {
+                    "Id": "effcba93-6ef8-4f00-b5e7-26cd99bfaf27",
+                    "RoomNo": "12",
+                    "IsBooked": true,
+                    "CreatedAt": "11/5/2020",
+                    "UpdatedAt": "1/27/2021"
+                }
+            ],
             "CreatedAt": "10/16/2020",
-            "UpdatedAt": "6/13/2021"
-          }
-        ],
-        "CreatedAt": "10/13/2020",
-        "UpdatedAt": "12/20/2020"
-      },
-      {
-        "id": "3cfea1da-f2e7-469b-be64-f5202bf26bae",
-        "Name": "Double",
-        "Description": "Patellar biopsy",
-        "Price": 48307.42,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "d8bfb0a7-1720-492e-be1a-87aa73acb5ea",
-            "RoomNo": "11",
-            "IsBooked": false,
-            "CreatedAt": "2/17/2021",
-            "UpdatedAt": "6/3/2021"
-          },
-          {
-            "Id": "effcba93-6ef8-4f00-b5e7-26cd99bfaf27",
-            "RoomNo": "12",
-            "IsBooked": true,
-            "CreatedAt": "11/5/2020",
-            "UpdatedAt": "1/27/2021"
-          }
-        ],
-        "CreatedAt": "10/16/2020",
-        "UpdatedAt": "5/12/2021"
-      }
+            "UpdatedAt": "5/12/2021"
+        }
     ],
     "CreatedAt": "12/22/2020",
     "UpdatedAt": "12/20/2020"
@@ -1021,91 +1038,93 @@
       }
     ],
     "RoomTypes": [
-      {
-        "id": "d0cf0043-26d3-4f25-869d-0d5bfc28d8b1",
-        "Name": "Executive",
-        "Description": "Scarification of pleura",
-        "Price": 39329.29,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "2b2509cb-70fb-47e1-b016-ea90b87f7e2d",
-            "RoomNo": "11",
-            "IsBooked": false,
-            "CreatedAt": "2/17/2021",
-            "UpdatedAt": "6/3/2021"
-          },
-          {
-            "Id": "a88f03d8-b9cd-4576-9aa2-ea85452375bc",
-            "RoomNo": "12",
-            "IsBooked": true,
-            "CreatedAt": "11/5/2020",
-            "UpdatedAt": "1/27/2021"
-          },
-          {
-            "Id": "9fc9062a-061f-4f52-8c74-30c2b8724a83",
-            "RoomNo": "13",
-            "IsBooked": false,
-            "CreatedAt": "7/6/2021",
-            "UpdatedAt": "8/27/2021"
-          },
-          {
-            "Id": "4afb3ded-58c2-4f67-9907-8193f1112020",
-            "RoomNo": "14",
-            "IsBooked": false,
-            "CreatedAt": "5/26/2021",
-            "UpdatedAt": "4/29/2021"
-          }
-        ],
-        "CreatedAt": "1/21/2021",
-        "UpdatedAt": "4/23/2021"
-      },
-      {
-        "id": "e84afa98-72ee-4aa7-8f30-4dc917d3f968",
-        "Name": "Presidential",
-        "Description": "Limb lengthen proc NEC",
-        "Price": 33321.74,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "82237ba4-9d6f-4150-bb19-f5ca40b651f3",
-            "RoomNo": "16",
-            "IsBooked": false,
-            "CreatedAt": "4/28/2021",
-            "UpdatedAt": "12/13/2020"
-          },
-          {
-            "Id": "5ba721c0-1a5f-44e3-83c6-2013fac58398",
-            "RoomNo": "17",
-            "IsBooked": false,
-            "CreatedAt": "2/23/2021",
-            "UpdatedAt": "7/5/2021"
-          },
-          {
-            "Id": "331bff1b-497e-499e-b80b-e837d62cc439",
-            "RoomNo": "18",
-            "IsBooked": true,
-            "CreatedAt": "1/16/2021",
-            "UpdatedAt": "9/29/2020"
-          },
-          {
-            "Id": "81f3088a-908c-4088-ad83-6d608339d8ee",
-            "RoomNo": "19",
-            "IsBooked": true,
-            "CreatedAt": "1/22/2021",
-            "UpdatedAt": "12/16/2020"
-          },
-          {
-            "Id": "750deb30-4388-4225-910b-a2b9b84469b8",
-            "RoomNo": "20",
-            "IsBooked": true,
-            "CreatedAt": "11/28/2020",
-            "UpdatedAt": "7/18/2021"
-          }
-        ],
-        "CreatedAt": "5/6/2021",
-        "UpdatedAt": "10/19/2020"
-      }
+        {
+            "id": "d0cf0043-26d3-4f25-869d-0d5bfc28d8b1",
+            "Name": "Executive",
+            "Description": "Scarification of pleura",
+            "Price": 39329.29,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098446/Hotel%20Listings/executive1_oq6uni.jpg",
+            "Rooms": [
+                {
+                    "Id": "2b2509cb-70fb-47e1-b016-ea90b87f7e2d",
+                    "RoomNo": "11",
+                    "IsBooked": false,
+                    "CreatedAt": "2/17/2021",
+                    "UpdatedAt": "6/3/2021"
+                },
+                {
+                    "Id": "a88f03d8-b9cd-4576-9aa2-ea85452375bc",
+                    "RoomNo": "12",
+                    "IsBooked": true,
+                    "CreatedAt": "11/5/2020",
+                    "UpdatedAt": "1/27/2021"
+                },
+                {
+                    "Id": "9fc9062a-061f-4f52-8c74-30c2b8724a83",
+                    "RoomNo": "13",
+                    "IsBooked": false,
+                    "CreatedAt": "7/6/2021",
+                    "UpdatedAt": "8/27/2021"
+                },
+                {
+                    "Id": "4afb3ded-58c2-4f67-9907-8193f1112020",
+                    "RoomNo": "14",
+                    "IsBooked": false,
+                    "CreatedAt": "5/26/2021",
+                    "UpdatedAt": "4/29/2021"
+                }
+            ],
+            "CreatedAt": "1/21/2021",
+            "UpdatedAt": "4/23/2021"
+        },
+        {
+            "id": "e84afa98-72ee-4aa7-8f30-4dc917d3f968",
+            "Name": "Presidential",
+            "Description": "Limb lengthen proc NEC",
+            "Price": 33321.74,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098447/Hotel%20Listings/presidential1_xu1mpx.jpg",
+            "Rooms": [
+                {
+                    "Id": "82237ba4-9d6f-4150-bb19-f5ca40b651f3",
+                    "RoomNo": "16",
+                    "IsBooked": false,
+                    "CreatedAt": "4/28/2021",
+                    "UpdatedAt": "12/13/2020"
+                },
+                {
+                    "Id": "5ba721c0-1a5f-44e3-83c6-2013fac58398",
+                    "RoomNo": "17",
+                    "IsBooked": false,
+                    "CreatedAt": "2/23/2021",
+                    "UpdatedAt": "7/5/2021"
+                },
+                {
+                    "Id": "331bff1b-497e-499e-b80b-e837d62cc439",
+                    "RoomNo": "18",
+                    "IsBooked": true,
+                    "CreatedAt": "1/16/2021",
+                    "UpdatedAt": "9/29/2020"
+                },
+                {
+                    "Id": "81f3088a-908c-4088-ad83-6d608339d8ee",
+                    "RoomNo": "19",
+                    "IsBooked": true,
+                    "CreatedAt": "1/22/2021",
+                    "UpdatedAt": "12/16/2020"
+                },
+                {
+                    "Id": "750deb30-4388-4225-910b-a2b9b84469b8",
+                    "RoomNo": "20",
+                    "IsBooked": true,
+                    "CreatedAt": "11/28/2020",
+                    "UpdatedAt": "7/18/2021"
+                }
+            ],
+            "CreatedAt": "5/6/2021",
+            "UpdatedAt": "10/19/2020"
+        }
     ],
     "CreatedAt": "10/17/2020",
     "UpdatedAt": "9/23/2021"
@@ -1180,123 +1199,126 @@
 
     ],
     "RoomTypes": [
-      {
-        "id": "a8834f5a-4d41-4eea-a13f-effad04cad5e",
-        "Name": "Single",
-        "Description": "Metatars/tars inj op NOS",
-        "Price": 38220.36,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "239ae79d-dae7-4774-94f0-f74eb03f9d2d",
-            "RoomNo": "13",
-            "IsBooked": false,
-            "CreatedAt": "7/6/2021",
-            "UpdatedAt": "8/27/2021"
-          },
-          {
-            "Id": "da44c905-99ea-452e-aabe-1830698c4351",
-            "RoomNo": "14",
-            "IsBooked": false,
-            "CreatedAt": "5/26/2021",
-            "UpdatedAt": "4/29/2021"
-          },
-          {
-            "Id": "37307bdd-cfb7-4e21-b894-d6d47692bf62",
-            "RoomNo": "15",
-            "IsBooked": false,
-            "CreatedAt": "11/2/2020",
-            "UpdatedAt": "9/23/2021"
-          },
-          {
-            "Id": "6acad7c8-526d-43e6-b721-b966d9b51d67",
-            "RoomNo": "16",
-            "IsBooked": false,
-            "CreatedAt": "4/28/2021",
-            "UpdatedAt": "12/13/2020"
-          },
-          {
-            "Id": "0fa7d9ec-3c72-4f8d-832d-e130d84995ab",
-            "RoomNo": "17",
-            "IsBooked": false,
-            "CreatedAt": "2/23/2021",
-            "UpdatedAt": "7/5/2021"
-          }
-        ],
-        "CreatedAt": "10/13/2020",
-        "UpdatedAt": "12/20/2020"
-      },
-      {
-        "id": "637a73d8-cf4b-425d-b120-be6467eb11aa",
-        "Name": "Double",
-        "Description": "Patellar biopsy",
-        "Price": 32907.42,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "fa261912-141a-4728-b8f2-da46e8d95323",
-            "RoomNo": "20",
-            "IsBooked": true,
-            "CreatedAt": "11/28/2020",
-            "UpdatedAt": "7/18/2021"
-          },
-          {
-            "Id": "9789f55f-7562-4404-abde-6af7d6b53ba2",
-            "RoomNo": "21",
-            "IsBooked": false,
-            "CreatedAt": "11/4/2020",
-            "UpdatedAt": "6/30/2021"
-          }
-        ],
-        "CreatedAt": "10/16/2020",
-        "UpdatedAt": "5/12/2021"
-      },
-      {
-        "id": "7e9b9bfc-2ca6-43e6-8e85-a5ec31fbf700",
-        "Name": "Executive",
-        "Description": "Scarification of pleura",
-        "Price": 43209.29,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "id": "296e3fea-9216-4c34-b060-ee67dad0cefd",
-            "RoomNo": "302",
-            "IsBooked": true,
+        {
+            "id": "a8834f5a-4d41-4eea-a13f-effad04cad5e",
+            "Name": "Single",
+            "Description": "Metatars/tars inj op NOS",
+            "Price": 38220.36,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098448/Hotel%20Listings/single5_sanafp.jpg",
+            "Rooms": [
+                {
+                    "Id": "239ae79d-dae7-4774-94f0-f74eb03f9d2d",
+                    "RoomNo": "13",
+                    "IsBooked": false,
+                    "CreatedAt": "7/6/2021",
+                    "UpdatedAt": "8/27/2021"
+                },
+                {
+                    "Id": "da44c905-99ea-452e-aabe-1830698c4351",
+                    "RoomNo": "14",
+                    "IsBooked": false,
+                    "CreatedAt": "5/26/2021",
+                    "UpdatedAt": "4/29/2021"
+                },
+                {
+                    "Id": "37307bdd-cfb7-4e21-b894-d6d47692bf62",
+                    "RoomNo": "15",
+                    "IsBooked": false,
+                    "CreatedAt": "11/2/2020",
+                    "UpdatedAt": "9/23/2021"
+                },
+                {
+                    "Id": "6acad7c8-526d-43e6-b721-b966d9b51d67",
+                    "RoomNo": "16",
+                    "IsBooked": false,
+                    "CreatedAt": "4/28/2021",
+                    "UpdatedAt": "12/13/2020"
+                },
+                {
+                    "Id": "0fa7d9ec-3c72-4f8d-832d-e130d84995ab",
+                    "RoomNo": "17",
+                    "IsBooked": false,
+                    "CreatedAt": "2/23/2021",
+                    "UpdatedAt": "7/5/2021"
+                }
+            ],
+            "CreatedAt": "10/13/2020",
+            "UpdatedAt": "12/20/2020"
+        },
+        {
+            "id": "637a73d8-cf4b-425d-b120-be6467eb11aa",
+            "Name": "Double",
+            "Description": "Patellar biopsy",
+            "Price": 32907.42,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098445/Hotel%20Listings/double5_fqfyws.jpg",
+            "Rooms": [
+                {
+                    "Id": "fa261912-141a-4728-b8f2-da46e8d95323",
+                    "RoomNo": "20",
+                    "IsBooked": true,
+                    "CreatedAt": "11/28/2020",
+                    "UpdatedAt": "7/18/2021"
+                },
+                {
+                    "Id": "9789f55f-7562-4404-abde-6af7d6b53ba2",
+                    "RoomNo": "21",
+                    "IsBooked": false,
+                    "CreatedAt": "11/4/2020",
+                    "UpdatedAt": "6/30/2021"
+                }
+            ],
             "CreatedAt": "10/16/2020",
             "UpdatedAt": "5/12/2021"
-          },
-          {
-            "id": "4b708f8e-4f57-4f56-9d68-9fc3fdb9c949",
-            "RoomNo": "303",
-            "IsBooked": false,
+        },
+        {
+            "id": "7e9b9bfc-2ca6-43e6-8e85-a5ec31fbf700",
+            "Name": "Presidential",
+            "Description": "Scarification of pleura",
+            "Price": 43209.29,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098447/Hotel%20Listings/presidential2_hrnorx.jpg",
+            "Rooms": [
+                {
+                    "id": "296e3fea-9216-4c34-b060-ee67dad0cefd",
+                    "RoomNo": "302",
+                    "IsBooked": true,
+                    "CreatedAt": "10/16/2020",
+                    "UpdatedAt": "5/12/2021"
+                },
+                {
+                    "id": "4b708f8e-4f57-4f56-9d68-9fc3fdb9c949",
+                    "RoomNo": "303",
+                    "IsBooked": false,
+                    "CreatedAt": "1/21/2021",
+                    "UpdatedAt": "4/23/2021"
+                },
+                {
+                    "id": "c2b4f0c3-74fa-4976-bad8-43d811eee494",
+                    "RoomNo": "304",
+                    "IsBooked": true,
+                    "CreatedAt": "5/6/2021",
+                    "UpdatedAt": "10/19/2020"
+                },
+                {
+                    "id": "3909ef3e-1b70-44f5-8c48-0138e6603c29",
+                    "RoomNo": "305",
+                    "IsBooked": false,
+                    "CreatedAt": "1/1/2021",
+                    "UpdatedAt": "11/23/2020"
+                },
+                {
+                    "Id": "e5778a9c-e7a5-4585-95b6-4aecd86728e2",
+                    "RoomNo": "320",
+                    "IsBooked": true,
+                    "CreatedAt": "4/17/2021",
+                    "UpdatedAt": "7/5/2021"
+                }
+            ],
             "CreatedAt": "1/21/2021",
             "UpdatedAt": "4/23/2021"
-          },
-          {
-            "id": "c2b4f0c3-74fa-4976-bad8-43d811eee494",
-            "RoomNo": "304",
-            "IsBooked": true,
-            "CreatedAt": "5/6/2021",
-            "UpdatedAt": "10/19/2020"
-          },
-          {
-            "id": "3909ef3e-1b70-44f5-8c48-0138e6603c29",
-            "RoomNo": "305",
-            "IsBooked": false,
-            "CreatedAt": "1/1/2021",
-            "UpdatedAt": "11/23/2020"
-          },
-          {
-            "Id": "e5778a9c-e7a5-4585-95b6-4aecd86728e2",
-            "RoomNo": "320",
-            "IsBooked": true,
-            "CreatedAt": "4/17/2021",
-            "UpdatedAt": "7/5/2021"
-          }
-        ],
-        "CreatedAt": "1/21/2021",
-        "UpdatedAt": "4/23/2021"
-      }
+        }
     ],
     "CreatedAt": "3/22/2021",
     "UpdatedAt": "10/20/2020"
@@ -1378,98 +1400,100 @@
       }
     ],
     "RoomTypes": [
-      {
-        "id": "eda30e08-30f2-4ffb-b526-279fcc46c89e",
-        "Name": "Single",
-        "Description": "Metatars/tars inj op NOS",
-        "Price": 39400.37,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "c5a10a18-f5e7-473c-9641-dffee300e3d2",
-            "RoomNo": "11",
-            "IsBooked": false,
-            "CreatedAt": "2/17/2021",
-            "UpdatedAt": "6/3/2021"
-          },
-          {
-            "Id": "55739dde-400d-4665-90b0-d474184fe389",
-            "RoomNo": "12",
-            "IsBooked": true,
-            "CreatedAt": "11/5/2020",
-            "UpdatedAt": "1/27/2021"
-          },
-          {
-            "Id": "27db3068-5ef1-4bdb-921c-3b1de9bf875d",
-            "RoomNo": "13",
-            "IsBooked": false,
-            "CreatedAt": "7/6/2021",
-            "UpdatedAt": "8/27/2021"
-          },
-          {
-            "Id": "cef5dbb3-f721-4aae-a414-c701579a64e2",
-            "RoomNo": "14",
-            "IsBooked": false,
-            "CreatedAt": "5/26/2021",
-            "UpdatedAt": "4/29/2021"
-          },
-          {
-            "Id": "8b1cfe9d-2a5e-448d-b58c-165d39db3033",
-            "RoomNo": "15",
-            "IsBooked": false,
-            "CreatedAt": "11/2/2020",
-            "UpdatedAt": "9/23/2021"
-          },
-          {
-            "Id": "7fd888ca-acc1-4f9b-999a-e73d8326b2b1",
-            "RoomNo": "16",
-            "IsBooked": false,
-            "CreatedAt": "4/28/2021",
-            "UpdatedAt": "12/13/2020"
-          }
-        ],
-        "CreatedAt": "10/13/2020",
-        "UpdatedAt": "12/20/2020"
-      },
-      {
-        "id": "0c7490ad-8978-48aa-975c-1109633c0c71",
-        "Name": "Presidential",
-        "Description": "Limb lengthen proc NEC",
-        "Price": 87651.74,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "545f5e61-b1a7-4611-90cb-2b1adabde0e1",
-            "RoomNo": "18",
-            "IsBooked": true,
-            "CreatedAt": "1/16/2021",
-            "UpdatedAt": "9/29/2020"
-          },
-          {
-            "Id": "37a7e368-7b54-4e27-8c94-392121433c59",
-            "RoomNo": "19",
-            "IsBooked": true,
-            "CreatedAt": "1/22/2021",
-            "UpdatedAt": "12/16/2020"
-          },
-          {
-            "Id": "dd306f9c-e7cd-4a83-9f0c-63fdb71fda92",
-            "RoomNo": "20",
-            "IsBooked": true,
-            "CreatedAt": "11/28/2020",
-            "UpdatedAt": "7/18/2021"
-          },
-          {
-            "Id": "03bd0e5d-932f-4f35-8638-4f50b334b053",
-            "RoomNo": "21",
-            "IsBooked": false,
-            "CreatedAt": "11/4/2020",
-            "UpdatedAt": "6/30/2021"
-          }
-        ],
-        "CreatedAt": "5/6/2021",
-        "UpdatedAt": "10/19/2020"
-      }
+        {
+            "id": "eda30e08-30f2-4ffb-b526-279fcc46c89e",
+            "Name": "Single",
+            "Description": "Metatars/tars inj op NOS",
+            "Price": 39400.37,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098447/Hotel%20Listings/single2_yyvlbp.jpg",
+            "Rooms": [
+                {
+                    "Id": "c5a10a18-f5e7-473c-9641-dffee300e3d2",
+                    "RoomNo": "11",
+                    "IsBooked": false,
+                    "CreatedAt": "2/17/2021",
+                    "UpdatedAt": "6/3/2021"
+                },
+                {
+                    "Id": "55739dde-400d-4665-90b0-d474184fe389",
+                    "RoomNo": "12",
+                    "IsBooked": true,
+                    "CreatedAt": "11/5/2020",
+                    "UpdatedAt": "1/27/2021"
+                },
+                {
+                    "Id": "27db3068-5ef1-4bdb-921c-3b1de9bf875d",
+                    "RoomNo": "13",
+                    "IsBooked": false,
+                    "CreatedAt": "7/6/2021",
+                    "UpdatedAt": "8/27/2021"
+                },
+                {
+                    "Id": "cef5dbb3-f721-4aae-a414-c701579a64e2",
+                    "RoomNo": "14",
+                    "IsBooked": false,
+                    "CreatedAt": "5/26/2021",
+                    "UpdatedAt": "4/29/2021"
+                },
+                {
+                    "Id": "8b1cfe9d-2a5e-448d-b58c-165d39db3033",
+                    "RoomNo": "15",
+                    "IsBooked": false,
+                    "CreatedAt": "11/2/2020",
+                    "UpdatedAt": "9/23/2021"
+                },
+                {
+                    "Id": "7fd888ca-acc1-4f9b-999a-e73d8326b2b1",
+                    "RoomNo": "16",
+                    "IsBooked": false,
+                    "CreatedAt": "4/28/2021",
+                    "UpdatedAt": "12/13/2020"
+                }
+            ],
+            "CreatedAt": "10/13/2020",
+            "UpdatedAt": "12/20/2020"
+        },
+        {
+            "id": "0c7490ad-8978-48aa-975c-1109633c0c71",
+            "Name": "Double",
+            "Description": "Limb lengthen proc NEC",
+            "Price": 87651.74,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098445/Hotel%20Listings/double6_gotjpw.jpg",
+            "Rooms": [
+                {
+                    "Id": "545f5e61-b1a7-4611-90cb-2b1adabde0e1",
+                    "RoomNo": "18",
+                    "IsBooked": true,
+                    "CreatedAt": "1/16/2021",
+                    "UpdatedAt": "9/29/2020"
+                },
+                {
+                    "Id": "37a7e368-7b54-4e27-8c94-392121433c59",
+                    "RoomNo": "19",
+                    "IsBooked": true,
+                    "CreatedAt": "1/22/2021",
+                    "UpdatedAt": "12/16/2020"
+                },
+                {
+                    "Id": "dd306f9c-e7cd-4a83-9f0c-63fdb71fda92",
+                    "RoomNo": "20",
+                    "IsBooked": true,
+                    "CreatedAt": "11/28/2020",
+                    "UpdatedAt": "7/18/2021"
+                },
+                {
+                    "Id": "03bd0e5d-932f-4f35-8638-4f50b334b053",
+                    "RoomNo": "21",
+                    "IsBooked": false,
+                    "CreatedAt": "11/4/2020",
+                    "UpdatedAt": "6/30/2021"
+                }
+            ],
+            "CreatedAt": "5/6/2021",
+            "UpdatedAt": "10/19/2020"
+        }
     ],
     "CreatedAt": "7/26/2021",
     "UpdatedAt": "7/26/2021"
@@ -1543,112 +1567,114 @@
       }
     ],
     "RoomTypes": [
-      {
-        "id": "84c7e69d-8fe5-4302-ba57-36a9f559a8ad",
-        "Name": "Executive",
-        "Description": "Scarification of pleura",
-        "Price": 8979.29,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "id": "7f4c12a4-8a28-4147-867b-3c26174de26c",
-            "RoomNo": "4",
-            "IsBooked": false,
-            "CreatedAt": "1/1/2021",
-            "UpdatedAt": "11/23/2020"
-          },
-          {
-            "Id": "1da7eea8-e270-4c02-a551-7e1eb08b1673",
-            "RoomNo": "9",
-            "IsBooked": true,
-            "CreatedAt": "4/17/2021",
-            "UpdatedAt": "7/5/2021"
-          },
-          {
-            "Id": "8cbddaa7-a239-46e4-a070-d875ee56239b",
-            "RoomNo": "10",
-            "IsBooked": false,
-            "CreatedAt": "10/16/2020",
-            "UpdatedAt": "6/13/2021"
-          },
-          {
-            "Id": "afb86ce3-237a-48d1-adfd-2e831d22c7ae",
-            "RoomNo": "11",
-            "IsBooked": false,
-            "CreatedAt": "2/17/2021",
-            "UpdatedAt": "6/3/2021"
-          },
-          {
-            "Id": "ad707043-a2de-4761-a7f3-2aa512327660",
-            "RoomNo": "12",
-            "IsBooked": true,
-            "CreatedAt": "11/5/2020",
-            "UpdatedAt": "1/27/2021"
-          },
-          {
-            "Id": "dd652fa2-0719-47dd-84a8-f71990884c29",
-            "RoomNo": "13",
-            "IsBooked": false,
-            "CreatedAt": "7/6/2021",
-            "UpdatedAt": "8/27/2021"
-          }
-        ],
-        "CreatedAt": "1/21/2021",
-        "UpdatedAt": "4/23/2021"
-      },
-      {
-        "id": "8a1691bd-da76-493b-bad7-e8598e7ebcc1",
-        "Name": "Presidential",
-        "Description": "Limb lengthen proc NEC",
-        "Price": 88971.74,
-        "Discount": 0.1,
-        "Rooms": [
-          {
-            "Id": "c6f0ef59-de74-479f-9cab-9a06d04ec6a7",
-            "RoomNo": "15",
-            "IsBooked": false,
-            "CreatedAt": "11/2/2020",
-            "UpdatedAt": "9/23/2021"
-          },
-          {
-            "Id": "138ecd82-02c9-475f-97e0-64508298bef5",
-            "RoomNo": "b29b2b57-e9fc-4b32-9e51-7d2671b3b98e",
-            "IsBooked": false,
-            "CreatedAt": "4/28/2021",
-            "UpdatedAt": "12/13/2020"
-          },
-          {
-            "Id": "bc432fdd-29ed-4478-b39b-325846eae3c4",
-            "RoomNo": "17",
-            "IsBooked": false,
-            "CreatedAt": "2/23/2021",
-            "UpdatedAt": "7/5/2021"
-          },
-          {
-            "Id": "01028c13-728b-42a8-ac2c-b918fe0aed1d",
-            "RoomNo": "18",
-            "IsBooked": true,
-            "CreatedAt": "1/16/2021",
-            "UpdatedAt": "9/29/2020"
-          },
-          {
-            "Id": "53ba4864-8b90-45f8-b74f-e4aa5452402b",
-            "RoomNo": "19",
-            "IsBooked": true,
-            "CreatedAt": "1/22/2021",
-            "UpdatedAt": "12/16/2020"
-          },
-          {
-            "Id": "4d6ff4d9-d1d0-4ac9-8e58-157fd4b06f3f",
-            "RoomNo": "20",
-            "IsBooked": true,
-            "CreatedAt": "11/28/2020",
-            "UpdatedAt": "7/18/2021"
-          }
-        ],
-        "CreatedAt": "5/6/2021",
-        "UpdatedAt": "10/19/2020"
-      }
+        {
+            "id": "84c7e69d-8fe5-4302-ba57-36a9f559a8ad",
+            "Name": "Double",
+            "Description": "Scarification of pleura",
+            "Price": 8979.29,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098445/Hotel%20Listings/double3_d0l6rr.jpg",
+            "Rooms": [
+                {
+                    "id": "7f4c12a4-8a28-4147-867b-3c26174de26c",
+                    "RoomNo": "4",
+                    "IsBooked": false,
+                    "CreatedAt": "1/1/2021",
+                    "UpdatedAt": "11/23/2020"
+                },
+                {
+                    "Id": "1da7eea8-e270-4c02-a551-7e1eb08b1673",
+                    "RoomNo": "9",
+                    "IsBooked": true,
+                    "CreatedAt": "4/17/2021",
+                    "UpdatedAt": "7/5/2021"
+                },
+                {
+                    "Id": "8cbddaa7-a239-46e4-a070-d875ee56239b",
+                    "RoomNo": "10",
+                    "IsBooked": false,
+                    "CreatedAt": "10/16/2020",
+                    "UpdatedAt": "6/13/2021"
+                },
+                {
+                    "Id": "afb86ce3-237a-48d1-adfd-2e831d22c7ae",
+                    "RoomNo": "11",
+                    "IsBooked": false,
+                    "CreatedAt": "2/17/2021",
+                    "UpdatedAt": "6/3/2021"
+                },
+                {
+                    "Id": "ad707043-a2de-4761-a7f3-2aa512327660",
+                    "RoomNo": "12",
+                    "IsBooked": true,
+                    "CreatedAt": "11/5/2020",
+                    "UpdatedAt": "1/27/2021"
+                },
+                {
+                    "Id": "dd652fa2-0719-47dd-84a8-f71990884c29",
+                    "RoomNo": "13",
+                    "IsBooked": false,
+                    "CreatedAt": "7/6/2021",
+                    "UpdatedAt": "8/27/2021"
+                }
+            ],
+            "CreatedAt": "1/21/2021",
+            "UpdatedAt": "4/23/2021"
+        },
+        {
+            "id": "8a1691bd-da76-493b-bad7-e8598e7ebcc1",
+            "Name": "Presidential",
+            "Description": "Limb lengthen proc NEC",
+            "Price": 88971.74,
+            "Discount": 0.1,
+            "Thumbnail": "https://res.cloudinary.com/decagonsq008/image/upload/v1633098446/Hotel%20Listings/double7_ebpy3t.jpg",
+            "Rooms": [
+                {
+                    "Id": "c6f0ef59-de74-479f-9cab-9a06d04ec6a7",
+                    "RoomNo": "15",
+                    "IsBooked": false,
+                    "CreatedAt": "11/2/2020",
+                    "UpdatedAt": "9/23/2021"
+                },
+                {
+                    "Id": "138ecd82-02c9-475f-97e0-64508298bef5",
+                    "RoomNo": "b29b2b57-e9fc-4b32-9e51-7d2671b3b98e",
+                    "IsBooked": false,
+                    "CreatedAt": "4/28/2021",
+                    "UpdatedAt": "12/13/2020"
+                },
+                {
+                    "Id": "bc432fdd-29ed-4478-b39b-325846eae3c4",
+                    "RoomNo": "17",
+                    "IsBooked": false,
+                    "CreatedAt": "2/23/2021",
+                    "UpdatedAt": "7/5/2021"
+                },
+                {
+                    "Id": "01028c13-728b-42a8-ac2c-b918fe0aed1d",
+                    "RoomNo": "18",
+                    "IsBooked": true,
+                    "CreatedAt": "1/16/2021",
+                    "UpdatedAt": "9/29/2020"
+                },
+                {
+                    "Id": "53ba4864-8b90-45f8-b74f-e4aa5452402b",
+                    "RoomNo": "19",
+                    "IsBooked": true,
+                    "CreatedAt": "1/22/2021",
+                    "UpdatedAt": "12/16/2020"
+                },
+                {
+                    "Id": "4d6ff4d9-d1d0-4ac9-8e58-157fd4b06f3f",
+                    "RoomNo": "20",
+                    "IsBooked": true,
+                    "CreatedAt": "11/28/2020",
+                    "UpdatedAt": "7/18/2021"
+                }
+            ],
+            "CreatedAt": "5/6/2021",
+            "UpdatedAt": "10/19/2020"
+        }
     ],
     "CreatedAt": "7/19/2021",
     "UpdatedAt": "3/4/2021"
