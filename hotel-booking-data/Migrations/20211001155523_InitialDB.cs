@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace hotel_booking_data.Migrations
 {
-    public partial class InitialMig : Migration
+    public partial class InitialDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -289,6 +289,28 @@ namespace hotel_booking_data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Galleries",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    HotelId = table.Column<string>(type: "text", nullable: true),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true),
+                    IsFeature = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Galleries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Galleries_Hotels_HotelId",
+                        column: x => x.HotelId,
+                        principalTable: "Hotels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Ratings",
                 columns: table => new
                 {
@@ -354,6 +376,7 @@ namespace hotel_booking_data.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     Discount = table.Column<decimal>(type: "numeric", nullable: false),
+                    Thumbnail = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
@@ -490,6 +513,11 @@ namespace hotel_booking_data.Migrations
                 column: "HotelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Galleries_HotelId",
+                table: "Galleries",
+                column: "HotelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Hotels_ManagerId",
                 table: "Hotels",
                 column: "ManagerId");
@@ -549,6 +577,9 @@ namespace hotel_booking_data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Galleries");
 
             migrationBuilder.DropTable(
                 name: "Payments");
