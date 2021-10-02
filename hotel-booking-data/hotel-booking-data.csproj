@@ -25,10 +25,12 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\hotel-booking-models\hotel-booking-models.csproj" />
+    <ProjectReference Include="..\hotel-booking-utilities\hotel-booking-utilities.csproj" />
 
   </ItemGroup>
 
