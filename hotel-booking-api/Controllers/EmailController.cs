@@ -1,4 +1,6 @@
 ﻿using hotel_booking_core.Interface;
+using hotel_booking_core.Interfaces;
+using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_models.Mail;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,10 +15,12 @@ namespace hotel_booking_api.Controllers
     public class EmailController : Controller
     {
         private readonly IMailService mailService;
+        private readonly IAuthenticationService _authService;
 
-        public EmailController(IMailService mailService)
+        public EmailController(IMailService mailService, IAuthenticationService authenticationService)
         {
             this.mailService = mailService;
+            _authService = authenticationService;
         }
 
         [HttpPost("Send")]
@@ -32,6 +36,13 @@ namespace hotel_booking_api.Controllers
 
                 throw;
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto model)
+        {
+            var result = await _authService.ConfirmEmail(model);
+            return StatusCode(result.StatusCode, result);
         }
 
     }

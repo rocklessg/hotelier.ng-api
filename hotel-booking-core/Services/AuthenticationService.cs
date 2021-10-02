@@ -24,9 +24,21 @@ namespace hotel_booking_core.Services
             _mapper = mapper;
             _tokenGenerator = tokenGenerator;
         }
-        public Task<Response<string>> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
+        public async Task<Response<IdentityResult>> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByEmailAsync(confirmEmailDto.Email);
+            var response = new Response<IdentityResult>();
+            if(user == null)
+            {
+                response.Message = "User not found";
+                Response<IdentityResult>.Fail(response.Message);
+                response.StatusCode = (int)HttpStatusCode.NotFound;
+                return response;
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, confirmEmailDto.Token);
+            response.StatusCode = (int)HttpStatusCode.OK;
+            Response<IdentityResult>.Success(result);
+            return response;
         }
 
         public Task<Response<string>> ForgotPassword(string email)
@@ -37,14 +49,17 @@ namespace hotel_booking_core.Services
         public async Task<Response<LoginResponseDto>> Login(LoginDto model)
         {
             Response<LoginResponseDto> response = new();
-            if (!await ValidateUser(model))
-            {
-                response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                response.Message = "Email or password is incorrect";
-                response.Succeeded = false;
 
+            var validityResult = await ValidateUser(model);
+
+            if (!validityResult.Succeeded)
+            {
+                response.Message = validityResult.Message;
+                response.StatusCode = validityResult.StatusCode;
+                response.Succeeded = false;
                 return response;
             }
+
             var user = await _userManager.FindByEmailAsync(model.Email);
             var result = new LoginResponseDto()
             {
@@ -53,8 +68,7 @@ namespace hotel_booking_core.Services
             };
             response.StatusCode = (int)HttpStatusCode.OK;
             response.Message = "Login Successfully";
-            response.Succeeded = true;
-            response.Data = result;
+            Response<LoginResponseDto>.Success(result);
             return response;
         }
 
@@ -94,10 +108,36 @@ namespace hotel_booking_core.Services
             throw new NotImplementedException();
         }
 
-        public async Task<bool> ValidateUser(LoginDto model)
+        private async Task<Response<bool>> ValidateUser(LoginDto model)
         {
             var user = await _userManager.FindByNameAsync(model.Email);
-            return (user != null && await _userManager.CheckPasswordAsync(user, model.Password));
+            var response = new Response<bool>();
+            if(user == null)
+            {
+                response.Message = "Account does not exist";
+                Response<bool>.Fail(response.Message);
+                response.StatusCode = (int)HttpStatusCode.NotFound;
+                return response;
+            }
+            if(!await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                response.Message = "Incorrect email or password";
+                Response<bool>.Fail(response.Message);
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return response;
+            }
+            if(!await _userManager.IsEmailConfirmedAsync(user))
+            {
+                response.Message = "Account not activated";
+                Response<bool>.Fail(response.Message);
+                response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return response;
+            }
+            else
+            {
+                Response<bool>.Success(true);
+                return response;
+            }
         }
     }
 }

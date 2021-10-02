@@ -2,7 +2,6 @@
 using Raven.Client.Documents;
 using Serilog;
 using Serilog.Events;
-using System;
 using System.Security.Cryptography.X509Certificates;
 
 namespace hotel_booking_api.Extensions

@@ -46,7 +46,9 @@ namespace hotel_booking_api.Controllers
                 MailRequest mailRequest = new()
                 {
                     Subject = "Confirm Your Registration",
-                    Body = confirmationLink
+                    Body = confirmationLink,
+                    ToEmail = model.Email
+                    
                 };
                 await _mailService.SendEmailAsync(mailRequest);
             }
