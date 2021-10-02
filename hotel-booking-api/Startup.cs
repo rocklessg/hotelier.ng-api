@@ -45,6 +45,9 @@ namespace hotel_booking_api
             // Configure Identity
             services.ConfigureIdentity();
 
+            // Configure AutoMapper
+            services.ConfigureAutoMappers();
+
             // Configure Cloudinary
             services.Configure<ImageUploadSettings>(Configuration.GetSection("CloudSettings"));
             services.AddCloudinary(CloudinaryServiceExtension.GetAccount(Configuration));
