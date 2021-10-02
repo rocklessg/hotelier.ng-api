@@ -12,6 +12,7 @@ namespace hotel_booking_api.Controllers
     [ApiController]
     public class AmenityController : ControllerBase
     {
+
         private readonly IAmenityService _amenityService;
 
         public AmenityController(IAmenityService amenityService)
@@ -19,24 +20,8 @@ namespace hotel_booking_api.Controllers
             _amenityService = amenityService;
         }
 
-        [HttpGet("get-amenities")]
-        public IActionResult GetAllAmenities()
-        {
-            try
-            {
-                var result = _amenityService.GetAllAmenities();
-                if (result == null)
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                return Ok(result);
-            }
-            catch (ArgumentException argEx)
-            {
-                return BadRequest(argEx.Message);
-            }
-        }
+        [HttpGet("{hotelId}")]
 
-        [HttpGet("get-amenity-by-hotelId")]
-        //[Authorize(Roles = "Admin")]
         public IActionResult GetAmenityByHotelId(string hotelId)
         {
             try
