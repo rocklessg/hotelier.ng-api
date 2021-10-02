@@ -25,6 +25,7 @@ namespace hotel_booking_data.Contexts
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<WishList> WishLists { get; set; }
+        public DbSet<Gallery> Galleries { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
