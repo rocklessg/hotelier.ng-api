@@ -42,7 +42,7 @@ namespace hotel_booking_api.Controllers
             if (result.Succeeded)
             {
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(await _userManager.FindByIdAsync(result.Data));
-                var confirmationLink = Url.Action("ConfirmEmail", "Email", new { token, email = model.Email }, Request.Scheme);
+                var confirmationLink = Url.Action(nameof(ConfirmEmail), "Email", new { token, email = model.Email }, Request.Scheme);
                 MailRequest mailRequest = new()
                 {
                     Subject = "Confirm Your Registration",
@@ -59,11 +59,24 @@ namespace hotel_booking_api.Controllers
         [Route("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<string>> Login([FromBody] LoginDto model)
+        public async Task<ActionResult<Response<string>>> Login([FromBody] LoginDto model)
         {
             _logger.LogInformation($"Login Attempt for {model.Email}");
             var result = await _authService.Login(model);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        [Route("confirm-email")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<Response<string>>> ConfirmEmail([FromBody] ConfirmEmailDto model)
+        {
+            var result = await _authService.ConfirmEmail(model);
             return StatusCode(result.StatusCode, result);
         }
     }

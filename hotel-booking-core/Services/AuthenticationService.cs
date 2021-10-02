@@ -24,21 +24,34 @@ namespace hotel_booking_core.Services
             _mapper = mapper;
             _tokenGenerator = tokenGenerator;
         }
-        public async Task<Response<IdentityResult>> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
+        public async Task<Response<string>> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
         {
             var user = await _userManager.FindByEmailAsync(confirmEmailDto.Email);
-            var response = new Response<IdentityResult>();
+            var response = new Response<string>();
             if(user == null)
             {
                 response.Message = "User not found";
-                Response<IdentityResult>.Fail(response.Message);
+                Response<string>.Fail(response.Message);
                 response.StatusCode = (int)HttpStatusCode.NotFound;
                 return response;
             }
             var result = await _userManager.ConfirmEmailAsync(user, confirmEmailDto.Token);
-            response.StatusCode = (int)HttpStatusCode.OK;
-            Response<IdentityResult>.Success(result);
+            if (result.Succeeded)
+            {
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Message = "Email Confirmation successful";
+                response.Data = user.Id;
+                response.Succeeded = true;
+                return response;
+            }
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            foreach (var err in result.Errors)
+            {
+                response.Message += err.Description + "\n";
+            }
+            Response<string>.Fail(response.Message);
             return response;
+            
         }
 
         public Task<Response<string>> ForgotPassword(string email)
@@ -68,7 +81,8 @@ namespace hotel_booking_core.Services
             };
             response.StatusCode = (int)HttpStatusCode.OK;
             response.Message = "Login Successfully";
-            Response<LoginResponseDto>.Success(result);
+            response.Data = result;
+            response.Succeeded = true;
             return response;
         }
 
@@ -91,7 +105,7 @@ namespace hotel_booking_core.Services
 
             foreach (var err in result.Errors)
             {
-                response.Message += err.Description + ", ";
+                response.Message += err.Description + "\n";
             }
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Succeeded = false;
@@ -110,7 +124,7 @@ namespace hotel_booking_core.Services
 
         private async Task<Response<bool>> ValidateUser(LoginDto model)
         {
-            var user = await _userManager.FindByNameAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
             var response = new Response<bool>();
             if(user == null)
             {
@@ -135,7 +149,7 @@ namespace hotel_booking_core.Services
             }
             else
             {
-                Response<bool>.Success(true);
+                response.Succeeded = true;
                 return response;
             }
         }
