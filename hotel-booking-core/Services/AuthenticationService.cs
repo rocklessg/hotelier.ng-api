@@ -31,7 +31,7 @@ namespace hotel_booking_core.Services
             if(user == null)
             {
                 response.Message = "User not found";
-                Response<string>.Fail(response.Message);
+                response.Succeeded = false;
                 response.StatusCode = (int)HttpStatusCode.NotFound;
                 return response;
             }
@@ -45,11 +45,8 @@ namespace hotel_booking_core.Services
                 return response;
             }
             response.StatusCode = (int)HttpStatusCode.BadRequest;
-            foreach (var err in result.Errors)
-            {
-                response.Message += err.Description + "\n";
-            }
-            Response<string>.Fail(response.Message);
+            response.Message = GetErrors(result);
+            response.Succeeded = false;
             return response;
             
         }
@@ -103,10 +100,7 @@ namespace hotel_booking_core.Services
                 return response;
             }
 
-            foreach (var err in result.Errors)
-            {
-                response.Message += err.Description + "\n";
-            }
+            response.Message = GetErrors(result);
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Succeeded = false;
             return response;
@@ -126,24 +120,17 @@ namespace hotel_booking_core.Services
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             var response = new Response<bool>();
-            if(user == null)
+            if(user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                response.Message = "Account does not exist";
-                Response<bool>.Fail(response.Message);
+                response.Message = "Invalid Credentials";
+                response.Succeeded = false;
                 response.StatusCode = (int)HttpStatusCode.NotFound;
-                return response;
-            }
-            if(!await _userManager.CheckPasswordAsync(user, model.Password))
-            {
-                response.Message = "Incorrect email or password";
-                Response<bool>.Fail(response.Message);
-                response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return response;
             }
             if(!await _userManager.IsEmailConfirmedAsync(user))
             {
                 response.Message = "Account not activated";
-                Response<bool>.Fail(response.Message);
+                response.Succeeded = false;
                 response.StatusCode = (int)HttpStatusCode.Forbidden;
                 return response;
             }
@@ -152,6 +139,16 @@ namespace hotel_booking_core.Services
                 response.Succeeded = true;
                 return response;
             }
+        }
+
+        private static string GetErrors(IdentityResult result)
+        {
+            string message = string.Empty;
+            foreach (var err in result.Errors)
+            {
+                message += err.Description + "\n";
+            }
+            return message;
         }
     }
 }
