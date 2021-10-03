@@ -1,4 +1,5 @@
 ﻿using hotel_booking_core.Interface;
+using hotel_booking_core.Interfaces;
 using hotel_booking_core.Services;
 using hotel_booking_utilities;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddTransient<IMailService, MailService>();
+            services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
 
             // Add Repository Injections Here
 
