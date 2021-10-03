@@ -20,14 +20,14 @@ namespace hotel_booking_api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<AuthController> _logger;
         private readonly IAuthenticationService _authService;
-        private readonly IMailService _mailService;
-        public AuthController(ILogger<AuthController> logger, IMailService mailService,
+        
+        public AuthController(ILogger<AuthController> logger,
             IAuthenticationService authService, UserManager<AppUser> userManager)
         {
             _logger = logger;
             _authService = authService;
             _userManager = userManager;
-            _mailService = mailService;
+            
         }
 
         [HttpPost]
@@ -39,19 +39,6 @@ namespace hotel_booking_api.Controllers
         {
             _logger.LogInformation($"Registration Attempt for {model.Email}");            
             var result = await _authService.Register(model);
-            if (result.Succeeded)
-            {
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(await _userManager.FindByIdAsync(result.Data));
-                var confirmationLink = Url.Action(nameof(ConfirmEmail), "Email", new { token, email = model.Email }, Request.Scheme);
-                MailRequest mailRequest = new()
-                {
-                    Subject = "Confirm Your Registration",
-                    Body = confirmationLink,
-                    ToEmail = model.Email
-                    
-                };
-                await _mailService.SendEmailAsync(mailRequest);
-            }
             return StatusCode(result.StatusCode, result);
         }
 

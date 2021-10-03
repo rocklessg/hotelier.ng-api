@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using hotel_booking_core.Interface;
 using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_models;
+using hotel_booking_models.Mail;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -16,13 +18,15 @@ namespace hotel_booking_core.Services
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
         private readonly ITokenGeneratorService _tokenGenerator;
+        private readonly IMailService _mailService;
 
         public AuthenticationService(UserManager<AppUser> userManager,
-            IMapper mapper, ITokenGeneratorService tokenGenerator)
+            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
         {
             _userManager = userManager;
             _mapper = mapper;
             _tokenGenerator = tokenGenerator;
+            _mailService = mailService;
         }
         public async Task<Response<string>> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
         {
@@ -88,11 +92,24 @@ namespace hotel_booking_core.Services
             var user = _mapper.Map<AppUser>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
 
-            Response<string> response = new();
+            Response<string> response = new Response<string>();
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "Customer");
+                await _userManager.AddToRoleAsync(user, UserRoles.Customer);
+
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmationLink = $"http://www.example.com/connfirmEmail/{token}/{user.Email}"; // Replace with Url.Action method
+                MailRequest mailRequest = new MailRequest()
+                {
+                    Subject = "Confirm Your Registration",
+                    Body = confirmationLink,
+                    ToEmail = model.Email
+
+                };
+
+                await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
+
                 response.StatusCode = (int)HttpStatusCode.Created;
                 response.Succeeded = true;
                 response.Data = user.Id;
