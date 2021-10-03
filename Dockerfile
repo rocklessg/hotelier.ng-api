@@ -29,7 +29,6 @@ RUN dotnet publish  -c Release -o /src/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /src/publish .
-
 COPY --from=publish /src/hotel-booking-api/Json/Amenities.json ./
 COPY --from=publish /src/hotel-booking-api/Json/bookings.json ./
 COPY --from=publish /src/hotel-booking-api/Json/Hotel.json ./
