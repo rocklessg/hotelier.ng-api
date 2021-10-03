@@ -30,7 +30,7 @@ namespace hotel_booking_utilities.ValidatorSettings
 
         public static IRuleBuilder<T, string> PhoneNumber<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            var options = ruleBuilder.NotNull().WithMessage("Phone Number is required")
+            var options = ruleBuilder
                 .Matches(@"^[0]\d{10}$").WithMessage("Phone number must start with 0 and must be 11 digits");
 
             return options;
