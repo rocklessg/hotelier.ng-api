@@ -48,7 +48,7 @@ namespace hotel_booking_data.Seeder
                 await userManager.AddToRoleAsync(user, "Admin");
 
 
-                var path = File.ReadAllText(baseDir + @"/json/users.json");
+                var path = File.ReadAllText(baseDir + @"/Json/users.json");
 
                 var hbaUsers = JsonConvert.DeserializeObject<List<AppUser>>(path);
                 for (int i = 0; i < hbaUsers.Count; i++)
@@ -68,7 +68,7 @@ namespace hotel_booking_data.Seeder
             // Bookings and Payment
             if (!dbContext.Bookings.Any())
             {
-                var path = File.ReadAllText(baseDir + @"/json/bookings.json");
+                var path = File.ReadAllText(baseDir + @"/Json/bookings.json");
 
                 var bookings = JsonConvert.DeserializeObject<List<Booking>>(path);
                 await dbContext.Bookings.AddRangeAsync(bookings);
@@ -77,7 +77,7 @@ namespace hotel_booking_data.Seeder
             // Hotels, roomtypes n rooms
             if (!dbContext.Hotels.Any())
             {
-                var path = File.ReadAllText(baseDir + @"/json/Hotel.json");
+                var path = File.ReadAllText(baseDir + @"/Json/Hotel.json");
 
                 var hotels = JsonConvert.DeserializeObject<List<Hotel>>(path);
                 await dbContext.Hotels.AddRangeAsync(hotels);
@@ -86,7 +86,7 @@ namespace hotel_booking_data.Seeder
             // Whishlist
             if (!dbContext.WishLists.Any())
             {
-                var path = File.ReadAllText(baseDir + @"/json/wishlists.json");
+                var path = File.ReadAllText(baseDir + @"/Json/wishlists.json");
 
                 var wishList = JsonConvert.DeserializeObject<List<WishList>>(path);
                 await dbContext.WishLists.AddRangeAsync(wishList);
