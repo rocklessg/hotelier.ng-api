@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using hotel_booking_data.UnitOfWork.Abstraction;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace hotel_booking_api.Controllers
 {
