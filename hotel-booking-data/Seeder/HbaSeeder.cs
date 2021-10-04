@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace hotel_booking_data.Seeder
@@ -15,9 +14,10 @@ namespace hotel_booking_data.Seeder
     {
         public static async Task SeedData(HbaDbContext dbContext, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            var baseDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
+            var baseDir = Directory.GetCurrentDirectory();
+           
             await dbContext.Database.EnsureCreatedAsync();
+            
             if (!dbContext.Users.Any())
             {
                 List<string> roles = new List<string> { "Admin", "Manager", "Customer" };
@@ -47,8 +47,7 @@ namespace hotel_booking_data.Seeder
                 await userManager.CreateAsync(user, "Password@123");
                 await userManager.AddToRoleAsync(user, "Admin");
 
-
-                var path = File.ReadAllText(baseDir + @"/Json/users.json");
+                var path = File.ReadAllText(FilePath(baseDir, "Json/users.json"));
 
                 var hbaUsers = JsonConvert.DeserializeObject<List<AppUser>>(path);
                 for (int i = 0; i < hbaUsers.Count; i++)
@@ -64,11 +63,10 @@ namespace hotel_booking_data.Seeder
             }
 
             
-
             // Bookings and Payment
             if (!dbContext.Bookings.Any())
             {
-                var path = File.ReadAllText(baseDir + @"/Json/bookings.json");
+                var path = File.ReadAllText(FilePath(baseDir, "Json/bookings.json"));
 
                 var bookings = JsonConvert.DeserializeObject<List<Booking>>(path);
                 await dbContext.Bookings.AddRangeAsync(bookings);
@@ -77,7 +75,7 @@ namespace hotel_booking_data.Seeder
             // Hotels, roomtypes n rooms
             if (!dbContext.Hotels.Any())
             {
-                var path = File.ReadAllText(baseDir + @"/Json/Hotel.json");
+                var path = File.ReadAllText(FilePath(baseDir, "Json/Hotel.json"));
 
                 var hotels = JsonConvert.DeserializeObject<List<Hotel>>(path);
                 await dbContext.Hotels.AddRangeAsync(hotels);
@@ -86,7 +84,7 @@ namespace hotel_booking_data.Seeder
             // Whishlist
             if (!dbContext.WishLists.Any())
             {
-                var path = File.ReadAllText(baseDir + @"/Json/wishlists.json");
+                var path = File.ReadAllText(FilePath(baseDir, "Json/wishlists.json"));
 
                 var wishList = JsonConvert.DeserializeObject<List<WishList>>(path);
                 await dbContext.WishLists.AddRangeAsync(wishList);
@@ -95,5 +93,10 @@ namespace hotel_booking_data.Seeder
 
             await dbContext.SaveChangesAsync();
         }
+
+         static string FilePath(string folderName, string fileName)
+            {
+                return Path.Combine(folderName, fileName);
+            }
     }
 }
