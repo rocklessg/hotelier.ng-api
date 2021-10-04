@@ -55,7 +55,7 @@ namespace hotel_booking_api
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "hotel_booking_api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hotel Management Api", Version = "v1" });
             });                       
 
             services.AddCors(c =>
