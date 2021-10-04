@@ -45,6 +45,9 @@ namespace hotel_booking_api
             // Configure Identity
             services.ConfigureIdentity();
 
+            // Configure AutoMapper
+            services.ConfigureAutoMappers();
+
             // Configure Cloudinary
             services.Configure<ImageUploadSettings>(Configuration.GetSection("CloudSettings"));
             services.AddCloudinary(CloudinaryServiceExtension.GetAccount(Configuration));
@@ -52,7 +55,7 @@ namespace hotel_booking_api
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "hotel_booking_api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hotel Management Api", Version = "v1" });
             });                       
 
             services.AddCors(c =>
@@ -72,10 +75,11 @@ namespace hotel_booking_api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "hotel_booking_api v1"));
+                app.UseDeveloperExceptionPage();                
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hotel Management Api v1"));
 
             HbaSeeder.SeedData(dbContext, userManager, roleManager).Wait();
 
