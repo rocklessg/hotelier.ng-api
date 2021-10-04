@@ -42,4 +42,8 @@
 	<ProjectReference Include="..\hotel-booking-models\hotel-booking-models.csproj" />
 	<ProjectReference Include="..\hotel-booking-dto\hotel-booking-dtos.csproj" />  </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logs\" />
+  </ItemGroup>
+
 </Project>
