@@ -75,10 +75,11 @@ namespace hotel_booking_api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "hotel_booking_api v1"));
+                app.UseDeveloperExceptionPage();                
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hotel Management Api v1"));
 
             HbaSeeder.SeedData(dbContext, userManager, roleManager).Wait();
 
