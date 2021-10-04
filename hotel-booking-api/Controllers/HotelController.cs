@@ -16,5 +16,25 @@ namespace hotel_booking_api.Controllers
             _logger = logger;
             _unitOfWork = unitOfWork;
         }
+
+        [HttpGet]
+        [Route("top-hotels")]
+        public IActionResult HotelsByRatings()
+        {
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("top-deals")]
+        public IActionResult TopDeals()
+        {
+            return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult GetHotelRooms()
+        {
+            return Ok();
+        }
     }
 }
