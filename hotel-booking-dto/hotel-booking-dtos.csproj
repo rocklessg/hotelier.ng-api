@@ -21,8 +21,4 @@
     <ProjectReference Include="..\hotel-booking-models\hotel-booking-models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mapper\" />
-  </ItemGroup>
-
 </Project>

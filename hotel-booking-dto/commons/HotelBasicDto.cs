@@ -27,4 +27,13 @@ namespace hotel_booking_dto.commons
         public string RoomTypeThumbnail { get; set; }
 
     }
+
+    public class RoomDTo
+    {
+        public string Id { get; set; }
+        public string RoomNo { get; set; }
+        public bool IsBooked { get; set; }
+        public string RoomType { get; set; }
+
+    }
 }

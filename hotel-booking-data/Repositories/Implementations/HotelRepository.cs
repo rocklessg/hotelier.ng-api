@@ -29,7 +29,7 @@ namespace hotel_booking_data.Repositories.Implementations
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<Room>> GetAvailableRoomsByHotel(string hotelId)
+        public async Task<List<Room>> GetAvailableRoomsByHotel(string hotelId)
         {
             var hotel = _dbSet.Where(x => x.Id == hotelId).ToList();
 
@@ -39,6 +39,16 @@ namespace hotel_booking_data.Repositories.Implementations
                 .Where(room => !room.IsBooked).ToListAsync();
 
             return rooms;
+        }
+
+        public Room GetHotelRoom(string roomId)
+        {
+            var hotel = _context.Rooms.FirstOrDefault(x => x.Id == roomId);
+
+            var getRoom = _context.Rooms.Include(x => x.Roomtype)
+                    .Where(x => x.Id == roomId).FirstOrDefault();
+
+            return getRoom;
         }
     }
 }

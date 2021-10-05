@@ -3,6 +3,7 @@ using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
+using hotel_booking_dto.Mapper;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
@@ -48,7 +49,7 @@ namespace hotel_booking_core.Services
 
             if (roomList.Count() > 0)
             {
-                var dtoList = _mapper.Map<IEnumerable<RoomsByHotelDTo>>(roomList);
+                var dtoList = HotelRoomsResponse.GetResponse(roomList);
 
                 var item = dtoList.Skip(paginator.PageSize * (paginator.CurrentPage - 1))
                 .Take(paginator.PageSize);
@@ -60,8 +61,32 @@ namespace hotel_booking_core.Services
                     Message = "available rooms",
                     Data = item
                 };
+
+                return result;
             }
             return new Response<IEnumerable<RoomsByHotelDTo>>();
+        }
+
+        public Response<RoomDTo> GetHotelRooomById(string roomId)
+        {
+            var room = _unitOfWork.Hotels.GetHotelRoom(roomId);
+
+            if (room != null)
+            {
+                var response = RoomDTo.GetResponse(getRoomsType);
+
+                var result = new Response<RoomDTo>
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Succeeded = true,
+                    Message = $"is the room with id {roomId}",
+                    Data = response
+                };
+
+                return result;
+            }
+            throw new ArgumentNullException("Resource not found");
+
         }
 
     }
