@@ -36,7 +36,6 @@ namespace hotel_booking_core.Services
 
         public async Task GetTopDeals()
         {
-
             return;
         }
 
