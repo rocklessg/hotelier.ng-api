@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hotel_booking_data.Repositories.Abstractions
+namespace hotel_booking_core.Interfaces
 {
-    public interface IAmenityRepository : IGenericRepository<Amenity>
+    public interface IAmenityService
     {
         IEnumerable<Amenity> GetAmenityByHotelId(string hotelId);
     }
