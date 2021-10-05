@@ -46,7 +46,7 @@ namespace hotel_booking_core.Services
         {
             var roomList = await _unitOfWork.Hotels.GetAvailableRoomsByHotel(hotelId);
 
-            if (roomList != null)
+            if (roomList.Count() > 0)
             {
                 var dtoList = _mapper.Map<IEnumerable<RoomsByHotelDTo>>(roomList);
 

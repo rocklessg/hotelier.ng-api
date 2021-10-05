@@ -33,16 +33,12 @@ namespace hotel_booking_data.Repositories.Implementations
         {
             var hotel = _dbSet.Where(x => x.Id == hotelId).ToList();
 
-            if (hotel.Count > 0)
-            {
-                var rooms = await _context.Rooms
-                    .Include(room => room.Roomtype)
-                    .Where(room => room.Roomtype.Hotel.Id == hotelId)
-                    .Where(room => !room.IsBooked).ToListAsync();
+            var rooms = await _context.Rooms
+                .Include(room => room.Roomtype)
+                .Where(room => room.Roomtype.Hotel.Id == hotelId)
+                .Where(room => !room.IsBooked).ToListAsync();
 
-                return rooms;
-            }
-            throw new ArgumentNullException("Resource not found");
+            return rooms;
         }
     }
 }
