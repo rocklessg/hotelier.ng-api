@@ -9,5 +9,6 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface ICustomerRepository : IGenericRepository<Customer>
     {
+        Task<bool> UpdateUserPhotoById(string customerId, string url);
     }
 }

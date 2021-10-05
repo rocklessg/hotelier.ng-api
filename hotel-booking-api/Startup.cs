@@ -1,6 +1,8 @@
 using hotel_booking_api.Extensions;
 using hotel_booking_api.Middleware;
 using hotel_booking_data.Contexts;
+using hotel_booking_data.Repositories.Abstractions;
+using hotel_booking_data.Repositories.Implementations;
 using hotel_booking_data.Seeder;
 using hotel_booking_models;
 using hotel_booking_models.Cloudinary;
@@ -32,6 +34,9 @@ namespace hotel_booking_api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextAndConfigurations(Environment, Configuration);
+
+
+          
 
             // Configure Mailing Service
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));            
