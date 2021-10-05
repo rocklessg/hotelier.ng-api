@@ -1,30 +1,41 @@
-﻿using hotel_booking_core.Interfaces;
+﻿using hotel_booking_data.UnitOfWork.Abstraction;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace hotel_booking_api.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class HotelController : ControllerBase
     {
-        private readonly IHotelStatisticsService _hotelStatistics;
+        private readonly ILogger<HotelController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public HotelController(IHotelStatisticsService hotelStatistics)
+        public HotelController(ILogger<HotelController> logger, IUnitOfWork unitOfWork)
         {
-            _hotelStatistics = hotelStatistics;
+            _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
-       
-
-        [HttpGet("{hotelId}/statistics")]
-        public async Task<IActionResult> GetHotelStatistics(string hotelId) 
+        [HttpGet]
+        [Route("top-hotels")]
+        public IActionResult HotelsByRatings()
         {
-            var hotel = await _hotelStatistics.GetHotelStatistics(hotelId);
-            return Ok(hotel);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("top-deals")]
+        public IActionResult TopDeals()
+        {
+            return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult GetHotelRooms()
+        {
+            return Ok();
+
         }
     }
 }
