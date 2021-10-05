@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
+using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_models;
+using hotel_booking_utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +42,27 @@ namespace hotel_booking_core.Services
             return;
         }
 
+        public async Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId)
+        {
+            var roomList = await _unitOfWork.Hotels.GetAvailableRoomsByHotel(hotelId);
+
+            if (roomList != null)
+            {
+                var dtoList = _mapper.Map<IEnumerable<RoomsByHotelDTo>>(roomList);
+
+                var item = dtoList.Skip(paginator.PageSize * (paginator.CurrentPage - 1))
+                .Take(paginator.PageSize);
+
+                var result = new Response<IEnumerable<RoomsByHotelDTo>>
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Succeeded = true,
+                    Message = "available rooms",
+                    Data = item
+                };
+            }
+            return new Response<IEnumerable<RoomsByHotelDTo>>();
+        }
 
     }
 }
