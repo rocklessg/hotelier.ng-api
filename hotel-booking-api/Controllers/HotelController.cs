@@ -50,5 +50,13 @@ namespace hotel_booking_api.Controllers
             var hot = await _hotelService.GetAvailableRoomByHotel(paginator, id);
             return Ok(hot);
         }
+
+        [HttpGet]
+        [Route("room")]
+        public IActionResult HotelRoomById(string id)
+        {
+            var hot = _hotelService.GetHotelRooomById(id);
+            return Ok(hot);
+        }
     }
 }

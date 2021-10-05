@@ -45,7 +45,7 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId)
         {
-            var roomList = await _unitOfWork.Hotels.GetAvailableRoomsByHotel(hotelId);
+            var roomList = await _unitOfWork.Rooms.GetAvailableRoomsByHotel(hotelId);
 
             if (roomList.Count() > 0)
             {
@@ -69,11 +69,11 @@ namespace hotel_booking_core.Services
 
         public Response<RoomDTo> GetHotelRooomById(string roomId)
         {
-            var room = _unitOfWork.Hotels.GetHotelRoom(roomId);
+            var room = _unitOfWork.Rooms.GetHotelRoom(roomId);
 
             if (room != null)
             {
-                var response = RoomDTo.GetResponse(getRoomsType);
+                var response = HotelRoomsResponse.GetResponse(room);
 
                 var result = new Response<RoomDTo>
                 {
@@ -82,11 +82,14 @@ namespace hotel_booking_core.Services
                     Message = $"is the room with id {roomId}",
                     Data = response
                 };
-
                 return result;
             }
-            throw new ArgumentNullException("Resource not found");
+            return new Response<RoomDTo>();
+        }
 
+        public async Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId)
+        {
+            var room = _unitOfWork
         }
 
     }
