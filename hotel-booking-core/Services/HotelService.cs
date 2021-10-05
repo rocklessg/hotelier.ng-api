@@ -30,7 +30,7 @@ namespace hotel_booking_core.Services
                 Includes: new List<string>() { "Galleries" }
                 );
             var dtoList = _mapper.Map<List<HotelBasicDto>>(hotelList);
-            dtoList.ForEach(dto => dto.thumbnails = dto.Galleries.FirstOrDefault(pic => pic.IsFeature).ImageUrl);
+            dtoList.ForEach(dto => dto.Thumbnails = dto.Galleries.FirstOrDefault(pic => pic.IsFeature).ImageUrl);
             return dtoList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
         }
 

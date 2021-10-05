@@ -28,12 +28,13 @@ namespace hotel_booking_api.Controllers
             try
             {
                 var result = _amenityService.GetAmenityByHotelId(hotelId);
-                return Ok(result);
+                return StatusCode(result.StatusCode, result);
             }
-            catch (ArgumentException errors)
+            catch (Exception ex)
             {
-                return BadRequest(errors.Message);
+                return BadRequest(ex);
             }
+            
         }
     }
 }

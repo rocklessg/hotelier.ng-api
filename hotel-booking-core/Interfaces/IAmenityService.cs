@@ -1,4 +1,5 @@
-﻿using hotel_booking_models;
+﻿using hotel_booking_dto;
+using hotel_booking_models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace hotel_booking_core.Interfaces
 {
     public interface IAmenityService
     {
-        IEnumerable<Amenity> GetAmenityByHotelId(string hotelId);
+        Response<IEnumerable<AmenityDto>> GetAmenityByHotelId(string hotelId);
     }
 }
