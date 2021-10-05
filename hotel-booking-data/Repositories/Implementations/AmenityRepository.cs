@@ -12,5 +12,7 @@ namespace hotel_booking_data.Repositories.Implementations
         {
             _context = context;
         }
+
+
     }
 }
