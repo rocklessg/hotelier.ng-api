@@ -1,16 +1,11 @@
-﻿using AutoMapper;
+using AutoMapper;
 using hotel_booking_core.Interfaces;
-using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
-using hotel_booking_models;
 using hotel_booking_utilities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace hotel_booking_core.Services
 {
@@ -41,10 +36,7 @@ namespace hotel_booking_core.Services
                 Message = $"Rooms for {hotelAmenities.Select(x => x.Hotel.Name).FirstOrDefault()}"               
 
             };
-
             return response;
         }
-
-        
     }
 }
