@@ -35,6 +35,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\hotel-booking-dto\hotel-booking-dtos.csproj" />
     <ProjectReference Include="..\hotel-booking-models\hotel-booking-models.csproj" />
     <ProjectReference Include="..\hotel-booking-utilities\hotel-booking-utilities.csproj" />
 

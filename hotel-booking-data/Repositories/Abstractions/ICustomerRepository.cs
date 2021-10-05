@@ -1,14 +1,11 @@
 ﻿using hotel_booking_models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace hotel_booking_data.Repositories.Abstractions
+namespace hotel_booking_data.Repositories.Implementations
 {
-    public interface ICustomerRepository : IGenericRepository<Customer>
+    public interface ICustomerRepository
     {
-        Task<bool> UpdateUserPhotoById(string customerId, string url);
+        Task<Customer> FindAsync(string customerId);
+        bool UpdateUserPhotoById(Customer customer);
     }
 }

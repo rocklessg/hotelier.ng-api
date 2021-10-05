@@ -55,11 +55,7 @@ namespace hotel_booking_api.Controllers
             {
                 var response = string.Empty;
                 var upload = await _imageService.UploadAsync(imageDto.Image);
-                /*var photoProperties = new ImageAddedDto();
-                {
-                     PublicId = upload.PublicId,
-                     Url = upload.Url.ToString()
-                };*/
+               
                 string url = upload.Url.ToString();
                 string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
                 var result = await _userRepository.UploadImage(userId, url);
