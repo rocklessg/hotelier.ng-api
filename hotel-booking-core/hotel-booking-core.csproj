@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.12.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.12.2" />
 
@@ -17,7 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\hotel-booking-data\hotel-booking-data.csproj" />
+    <ProjectReference Include="..\hotel-booking-dto\hotel-booking-dtos.csproj" />
     <ProjectReference Include="..\hotel-booking-models\hotel-booking-models.csproj" />
+    <ProjectReference Include="..\hotel-booking-utilities\hotel-booking-utilities.csproj" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
