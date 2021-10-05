@@ -43,7 +43,7 @@ namespace hotel_booking_dto.commons
         public int Ratings { get; set; }
         public string CustomerId { get; set; }
 
-        public static IEnumerable<HotelRatingsDTo> GetResponse(List<Rating> rating)
+        /*public static IEnumerable<HotelRatingsDTo> GetResponse(List<Rating> rating)
         {
             var newList = new List<HotelRatingsDTo>();
 
@@ -59,6 +59,6 @@ namespace hotel_booking_dto.commons
                 newList.Add(listNew);
             }
             return newList;
-        }
+        }*/
     }
 }

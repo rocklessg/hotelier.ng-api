@@ -29,8 +29,6 @@ namespace hotel_booking_data.Repositories.Implementations
 
         public Room GetHotelRoom(string roomId)
         {
-            var hotel = _context.Rooms.FirstOrDefault(x => x.Id == roomId);
-
             var getRoom = _context.Rooms.Include(x => x.Roomtype)
                     .Where(x => x.Id == roomId).FirstOrDefault();
 
