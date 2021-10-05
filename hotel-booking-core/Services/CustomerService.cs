@@ -12,7 +12,7 @@ using hotel_booking_models;
 
 namespace hotel_booking_core.Services
 {
-    public class CustomerService
+    public class CustomerService : ICustomerService
     {
         //CustomerRepository _customerRepository;
         IUnitOfWork _unitOfWork;
@@ -20,7 +20,7 @@ namespace hotel_booking_core.Services
         public CustomerService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-           // _customerRepository = _unitOfWork.Customers;
+            // _customerRepository = _unitOfWork.Customers;
         }
 
 
@@ -41,10 +41,10 @@ namespace hotel_booking_core.Services
                 customer.AppUser.Gender = string.IsNullOrWhiteSpace(updateCustomer.Gender) ? customer.AppUser.Gender : updateCustomer.Gender;
                 customer.AppUser.Age = updateCustomer.Age < 1 ? customer.AppUser.Age : updateCustomer.Age;
                 customer.AppUser.Avatar = string.IsNullOrWhiteSpace(updateCustomer.Avatar) ? customer.AppUser.Avatar : updateCustomer.Avatar;
-                
 
 
-               
+
+
 
             }
             #endregion
