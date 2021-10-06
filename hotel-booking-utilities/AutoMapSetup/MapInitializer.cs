@@ -12,6 +12,8 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<AppUser, RegisterUserDto>().ReverseMap();
             CreateMap<AppUser, RegisterUserDto>().ReverseMap();
             CreateMap<AppUser, LoginDto>().ReverseMap();
+            CreateMap<AppUser, ResetPasswordDto>().ReverseMap();
+            CreateMap<AppUser, UpdatePasswordDto>().ReverseMap();
 
             // Hotel Maps
         }
