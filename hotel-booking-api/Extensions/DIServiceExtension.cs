@@ -26,6 +26,7 @@ namespace hotel_booking_api.Extensions
 
             // Add Model Services Injection Here
             services.AddScoped<IHotelService, HotelService>();
+            services.AddScoped<IRoomService, RoomService>();
 
             // Add Fluent Validator Injections Here
             services.AddTransient<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
