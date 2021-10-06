@@ -4,14 +4,16 @@ using hotel_booking_models;
 
 namespace hotel_booking_utilities.AutoMapSetup
 {
-    public class UserMapInitializer : Profile
+    public class MapInitializer : Profile
     {
-        public UserMapInitializer()
+        public MapInitializer()
         {
             // Authentication Maps
             CreateMap<AppUser, RegisterUserDto>().ReverseMap();
             CreateMap<AppUser, RegisterUserDto>().ReverseMap();
             CreateMap<AppUser, LoginDto>().ReverseMap();
+
+            // Hotel Maps
         }
 
     }

@@ -8,8 +8,11 @@ using hotel_booking_models.Mail;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Transactions;
+using Microsoft.AspNetCore.Http;
 
 namespace hotel_booking_core.Services
 {
@@ -19,6 +22,7 @@ namespace hotel_booking_core.Services
         private readonly IMapper _mapper;
         private readonly ITokenGeneratorService _tokenGenerator;
         private readonly IMailService _mailService;
+        
 
         public AuthenticationService(UserManager<AppUser> userManager,
             IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
@@ -51,8 +55,7 @@ namespace hotel_booking_core.Services
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Message = GetErrors(result);
             response.Succeeded = false;
-            return response;
-            
+            return response;            
         }
 
         public Task<Response<string>> ForgotPassword(string email)
@@ -62,7 +65,7 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<LoginResponseDto>> Login(LoginDto model)
         {
-            Response<LoginResponseDto> response = new();
+            var response = new Response<LoginResponseDto>();
 
             var validityResult = await ValidateUser(model);
 
@@ -90,37 +93,59 @@ namespace hotel_booking_core.Services
         public async Task<Response<string>> Register(RegisterUserDto model)
         {
             var user = _mapper.Map<AppUser>(model);
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var response = new Response<string>();
 
-            Response<string> response = new Response<string>();
-
-            if (result.Succeeded)
+            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _userManager.AddToRoleAsync(user, UserRoles.Customer);
-
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var confirmationLink = $"http://www.example.com/connfirmEmail/{token}/{user.Email}"; // Replace with Url.Action method
-                MailRequest mailRequest = new MailRequest()
+                try
                 {
-                    Subject = "Confirm Your Registration",
-                    Body = confirmationLink,
-                    ToEmail = model.Email
+                    var result = await _userManager.CreateAsync(user, model.Password);
 
-                };
 
-                await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
 
-                response.StatusCode = (int)HttpStatusCode.Created;
-                response.Succeeded = true;
-                response.Data = user.Id;
-                response.Message = "User created successfully! Please check your mail to verify your account.";
-                return response;
-            }
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(user, UserRoles.Customer);
 
-            response.Message = GetErrors(result);
-            response.StatusCode = (int)HttpStatusCode.BadRequest;
-            response.Succeeded = false;
-            return response;
+                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var confirmationLink = $"http://www.example.com/confirmEmail/{token}/{user.Email}";
+                        var mailRequest = new MailRequest()
+                        {
+                            Subject = "Confirm Your Registration",
+                            Body = confirmationLink,
+                            ToEmail = model.Email
+                        };
+
+                        var emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
+
+                        if (emailResult)
+                        {
+                            response.StatusCode = (int)HttpStatusCode.Created;
+                            response.Succeeded = true;
+                            response.Data = user.Id;
+                            response.Message = "User created successfully! Please check your mail to verify your account.";
+                            transaction.Complete();
+                            return response;
+                        }
+
+                    }
+
+                    response.Message = GetErrors(result);
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    response.Succeeded = false;
+                    transaction.Complete();
+                    return response;
+                }
+                catch (Exception)
+                {
+                    transaction.Dispose();
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    response.Succeeded = false;
+                    response.Message = "Registration failed. Please try again";
+                    return response;
+                }
+            };
+            
         }
 
         public Task<Response<string>> ResetPassword(ResetPasswordDto resetPasswordDto)
@@ -141,7 +166,7 @@ namespace hotel_booking_core.Services
             {
                 response.Message = "Invalid Credentials";
                 response.Succeeded = false;
-                response.StatusCode = (int)HttpStatusCode.NotFound;
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return response;
             }
             if(!await _userManager.IsEmailConfirmedAsync(user))
@@ -160,12 +185,7 @@ namespace hotel_booking_core.Services
 
         private static string GetErrors(IdentityResult result)
         {
-            string message = string.Empty;
-            foreach (var err in result.Errors)
-            {
-                message += err.Description + "\n";
-            }
-            return message;
+            return result.Errors.Aggregate(string.Empty, (current, err) => current + err.Description + "\n");
         }
     }
 }
