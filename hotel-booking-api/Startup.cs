@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using hotel_booking_api.Extensions;
 using hotel_booking_api.Middleware;
 using hotel_booking_data.Contexts;
@@ -52,7 +53,16 @@ namespace hotel_booking_api
             services.Configure<ImageUploadSettings>(Configuration.GetSection("CloudSettings"));
             services.AddCloudinary(CloudinaryServiceExtension.GetAccount(Configuration));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling 
+            = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddMvc().AddFluentValidation(fv => {
+                fv.DisableDataAnnotationsValidation = true;
+                fv.RegisterValidatorsFromAssemblyContaining<Startup>();
+                fv.ImplicitlyValidateChildProperties = true;
+            });
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hotel Management Api", Version = "v1" });
@@ -65,6 +75,9 @@ namespace hotel_booking_api
 
             // Register Dependency Injection Service Extension
             services.AddDependencyInjection();
+
+            // Register Fluent Validation Service Extension
+            
 
 
         }

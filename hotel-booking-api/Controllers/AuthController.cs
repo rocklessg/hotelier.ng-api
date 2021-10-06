@@ -5,6 +5,7 @@ using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_models;
 using hotel_booking_models.Mail;
+using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -47,7 +48,6 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Response<string>>> Login([FromBody] LoginDto model)
         {
@@ -66,5 +66,6 @@ namespace hotel_booking_api.Controllers
             var result = await _authService.ConfirmEmail(model);
             return StatusCode(result.StatusCode, result);
         }
+
     }
 }

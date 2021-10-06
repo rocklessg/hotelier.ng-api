@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace hotel_booking_dto.HotelDtos
 {
     /// <summary>
-    /// Model to be contained in the Data field of Update hotel response
+    /// Model to be contained in Data field of Get all hotels response
     /// </summary>
-    public class UpdateHotelDto
+    public class GetHotelDto
     {
         public string Id { get; set; }
         public string Name { get; set; }
@@ -19,5 +15,10 @@ namespace hotel_booking_dto.HotelDtos
         public string Address { get; set; }
         public string City { get; set; }
         public string State { get; set; }
+        public double Rating { get; set; }
+        public string FeaturedImage { get; set; }
+        public IEnumerable<string> Gallery { get; set; }
+        public IEnumerable<RoomTypeDto> RoomTypes { get; set; }
+        public IEnumerable<ReviewDto> Reviews { get; set; }
     }
 }

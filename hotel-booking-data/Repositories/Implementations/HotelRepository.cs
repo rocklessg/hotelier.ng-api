@@ -49,5 +49,13 @@ namespace hotel_booking_data.Repositories.Implementations
                          .ThenInclude(review => review.Customer.AppUser);
             return hotel.FirstOrDefault();
         }
+
+        public async Task<List<Rating>> HotelRatings(string hotelId)
+        {
+            var ratings = await _context.Ratings
+                    .Where(x => x.HotelId == hotelId).ToListAsync();
+
+            return ratings;
+        }
     }
 }

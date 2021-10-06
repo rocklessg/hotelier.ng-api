@@ -9,6 +9,6 @@ namespace hotel_booking_core.Interface
 {
     public interface IMailService
     {
-        Task SendEmailAsync(MailRequest mailRequest);
+        Task<bool> SendEmailAsync(MailRequest mailRequest);
     }
 }

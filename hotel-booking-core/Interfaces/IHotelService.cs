@@ -2,10 +2,7 @@
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_utilities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.Interfaces
@@ -33,6 +30,9 @@ namespace hotel_booking_core.Interfaces
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        Task<Response<UpdateHotelDto>> UpdateHotelAsync(UpdateHotelDto model);
+        Task<Response<UpdateHotelDto>> UpdateHotelAsync(string hotelId, UpdateHotelDto model);
+        Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId);
+
+        Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId);
     }
 }
