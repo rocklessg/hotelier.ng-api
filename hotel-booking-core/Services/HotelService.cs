@@ -89,11 +89,11 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId)
         {
-            var room = await _unitOfWork.Hotels.HotelRatings(hotelId);
+            var ratings = await _unitOfWork.Hotels.HotelRatings(hotelId);
 
-            if (room.Count() > 0)
+            if (ratings.Count() > 0)
             {
-                var response = _mapper.Map<IEnumerable<HotelRatingsDTo>>(room);
+                var response = _mapper.Map<IEnumerable<HotelRatingsDTo>>(ratings);
 
                 var result = new Response<IEnumerable<HotelRatingsDTo>>
                 {

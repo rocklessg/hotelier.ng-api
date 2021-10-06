@@ -47,16 +47,24 @@ namespace hotel_booking_api.Controllers
         [Route("{id}/rooms")]
         public async Task<IActionResult> GetAvailableHotelAsync([FromQuery] Paginator paginator, string id)
         {
-            var hot = await _hotelService.GetAvailableRoomByHotel(paginator, id);
-            return Ok(hot);
+            var rooms = await _hotelService.GetAvailableRoomByHotel(paginator, id);
+            return Ok(rooms);
         }
 
         [HttpGet]
         [Route("room")]
         public IActionResult HotelRoomById(string id)
         {
-            var hot = _hotelService.GetHotelRooomById(id);
-            return Ok(hot);
+            var room = _hotelService.GetHotelRooomById(id);
+            return Ok(room);
+        }
+
+        [HttpGet]
+        [Route("ratings/{id}")]
+        public async Task<IActionResult> HotelRatingsAsync(string id)
+        {
+            var rating = await _hotelService.GetHotelRatings(id);
+            return Ok(rating);
         }
     }
 }
