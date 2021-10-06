@@ -43,57 +43,13 @@ namespace hotel_booking_core.Services
             return;
         }
 
-        public async Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId)
-        {
-            var roomList = await _unitOfWork.Rooms.GetAvailableRoomsByHotel(hotelId);
-
-            if (roomList.Count() > 0)
-            {
-                var dtoList = HotelRoomsResponse.GetResponse(roomList);
-
-                var item = dtoList.Skip(paginator.PageSize * (paginator.CurrentPage - 1))
-                .Take(paginator.PageSize);
-
-                var result = new Response<IEnumerable<RoomsByHotelDTo>>
-                {
-                    StatusCode = StatusCodes.Status200OK,
-                    Succeeded = true,
-                    Message = "available rooms",
-                    Data = item
-                };
-
-                return result;
-            }
-            return new Response<IEnumerable<RoomsByHotelDTo>>();
-        }
-
-        public Response<RoomDTo> GetHotelRooomById(string roomId)
-        {
-            var room = _unitOfWork.Rooms.GetHotelRoom(roomId);
-
-            if (room != null)
-            {
-                var response = HotelRoomsResponse.GetResponse(room);
-
-                var result = new Response<RoomDTo>
-                {
-                    StatusCode = StatusCodes.Status200OK,
-                    Succeeded = true,
-                    Message = $"is the room with id {roomId}",
-                    Data = response
-                };
-                return result;
-            }
-            return new Response<RoomDTo>();
-        }
-
         public async Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId)
         {
             var ratings = await _unitOfWork.Hotels.HotelRatings(hotelId);
 
             if (ratings.Count() > 0)
             {
-                var response = _mapper.Map<IEnumerable<HotelRatingsDTo>>(ratings);
+                var response = HotelRoomsResponse.GetResponse(ratings);
 
                 var result = new Response<IEnumerable<HotelRatingsDTo>>
                 {

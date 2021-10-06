@@ -12,8 +12,7 @@ namespace hotel_booking_core.Interfaces
     public interface IHotelService
     {
         Task<IList<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging);
-        Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId);
-        Response<RoomDTo> GetHotelRooomById(string roomId);
+        
         Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId);
     }
 }

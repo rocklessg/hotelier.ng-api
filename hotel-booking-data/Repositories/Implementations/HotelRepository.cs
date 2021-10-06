@@ -30,7 +30,7 @@ namespace hotel_booking_data.Repositories.Implementations
         }
 
 
-        public async Task<IEnumerable<Rating>> HotelRatings(string hotelId)
+        public async Task<List<Rating>> HotelRatings(string hotelId)
         {
             var ratings = await _context.Ratings
                     .Where(x => x.HotelId == hotelId).ToListAsync();
