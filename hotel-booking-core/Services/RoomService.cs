@@ -20,30 +20,6 @@ namespace hotel_booking_core.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId)
-        {
-            var roomList = await _unitOfWork.Rooms.GetAvailableRoomsByHotel(hotelId);
-
-            if (roomList.Count() > 0)
-            {
-                var dtoList = HotelRoomsResponse.GetResponse(roomList);
-
-                var item = dtoList.Skip(paginator.PageSize * (paginator.CurrentPage - 1))
-                .Take(paginator.PageSize);
-
-                var result = new Response<IEnumerable<RoomsByHotelDTo>>
-                {
-                    StatusCode = StatusCodes.Status200OK,
-                    Succeeded = true,
-                    Message = "available rooms",
-                    Data = item
-                };
-
-                return result;
-            }
-            return new Response<IEnumerable<RoomsByHotelDTo>>();
-        }
-
         public Response<RoomDTo> GetHotelRooomById(string roomId)
         {
             var room = _unitOfWork.Rooms.GetHotelRoom(roomId);

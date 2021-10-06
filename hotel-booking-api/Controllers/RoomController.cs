@@ -25,14 +25,6 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetAvailableHotelAsync([FromQuery] Paginator paginator, string id)
-        {
-            var rooms = await _roomService.GetAvailableRoomByHotel(paginator, id);
-            return Ok(rooms);
-        }
-
-        [HttpGet]
-        [Route("room")]
         public IActionResult HotelRoomById(string id)
         {
             var room = _roomService.GetHotelRooomById(id);

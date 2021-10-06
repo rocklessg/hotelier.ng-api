@@ -1,5 +1,6 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
+using hotel_booking_utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -42,6 +43,13 @@ namespace hotel_booking_api.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Route("{id}/room")]
+        public async Task<IActionResult> GetAvailableHotelAsync([FromQuery] Paginator paginator, string id)
+        {
+            var rooms = await _hotelService.GetAvailableRoomByHotel(paginator, id);
+            return Ok(rooms);
+        }
 
         [HttpGet]
         [Route("ratings/{id}")]

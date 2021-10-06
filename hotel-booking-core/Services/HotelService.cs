@@ -4,7 +4,6 @@ using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.Mapper;
-using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -41,6 +40,30 @@ namespace hotel_booking_core.Services
         public async Task GetTopDeals()
         {
             return;
+        }
+
+        public async Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId)
+        {
+            var roomList = await _unitOfWork.Rooms.GetAvailableRoomsByHotel(hotelId);
+
+            if (roomList.Count() > 0)
+            {
+                var dtoList = HotelRoomsResponse.GetResponse(roomList);
+
+                var item = dtoList.Skip(paginator.PageSize * (paginator.CurrentPage - 1))
+                .Take(paginator.PageSize);
+
+                var result = new Response<IEnumerable<RoomsByHotelDTo>>
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Succeeded = true,
+                    Message = "available rooms",
+                    Data = item
+                };
+
+                return result;
+            }
+            return new Response<IEnumerable<RoomsByHotelDTo>>();
         }
 
         public async Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId)
