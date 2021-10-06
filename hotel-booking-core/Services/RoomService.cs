@@ -37,7 +37,7 @@ namespace hotel_booking_core.Services
                 };
                 return result;
             }
-            return new Response<RoomDTo>();
+            return Response<RoomDTo>.Fail("Not Found");
         }
     }
 }
