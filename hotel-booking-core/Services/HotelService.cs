@@ -1,11 +1,16 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
+using hotel_booking_dto;
 using hotel_booking_dto.commons;
+using hotel_booking_dto.HotelDtos;
 using hotel_booking_models;
+using hotel_booking_utilities;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.Services
@@ -16,7 +21,7 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public HotelService(ILogger<HotelService> logger, IUnitOfWork unitOfWork,IMapper mapper)
+        public HotelService(ILogger<HotelService> logger, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
@@ -34,12 +39,149 @@ namespace hotel_booking_core.Services
             return dtoList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
         }
 
-        public async Task GetTopDeals()
-        {
 
-            return;
+
+        public async Task<Response<List<GetHotelDto>>> GetAllHotelsAsync(Paginator paging)
+        {
+            List<Hotel> hotelList = (await _unitOfWork.Hotels.GetAllHotelsAsync())
+                                    .Skip((paging.CurrentPage - 1)*paging.PageSize)
+                                    .Take(paging.PageSize).ToList();
+
+            var response = new Response<List<GetHotelDto>>();
+            List<GetHotelDto> resultList = new();
+
+            foreach (var hotel in hotelList)
+            {
+                int noOfRatings = hotel.Ratings.Count;
+                double sum = hotel.Ratings.Sum(s => s.Ratings);
+                double average = sum / noOfRatings;
+
+                GetHotelDto result = new()
+                {
+                    Id = hotel.Id,
+                    Name = hotel.Name,
+                    Description = hotel.Description,
+                    Email = hotel.Email,
+                    Phone = hotel.Phone,
+                    Address = hotel.Address,
+                    City = hotel.City,
+                    State = hotel.State,
+                    Rating = average,
+                    FeaturedImage = hotel.Galleries.FirstOrDefault(gallery => gallery.IsFeature == true).ImageUrl,
+                    Gallery = hotel.Galleries.Select(gallery => gallery.ImageUrl),
+                    RoomTypes = hotel.RoomTypes.Select(roomType =>
+
+                        // Map Room types to Get all hotels room type DTO
+                        new RoomTypeDTO()
+                        {
+                            Id = roomType.Id,
+                            Name = roomType.Name,
+                            Description = roomType.Description,
+                            Price = roomType.Price,
+                            Discount = roomType.Discount,
+                            Thumbnail = roomType.Thumbnail
+                        })
+                };
+                resultList.Add(result);
+            }
+            response.StatusCode = (int)HttpStatusCode.OK;
+            response.Succeeded = true;
+            response.Data = resultList;
+            return response;
         }
 
 
+        public Response<GetHotelDto> GetHotelById(string id)
+        {
+            var response = new Response<GetHotelDto>();
+            Hotel hotel = _unitOfWork.Hotels.GetHotelById(id);
+            if(hotel!=null)
+            {
+                // Get the average rating for the hotel
+                int numberOfRatings = hotel.Ratings.Count;
+                double sumOfRatings = hotel.Ratings.Sum(s => s.Ratings);
+                double average = sumOfRatings / numberOfRatings;
+
+                // Map hotel and it's child entities to Get all hotel response DTO
+                var result = new GetHotelDto()
+                {
+                    Id = hotel.Id,
+                    Name = hotel.Name,
+                    Description = hotel.Description,
+                    Email = hotel.Email,
+                    Phone = hotel.Phone,
+                    Address = hotel.Address,
+                    City = hotel.City,
+                    State = hotel.State,
+                    Rating = average,
+                    FeaturedImage = hotel.Galleries.FirstOrDefault(gallery => gallery.IsFeature).ImageUrl,
+                    Gallery = hotel.Galleries.Select(gallery => gallery.ImageUrl),
+
+                    // Map Room types to Get all hotels room type DTO
+                    RoomTypes = hotel.RoomTypes.Select(roomType =>
+                        new RoomTypeDTO()
+                        {
+                            Id = roomType.Id,
+                            Name = roomType.Name,
+                            Description = roomType.Description,
+                            Price = roomType.Price,
+                            Discount = roomType.Discount,
+                            Thumbnail = roomType.Thumbnail
+                        }),
+
+                    // Map Reviews to Get all hotels review DTO
+                    Reviews = hotel.Reviews.Select(review =>
+                        new ReviewDTO()
+                        {
+                            Text = review.Comment,
+                            CustomerImage = review.Customer.AppUser.Avatar,
+                            Date = review.CreatedAt.ToShortDateString()
+                        }).Take(5)
+                };
+                response.Data = result;
+                response.Succeeded = true;
+                response.StatusCode = (int)HttpStatusCode.OK;
+                return response;
+            }
+            response.StatusCode = (int)HttpStatusCode.NotFound;
+            response.Succeeded = false;
+            response.Data = default;
+            response.Message = $"Hotel with Id = {id} not found";
+            return response;
+
+        }
+
+
+        public async Task<Response<UpdateHotelDto>> UpdateHotelAsync(UpdateHotelDto model)
+        {
+            var response = new Response<UpdateHotelDto>();
+            // Get the hotel to be updated using it's Id
+            Hotel hotel = _unitOfWork.Hotels.GetHotelById(model.Id);
+            if (hotel != null)
+            {
+                hotel.Name = model.Name;
+                hotel.Description = model.Description;
+                hotel.Email = model.Email;
+                hotel.Phone = model.Phone;
+                hotel.Address = model.Address;
+                hotel.City = model.City;
+                hotel.State = model.State;
+                
+                // Update the hotel and save changes to database
+                _unitOfWork.Hotels.UpdateAsync(hotel);
+                await _unitOfWork.Save();
+                
+                // Map properties of updated hotel to the response DTO
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Message = $"Hotel with id {hotel.Id} has been updated";
+                response.Data = model;
+                return response;
+            }
+            response.StatusCode = (int)HttpStatusCode.NotFound;
+            response.Message = $"Hotel with id {model.Id} was not found!";
+            response.Succeeded = false;
+            return response;
+        }
     }
 }
