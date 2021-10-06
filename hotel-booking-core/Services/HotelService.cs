@@ -112,7 +112,7 @@ namespace hotel_booking_core.Services
 
                 return result;
             }
-            return new Response<IEnumerable<RoomsByHotelDTo>>();
+            return Response<IEnumerable<RoomsByHotelDTo>>.Fail("Not Found");
         }
 
         public async Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId)
@@ -133,7 +133,7 @@ namespace hotel_booking_core.Services
 
                 return result;
             }
-            return new Response<IEnumerable<HotelRatingsDTo>>();
+            return Response<IEnumerable<HotelRatingsDTo>>.Fail("Not found");
         }
 
         public Response<GetHotelDto> GetHotelById(string id)
