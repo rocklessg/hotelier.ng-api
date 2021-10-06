@@ -2,6 +2,8 @@
 using hotel_booking_core.Interface;
 using hotel_booking_core.Interfaces;
 using hotel_booking_core.Services;
+using hotel_booking_data.Repositories.Abstractions;
+using hotel_booking_data.Repositories.Implementations;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_data.UnitOfWork.Implementation;
 using hotel_booking_dto.AuthenticationDtos;
@@ -20,12 +22,12 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddTransient<IMailService, MailService>();
+            services.AddScoped<IAmenityService, AmenityService>();
+            services.AddScoped<IHotelService, HotelService>();
 
             // Add Repository Injections Here
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
             // Add Model Services Injection Here
-            services.AddScoped<IHotelService, HotelService>();
             services.AddScoped<IRoomService, RoomService>();
 
             // Add Fluent Validator Injections Here

@@ -10,8 +10,8 @@ using hotel_booking_data.Contexts;
 namespace hotel_booking_data.Migrations
 {
     [DbContext(typeof(HbaDbContext))]
-    [Migration("20211001155523_InitialDB")]
-    partial class InitialDB
+    [Migration("20211002202328_initialdatabase")]
+    partial class Initialdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
