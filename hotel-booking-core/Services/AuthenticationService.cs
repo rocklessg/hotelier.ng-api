@@ -9,6 +9,7 @@ using hotel_booking_utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -23,6 +24,7 @@ namespace hotel_booking_core.Services
         private readonly IMapper _mapper;
         private readonly ITokenGeneratorService _tokenGenerator;
         private readonly IMailService _mailService;
+        private const string FilePath = "../hotel-booking-api/StaticFiles/";
 
 
         public AuthenticationService(UserManager<AppUser> userManager,
@@ -76,11 +78,17 @@ namespace hotel_booking_core.Services
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var actualToken = WebEncoders.Base64UrlEncode(encodedToken);
-            
+
+            var passwordResetLink = $"http://www.example.com/resetpassword/{actualToken}/{email}";
+
+            var temp = await File.ReadAllTextAsync(Path.Combine(FilePath, "Html/ForgotPassword.html"));
+            var newTemp = temp.Replace("**link**", passwordResetLink);
+             var emailBody = newTemp.Replace("**User**", user.FirstName);
+
             var mailRequest = new MailRequest()
             {
                 Subject = "Reset Password",
-                Body = $"http://www.example.com/resetpassword/{actualToken}/{email}",
+                Body = emailBody,
                 ToEmail = email
             };
 
@@ -146,10 +154,15 @@ namespace hotel_booking_core.Services
 
                         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         var confirmationLink = $"http://www.example.com/confirmEmail/{token}/{user.Email}";
+
+                        var temp = await File.ReadAllTextAsync(Path.Combine(FilePath, "Html/ConfirmEmail.html"));
+                        var newTemp = temp.Replace("**link**", confirmationLink);
+                        var emailBody = newTemp.Replace("**User**", user.FirstName);
+
                         var mailRequest = new MailRequest()
                         {
                             Subject = "Confirm Your Registration",
-                            Body = confirmationLink,
+                            Body = emailBody,
                             ToEmail = model.Email
                         };
 
@@ -164,9 +177,7 @@ namespace hotel_booking_core.Services
                             transaction.Complete();
                             return response;
                         }
-
                     }
-
                     response.Message = GetErrors(result);
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     response.Succeeded = false;
