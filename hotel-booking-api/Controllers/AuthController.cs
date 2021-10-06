@@ -1,8 +1,10 @@
-﻿using hotel_booking_core.Interfaces;
+using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_models;
 using Microsoft.AspNetCore.Authorization;
+using hotel_booking_models.Mail;
+using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

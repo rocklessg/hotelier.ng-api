@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
+using hotel_booking_dto;
 using hotel_booking_dto.commons;
-using hotel_booking_models;
+using hotel_booking_dto.Mapper;
+using hotel_booking_utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,10 +39,53 @@ namespace hotel_booking_core.Services
 
         public async Task GetTopDeals()
         {
-
             return;
         }
 
+        public async Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId)
+        {
+            var roomList = await _unitOfWork.Rooms.GetAvailableRoomsByHotel(hotelId);
+
+            if (roomList.Count() > 0)
+            {
+                var dtoList = HotelRoomsResponse.GetResponse(roomList);
+
+                var item = dtoList.Skip(paginator.PageSize * (paginator.CurrentPage - 1))
+                .Take(paginator.PageSize);
+
+                var result = new Response<IEnumerable<RoomsByHotelDTo>>
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Succeeded = true,
+                    Message = "available rooms",
+                    Data = item
+                };
+
+                return result;
+            }
+            return Response<IEnumerable<RoomsByHotelDTo>>.Fail("Not Found");
+        }
+
+        public async Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId)
+        {
+            var ratings = await _unitOfWork.Hotels.HotelRatings(hotelId);
+
+            if (ratings.Count() > 0)
+            {
+                var response = HotelRoomsResponse.GetResponse(ratings);
+
+                var result = new Response<IEnumerable<HotelRatingsDTo>>
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Succeeded = true,
+                    Message = $"cummulated ratings for hotel with id {hotelId}",
+                    Data = response
+                };
+
+                return result;
+            }
+            return Response<IEnumerable<HotelRatingsDTo>>.Fail("Not found");
+        }
 
     }
 }

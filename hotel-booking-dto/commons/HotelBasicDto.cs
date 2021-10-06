@@ -18,4 +18,30 @@ namespace hotel_booking_dto.commons
         public string Thumbnails { get; set; }
         public ICollection<Gallery> Galleries { get; set; }
     }
+
+    public class RoomsByHotelDTo
+    {
+        public string Id { get; set; }
+        public bool IsBooked { get; set; }
+        public string RoomtypeName { get; set; }
+        public string RoomTypeThumbnail { get; set; }
+
+    }
+
+    public class RoomDTo
+    {
+        public string Id { get; set; }
+        public string RoomNo { get; set; }
+        public bool IsBooked { get; set; }
+        public string RoomType { get; set; }
+
+    }
+
+    public class HotelRatingsDTo
+    {
+        public string Id { get; set; }
+        public int Ratings { get; set; }
+        public string CustomerId { get; set; }
+
+    }
 }
