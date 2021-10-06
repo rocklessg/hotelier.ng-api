@@ -1,9 +1,7 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
-using hotel_booking_utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
 {
