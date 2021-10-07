@@ -116,6 +116,7 @@ namespace hotel_booking_core.Services
             return Response<IEnumerable<RoomsByHotelDTo>>.Fail("Not Found");
         }
 
+
         public async Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId)
         {
             var ratings = await _unitOfWork.Hotels.HotelRatings(hotelId);
@@ -228,6 +229,32 @@ namespace hotel_booking_core.Services
             response.StatusCode = (int)HttpStatusCode.NotFound;
             response.Message = $"Hotel with id {hotelId} was not found!";
             response.Succeeded = false;
+            return response;
+        }
+
+
+        public async Task<Response<AddHotelResponseDto>> AddHotel(string managerId, AddHotelDto hotelDto)
+        {
+            Hotel hotel = _mapper.Map<Hotel>(hotelDto);
+
+            string message = "hotel data is empty";
+
+            hotel.Id = Guid.NewGuid().ToString();
+            hotel.ManagerId = managerId;
+
+            await _unitOfWork.Hotels.InsertAsync(hotel);
+            await _unitOfWork.Save();
+
+            var hotelResponse = _mapper.Map<AddHotelResponseDto>(hotel);
+
+            var response = new Response<AddHotelResponseDto>()
+            {
+                StatusCode = hotel.Id != null ? 200 : 400,
+                Succeeded = hotel.Id != null ? true : false,
+                Data = hotelResponse,
+                Message = hotel.Id != null ? $"{hotel.Name} with id {hotel.Id} has been added" : message
+            };
+
             return response;
         }
     }

@@ -9,6 +9,7 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IAmenityRepository : IGenericRepository<Amenity>
     {
+        Amenity GetAmenityById(string id);
         IEnumerable<Amenity> GetAmenityByHotelId(string hotelId);
     }
 }
