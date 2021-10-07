@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using hotel_booking_dto.AmenityDtos;
 using hotel_booking_dto.AuthenticationDtos;
+using hotel_booking_dto.commons;
+using hotel_booking_dto.HotelDtos;
 using hotel_booking_models;
 
 namespace hotel_booking_utilities.AutoMapSetup
