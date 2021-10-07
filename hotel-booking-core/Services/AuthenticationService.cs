@@ -13,6 +13,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Transactions;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace hotel_booking_core.Services
 {
@@ -22,7 +23,9 @@ namespace hotel_booking_core.Services
         private readonly IMapper _mapper;
         private readonly ITokenGeneratorService _tokenGenerator;
         private readonly IMailService _mailService;
-        
+        private const string FilePath = "../hotel-booking-api/StaticFiles/";
+
+
 
         public AuthenticationService(UserManager<AppUser> userManager,
             IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
@@ -102,21 +105,22 @@ namespace hotel_booking_core.Services
                     var result = await _userManager.CreateAsync(user, model.Password);
 
 
-
                     if (result.Succeeded)
                     {
                         await _userManager.AddToRoleAsync(user, UserRoles.Customer);
 
                         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var confirmationLink = $"http://www.example.com/confirmEmail/{token}/{user.Email}";
+
+                        var emailBody = await GetEmailBody(user, emailTempPath: "Html/ConfirmEmail.html", nameOfLink: "confirm-email", token);
+
                         var mailRequest = new MailRequest()
                         {
                             Subject = "Confirm Your Registration",
-                            Body = confirmationLink,
+                            Body = emailBody,
                             ToEmail = model.Email
                         };
 
-                        var emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
+                        var emailResult = await _mailService.SendEmailAsync(mailRequest); 
 
                         if (emailResult)
                         {
@@ -186,6 +190,26 @@ namespace hotel_booking_core.Services
         private static string GetErrors(IdentityResult result)
         {
             return result.Errors.Aggregate(string.Empty, (current, err) => current + err.Description + "\n");
+        }
+
+        /// <summary>
+        /// Generates and encapsulates the link to be sent to the user in a html template.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="emailTempPath"></param>
+        /// <param name="nameOfLink"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private async Task<string> GetEmailBody(AppUser user, string emailTempPath, string nameOfLink, string token)
+        {
+            var link = $"http://www.example.com/{nameOfLink}/{token}/{user.Email}";
+
+            var temp = await File.ReadAllTextAsync(Path.Combine(FilePath, emailTempPath));
+            var newTemp = temp.Replace("**link**", link);
+
+            var emailBody = newTemp.Replace("**User**", user.FirstName);
+
+            return emailBody;
         }
     }
 }
