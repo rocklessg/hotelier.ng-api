@@ -11,7 +11,7 @@ namespace hotel_booking_models
         public DateTime CheckOut { get; set; }
         public int NoOfPeople { get; set; }
         public string ServiceName { get; set; }
-        public RoomType Hotel { get; set; }
+        public Hotel Hotel { get; set; }
         public Customer Customer { get; set; }
         public Payment Payment { get; set; }
     }

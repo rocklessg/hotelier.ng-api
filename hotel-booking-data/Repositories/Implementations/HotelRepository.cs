@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
-    public class HotelRepository : GenericRepository<RoomType>, IHotelRepository
+    public class HotelRepository : GenericRepository<Hotel>, IHotelRepository
     {
         private readonly HbaDbContext _context;
-        private readonly DbSet<RoomType> _dbSet;
+        private readonly DbSet<Hotel> _dbSet;
         public HotelRepository(HbaDbContext context) : base(context)
         {
             _context = context;
-            _dbSet = _context.Set<RoomType>();
+            _dbSet = _context.Set<Hotel>();
         }
-        public async Task<List<RoomType>> GetAllAsync(Expression<Func<RoomType, bool>> expression = null, Func<IQueryable<RoomType>, IOrderedQueryable<RoomType>> orderby = null, List<string> Includes = null)
+        public async Task<List<Hotel>> GetAllAsync(Expression<Func<Hotel, bool>> expression = null, Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderby = null, List<string> Includes = null)
         {
             var query = _dbSet.AsNoTracking();
             if (Includes != null) Includes.ForEach(x => query = query.Include(x));
@@ -28,7 +28,7 @@ namespace hotel_booking_data.Repositories.Implementations
             return await query.ToListAsync();
         }
 
-        public async Task<List<RoomType>> GetAllHotelsAsync()
+        public async Task<List<Hotel>> GetAllHotelsAsync()
         {
             var hotelList = _dbSet
                .Include(c => c.Galleries)
@@ -38,7 +38,7 @@ namespace hotel_booking_data.Repositories.Implementations
         }
 
 
-        public RoomType GetHotelById(string id)
+        public Hotel GetHotelById(string id)
         {
             var hotel = _dbSet.Where(hotel => hotel.Id == id)
                          .Include(hotel => hotel.Galleries)

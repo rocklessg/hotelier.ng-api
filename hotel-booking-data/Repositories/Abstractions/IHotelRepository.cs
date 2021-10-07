@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Abstractions
 {
-    public interface IHotelRepository : IGenericRepository<RoomType>
+    public interface IHotelRepository : IGenericRepository<Hotel>
     {
-        Task<List<RoomType>> GetAllAsync(Expression<Func<RoomType, bool>> expression = null, Func<IQueryable<RoomType>, IOrderedQueryable<RoomType>> orderby = null, List<string> Includes = null);
-        Task<List<RoomType>> GetAllHotelsAsync();
-        RoomType GetHotelById(string id);
+        Task<List<Hotel>> GetAllAsync(
+            Expression<Func<Hotel, bool>> expression = null,
+            Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderby = null,
+            List<string> Includes = null);
+        Task<List<Hotel>> GetAllHotelsAsync();
+        Hotel GetHotelById(string id);
         Task<List<Rating>> HotelRatings(string hotelId);
     }
 }

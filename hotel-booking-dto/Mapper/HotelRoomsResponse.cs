@@ -12,7 +12,7 @@ namespace hotel_booking_dto.Mapper
 {
     public class HotelRoomsResponse
     {
-        public static IEnumerable<RoomsByHotelDTo> GetResponse(List<Room> room)
+        public static IEnumerable<RoomsByHotelDTo> GetResponse(List<Room> room) 
         {
             var newList = new List<RoomsByHotelDTo>();
 

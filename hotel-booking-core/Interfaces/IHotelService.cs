@@ -9,7 +9,6 @@ namespace hotel_booking_core.Interfaces
 {
     public interface IHotelService
     {
-        Task<Response<List<HotelBasicDto>>> GetHotelsByRatingsAsync(Paging paging);
         /// <summary>
         /// Fetches all hotels in database. Returns a List of all registered hotels.
         /// </summary>
@@ -30,5 +29,9 @@ namespace hotel_booking_core.Interfaces
         Task<Response<UpdateHotelDto>> UpdateHotelAsync(string hotelId, UpdateHotelDto model);
         Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId);
         Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId);
+        Task<List<RoomInfoDTo>> GetTopDealsAsync(Paging paging);
+        Task<List<RoomInfoDTo>> GetRoomByPriceAsync(PriceDto priceDto);
+        Task<List<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging);
+
     }
 }

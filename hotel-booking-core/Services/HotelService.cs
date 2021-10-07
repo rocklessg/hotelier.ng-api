@@ -30,49 +30,42 @@ namespace hotel_booking_core.Services
             _mapper = mapper;
         }
 
-        public async Task<Response<List<HotelBasicDto>>> GetHotelsByRatingsAsync(Paging paging)
+        public async Task<List<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging)
         {
             var hotelList = await _unitOfWork.Hotels.GetAllAsync(
                 orderby: x => x.OrderBy(h => h.Ratings.Sum(r => r.Ratings) / h.Ratings.Count),
                 Includes: new List<string>() { "Galleries"}
                 );
             hotelList = hotelList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
-            var hoteldtoList = new List<HotelBasicDto>();
-            foreach (var hotel in hotelList)
-            {
-                hoteldtoList.Add(HotelBasicDtoMapper.MapToHotelBAsicDto(hotel, _mapper));
-            }            
-            return new Response<List<HotelBasicDto>>{
-                Data = hoteldtoList,
-                Message = "List of Top Hotels by their ratings",
-                Succeeded = true,
-                StatusCode = StatusCodes.Status200OK
-            };
+            return HotelBasicDtoMapper.MapToHotelBAsicDtoList(hotelList, _mapper);
         }
 
-        public async Task GetRoomByPriceAsync(RoombyPriceDto priceDto)
-        {
-            var roomList = await _unitOfWork.Rooms.GetAllAsync(
-                Includes: new List<string>() { "Roomtype" },
-                expression: (room => room.IsBooked == true),
-                orderby: x => x.OrderBy(x => x.Roomtype.Price)
-                );
-        }
-
-        public async Task<List<HotelBasicDto>> GetTopDealsAsync(Paging paging)
+        public async Task<List<RoomInfoDTo>> GetRoomByPriceAsync(PriceDto priceDto)
         {
             var roomList = await _unitOfWork.RoomType.GetAllAsync(
-                Includes: new List<string>() { "Roomtype" },
-                orderby: x => x.OrderBy(rt => rt)
-                );            
-            var dtoList = _mapper.Map<List<HotelBasicDto>>(roomList);
-            dtoList.ForEach(dto => dto.Thumbnails = dto.Galleries.FirstOrDefault(pic => pic.IsFeature).ImageUrl);
-            return dtoList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
+                Includes: new List<string>() { "Hotel" },
+                expression: (roomType => (!(priceDto.MaxPrice > priceDto.MinPrice) ? roomType.Price >= priceDto.MinPrice
+                                         : (roomType.Price >= priceDto.MinPrice) && (roomType.Price <= priceDto.MaxPrice) 
+                                         )),
+                orderby: x => x.OrderBy(x => x.Price)
+                );
+            roomList = roomList.Skip(priceDto.PageNumber - 1).Take(priceDto.PageSize).ToList();
+            return HotelBasicDtoMapper.MapToRoomInfoDtoList(roomList, _mapper);
+        }
+
+        public async Task<List<RoomInfoDTo>> GetTopDealsAsync(Paging paging)
+        {
+            var roomList = await _unitOfWork.RoomType.GetAllAsync(
+                Includes: new List<string>() { "Hotel" },
+                orderby: x => x.OrderBy(rt => rt.Discount/rt.Price)
+                );
+            roomList = roomList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
+            return HotelBasicDtoMapper.MapToRoomInfoDtoList(roomList, _mapper);
         }
 
         public async Task<Response<List<GetHotelDto>>> GetAllHotelsAsync(Paginator paging)
         {
-            List<RoomType> hotelList = (await _unitOfWork.Hotels.GetAllHotelsAsync())
+            List<Hotel> hotelList = (await _unitOfWork.Hotels.GetAllHotelsAsync())
                                     .Skip((paging.CurrentPage - 1)*paging.PageSize)
                                     .Take(paging.PageSize).ToList();
 
@@ -167,7 +160,7 @@ namespace hotel_booking_core.Services
         public Response<GetHotelDto> GetHotelById(string id)
         {
             var response = new Response<GetHotelDto>();
-            RoomType hotel = _unitOfWork.Hotels.GetHotelById(id);
+            Hotel hotel = _unitOfWork.Hotels.GetHotelById(id);
             if(hotel!=null)
             {
                 // Get the average rating for the hotel
@@ -229,7 +222,7 @@ namespace hotel_booking_core.Services
         {
             var response = new Response<UpdateHotelDto>();
             // Get the hotel to be updated using it's Id
-            RoomType hotel = _unitOfWork.Hotels.GetHotelById(hotelId);
+            Hotel hotel = _unitOfWork.Hotels.GetHotelById(hotelId);
             if (hotel != null)
             {
                 hotel.Name = model.Name;

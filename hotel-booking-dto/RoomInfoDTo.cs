@@ -1,4 +1,5 @@
-﻿using hotel_booking_models;
+﻿using hotel_booking_dto.commons;
+using hotel_booking_models;
 
 namespace hotel_booking_dto
 {
@@ -10,6 +11,6 @@ namespace hotel_booking_dto
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
         public string Thumbnail { get; set; }
-        public RoomType Hotel { get; set; }
+        public string HotelName { get; set; }
     }
 }
