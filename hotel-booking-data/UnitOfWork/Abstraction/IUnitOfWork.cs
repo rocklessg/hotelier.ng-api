@@ -1,4 +1,5 @@
 ﻿using hotel_booking_data.Repositories.Abstractions;
+using hotel_booking_data.Repositories.Implementations;
 using hotel_booking_models;
 using System.Threading.Tasks;
 

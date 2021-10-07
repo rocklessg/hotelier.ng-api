@@ -47,7 +47,7 @@ namespace hotel_booking_api.Controllers
         }
 
 
-        [HttpPatch]
+       /* [HttpPatch]
         [Authorize("customer")]
         public async Task<IActionResult> UploadImage([FromForm] AddImageDto imageDto)
         {
@@ -70,7 +70,7 @@ namespace hotel_booking_api.Controllers
             {
                 return BadRequest(e.Message);
             }
-        }
+        }*/
 
 
     }

@@ -2,6 +2,7 @@
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using hotel_booking_data.Repositories.Abstractions;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
@@ -23,7 +24,7 @@ namespace hotel_booking_data.Repositories.Implementations
 
             if (customer is not null)
             {
-                UpdateAsync(customer);
+                Update(customer);
                 return true;
             }
             return false;
@@ -34,6 +35,11 @@ namespace hotel_booking_data.Repositories.Implementations
         {
             Customer customer = await _customers.FindAsync(customerId);
             return customer;
+        }
+
+        public void Update(Customer customer)
+        {
+            _customers.Update(customer);
         }
 
     }
