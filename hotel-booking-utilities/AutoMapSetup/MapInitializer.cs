@@ -20,6 +20,10 @@ namespace hotel_booking_utilities.AutoMapSetup
             // Hotel Maps
             CreateMap<Hotel, HotelBasicDto>().ReverseMap();
             CreateMap<Hotel, UpdateHotelDto>().ReverseMap();
+            CreateMap<Hotel, AddHotelDto>().ReverseMap();
+            CreateMap<AddHotelResponseDto, Hotel>().ReverseMap();
+            CreateMap<Room, AddRoomDto>().ReverseMap();
+            CreateMap<AddRoomResponseDto, Room>().ReverseMap();
         }
 
     }
