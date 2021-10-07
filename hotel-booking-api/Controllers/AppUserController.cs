@@ -1,17 +1,15 @@
-
-﻿using hotel_booking_dto;
+using hotel_booking_dto;
 using hotel_booking_dto.AppUserDto;
+using hotel_booking_models.Cloudinary;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using hotel_booking_core.Interfaces;
 using System.Threading.Tasks;
-using hotel_booking_models.Cloudinary;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using hotel_booking_core.Interface;
 
 namespace hotel_booking_api.Controllers
@@ -32,7 +30,7 @@ namespace hotel_booking_api.Controllers
         }
 
 
-        [HttpPatch("update")]
+        [HttpPut("updateAppUser")]
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -40,7 +38,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
         //[Authorize(Roles = "Regular")]
-        public async Task<ActionResult<Response<string>>> Update(string id, [FromBody] UpdateAppUserRequest updateAppUser)
+        public async Task<ActionResult<Response<string>>> Update(string id, [FromBody] UpdateAppUserDto updateAppUser)
         {
 
             //var id = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
@@ -49,6 +47,12 @@ namespace hotel_booking_api.Controllers
 
 
         }
+        [HttpPatch("updateImage")]
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateUserImage([FromForm] AddImageDto imageDto)
         {
 
@@ -56,7 +60,12 @@ namespace hotel_booking_api.Controllers
             var upload = await _imageService.UploadAsync(imageDto.Image);
 
             string url = upload.Url.ToString();
-            // string customerId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+
+            //auth user id
+            
+            //string customerId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+
+
             string customerId = "2ccd5586-51f2-444c-aa63-e13012748dfa";
             var result = await _AppUserService.UpdateCustomerPhoto(customerId, url);
             return StatusCode(result.StatusCode, result);

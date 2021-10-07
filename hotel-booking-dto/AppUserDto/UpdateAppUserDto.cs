@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_dto.AppUserDto
 {
-    public class UpdateAppUserRequest
+    public class UpdateAppUserDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -6,6 +6,6 @@ namespace hotel_booking_core.Interfaces
 {
     public interface ICustomerService
     {
-        Task<Response<UpdateCustomerResponseDto>> UpdateCustomer(string customerId, UpdateCustomerRequest updateCustomer);
+        
     }
 }

@@ -25,7 +25,9 @@ namespace hotel_booking_data.UnitOfWork.Implementation
         }
         public IAmenityRepository Amenities => _amenities ??= new AmenityRepository(_context);
 
-        public ICustomerRepository Customers => _customers ??= new AppUserRepository(_context);
+
+        public ICustomerRepository Customers => _customers ??= new CustomerRepository(_context);
+
 
         public IHotelRepository Hotels => _hotels ??= new HotelRepository(_context);
 

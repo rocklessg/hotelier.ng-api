@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using hotel_booking_dto.CustomerDtos;
 
 
-
 namespace hotel_booking_core.Services
 {
     public class AppUserService : IAppUserService
@@ -26,14 +25,14 @@ namespace hotel_booking_core.Services
         }
 
 
-        #region 
+        #region UpdateAppUser
         /// <summary>
-        /// A method to update a customer
+        /// A method to update an AppUser
         /// </summary>
         /// <param name="appUserId"></param>
         /// <param name="updateAppUser"></param>
-        /// <returns>Task<bool></returns>
-        public async Task<Response<string>> UpdateAppUser(string appUserId, UpdateAppUserRequest updateAppUser)
+        /// <returns>ask<Response<string>></returns>
+        public async Task<Response<string>> UpdateAppUser(string appUserId, UpdateAppUserDto updateAppUser)
         {
             var response = new Response<string>();
 

@@ -57,5 +57,11 @@ namespace hotel_booking_data.Repositories.Implementations
 
             return ratings;
         }
+
+        public Hotel GetHotelByIdForAddAmenity(string id)
+        {
+           return  _context.Hotels.FirstOrDefault(x => x.Id == id);
+            
+        }
     }
 }
