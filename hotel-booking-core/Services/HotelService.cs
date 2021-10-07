@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System;
 
 namespace hotel_booking_core.Services
 {
@@ -211,6 +212,7 @@ namespace hotel_booking_core.Services
                 hotel.Address = model.Address;
                 hotel.City = model.City;
                 hotel.State = model.State;
+                hotel.UpdatedAt = DateTime.Now;
                 
                 // Update the hotel and save changes to database
                 _unitOfWork.Hotels.UpdateAsync(hotel);

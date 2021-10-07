@@ -55,13 +55,15 @@ namespace hotel_booking_api
 
             services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling 
             = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllers()
+                .AddNewtonsoftJson(op => op.SerializerSettings
+                    .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddMvc().AddFluentValidation(fv => {
                 fv.DisableDataAnnotationsValidation = true;
                 fv.RegisterValidatorsFromAssemblyContaining<Startup>();
                 fv.ImplicitlyValidateChildProperties = true;
             });
-
 
             services.AddSwaggerGen(c =>
             {
