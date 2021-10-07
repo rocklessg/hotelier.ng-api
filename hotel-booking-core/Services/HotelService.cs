@@ -41,9 +41,6 @@ namespace hotel_booking_core.Services
             return dtoList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
         }
 
-<<<<<<< HEAD
-      
-=======
 
 
         public async Task<Response<List<GetHotelDto>>> GetAllHotelsAsync(Paginator paging)
@@ -118,7 +115,7 @@ namespace hotel_booking_core.Services
             }
             return Response<IEnumerable<RoomsByHotelDTo>>.Fail("Not Found");
         }
->>>>>>> 5621354790f361918a3273e3d9b553446291e926
+
 
         public async Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId)
         {

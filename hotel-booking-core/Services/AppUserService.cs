@@ -11,6 +11,7 @@ using hotel_booking_dto.CustomerDtos;
 using hotel_booking_models;
 using hotel_booking_dto;
 using Microsoft.AspNetCore.Identity;
+using hotel_booking_core.Interface;
 
 namespace hotel_booking_core.Services
 {

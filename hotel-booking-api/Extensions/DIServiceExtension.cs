@@ -23,13 +23,13 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddTransient<IMailService, MailService>();
-<<<<<<< HEAD
+
             services.AddScoped<IAppUserService, AppUserService>();
-            services.AddScoped<IAppUserRepository, AppUserRepository>();
-=======
+            services.AddScoped<IAppUserRepository, CustomerRepository>();
+
             services.AddScoped<IAmenityService, AmenityService>();
             services.AddScoped<IHotelService, HotelService>();
->>>>>>> 5621354790f361918a3273e3d9b553446291e926
+
 
             // Add Repository Injections Here
             services.AddScoped<IUnitOfWork, UnitOfWork>();

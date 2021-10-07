@@ -1,5 +1,4 @@
 ﻿using hotel_booking_core.Interface;
-using hotel_booking_core.Services;
 using hotel_booking_models.Cloudinary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
+using System.Security.Claims; 
 using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
@@ -41,7 +40,12 @@ namespace hotel_booking_api.Controllers
             var upload = await _imageService.UploadAsync(imageDto.Image);
 
             string url = upload.Url.ToString();
-            // string customerId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+
+            //auth user id
+            
+            //string customerId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+
+
             string customerId = "2ccd5586-51f2-444c-aa63-e13012748dfa";
             var result = await _AppUserService.UpdateCustomerPhoto(customerId, url);
             return StatusCode(result.StatusCode, result);

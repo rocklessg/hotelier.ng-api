@@ -5,19 +5,20 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
-    public class AppUserRepository : GenericRepository<AppUser>, IAppUserRepository
+    public class CustomerRepository : GenericRepository<AppUser>, IAppUserRepository
     {
 
         private readonly HbaDbContext _context;
         private readonly DbSet<Customer> _customers;
 
-        public AppUserRepository(HbaDbContext context) : base(context)
+        public CustomerRepository(HbaDbContext context) : base(context)
         {
             _context = context;
             _customers = _context.Set<Customer>();
         }
 
 
+     //
 
 
         public async Task<Customer> FindAsync(string customerId)

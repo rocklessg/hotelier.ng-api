@@ -2,7 +2,7 @@
 using hotel_booking_dto.CustomerDtos;
 using System.Threading.Tasks;
 
-namespace hotel_booking_core.Services
+namespace hotel_booking_core.Interface
 {
     public interface IAppUserService
     {

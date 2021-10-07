@@ -6,6 +6,6 @@ namespace hotel_booking_data.Repositories.Implementations
     public interface IAppUserRepository
     {
         Task<Customer> FindAsync(string customerId);
-        bool UpdateUserPhotoById(AppUser customer);
+     
     }
 }
