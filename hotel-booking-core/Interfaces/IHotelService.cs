@@ -32,6 +32,6 @@ namespace hotel_booking_core.Interfaces
         Task<List<RoomInfoDTo>> GetTopDealsAsync(Paging paging);
         Task<List<RoomInfoDTo>> GetRoomByPriceAsync(PriceDto priceDto);
         Task<List<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging);
-
+        Task<Response<AddHotelResponseDto>> AddHotel(string managerId, AddHotelDto hotelDto);
     }
 }

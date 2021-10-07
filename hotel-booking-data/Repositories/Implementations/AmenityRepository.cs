@@ -1,9 +1,11 @@
 ﻿using hotel_booking_data.Contexts;
 using hotel_booking_data.Repositories.Abstractions;
+using hotel_booking_dto.AmenityDtos;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
@@ -15,6 +17,14 @@ namespace hotel_booking_data.Repositories.Implementations
         {
             _context = context;
         }
+
+        public Amenity GetAmenityById(string id)
+        {
+            var amenity = _context.Amenities.FirstOrDefault(x => x.Id == id);
+            return amenity;
+        }
+
+
 
         public IEnumerable<Amenity> GetAmenityByHotelId(string hotelId)
         {
