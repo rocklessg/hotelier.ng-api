@@ -35,6 +35,12 @@ namespace hotel_booking_core.Services
             _tokenGenerator = tokenGenerator;
             _mailService = mailService;
         }
+
+        /// <summary>
+        /// Confirms the mail of a registered user
+        /// </summary>
+        /// <param name="confirmEmailDto"></param>
+        /// <returns></returns>
         public async Task<Response<string>> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
         {
             var user = await _userManager.FindByEmailAsync(confirmEmailDto.Email);
@@ -61,6 +67,11 @@ namespace hotel_booking_core.Services
             return response;            
         }
 
+        /// <summary>
+        /// Sends a reset password token to a user
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public async Task<Response<string>> ForgotPassword(string email)
         {
             var response = new Response<string>();
@@ -79,16 +90,12 @@ namespace hotel_booking_core.Services
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var actualToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            var passwordResetLink = $"http://www.example.com/resetpassword/{actualToken}/{email}";
-
-            var temp = await File.ReadAllTextAsync(Path.Combine(FilePath, "Html/ForgotPassword.html"));
-            var newTemp = temp.Replace("**link**", passwordResetLink);
-             var emailBody = newTemp.Replace("**User**", user.FirstName);
+            var mailBody = await GetEmailBody(user, emailTempPath: "Html/ForgotPassword.html", linkName: "reset-password", actualToken);
 
             var mailRequest = new MailRequest()
             {
                 Subject = "Reset Password",
-                Body = emailBody,
+                Body = mailBody,
                 ToEmail = email
             };
 
@@ -109,7 +116,11 @@ namespace hotel_booking_core.Services
 
        
       
-
+        /// <summary>
+        /// Logs in a user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<Response<LoginResponseDto>> Login(LoginDto model)
         {
             var response = new Response<LoginResponseDto>();
@@ -137,6 +148,11 @@ namespace hotel_booking_core.Services
             return response;
         }
 
+        /// <summary>
+        /// Registers a new user and sends a confirmation link to the user's email
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<Response<string>> Register(RegisterUserDto model)
         {
             var user = _mapper.Map<AppUser>(model);
@@ -153,16 +169,14 @@ namespace hotel_booking_core.Services
                         await _userManager.AddToRoleAsync(user, UserRoles.Customer);
 
                         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var confirmationLink = $"http://www.example.com/confirmEmail/{token}/{user.Email}";
 
-                        var temp = await File.ReadAllTextAsync(Path.Combine(FilePath, "Html/ConfirmEmail.html"));
-                        var newTemp = temp.Replace("**link**", confirmationLink);
-                        var emailBody = newTemp.Replace("**User**", user.FirstName);
+                        var mailBody = await GetEmailBody(user, emailTempPath: "Html/ConfirmEmail.html", linkName:"confirm-email", token);
+                        
 
                         var mailRequest = new MailRequest()
                         {
                             Subject = "Confirm Your Registration",
-                            Body = emailBody,
+                            Body = mailBody,
                             ToEmail = model.Email
                         };
 
@@ -196,6 +210,11 @@ namespace hotel_booking_core.Services
             
         }
 
+        /// <summary>
+        /// Reset the password of a user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<Response<string>> ResetPassword(ResetPasswordDto model)
         {
             var response = new Response<string>();
@@ -243,6 +262,11 @@ namespace hotel_booking_core.Services
             return response;
         }
 
+        /// <summary>
+        /// Update the password of a logged in user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<Response<string>> UpdatePassword(UpdatePasswordDto model)
         {
             var response = new Response<string>();
@@ -266,6 +290,11 @@ namespace hotel_booking_core.Services
             return response;
         }
 
+        /// <summary>
+        /// Validates a user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Returns true if the user exists</returns>
         private async Task<Response<bool>> ValidateUser(LoginDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -291,9 +320,31 @@ namespace hotel_booking_core.Services
             }
         }
 
+        /// <summary>
+        /// Stringify and returns all the identity errors
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns>Identity Errors</returns>
         private static string GetErrors(IdentityResult result)
         {
             return result.Errors.Aggregate(string.Empty, (current, err) => current + err.Description + "\n");
+        }
+
+        /// <summary>
+        /// Generates and encapsulates the link to be sent to the user in a html template.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="emailTempPath"></param>
+        /// <param name="linkName"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private static async Task<string> GetEmailBody(AppUser user, string emailTempPath, string linkName, string token)
+        {
+            var link = $"http://www.example.com/{linkName}/{token}/{user.Email}";
+            var temp = await File.ReadAllTextAsync(Path.Combine(FilePath, emailTempPath));
+            var newTemp =  temp.Replace("**link**", link);
+            var emailBody = newTemp.Replace("**User**", user.FirstName);
+            return emailBody;
         }
     }
 }
