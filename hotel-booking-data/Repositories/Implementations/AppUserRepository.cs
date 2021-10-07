@@ -6,19 +6,20 @@ using hotel_booking_data.Repositories.Abstractions;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
-    public class CustomerRepository : GenericRepository<Customer>, ICustomerRepository
+    public class AppUserRepository : GenericRepository<AppUser>, IAppUserRepository
     {
 
         private readonly HbaDbContext _context;
         private readonly DbSet<Customer> _customers;
 
-        public CustomerRepository(HbaDbContext context) : base(context)
+        public AppUserRepository(HbaDbContext context) : base(context)
         {
             _context = context;
             _customers = _context.Set<Customer>();
         }
 
 
+<<<<<<< HEAD:hotel-booking-data/Repositories/Implementations/CustomerRepository.cs
         public bool UpdateUserPhotoById(Customer customer)
         {
 
@@ -29,6 +30,8 @@ namespace hotel_booking_data.Repositories.Implementations
             }
             return false;
         }
+=======
+>>>>>>> 29f8332fa1369f86dff22eccae8cf40bacbfae10:hotel-booking-data/Repositories/Implementations/AppUserRepository.cs
 
 
         public async Task<Customer> FindAsync(string customerId)

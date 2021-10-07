@@ -2,6 +2,7 @@
 using hotel_booking_core.Interface;
 using hotel_booking_core.Interfaces;
 using hotel_booking_core.Services;
+using hotel_booking_data.Repositories.Implementations;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_data.UnitOfWork.Implementation;
 using hotel_booking_dto.AuthenticationDtos;
@@ -26,11 +27,19 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddTransient<IMailService, MailService>();
+<<<<<<< HEAD
 
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IAppUserService, AppUserService>();
+=======
+<<<<<<< HEAD
+            services.AddScoped<IAppUserService, AppUserService>();
+            services.AddScoped<IAppUserRepository, AppUserRepository>();
+=======
+>>>>>>> 29f8332fa1369f86dff22eccae8cf40bacbfae10
             services.AddScoped<IAmenityService, AmenityService>();
             services.AddScoped<IHotelService, HotelService>();
+>>>>>>> 5621354790f361918a3273e3d9b553446291e926
 
 
             // Add Repository Injections Here

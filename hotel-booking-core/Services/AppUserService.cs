@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using AutoMapper;
 using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
@@ -12,11 +13,27 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
+=======
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using hotel_booking_data.UnitOfWork.Implementation;
+using hotel_booking_data.UnitOfWork.Abstraction;
+using hotel_booking_data.Repositories.Abstractions;
+using hotel_booking_data.Repositories.Implementations;
+using hotel_booking_dto.CustomerDtos;
+using hotel_booking_models;
+using hotel_booking_dto;
+using Microsoft.AspNetCore.Identity;
+>>>>>>> 29f8332fa1369f86dff22eccae8cf40bacbfae10
 
 namespace hotel_booking_core.Services
 {
     public class AppUserService : IAppUserService
     {
+<<<<<<< HEAD
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
@@ -77,3 +94,37 @@ namespace hotel_booking_core.Services
     }
 }
 
+=======
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAppUserRepository _customerRepository;
+        private readonly UserManager<AppUser> _UserManager;
+
+        public AppUserService(IUnitOfWork unitOfWork, IAppUserRepository customerRepository,UserManager<AppUser> userManager)
+        {
+            _unitOfWork = unitOfWork;
+            _customerRepository = customerRepository;
+            _UserManager = userManager;
+        }
+        public async Task <Response<UpdateUserImageDto>> UpdateCustomerPhoto(string customerId,string url)
+        {
+            AppUser customer = await _UserManager.FindByIdAsync(customerId);
+            customer.Avatar = url;
+            
+            var result = await _UserManager.UpdateAsync(customer);
+
+            var response = new Response<UpdateUserImageDto>()
+            {
+                StatusCode = result.Succeeded==true? 200 : 400,
+                Succeeded = result.Succeeded == true ? true : false,
+                Data = new UpdateUserImageDto { Url = url },
+                Message = result.Succeeded == true ? "image upload successful" : "failed"
+            };
+            return response;
+        }
+       
+    }
+
+    }
+
+    
+>>>>>>> 29f8332fa1369f86dff22eccae8cf40bacbfae10
