@@ -4,14 +4,9 @@ using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.AmenityDtos;
-using hotel_booking_models;
-using Microsoft.AspNetCore.Http;
 using System;
-using hotel_booking_utilities;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.Services
@@ -22,8 +17,7 @@ namespace hotel_booking_core.Services
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AmenityService(IAmenityRepository amenityRepository,IMapper mapper, IUnitOfWork unitOfWork)
-        public AmenityService(IMapper mapper, IUnitOfWork unitOfWork)
+        public AmenityService(IAmenityRepository amenityRepository, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _amenityRepository = amenityRepository;
             _mapper = mapper;
@@ -31,14 +25,10 @@ namespace hotel_booking_core.Services
         }
 
         public Response<UpdateAmenityDto> UpdateAmenity(string id, UpdateAmenityDto model)
-        public Response<IEnumerable<AmenityDto>> GetAmenityByHotelId(string hotelId)
         {
             var amenity = _unitOfWork.Amenities.GetAmenityById(id);
             var response = new Response<UpdateAmenityDto>();
             if (amenity != null)
-            var hotelAmenities = _unitOfWork.Amenities.GetAmenityByHotelId(hotelId);
-            var amenityList = new List<AmenityDto>();
-            foreach (var amenity in hotelAmenities)
             {
                 var updatedAmenity = _mapper.Map(model, amenity);
                 _unitOfWork.Amenities.UpdateAsync(updatedAmenity);
@@ -50,7 +40,6 @@ namespace hotel_booking_core.Services
                 response.Message = "Update successful";
                 response.Succeeded = true;
                 return response;
-                amenityList.Add(AmenityMapper.MapToAmenityDTO(amenity));
             }
 
             response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -66,16 +55,11 @@ namespace hotel_booking_core.Services
             var response = new Response<AddAmenityResponseDto>();
 
             if (hotel != null)
-            var response = new Response<IEnumerable<AmenityDto>>()
             {
                 var amenityToAdd = AddAmenityResponseDto.Add(id, model);
                 await _unitOfWork.Amenities.InsertAsync(amenityToAdd);
                 await _unitOfWork.Save();
                 var result = _mapper.Map<AddAmenityResponseDto>(amenityToAdd);
-
-               // var updatedAmenity = _mapper.Map(amenity, model);
-               // var result = _mapper.Map<AddAmenityResponseDto>(amenityToAdd);
-
                 response.Data = result;
                 response.StatusCode = (int)HttpStatusCode.OK;
                 response.Message = "Amenity added successfully";
@@ -83,30 +67,16 @@ namespace hotel_booking_core.Services
                 return response;
 
             }
-                StatusCode = (int)HttpStatusCode.OK,
-                Succeeded = true,
-                Data = amenityList,
-                Message = $"Rooms for {hotelAmenities.Select(x => x.Hotel.Name).FirstOrDefault()}"               
 
-            };
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Message = "No such hotel";
             response.Succeeded = false;
             return response;
-            //var newAmenity = _mapper.Map<Amenity>(amenity);
-            //await _unitOfWork.Amenities.InsertAsync(newAmenity);
-            //await _unitOfWork.Save();
-            //var response = _mapper.Map<AddAmenityRequestDto>(newAmenity);
-            //var result = new Response<AddAmenityRequestDto>
-            //{
-            //    Data = response,
-            //    StatusCode = StatusCodes.Status200OK,
-            //    Message = "Amenity Added",
-            //    Succeeded = true
-            //};
-
-            //return result;
         }
-        
+
+        public Response<IEnumerable<AmenityDto>> GetAmenityByHotelId(string hotelId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

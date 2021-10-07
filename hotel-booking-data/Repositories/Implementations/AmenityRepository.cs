@@ -18,11 +18,6 @@ namespace hotel_booking_data.Repositories.Implementations
             _context = context;
         }
 
-        //public AddAmenityDto AddAmenity(AddAmenityDto amenity)
-        //{
-            
-        //}
-
         public Amenity GetAmenityById(string id)
         {
             var amenity = _context.Amenities.FirstOrDefault(x => x.Id == id);
