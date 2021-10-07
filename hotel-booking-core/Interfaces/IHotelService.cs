@@ -34,5 +34,6 @@ namespace hotel_booking_core.Interfaces
         Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId);
 
         Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId);
+        Task<Response<AddHotelResponseDto>> AddHotel(string managerId, AddHotelDto hotelDto);
     }
 }

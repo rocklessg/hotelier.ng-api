@@ -14,10 +14,20 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<AppUser, RegisterUserDto>().ReverseMap();
             CreateMap<AppUser, LoginDto>().ReverseMap();
 
+
             // Amenity Maps
             CreateMap<Amenity, UpdateAmenityDto>().ReverseMap();
             CreateMap<Amenity, AddAmenityRequestDto>().ReverseMap();
             CreateMap<Amenity, AddAmenityResponseDto>().ReverseMap();
+
+            // Hotel Maps
+            CreateMap<Hotel, HotelBasicDto>().ReverseMap();
+            CreateMap<Hotel, UpdateHotelDto>().ReverseMap();
+            CreateMap<Hotel, AddHotelDto>().ReverseMap();
+            CreateMap<AddHotelResponseDto, Hotel>().ReverseMap();
+            CreateMap<Room, AddRoomDto>().ReverseMap();
+            CreateMap<AddRoomResponseDto, Room>().ReverseMap();
+
         }
 
     }
