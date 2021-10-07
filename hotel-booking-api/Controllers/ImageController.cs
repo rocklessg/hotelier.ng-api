@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
+<<<<<<< HEAD
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+=======
+>>>>>>> 5621354790f361918a3273e3d9b553446291e926
 using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers

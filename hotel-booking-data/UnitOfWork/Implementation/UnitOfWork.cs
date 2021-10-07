@@ -2,6 +2,7 @@
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.Repositories.Implementations;
 using hotel_booking_data.UnitOfWork.Abstraction;
+using System;
 using System.Threading.Tasks;
 
 namespace hotel_booking_data.UnitOfWork.Implementation
@@ -38,6 +39,12 @@ namespace hotel_booking_data.UnitOfWork.Implementation
         public async Task Save()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }
