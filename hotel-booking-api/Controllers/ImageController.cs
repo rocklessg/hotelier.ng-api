@@ -3,8 +3,6 @@ using hotel_booking_models.Cloudinary;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
@@ -33,8 +31,6 @@ namespace hotel_booking_api.Controllers
                     Url = upload.Url.ToString()
 
                 };
-                //var x = "";
-
                 return Ok(result);
 
             }

@@ -1,14 +1,12 @@
-﻿using hotel_booking_dto.commons;
-using System;
+﻿using hotel_booking_dto;
+using hotel_booking_dto.commons;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.Interfaces
 {
     public interface IHotelService
     {
-        Task<IList<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging);
+        Task<Response<List<HotelBasicDto>>> GetHotelsByRatingsAsync(hotel_booking_utilities.Paginator paginator);
     }
 }

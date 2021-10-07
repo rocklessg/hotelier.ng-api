@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models; 
+using Microsoft.OpenApi.Models;
 
 namespace hotel_booking_api
 {
@@ -34,7 +34,7 @@ namespace hotel_booking_api
             services.AddDbContextAndConfigurations(Environment, Configuration);
 
             // Configure Mailing Service
-            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));            
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
             // Add Jwt Authentication and Authorization
             services.ConfigureAuthentication();
@@ -56,7 +56,7 @@ namespace hotel_booking_api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hotel Management Api", Version = "v1" });
-            });                       
+            });
 
             services.AddCors(c =>
             {
@@ -75,7 +75,7 @@ namespace hotel_booking_api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();                
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseSwagger();

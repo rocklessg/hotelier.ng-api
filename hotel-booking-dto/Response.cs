@@ -23,7 +23,6 @@ namespace hotel_booking_dto
         {
             return new Response<T> { Succeeded = true, Data = data };
         }
-        public override string ToString() => JsonConvert.SerializeObject(this);
-       
+        public override string ToString() => JsonConvert.SerializeObject(this);       
     }
 }

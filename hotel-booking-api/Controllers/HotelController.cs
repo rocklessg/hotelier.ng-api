@@ -1,6 +1,11 @@
-﻿using hotel_booking_data.UnitOfWork.Abstraction;
+﻿using hotel_booking_core.Interfaces;
+using hotel_booking_dto;
+using hotel_booking_dto.commons;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
 {
@@ -9,19 +14,22 @@ namespace hotel_booking_api.Controllers
     public class HotelController : ControllerBase
     {
         private readonly ILogger<HotelController> _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IHotelService _hotelService;
 
-        public HotelController(ILogger<HotelController> logger, IUnitOfWork unitOfWork)
+        public HotelController(ILogger<HotelController> logger, IHotelService hotelService)
         {
             _logger = logger;
-            _unitOfWork = unitOfWork;
+            _hotelService = hotelService;
         }
 
         [HttpGet]
         [Route("top-hotels")]
-        public IActionResult HotelsByRatings()
+        public async Task<ActionResult<Response<List<HotelBasicDto>>>> HotelsByRatingsAsync([FromQuery] hotel_booking_utilities.Paginator paginator)
         {
-            return Ok();
+            var response = await _hotelService.GetHotelsByRatingsAsync(paginator);
+            //var response = Response<List<HotelBasicDto>>.Success(result);
+            //response.StatusCode = StatusCodes.Status200OK;
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpGet]

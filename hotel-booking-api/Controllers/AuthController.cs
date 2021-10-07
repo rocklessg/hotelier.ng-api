@@ -1,18 +1,16 @@
-﻿using System.Threading.Tasks;
-using hotel_booking_core.Interface;
-using hotel_booking_core.Interfaces;
+﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_models;
-using hotel_booking_models.Mail;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
 {
-    
+
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
@@ -20,14 +18,14 @@ namespace hotel_booking_api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<AuthController> _logger;
         private readonly IAuthenticationService _authService;
-        
+
         public AuthController(ILogger<AuthController> logger,
             IAuthenticationService authService, UserManager<AppUser> userManager)
         {
             _logger = logger;
             _authService = authService;
             _userManager = userManager;
-            
+
         }
 
         [HttpPost]
@@ -37,7 +35,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Response<LoginResponseDto>>> Register([FromBody] RegisterUserDto model)
         {
-            _logger.LogInformation($"Registration Attempt for {model.Email}");            
+            _logger.LogInformation($"Registration Attempt for {model.Email}");
             var result = await _authService.Register(model);
             return StatusCode(result.StatusCode, result);
         }
