@@ -4,8 +4,10 @@ using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.AmenityDtos;
+using hotel_booking_utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -76,7 +78,21 @@ namespace hotel_booking_core.Services
 
         public Response<IEnumerable<AmenityDto>> GetAmenityByHotelId(string hotelId)
         {
-            throw new NotImplementedException();
+            var hotelAmenities = _unitOfWork.Amenities.GetAmenityByHotelId(hotelId);
+            var amenityList = new List<AmenityDto>();
+            foreach (var amenity in hotelAmenities)
+            {
+                amenityList.Add(AmenityMapper.MapToAmenityDTO(amenity));
+            }
+            var response = new Response<IEnumerable<AmenityDto>>()
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Succeeded = true,
+                Data = amenityList,
+                Message = $"Rooms for {hotelAmenities.Select(x => x.Hotel.Name).FirstOrDefault()}"
+
+            };
+            return response;
         }
     }
 }

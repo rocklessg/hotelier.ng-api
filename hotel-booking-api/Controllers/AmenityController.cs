@@ -2,6 +2,7 @@
 using hotel_booking_dto;
 using hotel_booking_dto.AmenityDtos;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
@@ -15,6 +16,21 @@ namespace hotel_booking_api.Controllers
         public AmenityController(IAmenityService AmenityService)
         {
             _amenityService = AmenityService;
+        }
+
+        [HttpGet("{hotelId}")]
+
+        public IActionResult GetAmenityByHotelId(string hotelId)
+        {
+            try
+            {
+                var result = _amenityService.GetAmenityByHotelId(hotelId);
+                return StatusCode(result.StatusCode, result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpPut("update-amenity")]
