@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
+using hotel_booking_dto.AmenityDtos;
 using hotel_booking_dto.AuthenticationDtos;
-using hotel_booking_dto.commons;
-using hotel_booking_dto.HotelDtos;
 using hotel_booking_models;
 
 namespace hotel_booking_utilities.AutoMapSetup
@@ -14,8 +13,12 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<AppUser, RegisterUserDto>().ReverseMap();
             CreateMap<AppUser, RegisterUserDto>().ReverseMap();
             CreateMap<AppUser, LoginDto>().ReverseMap();
-            CreateMap<AppUser, ResetPasswordDto>().ReverseMap();
-            CreateMap<AppUser, UpdatePasswordDto>().ReverseMap();
+
+
+            // Amenity Maps
+            CreateMap<Amenity, UpdateAmenityDto>().ReverseMap();
+            CreateMap<Amenity, AddAmenityRequestDto>().ReverseMap();
+            CreateMap<Amenity, AddAmenityResponseDto>().ReverseMap();
 
             // Hotel Maps
             CreateMap<Hotel, HotelBasicDto>().ReverseMap();
@@ -24,6 +27,7 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<AddHotelResponseDto, Hotel>().ReverseMap();
             CreateMap<Room, AddRoomDto>().ReverseMap();
             CreateMap<AddRoomResponseDto, Room>().ReverseMap();
+
         }
 
     }
