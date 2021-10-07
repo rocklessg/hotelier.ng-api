@@ -116,6 +116,7 @@ namespace hotel_booking_core.Services
             return Response<IEnumerable<RoomsByHotelDTo>>.Fail("Not Found");
         }
 
+
         public async Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId)
         {
             var ratings = await _unitOfWork.Hotels.HotelRatings(hotelId);
