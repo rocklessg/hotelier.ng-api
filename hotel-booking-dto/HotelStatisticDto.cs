@@ -9,15 +9,15 @@ namespace hotel_booking_dto
     public class HotelStatisticDto
     {
         public string Name { get; set; }
-        public string NumberOfRooms { get; set; }
-        public string AverageRatings { get; set; }
-        public string RoomsOccupied { get; set; }
-        public string RoomsUnOccupied { get; set; }
-        public string NumberOfReviews { get; set; }
-        public string TotalNumberOfBookings { get; set; }
-        public string TotalEarnings { get; set; }
-        public string RoomTypes { get; set; }
-        public string NumberOfAmenities { get; set; }
+        public int NumberOfRooms { get; set; }
+        public double AverageRatings { get; set; }
+        public int RoomsOccupied { get; set; }
+        public int RoomsUnOccupied { get; set; }
+        public int NumberOfReviews { get; set; }
+        public int TotalNumberOfBookings { get; set; }
+        public decimal TotalEarnings { get; set; }
+        public int RoomTypes { get; set; }
+        public int NumberOfAmenities { get; set; }
 
     }
 }

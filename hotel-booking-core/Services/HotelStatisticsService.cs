@@ -3,6 +3,7 @@ using hotel_booking_data.Contexts;
 using hotel_booking_dto;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,27 +15,27 @@ namespace hotel_booking_core.Services
     public class HotelStatisticsService : IHotelStatisticsService
     {
         private readonly HbaDbContext db;
+        private readonly ILogger<HotelStatisticsService> _logger;
 
-        public HotelStatisticsService(HbaDbContext db)
+        public HotelStatisticsService(HbaDbContext db, ILogger<HotelStatisticsService> logger)
         {
             this.db = db;
+            _logger = logger;
         }
         
-        public string GetTotalHotels() 
+        public int GetTotalHotels() 
         {
             var hotelCount = db.Hotels.Count();
-            return $"Total hotels : {hotelCount}";
+            return hotelCount;
         }
 
-        public async Task<string> GetTotalRoomsInEachHotel(string hotelId) 
+        public int GetTotalRoomsInEachHotel(string hotelId) 
         {
-            var hotel = await db.Hotels.Where(x => x.Id == hotelId).FirstOrDefaultAsync();
-          
-            int totalRooms = 0;
-            if(hotel != null) 
-            {
-                var roomType = db.RoomTypes.Where(x => x.HotelId == hotelId).ToList();
-                foreach(var item in roomType)
+            var roomType = db.RoomTypes.Where(x => x.HotelId == hotelId).ToList();
+            var totalRooms = 0;
+
+
+            foreach (var item in roomType)
                 {
                     var roomTypeId = item.Id;
                     var rooms = db.Rooms.Where(x => x.RoomTypeId == roomTypeId).ToList().Count;
@@ -43,33 +44,23 @@ namespace hotel_booking_core.Services
 
                 }
 
-                return $"Total No. of Rooms: {totalRooms}";
-            }
-
-            throw new ArgumentNullException("The hotel doesn't exist");
+                return totalRooms;
+           
         }
 
-        public async Task<int> GetTotalNoOfOccupiedRooms(string hotelId) 
+        public int GetTotalNoOfOccupiedRooms(string hotelId) 
         {
-            var hotel = await db.Hotels.Where(x => x.Id == hotelId).FirstOrDefaultAsync();
-            if(hotel != null) 
+            var roomType = db.RoomTypes.Where(x => x.HotelId == hotelId).ToList();
+            var totalOccupiedRooms = 0;
+            foreach (var item in roomType)
             {
-                var roomType = db.RoomTypes.Where(x => x.HotelId == hotelId).ToList();
-                var totalOccupiedRooms = 0;
-                foreach (var item in roomType)
-                {
-                    var roomTypeId = item.Id;
-                    var occupiedRooms = db.Rooms.Where(x => x.RoomTypeId == roomTypeId).
+                var roomTypeId = item.Id;
+                var occupiedRooms = db.Rooms.Where(x => x.RoomTypeId == roomTypeId).
                                  Where(z => z.IsBooked == true).ToList().Count;
 
-                    totalOccupiedRooms += occupiedRooms;
-                }
-
-                return totalOccupiedRooms;
+                totalOccupiedRooms += occupiedRooms;
             }
-
-            throw new ArgumentNullException("The hotel doesn't exist");
-
+            return totalOccupiedRooms;
         }
 
         public decimal GetTotalEarnings(string hotelId)
@@ -90,27 +81,21 @@ namespace hotel_booking_core.Services
             return totalPayments;
         }
 
-        public async Task<int> GetTotalNoOfVacantRooms(string hotelId)
+        public int GetTotalNoOfVacantRooms(string hotelId)
         {
-            var hotel = await db.Hotels.Where(x => x.Id == hotelId).FirstOrDefaultAsync();
-
-            if (hotel != null) 
+            var roomType = db.RoomTypes.Where(x => x.HotelId == hotelId).ToList();
+            var totalOccupiedRooms = 0;
+            foreach (var item in roomType)
             {
-                var roomType = db.RoomTypes.Where(x => x.HotelId == hotelId).ToList();
-                var totalOccupiedRooms = 0;
-                foreach (var item in roomType)
-                {
-                    var roomTypeId = item.Id;
-                    var unoccupiedRooms = db.Rooms.Where(x => x.RoomTypeId == roomTypeId).
+                var roomTypeId = item.Id;
+                var unoccupiedRooms = db.Rooms.Where(x => x.RoomTypeId == roomTypeId).
                                  Where(z => z.IsBooked != true).ToList().Count;
 
-                    totalOccupiedRooms += unoccupiedRooms;
+                totalOccupiedRooms += unoccupiedRooms;
                 }
 
                 return totalOccupiedRooms;
-            }
-
-            throw new ArgumentNullException("This hotel doesn't exist");
+            
         }
 
         public int GetNoOfRoomTypes(string hotelId) 
@@ -157,28 +142,28 @@ namespace hotel_booking_core.Services
             var hotel = await db.Hotels.Where(x => x.Id == hotelId).FirstOrDefaultAsync();
             if(hotel != null) 
             {
-                var totalRooms = await GetTotalRoomsInEachHotel(hotelId);
-                var occupiedRooms = await GetTotalNoOfOccupiedRooms(hotelId);
-                var vacantRooms = await GetTotalNoOfVacantRooms (hotelId);
+                var totalRooms = GetTotalRoomsInEachHotel(hotelId);
+                var occupiedRooms = GetTotalNoOfOccupiedRooms(hotelId);
+                var vacantRooms = GetTotalNoOfVacantRooms (hotelId);
                 var roomTypeCount = GetNoOfRoomTypes(hotelId);
-                var reviews = GetTotalReviews(hotelId).ToString();
-                var noOfAmenities = GetTotalAmenities(hotelId).ToString();
-                var totalBookings = GetTotalBookings(hotelId).ToString();
-                var averageRatings = GetAverageRatings(hotelId).ToString();
-                var totalEarnings = GetTotalEarnings(hotelId).ToString();
+                var reviews = GetTotalReviews(hotelId);
+                var noOfAmenities = GetTotalAmenities(hotelId);
+                var totalBookings = GetTotalBookings(hotelId);
+                var averageRatings = GetAverageRatings(hotelId);
+                var totalEarnings = GetTotalEarnings(hotelId);
 
                 HotelStatisticDto hotelstatistics = new HotelStatisticDto
                 {
                     Name = hotel.Name,
-                    NumberOfRooms = totalRooms.ToString(),
+                    NumberOfRooms = totalRooms,
                     AverageRatings = averageRatings,
-                    RoomsOccupied = occupiedRooms.ToString(),
-                    RoomsUnOccupied = vacantRooms.ToString(),
+                    RoomsOccupied = occupiedRooms,
+                    RoomsUnOccupied = vacantRooms,
                     NumberOfReviews = reviews,
-                    TotalNumberOfBookings = totalBookings.ToString(),
+                    TotalNumberOfBookings = totalBookings,
                     TotalEarnings = totalEarnings,
-                    RoomTypes = roomTypeCount.ToString(),
-                    NumberOfAmenities = noOfAmenities.ToString()
+                    RoomTypes = roomTypeCount,
+                    NumberOfAmenities = noOfAmenities
                 };
                 return hotelstatistics;
             }
@@ -186,8 +171,59 @@ namespace hotel_booking_core.Services
             throw new ArgumentNullException("This hotel doesn't exist");
         }
 
+        public int GetNoOfCustomers(string hotelId) 
+        {
+            var noOfCustomers = db.Bookings.Where(x => x.HotelId == hotelId).ToList();
+            return noOfCustomers.Count;
+        }
 
-       
+        public async Task<HotelManagerStatisticsDto> GetHotelManagerStatistics(string managerId)
+        {
+            var manager = await db.Managers.Where(x => x.AppUserId == managerId).FirstOrDefaultAsync();
+            var averageRating = 0.0;
+            var numberOfHotels = 0;
+            var totalNoOfCustomers = 0;
+            var occupiedRooms = 0;
+            var unoccupiedRooms = 0;
+            decimal transactions = 0;
+            var totalRooms = 0;
+            
+            if(manager != null) 
+            {
+                var hotels = db.Hotels.Where(x => x.ManagerId == managerId).ToList();
+                numberOfHotels = hotels.Count;
+
+                foreach (var hotel in hotels) 
+                {
+                    var hotelId = hotel.Id;
+                    averageRating += GetAverageRatings(hotelId);
+                    totalNoOfCustomers += GetNoOfCustomers(hotelId);
+                    totalRooms += GetTotalRoomsInEachHotel(hotelId);
+                    occupiedRooms += GetTotalNoOfOccupiedRooms(hotelId);
+                    unoccupiedRooms += GetTotalNoOfVacantRooms(hotelId);
+                    transactions += GetTotalEarnings(hotelId);
+
+                }
+
+                var hotelManagerStats = new HotelManagerStatisticsDto
+                {
+                    NumberOfHotels = numberOfHotels,
+                    AverageHotelRatings = averageRating,
+                    TotalNumberOfCustomers = totalNoOfCustomers,
+                    TotalManagerRooms = totalRooms,
+                    TotalManagerOccupiedRooms = occupiedRooms,
+                    TotalManagerUnoccupiedRooms = unoccupiedRooms,
+                    TotalManagerTransactionAmount = transactions
+                };
+
+                return hotelManagerStats;
+            }
+
+            throw new ArgumentNullException("No record exists for this manager");
+
+        }
+
+
 
     }
 }
