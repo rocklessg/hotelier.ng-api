@@ -1,5 +1,7 @@
+
 ﻿using FluentValidation;
 using hotel_booking_core.Interface;
+
 using hotel_booking_core.Interfaces;
 using hotel_booking_core.Services;
 using hotel_booking_data.Repositories.Abstractions;
@@ -24,6 +26,9 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddTransient<IMailService, MailService>();
+            services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
+            services.AddScoped<IManagerStatistics, ManagerStatistics>();
+            
 
             services.AddScoped<IAppUserService, AppUserService>();
             services.AddScoped<IAppUserRepository, CustomerRepository>();
@@ -32,6 +37,8 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<IHotelService, HotelService>();
             services.AddScoped<IAmenityService, AmenityService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IManagerRepository, ManagerRepository>();
+            
 
 
             // Add Repository Injections Here

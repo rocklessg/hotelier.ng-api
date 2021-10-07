@@ -15,8 +15,12 @@ namespace hotel_booking_core.Services
     public class MailService : IMailService
     {
         private readonly MailSettings _mailSettings;
+
+
+
         private readonly ILogger<MailService> _logger;
         public MailService(IOptions<MailSettings> mailSettings, ILogger<MailService> logger)
+
         {
             _logger = logger;
             _mailSettings = mailSettings.Value;
@@ -25,7 +29,7 @@ namespace hotel_booking_core.Services
 
         public async Task<bool> SendEmailAsync(MailRequest mailRequest)
         {
-            var email = new MimeMessage {Sender = MailboxAddress.Parse(_mailSettings.Mail)};
+            var email = new MimeMessage { Sender = MailboxAddress.Parse(_mailSettings.Mail) };
             email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
             email.Subject = mailRequest.Subject;
             var builder = new BodyBuilder();
@@ -42,6 +46,7 @@ namespace hotel_booking_core.Services
                     builder.Attachments.Add((file.FileName + Guid.NewGuid().ToString()), fileBytes, ContentType.Parse(file.ContentType));
                 }
             }
+
             builder.HtmlBody = mailRequest.Body;
             email.Body = builder.ToMessageBody();
 
@@ -59,7 +64,8 @@ namespace hotel_booking_core.Services
                 _logger.LogError(e, e.Source, e.InnerException, e.Message, e.ToString());
                 throw;
             }
-            
+
         }
     }
 }
+

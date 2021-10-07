@@ -73,6 +73,7 @@ namespace hotel_booking_api.Controllers
         public IActionResult GetHotelRooms()
         {
             return Ok();
+
         }
 
         [HttpGet]
