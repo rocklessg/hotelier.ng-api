@@ -1,14 +1,10 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using hotel_booking_core.Interface;
-using hotel_booking_models.Cloudinary;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.Services
@@ -88,7 +84,5 @@ namespace hotel_booking_core.Services
 
             return deletionResult;
         }
-
-
     }
 }

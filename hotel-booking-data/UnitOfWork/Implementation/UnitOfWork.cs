@@ -2,6 +2,7 @@
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.Repositories.Implementations;
 using hotel_booking_data.UnitOfWork.Abstraction;
+using System;
 using System.Threading.Tasks;
 
 namespace hotel_booking_data.UnitOfWork.Implementation
@@ -9,7 +10,7 @@ namespace hotel_booking_data.UnitOfWork.Implementation
     public class UnitOfWork : IUnitOfWork
     {
         private IAmenityRepository _amenities;
-        private ICustomerRepository _customers;
+        private IAppUserRepository _customers;
         private IHotelRepository _hotels;
         private IManagerRepository _managers;
         private IPaymentRepository _payments;
@@ -23,7 +24,7 @@ namespace hotel_booking_data.UnitOfWork.Implementation
         }
         public IAmenityRepository Amenities => _amenities ??= new AmenityRepository(_context);
 
-        public ICustomerRepository Customers => _customers ??= new CustomerRepository(_context);
+        public IAppUserRepository Customers => _customers ??= new CustomerRepository(_context);
 
         public IHotelRepository Hotels => _hotels ??= new HotelRepository(_context);
 
@@ -38,6 +39,12 @@ namespace hotel_booking_data.UnitOfWork.Implementation
         public async Task Save()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }
