@@ -23,7 +23,7 @@ namespace hotel_booking_api.Controllers
             _appUserService = appUserService;
         }
 
-        [HttpPatch("Update")]
+        [HttpPut("Update")]
         
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

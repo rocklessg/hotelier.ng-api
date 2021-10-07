@@ -1,9 +1,16 @@
-﻿namespace hotel_booking_dto.AuthenticationDtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace hotel_booking_dto.AuthenticationDtos
 {
     public class ResetPasswordDto
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
         public string Token { get; set; }
+
+        public string Email { get; set; }
+
+        public string NewPassword { get; set; }
+
+        [Compare("NewPassword", ErrorMessage = "New Password and Confirm Password must match.")]
+        public string ConfirmPassword { get; set; }
     }
 }
