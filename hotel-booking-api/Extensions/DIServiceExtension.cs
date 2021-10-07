@@ -5,8 +5,10 @@ using hotel_booking_core.Services;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_data.UnitOfWork.Implementation;
 using hotel_booking_dto.AuthenticationDtos;
+using hotel_booking_dto.HotelDtos;
 using hotel_booking_utilities;
 using hotel_booking_utilities.Validators.AuthenticationValidators;
+using hotel_booking_utilities.Validators.HotelValidators;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace hotel_booking_api.Extensions
@@ -31,6 +33,7 @@ namespace hotel_booking_api.Extensions
             // Add Fluent Validator Injections Here
             services.AddTransient<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
             services.AddTransient<IValidator<LoginDto>, LoginDtoValidator>();
+            services.AddTransient<IValidator<UpdateHotelDto>, UpdateHotelDtoValidator>();
             services.AddTransient<IValidator<UpdatePasswordDto>, UpdatePasswordDtoValidator>();
             services.AddTransient<IValidator<ResetPasswordDto>, ResetPasswordDtoValidator>();
         }

@@ -53,6 +53,8 @@ namespace hotel_booking_api
             services.Configure<ImageUploadSettings>(Configuration.GetSection("CloudSettings"));
             services.AddCloudinary(CloudinaryServiceExtension.GetAccount(Configuration));
 
+            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling 
+            = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers()
                 .AddNewtonsoftJson(op => op.SerializerSettings
                     .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -75,6 +77,9 @@ namespace hotel_booking_api
 
             // Register Dependency Injection Service Extension
             services.AddDependencyInjection();
+
+            // Register Fluent Validation Service Extension
+            
 
 
         }
