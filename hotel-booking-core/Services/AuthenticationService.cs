@@ -110,11 +110,9 @@ namespace hotel_booking_core.Services
 
             response.Succeeded = false;
             response.Message = "Something went wrong. Please try again.";
-            response.StatusCode = 503;
+            response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
             return response;
-        }
-
-       
+        }       
       
         /// <summary>
         /// Logs in a user
