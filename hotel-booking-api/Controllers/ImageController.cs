@@ -1,6 +1,8 @@
 ﻿using hotel_booking_core.Interface;
+using hotel_booking_core.Services;
 using hotel_booking_models.Cloudinary;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -17,10 +19,13 @@ namespace hotel_booking_api.Controllers
     {
         private readonly IConfiguration _config;
         private readonly IImageService _imageService;
+      
         public ImageController(IConfiguration config, IImageService imageService)
         {
             _config = config;
             _imageService = imageService;
+          
+
         }
 
         [HttpPost]
@@ -47,31 +52,7 @@ namespace hotel_booking_api.Controllers
         }
 
 
-        [HttpPatch]
-        [Authorize("customer")]
-        public async Task<IActionResult> UploadImage([FromForm] AddImageDto imageDto)
-        {
-            try
-            {
-                var response = string.Empty;
-                var upload = await _imageService.UploadAsync(imageDto.Image);
-               
-                string url = upload.Url.ToString();
-                string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-                var result = await _userRepository.UploadImage(userId, url);
-                if (result)
-                {
-                    response += "Image successfully added";
-                }
-                return Ok(response);
-            }
 
-            catch (ArgumentException e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-
+        
     }
 }

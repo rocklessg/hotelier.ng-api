@@ -34,11 +34,7 @@ namespace hotel_booking_core.Services
             return dtoList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
         }
 
-        public async Task GetTopDeals()
-        {
-
-            return;
-        }
+      
 
 
     }

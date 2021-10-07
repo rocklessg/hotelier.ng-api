@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
-    public interface ICustomerRepository
+    public interface IAppUserRepository
     {
         Task<Customer> FindAsync(string customerId);
-        bool UpdateUserPhotoById(Customer customer);
+        bool UpdateUserPhotoById(AppUser customer);
     }
 }
