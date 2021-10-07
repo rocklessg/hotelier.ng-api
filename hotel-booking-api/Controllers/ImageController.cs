@@ -6,17 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-=======
->>>>>>> 5621354790f361918a3273e3d9b553446291e926
->>>>>>> 29f8332fa1369f86dff22eccae8cf40bacbfae10
-using System.Threading.Tasks;
+
 
 namespace hotel_booking_api.Controllers
 {
@@ -59,7 +53,7 @@ namespace hotel_booking_api.Controllers
         }
 
 
-<<<<<<< HEAD
+
        /* [HttpPatch]
         [Authorize("customer")]
         public async Task<IActionResult> UploadImage([FromForm] AddImageDto imageDto)
@@ -85,8 +79,7 @@ namespace hotel_booking_api.Controllers
             }
         }*/
 
-=======
->>>>>>> 29f8332fa1369f86dff22eccae8cf40bacbfae10
+
 
         
     }
