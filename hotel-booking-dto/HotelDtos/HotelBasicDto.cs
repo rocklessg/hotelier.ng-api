@@ -19,4 +19,5 @@ namespace hotel_booking_dto.commons
         public string Ratings { get; set; }
         public ICollection<Gallery> Galleries { get; set; }
     }
+    
 }

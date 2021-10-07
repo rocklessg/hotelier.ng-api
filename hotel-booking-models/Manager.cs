@@ -16,6 +16,6 @@ namespace hotel_booking_models
         public string AccountNumber { get; set; }
 
         public AppUser AppUser { get; set; }
-        public ICollection<Hotel> Hotels { get; set; }
+        public ICollection<RoomType> Hotels { get; set; }
     }
 }

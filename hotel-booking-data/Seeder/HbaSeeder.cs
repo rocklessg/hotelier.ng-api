@@ -77,7 +77,7 @@ namespace hotel_booking_data.Seeder
             {
                 var path = File.ReadAllText(FilePath(baseDir, "Json/Hotel.json"));
 
-                var hotels = JsonConvert.DeserializeObject<List<Hotel>>(path);
+                var hotels = JsonConvert.DeserializeObject<List<RoomType>>(path);
                 await dbContext.Hotels.AddRangeAsync(hotels);
             }
 

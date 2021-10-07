@@ -13,7 +13,7 @@ namespace hotel_booking_models
         public decimal Price { get; set; } 
         public decimal Discount { get; set; }
         public string Thumbnail { get; set; }
-        public Hotel Hotel { get; set; }
+        public RoomType Hotel { get; set; }
         public ICollection<Room> Rooms { get; set; }
     }
 }

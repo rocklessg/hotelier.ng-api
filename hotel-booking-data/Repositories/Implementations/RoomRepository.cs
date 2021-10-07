@@ -28,5 +28,23 @@ namespace hotel_booking_data.Repositories.Implementations
             if (orderby != null) query = orderby(query);
             return await query.ToListAsync();
         }
+
+        public async Task<List<Room>> GetAvailableRoomsByHotel(string hotelId)
+        {
+            var rooms = await _context.Rooms
+                .Include(room => room.Roomtype)
+                .Where(room => room.Roomtype.Hotel.Id == hotelId)
+                .Where(room => !room.IsBooked).ToListAsync();
+
+            return rooms;
+        }
+
+        public Room GetHotelRoom(string roomId)
+        {
+            var getRoom = _context.Rooms.Include(x => x.Roomtype)
+                    .Where(x => x.Id == roomId).FirstOrDefault();
+
+            return getRoom;
+        }
     }
 }

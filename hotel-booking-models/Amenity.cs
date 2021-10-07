@@ -6,6 +6,6 @@
         public string Name { get; set; }
         public decimal Price { get; set; } 
         public decimal Discount { get; set; } 
-        public Hotel Hotel { get; set; }
+        public RoomType Hotel { get; set; }
     }
 }

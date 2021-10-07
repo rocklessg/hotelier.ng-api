@@ -7,7 +7,7 @@ namespace hotel_booking_api.Extensions
     {
         public static void ConfigureAutoMappers(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(UserMapInitializer));
+            services.AddAutoMapper(typeof(MapInitializer));
         }
     }
 }

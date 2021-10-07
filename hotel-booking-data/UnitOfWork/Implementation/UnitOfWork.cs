@@ -2,6 +2,7 @@
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.Repositories.Implementations;
 using hotel_booking_data.UnitOfWork.Abstraction;
+using System;
 using System.Threading.Tasks;
 
 namespace hotel_booking_data.UnitOfWork.Implementation
@@ -15,6 +16,7 @@ namespace hotel_booking_data.UnitOfWork.Implementation
         private IPaymentRepository _payments;
         private IRoomRepository _rooms;
         private IWishListRepository _wishLists;
+        private IRoomTypeRepository _roomType;
         private readonly HbaDbContext _context;
 
         public UnitOfWork(HbaDbContext context)
@@ -35,9 +37,17 @@ namespace hotel_booking_data.UnitOfWork.Implementation
 
         public IWishListRepository WishLists => _wishLists ??= new WishListRepository(_context);
 
+        public IRoomTypeRepository RoomType => _roomType ??= new RoomTypeRepository(_context);
+
         public async Task Save()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

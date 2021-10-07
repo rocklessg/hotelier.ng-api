@@ -1,4 +1,5 @@
-﻿using hotel_booking_data.UnitOfWork.Abstraction;
+﻿using hotel_booking_core.Interfaces;
+using hotel_booking_data.UnitOfWork.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -10,11 +11,22 @@ namespace hotel_booking_api.Controllers
     {
         private readonly ILogger<RoomController> _logger;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IRoomService _roomService;
 
-        public RoomController(ILogger<RoomController> logger, IUnitOfWork unitOfWork)
+        public RoomController(ILogger<RoomController> logger, IUnitOfWork unitOfWork,
+            IRoomService roomService)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _roomService = roomService;
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult HotelRoomById(string id)
+        {
+            var room = _roomService.GetHotelRooomById(id);
+            return Ok(room);
         }
     }
 }

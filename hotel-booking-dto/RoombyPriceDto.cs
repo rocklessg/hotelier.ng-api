@@ -2,9 +2,9 @@
 
 namespace hotel_booking_dto
 {
-    public class RoombyPriceDto : Paginator
+    public class RoombyPriceDto : Paging
     {
-        public bool IsBooked { get; set; }
-        public decimal Price { get; set; }
+        public decimal MinPrice { get; set; }
+        public decimal MaxPrice { get; set; }
     }
 }
