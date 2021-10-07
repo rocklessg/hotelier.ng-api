@@ -4,6 +4,8 @@ using hotel_booking_core.Interface;
 
 using hotel_booking_core.Interfaces;
 using hotel_booking_core.Services;
+using hotel_booking_data.Repositories.Abstractions;
+using hotel_booking_data.Repositories.Implementations;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_data.UnitOfWork.Implementation;
 using hotel_booking_dto.AuthenticationDtos;
@@ -23,9 +25,13 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<IImageService, ImageService>();
             services.AddTransient<IMailService, MailService>();
             services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
+            services.AddScoped<IManagerStatistics, ManagerStatistics>();
+            
 
             // Add Repository Injections Here
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IManagerRepository, ManagerRepository>();
+            
 
             // Add Model Services Injection Here
             services.AddScoped<IHotelService, HotelService>();
