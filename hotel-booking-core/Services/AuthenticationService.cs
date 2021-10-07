@@ -7,9 +7,14 @@ using hotel_booking_models;
 using hotel_booking_models.Mail;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
+using System.IO;
+using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace hotel_booking_core.Services
 {
@@ -19,6 +24,8 @@ namespace hotel_booking_core.Services
         private readonly IMapper _mapper;
         private readonly ITokenGeneratorService _tokenGenerator;
         private readonly IMailService _mailService;
+        private const string FilePath = "../hotel-booking-api/StaticFiles/";
+
 
         public AuthenticationService(UserManager<AppUser> userManager,
             IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
@@ -28,6 +35,12 @@ namespace hotel_booking_core.Services
             _tokenGenerator = tokenGenerator;
             _mailService = mailService;
         }
+
+        /// <summary>
+        /// Confirms the mail of a registered user
+        /// </summary>
+        /// <param name="confirmEmailDto"></param>
+        /// <returns></returns>
         public async Task<Response<string>> ConfirmEmail(ConfirmEmailDto confirmEmailDto)
         {
             var user = await _userManager.FindByEmailAsync(confirmEmailDto.Email);
@@ -51,18 +64,66 @@ namespace hotel_booking_core.Services
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Message = GetErrors(result);
             response.Succeeded = false;
-            return response;
-            
+            return response;            
         }
 
-        public Task<Response<string>> ForgotPassword(string email)
+        /// <summary>
+        /// Sends a reset password token to a user
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public async Task<Response<string>> ForgotPassword(string email)
         {
-            throw new NotImplementedException();
+            var response = new Response<string>();
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                response.Message = $"An email has been sent to {email} if it exists";
+                response.Succeeded = false;
+                response.Data = null;
+                response.StatusCode = (int)HttpStatusCode.NotFound;
+                return response;
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = Encoding.UTF8.GetBytes(token);
+            var actualToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            var mailBody = await GetEmailBody(user, emailTempPath: "Html/ForgotPassword.html", linkName: "reset-password", actualToken);
+
+            var mailRequest = new MailRequest()
+            {
+                Subject = "Reset Password",
+                Body = mailBody,
+                ToEmail = email
+            };
+
+            var emailResult = await _mailService.SendEmailAsync(mailRequest);
+            if (emailResult)
+            {
+                response.Succeeded = true;
+                response.Message = $"An email has been sent to {email} if it exists";
+                response.StatusCode = (int)HttpStatusCode.OK;
+                return response;
+            }
+
+            response.Succeeded = false;
+            response.Message = "Something went wrong. Please try again.";
+            response.StatusCode = 503;
+            return response;
         }
 
+       
+      
+        /// <summary>
+        /// Logs in a user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<Response<LoginResponseDto>> Login(LoginDto model)
         {
-            Response<LoginResponseDto> response = new();
+            var response = new Response<LoginResponseDto>();
 
             var validityResult = await ValidateUser(model);
 
@@ -87,52 +148,153 @@ namespace hotel_booking_core.Services
             return response;
         }
 
+        /// <summary>
+        /// Registers a new user and sends a confirmation link to the user's email
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<Response<string>> Register(RegisterUserDto model)
         {
             var user = _mapper.Map<AppUser>(model);
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var response = new Response<string>();
 
-            Response<string> response = new Response<string>();
-
-            if (result.Succeeded)
+            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _userManager.AddToRoleAsync(user, UserRoles.Customer);
-
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var confirmationLink = $"http://www.example.com/connfirmEmail/{token}/{user.Email}"; // Replace with Url.Action method
-                MailRequest mailRequest = new MailRequest()
+                try
                 {
-                    Subject = "Confirm Your Registration",
-                    Body = confirmationLink,
-                    ToEmail = model.Email
+                    var result = await _userManager.CreateAsync(user, model.Password);
 
-                };
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(user, UserRoles.Customer);
 
-                await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
+                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                response.StatusCode = (int)HttpStatusCode.Created;
-                response.Succeeded = true;
-                response.Data = user.Id;
-                response.Message = "User created successfully! Please check your mail to verify your account.";
+                        var mailBody = await GetEmailBody(user, emailTempPath: "Html/ConfirmEmail.html", linkName:"confirm-email", token);
+                        
+
+                        var mailRequest = new MailRequest()
+                        {
+                            Subject = "Confirm Your Registration",
+                            Body = mailBody,
+                            ToEmail = model.Email
+                        };
+
+                        var emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
+
+                        if (emailResult)
+                        {
+                            response.StatusCode = (int)HttpStatusCode.Created;
+                            response.Succeeded = true;
+                            response.Data = user.Id;
+                            response.Message = "User created successfully! Please check your mail to verify your account.";
+                            transaction.Complete();
+                            return response;
+                        }
+                    }
+                    response.Message = GetErrors(result);
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    response.Succeeded = false;
+                    transaction.Complete();
+                    return response;
+                }
+                catch (Exception)
+                {
+                    transaction.Dispose();
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    response.Succeeded = false;
+                    response.Message = "Registration failed. Please try again";
+                    return response;
+                }
+            };
+            
+        }
+
+        /// <summary>
+        /// Reset the password of a user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<Response<string>> ResetPassword(ResetPasswordDto model)
+        {
+            var response = new Response<string>();
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            
+            if (user == null)
+            {
+                response.Message = "Invalid user!";
+                response.Succeeded = false;
+                response.Data = null;
+                response.StatusCode = (int)HttpStatusCode.NotFound;
                 return response;
             }
 
-            response.Message = GetErrors(result);
-            response.StatusCode = (int)HttpStatusCode.BadRequest;
-            response.Succeeded = false;
+            if (model.NewPassword != model.ConfirmPassword)
+            {
+                response.Message = "Password does not match!";
+                response.Succeeded = false;
+                response.Data = null;
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return response;
+            }
+
+            var decodedToken = WebEncoders.Base64UrlDecode(model.Token); //Decode incoming token
+            string actualToken = Encoding.UTF8.GetString(decodedToken); //Set the token to an encoded string
+
+            var purpose = UserManager<AppUser>.ResetPasswordTokenPurpose;
+            var tokenProvider = _userManager.Options.Tokens.PasswordResetTokenProvider;
+
+            var token = await _userManager.VerifyUserTokenAsync(user, tokenProvider, purpose, actualToken);
+            if (token)
+            {
+                _mapper.Map<AppUser>(model);
+                var result = await _userManager.ResetPasswordAsync(user, actualToken, model.NewPassword);
+                response.Succeeded = false;
+                response.Data = null;
+                response.Message = GetErrors(result);
+                return response;
+            }
+
+            response.StatusCode = (int)HttpStatusCode.OK;
+            response.Message = "Password has been reset successfully";
+            response.Succeeded = true;
+            response.Data = user.Id;
             return response;
         }
 
-        public Task<Response<string>> ResetPassword(ResetPasswordDto resetPasswordDto)
+        /// <summary>
+        /// Update the password of a logged in user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<Response<string>> UpdatePassword(UpdatePasswordDto model)
         {
-            throw new NotImplementedException();
+            var response = new Response<string>();
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                response.Message = "Opps! something went wrong.";
+                response.Succeeded = false;
+                response.Data = null;
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return response;
+            }
+            _mapper.Map<AppUser>(model);
+            response.Message = "Password has been changed successfully";
+            response.Succeeded = true;
+            response.Data = user.Id;
+            response.StatusCode = (int)HttpStatusCode.OK;
+            return response;
         }
 
-        public Task<Response<bool>> UpdatePassword(RegisterUserDto addUserDto)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Validates a user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Returns true if the user exists</returns>
         private async Task<Response<bool>> ValidateUser(LoginDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -141,7 +303,7 @@ namespace hotel_booking_core.Services
             {
                 response.Message = "Invalid Credentials";
                 response.Succeeded = false;
-                response.StatusCode = (int)HttpStatusCode.NotFound;
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return response;
             }
             if(!await _userManager.IsEmailConfirmedAsync(user))
@@ -158,14 +320,31 @@ namespace hotel_booking_core.Services
             }
         }
 
+        /// <summary>
+        /// Stringify and returns all the identity errors
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns>Identity Errors</returns>
         private static string GetErrors(IdentityResult result)
         {
-            string message = string.Empty;
-            foreach (var err in result.Errors)
-            {
-                message += err.Description + "\n";
-            }
-            return message;
+            return result.Errors.Aggregate(string.Empty, (current, err) => current + err.Description + "\n");
+        }
+
+        /// <summary>
+        /// Generates and encapsulates the link to be sent to the user in a html template.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="emailTempPath"></param>
+        /// <param name="linkName"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private static async Task<string> GetEmailBody(AppUser user, string emailTempPath, string linkName, string token)
+        {
+            var link = $"http://www.example.com/{linkName}/{token}/{user.Email}";
+            var temp = await File.ReadAllTextAsync(Path.Combine(FilePath, emailTempPath));
+            var newTemp =  temp.Replace("**link**", link);
+            var emailBody = newTemp.Replace("**User**", user.FirstName);
+            return emailBody;
         }
     }
 }

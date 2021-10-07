@@ -7,6 +7,7 @@ using hotel_booking_dto.AmenityDtos;
 using hotel_booking_models;
 using Microsoft.AspNetCore.Http;
 using System;
+using hotel_booking_utilities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -22,6 +23,7 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
 
         public AmenityService(IAmenityRepository amenityRepository,IMapper mapper, IUnitOfWork unitOfWork)
+        public AmenityService(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _amenityRepository = amenityRepository;
             _mapper = mapper;
@@ -29,11 +31,15 @@ namespace hotel_booking_core.Services
         }
 
         public Response<UpdateAmenityDto> UpdateAmenity(string id, UpdateAmenityDto model)
+        public Response<IEnumerable<AmenityDto>> GetAmenityByHotelId(string hotelId)
         {
             var amenity = _unitOfWork.Amenities.GetAmenityById(id);
             var response = new Response<UpdateAmenityDto>();
             if (amenity != null)
-            {                
+            var hotelAmenities = _unitOfWork.Amenities.GetAmenityByHotelId(hotelId);
+            var amenityList = new List<AmenityDto>();
+            foreach (var amenity in hotelAmenities)
+            {
                 var updatedAmenity = _mapper.Map(model, amenity);
                 _unitOfWork.Amenities.UpdateAsync(updatedAmenity);
                 _unitOfWork.Save();
@@ -44,6 +50,7 @@ namespace hotel_booking_core.Services
                 response.Message = "Update successful";
                 response.Succeeded = true;
                 return response;
+                amenityList.Add(AmenityMapper.MapToAmenityDTO(amenity));
             }
 
             response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -59,6 +66,7 @@ namespace hotel_booking_core.Services
             var response = new Response<AddAmenityResponseDto>();
 
             if (hotel != null)
+            var response = new Response<IEnumerable<AmenityDto>>()
             {
                 var amenityToAdd = AddAmenityResponseDto.Add(id, model);
                 await _unitOfWork.Amenities.InsertAsync(amenityToAdd);
@@ -75,7 +83,12 @@ namespace hotel_booking_core.Services
                 return response;
 
             }
+                StatusCode = (int)HttpStatusCode.OK,
+                Succeeded = true,
+                Data = amenityList,
+                Message = $"Rooms for {hotelAmenities.Select(x => x.Hotel.Name).FirstOrDefault()}"               
 
+            };
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Message = "No such hotel";
             response.Succeeded = false;

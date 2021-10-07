@@ -2,6 +2,8 @@
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_dto.AmenityDtos;
 using hotel_booking_models;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,12 +29,14 @@ namespace hotel_booking_data.Repositories.Implementations
             return amenity;
         }
 
-        //public Amenity AddAmenityToHotel(string id)
-        //{
-        //    var hotel = _context.Hotels.FirstOrDefault(x => x.Id == id);
-
-        //}
 
 
+        public IEnumerable<Amenity> GetAmenityByHotelId(string hotelId)
+        {
+            var hotel = _context.Hotels.Include("Amenities").FirstOrDefault(x => x.Id == hotelId);
+            var selectedAmenities = hotel.Amenities.ToList();
+
+            return selectedAmenities;
+        }
     }
 }

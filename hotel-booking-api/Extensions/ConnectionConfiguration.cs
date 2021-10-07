@@ -36,7 +36,7 @@ namespace hotel_booking_api.Extensions
                 }
                 else
                 {
-                    connStr = config.GetConnectionString("default");
+                    connStr = config.GetConnectionString("conString");
                 }
                 options.UseNpgsql(connStr);
             });
