@@ -34,7 +34,7 @@ namespace hotel_booking_data.Repositories.Implementations
 
         public void UpdateAsync(T entity)
         {
-            _dbSet.Update(entity);
+            var a = _dbSet.Update(entity);
         }
     }
 }

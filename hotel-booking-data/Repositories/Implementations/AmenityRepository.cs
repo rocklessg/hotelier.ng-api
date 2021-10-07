@@ -2,6 +2,8 @@
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_dto.AmenityDtos;
 using hotel_booking_models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
@@ -14,10 +16,23 @@ namespace hotel_booking_data.Repositories.Implementations
             _context = context;
         }
 
-        public UpdateAmenityDto UpdateAmenity(string id, UpdateAmenityDto update)
-        {
+        //public AddAmenityDto AddAmenity(AddAmenityDto amenity)
+        //{
             
-            var updatedAmenity = _context.Amenities.Update(update);
+        //}
+
+        public Amenity GetAmenityById(string id)
+        {
+            var amenity = _context.Amenities.FirstOrDefault(x => x.Id == id);
+            return amenity;
         }
+
+        //public Amenity AddAmenityToHotel(string id)
+        //{
+        //    var hotel = _context.Hotels.FirstOrDefault(x => x.Id == id);
+
+        //}
+
+
     }
 }

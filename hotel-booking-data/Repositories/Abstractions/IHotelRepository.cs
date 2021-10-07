@@ -9,6 +9,6 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IHotelRepository : IGenericRepository<Hotel>
     {
-
+        Hotel GetHotelByIdForAddAmenity(string id);
     }
 }

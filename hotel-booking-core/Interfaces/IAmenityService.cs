@@ -1,4 +1,6 @@
-﻿using System;
+﻿using hotel_booking_dto;
+using hotel_booking_dto.AmenityDtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,7 @@ namespace hotel_booking_core.Interfaces
 {
     public interface IAmenityService
     {
-        
+        Response<UpdateAmenityDto> UpdateAmenity(string id, UpdateAmenityDto update);
+        Task<Response<AddAmenityResponseDto>> AddAmenity(string id, AddAmenityRequestDto model);
     }
 }

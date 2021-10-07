@@ -1,11 +1,7 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
 using hotel_booking_dto.AmenityDtos;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
@@ -21,11 +17,18 @@ namespace hotel_booking_api.Controllers
             _amenityService = AmenityService;
         }
 
-        [HttpPut]
-        [HttpPut("update/{id}")]
-        public async Task<ActionResult<Response<UpdateAmenityDto>>> UpdateAmenity(string id, UpdateAmenityDto update)
+        [HttpPut("update-amenity")]
+        public ActionResult<Response<UpdateAmenityDto>> UpdateAmenity(string id, [FromBody]UpdateAmenityDto update)
         {
-            var response = _amenityService
+            var response =  _amenityService.UpdateAmenity(id, update);
+            return Ok(response);
+        }
+
+        [HttpPost("add-amenity")]
+        public async Task<ActionResult> AddAmenity(string id,[FromBody] AddAmenityRequestDto amenity)
+        {
+            var response = await _amenityService.AddAmenity(id, amenity);
+            return Ok(response);
         }
     }
 }
