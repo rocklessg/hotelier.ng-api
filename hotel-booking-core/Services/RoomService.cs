@@ -5,11 +5,8 @@ using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.Mapper;
-<<<<<<< HEAD
 using hotel_booking_dto.RoomsDtos;
-=======
 using hotel_booking_models;
->>>>>>> 2de97cf7d4c28d5c0b48edbf637c16060d63b0bb
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
 using System;
