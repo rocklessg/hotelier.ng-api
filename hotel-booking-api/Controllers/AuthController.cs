@@ -19,14 +19,14 @@ namespace hotel_booking_api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<AuthController> _logger;
         private readonly IAuthenticationService _authService;
-        
+
         public AuthController(ILogger<AuthController> logger,
             IAuthenticationService authService, UserManager<AppUser> userManager)
         {
             _logger = logger;
             _authService = authService;
             _userManager = userManager;
-            
+
         }
 
         [HttpPost]
@@ -36,7 +36,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Response<LoginResponseDto>>> Register([FromBody] RegisterUserDto model)
         {
-            _logger.LogInformation($"Registration Attempt for {model.Email}");            
+            _logger.LogInformation($"Registration Attempt for {model.Email}");
             var result = await _authService.Register(model);
             return StatusCode(result.StatusCode, result);
         }

@@ -1,9 +1,9 @@
-using System;
 using hotel_booking_api.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System;
 
 namespace hotel_booking_api
 {
@@ -40,6 +40,6 @@ namespace hotel_booking_api
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-                
+
     }
 }

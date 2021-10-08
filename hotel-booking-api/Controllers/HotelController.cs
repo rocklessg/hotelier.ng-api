@@ -1,10 +1,15 @@
 ﻿using hotel_booking_core.Interfaces;
-using hotel_booking_data.UnitOfWork.Abstraction;
+using hotel_booking_dto;
+using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
@@ -14,19 +19,20 @@ namespace hotel_booking_api.Controllers
     public class HotelController : ControllerBase
     {
         private readonly ILogger<HotelController> _logger;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IHotelService _hotelService;
+        private readonly UserManager<AppUser> _userManager;
 
-        public HotelController(ILogger<HotelController> logger, IUnitOfWork unitOfWork, IHotelService hotelService)
+        public HotelController(ILogger<HotelController> logger, 
+            IHotelService hotelService, UserManager<AppUser> userManager)
         {
             _logger = logger;
-            _unitOfWork = unitOfWork;
             _hotelService = hotelService;
+            _userManager = userManager;
         }
 
         [AllowAnonymous]
         [HttpGet("all-hotels")]
-        public async Task<IActionResult> GetAllHotels([FromQuery]Paginator paging)
+        public async Task<IActionResult> GetAllHotels([FromQuery] Paginator paging)
         {
             var response = await _hotelService.GetAllHotelsAsync(paging);
             return StatusCode(response.StatusCode, response);
@@ -51,22 +57,28 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("top-hotels")]
-        public IActionResult HotelsByRatings()
+        public async Task<IActionResult> HotelsByRatingsAsync([FromQuery] Paging paging)
         {
-            return Ok();
+            var result = await _hotelService.GetHotelsByRatingsAsync(paging);
+            var response = new Response<List<HotelBasicDto>>(StatusCodes.Status200OK, true, "List of Hotels by ratings", result);
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpGet]
         [Route("top-deals")]
-        public IActionResult TopDeals()
+        public async Task<IActionResult> TopDealsAsync([FromQuery] Paging paging)
         {
-            return Ok();
+            var result = await _hotelService.GetTopDealsAsync(paging);
+            var response = new Response<List<RoomInfoDTo>>(StatusCodes.Status200OK, true, "List of Top Deals", result);
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpGet]
-        public IActionResult GetHotelRooms()
+        public async Task<IActionResult> GetHotelRoomsByPriceAsync([FromQuery]PriceDto pricing)
         {
-            return Ok();
+            var result = await _hotelService.GetRoomByPriceAsync(pricing);
+            var response = new Response<List<RoomInfoDTo>>(StatusCodes.Status200OK, true, "List of Rooms By Price", result);
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpGet]
@@ -83,6 +95,19 @@ namespace hotel_booking_api.Controllers
         {
             var rating = await _hotelService.GetHotelRatings(id);
             return Ok(rating);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddHotel([FromBody] AddHotelDto hotelDto)
+        {
+            var loggedInUser = await _userManager.GetUserAsync(User);
+            var result = await _hotelService.AddHotel(loggedInUser.Id, hotelDto);
+            return StatusCode(result.StatusCode, result);
         }
     }
 }
