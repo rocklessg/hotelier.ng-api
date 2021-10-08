@@ -30,7 +30,6 @@ namespace hotel_booking_data.Repositories.Implementations
         {
             var hotel = _context.Hotels.Include("Amenities").FirstOrDefault(x => x.Id == hotelId);
             var selectedAmenities = hotel.Amenities.ToList();
-
             return selectedAmenities;
         }
     }

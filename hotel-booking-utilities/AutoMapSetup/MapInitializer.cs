@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using hotel_booking_dto;
 using hotel_booking_dto.AmenityDtos;
 using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_dto.commons;
@@ -24,6 +25,8 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             // Hotel Maps
             CreateMap<Hotel, HotelBasicDto>().ReverseMap();
+            CreateMap<RoomType, RoomInfoDTo>().ReverseMap();
+            CreateMap<GalleryDto, Gallery>().ReverseMap();
             CreateMap<Hotel, UpdateHotelDto>().ReverseMap();
             CreateMap<Hotel, AddHotelDto>().ReverseMap();
             CreateMap<AddHotelResponseDto, Hotel>().ReverseMap();
