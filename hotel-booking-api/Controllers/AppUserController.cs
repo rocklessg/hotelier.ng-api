@@ -28,6 +28,7 @@ namespace hotel_booking_api.Controllers
         }
 
 
+        [Authorize]
         [HttpPatch("update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -41,12 +42,8 @@ namespace hotel_booking_api.Controllers
 
             string url = upload.Url.ToString();
 
-            //auth user id
-            
-            //string customerId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-
-
-            string customerId = "2ccd5586-51f2-444c-aa63-e13012748dfa";
+            //auth user id      
+            string customerId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _AppUserService.UpdateCustomerPhoto(customerId, url);
             return StatusCode(result.StatusCode, result);
         }

@@ -31,6 +31,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpPost]
+       
         public async Task<IActionResult> UploadImage([FromForm] AddImageDto imageDto)
         {
             try
