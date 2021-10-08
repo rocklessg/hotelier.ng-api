@@ -6,12 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-
-using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
 {
@@ -50,6 +48,33 @@ namespace hotel_booking_api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+
+       /* [HttpPatch]
+        [Authorize("customer")]
+        public async Task<IActionResult> UploadImage([FromForm] AddImageDto imageDto)
+        {
+            try
+            {
+                var response = string.Empty;
+                var upload = await _imageService.UploadAsync(imageDto.Image);
+               
+                string url = upload.Url.ToString();
+                string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                var result = await _userRepository.UploadImage(userId, url);
+                if (result)
+                {
+                    response += "Image successfully added";
+                }
+                return Ok(response);
+            }
+
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }*/
 
 
 
