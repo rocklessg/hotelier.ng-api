@@ -9,6 +9,16 @@ namespace hotel_booking_dto
         public string Message { get; set; }
         public int StatusCode { get; set; }
 
+        public Response(int statusCode,bool success,string msg, T data)
+        {
+            Data = data;
+            Succeeded = success;
+            StatusCode = statusCode;
+            Message = msg;
+        }
+        public Response()
+        {
+        }
         /// <summary>
         /// Sets the data to the appropriate response
         /// at run time
@@ -23,7 +33,6 @@ namespace hotel_booking_dto
         {
             return new Response<T> { Succeeded = true, Data = data };
         }
-        public override string ToString() => JsonConvert.SerializeObject(this);
-       
+        public override string ToString() => JsonConvert.SerializeObject(this);       
     }
 }

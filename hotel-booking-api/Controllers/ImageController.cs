@@ -40,8 +40,6 @@ namespace hotel_booking_api.Controllers
                     Url = upload.Url.ToString()
 
                 };
-                //var x = "";
-
                 return Ok(result);
 
             }
