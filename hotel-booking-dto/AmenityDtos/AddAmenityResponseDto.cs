@@ -14,19 +14,7 @@ namespace hotel_booking_dto.AmenityDtos
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
 
-        public static Amenity Add(string id, AddAmenityRequestDto model)
-        {
-            return new Amenity
-            {
-                Id = Guid.NewGuid().ToString(),
-                HotelId = id,
-                Name = model.Name,
-                Price = model.Price,
-                Discount = model.Discount,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
-            };
-        }
+  
 
     }
 
