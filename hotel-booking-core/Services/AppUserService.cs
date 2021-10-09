@@ -25,7 +25,6 @@ namespace hotel_booking_core.Services
         }
 
 
-        #region UpdateAppUser
         /// <summary>
         /// A method to update an AppUser
         /// </summary>
@@ -65,7 +64,6 @@ namespace hotel_booking_core.Services
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Succeeded = false;
             return response;
-            #endregion
 
         }
         public async Task<Response<UpdateUserImageDto>> UpdateCustomerPhoto(string customerId, string url)
