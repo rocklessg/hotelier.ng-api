@@ -20,14 +20,17 @@ namespace hotel_booking_api.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHotelService _hotelService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IHotelStatisticsService _hotelStatistics;
+
 
         public HotelController(ILogger<HotelController> logger, IUnitOfWork unitOfWork, 
-            IHotelService hotelService, UserManager<AppUser> userManager)
+            IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatistics)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
             _hotelService = hotelService;
             _userManager = userManager;
+            _hotelStatistics = hotelStatistics;
         }
 
         [AllowAnonymous]
@@ -103,6 +106,13 @@ namespace hotel_booking_api.Controllers
             var loggedInUser = await _userManager.GetUserAsync(User);
             var result = await _hotelService.AddHotel(loggedInUser.Id, hotelDto);
             return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("{hotelId}/statistics")]
+        public async Task<IActionResult> GetHotelStatistics(string hotelId)
+        {
+            var result = await _hotelStatistics.GetHotelStatistics(hotelId);
+            return Ok(result);
         }
     }
 }
