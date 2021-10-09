@@ -257,7 +257,7 @@ namespace hotel_booking_core.Services
                 hotel.UpdatedAt = DateTime.Now;
                 
                 // Update the hotel and save changes to database
-                _unitOfWork.Hotels.UpdateAsync(hotel);
+                _unitOfWork.Hotels.Update(hotel);
                 await _unitOfWork.Save();
                 
                 // Map properties of updated hotel to the response DTO
