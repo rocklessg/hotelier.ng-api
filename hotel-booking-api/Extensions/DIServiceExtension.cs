@@ -48,7 +48,6 @@ namespace hotel_booking_api.Extensions
             // Add Repository Injections Here
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             // Add Model Services Injection Here
-            services.AddScoped<IRoomService, RoomService>();
 
             services.AddScoped<IAmenityRepository, AmenityRepository>();
             // Add Fluent Validator Injections Here
