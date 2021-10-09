@@ -16,14 +16,14 @@ namespace hotel_booking_core.Services
     public class ManagerStatistics : IManagerStatistics
     {
         private readonly IMapper _mapper;
-        private readonly IManagerRepository _managerRepository;
+       
         private readonly IUnitOfWork _unitOfWork;
 
-        public ManagerStatistics(IMapper mapper, IManagerRepository managerRepository,
+        public ManagerStatistics(IMapper mapper,
             IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
-            _managerRepository = managerRepository;
+           
             _unitOfWork = unitOfWork;
            
         }
@@ -31,7 +31,7 @@ namespace hotel_booking_core.Services
         public async Task<ManagersStatisticsDto> GetManagerStatistics(string managersId) 
         {
             var manager = await _unitOfWork.Managers.GetManagerStatistics(managersId);
-            //var manager = await db.Managers.Where(x => x.AppUserId == managersId).FirstOrDefaultAsync();
+            
 
             if(manager != null) 
             {
