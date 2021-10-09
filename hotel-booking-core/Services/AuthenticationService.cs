@@ -160,7 +160,7 @@ namespace hotel_booking_core.Services
             {
                 try
                 {
-                    var result = await _userManager.CreateAsync(user, model.Password);
+                    var result = await _userManager.CreateAsync(user, model.Password);                    
 
                     if (result.Succeeded)
                     {
@@ -182,6 +182,7 @@ namespace hotel_booking_core.Services
 
                         if (emailResult)
                         {
+                            user.IsActive = true;
                             response.StatusCode = (int)HttpStatusCode.Created;
                             response.Succeeded = true;
                             response.Data = user.Id;
