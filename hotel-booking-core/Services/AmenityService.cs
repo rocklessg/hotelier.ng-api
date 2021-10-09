@@ -33,7 +33,7 @@ namespace hotel_booking_core.Services
             if (amenity != null)
             {
                 var updatedAmenity = _mapper.Map(model, amenity);
-                _unitOfWork.Amenities.UpdateAsync(updatedAmenity);
+                _unitOfWork.Amenities.Update(updatedAmenity);
                 _unitOfWork.Save();
                 var result = _mapper.Map<UpdateAmenityDto>(updatedAmenity);
 
