@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
 {
-    [Route("api/Hotel")]
+    [Route("api/[controller]")]
     [ApiController]
     public class RoomController : ControllerBase
     {
@@ -23,14 +23,6 @@ namespace hotel_booking_api.Controllers
             _logger = logger;
             _unitOfWork = unitOfWork;
             _roomService = roomService;
-        }
-
-        [HttpGet]
-        [Route("{id}")]
-        public IActionResult HotelRoomById(string id)
-        {
-            var room = _roomService.GetHotelRooomById(id);
-            return Ok(room);
         }
 
 
