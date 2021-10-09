@@ -12,7 +12,7 @@ namespace hotel_booking_data.Repositories.Abstractions
     public interface IGenericRepository<T> where T : class
     {
         Task InsertAsync(T entity);
-        void UpdateAsync(T entity);
+        void Update(T entity);
         void DeleteAsync(T entity);
     }
 }

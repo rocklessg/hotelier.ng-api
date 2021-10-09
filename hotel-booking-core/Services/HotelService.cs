@@ -5,6 +5,7 @@ using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.Mapper;
+using hotel_booking_dto.RoomsDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
@@ -110,6 +111,26 @@ namespace hotel_booking_core.Services
             response.Succeeded = true;
             response.Data = resultList;
             return response;
+        }
+
+        public Response<RoomDTo> GetHotelRooomById(string roomId)
+        {
+            var room = _unitOfWork.Rooms.GetHotelRoom(roomId);
+
+            if (room != null)
+            {
+                var response = HotelRoomsResponse.GetResponse(room);
+
+                var result = new Response<RoomDTo>
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Succeeded = true,
+                    Message = $"is the room with id {roomId}",
+                    Data = response
+                };
+                return result;
+            }
+            return Response<RoomDTo>.Fail("Not Found");
         }
 
         public async Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId)
@@ -236,7 +257,7 @@ namespace hotel_booking_core.Services
                 hotel.UpdatedAt = DateTime.Now;
                 
                 // Update the hotel and save changes to database
-                _unitOfWork.Hotels.UpdateAsync(hotel);
+                _unitOfWork.Hotels.Update(hotel);
                 await _unitOfWork.Save();
                 
                 // Map properties of updated hotel to the response DTO

@@ -8,7 +8,6 @@ namespace hotel_booking_core.Interfaces
 {
     public interface IRoomService
     {
-        Response<RoomDTo> GetHotelRooomById(string roomId);
         Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelid, AddRoomDto roomDto);
     }
 }
