@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interfaces;
+using hotel_booking_data.Contexts;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
@@ -23,12 +24,14 @@ namespace hotel_booking_core.Services
         private readonly ILogger<HotelService> _logger;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly HbaDbContext _db;
 
-        public HotelService(ILogger<HotelService> logger, IUnitOfWork unitOfWork, IMapper mapper)
+        public HotelService(ILogger<HotelService> logger, IUnitOfWork unitOfWork, IMapper mapper, HbaDbContext db)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _db = db;
         }
 
         public async Task<List<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging)
@@ -296,5 +299,7 @@ namespace hotel_booking_core.Services
 
             return response;
         }
+
+        
     }
 }
