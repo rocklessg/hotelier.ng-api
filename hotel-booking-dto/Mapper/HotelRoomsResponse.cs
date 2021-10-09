@@ -1,4 +1,6 @@
 ﻿using hotel_booking_dto.commons;
+using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.RoomsDtos;
 using hotel_booking_models;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ namespace hotel_booking_dto.Mapper
 {
     public class HotelRoomsResponse
     {
-        public static IEnumerable<RoomsByHotelDTo> GetResponse(List<Room> room)
+        public static IEnumerable<RoomsByHotelDTo> GetResponse(List<Room> room) 
         {
             var newList = new List<RoomsByHotelDTo>();
 

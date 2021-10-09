@@ -4,16 +4,16 @@ using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.Mapper;
 using hotel_booking_models;
 using hotel_booking_utilities;
-using hotel_booking_dto.Mapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System;
 
 namespace hotel_booking_core.Services
 {
@@ -30,18 +30,38 @@ namespace hotel_booking_core.Services
             _mapper = mapper;
         }
 
-        public async Task<IList<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging)
+        public async Task<List<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging)
         {
             var hotelList = await _unitOfWork.Hotels.GetAllAsync(
-                orderby: x => x.OrderBy(h => h.Ratings.Sum(r => r.Ratings)),
-                Includes: new List<string>() { "Galleries" }
+                orderby: x => x.OrderBy(h => h.Ratings.Sum(r => r.Ratings) / h.Ratings.Count),
+                Includes: new List<string>() { "Galleries"}
                 );
-            var dtoList = _mapper.Map<List<HotelBasicDto>>(hotelList);
-            dtoList.ForEach(dto => dto.Thumbnails = dto.Galleries.FirstOrDefault(pic => pic.IsFeature).ImageUrl);
-            return dtoList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
+            hotelList = hotelList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
+            return HotelBasicDtoMapper.MapToHotelBAsicDtoList(hotelList, _mapper);
         }
 
+        public async Task<List<RoomInfoDTo>> GetRoomByPriceAsync(PriceDto priceDto)
+        {
+            var roomList = await _unitOfWork.RoomType.GetAllAsync(
+                Includes: new List<string>() { "Hotel" },
+                expression: (roomType => (!(priceDto.MaxPrice > priceDto.MinPrice) ? roomType.Price >= priceDto.MinPrice
+                                         : (roomType.Price >= priceDto.MinPrice) && (roomType.Price <= priceDto.MaxPrice) 
+                                         )),
+                orderby: x => x.OrderBy(x => x.Price)
+                );
+            roomList = roomList.Skip(priceDto.PageNumber - 1).Take(priceDto.PageSize).ToList();
+            return HotelBasicDtoMapper.MapToRoomInfoDtoList(roomList, _mapper);
+        }
 
+        public async Task<List<RoomInfoDTo>> GetTopDealsAsync(Paging paging)
+        {
+            var roomList = await _unitOfWork.RoomType.GetAllAsync(
+                Includes: new List<string>() { "Hotel" },
+                orderby: x => x.OrderBy(rt => rt.Discount/rt.Price)
+                );
+            roomList = roomList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
+            return HotelBasicDtoMapper.MapToRoomInfoDtoList(roomList, _mapper);
+        }
 
         public async Task<Response<List<GetHotelDto>>> GetAllHotelsAsync(Paginator paging)
         {
@@ -231,8 +251,6 @@ namespace hotel_booking_core.Services
             response.Succeeded = false;
             return response;
         }
-
-
         public async Task<Response<AddHotelResponseDto>> AddHotel(string managerId, AddHotelDto hotelDto)
         {
             Hotel hotel = _mapper.Map<Hotel>(hotelDto);

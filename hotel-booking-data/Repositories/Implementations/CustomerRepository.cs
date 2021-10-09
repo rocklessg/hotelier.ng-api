@@ -2,10 +2,11 @@
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using hotel_booking_data.Repositories.Abstractions;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
-    public class CustomerRepository : GenericRepository<AppUser>, IAppUserRepository
+    public class CustomerRepository : GenericRepository<AppUser>, ICustomerRepository
     {
 
         private readonly HbaDbContext _context;
@@ -18,14 +19,7 @@ namespace hotel_booking_data.Repositories.Implementations
         }
 
 
-     //
 
-
-        public async Task<Customer> FindAsync(string customerId)
-        {
-            Customer customer = await _customers.FindAsync(customerId);
-            return customer;
-        }
 
     }
 }
