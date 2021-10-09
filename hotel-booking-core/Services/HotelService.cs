@@ -301,8 +301,6 @@ namespace hotel_booking_core.Services
             if (room == null)
                 return Response<AddRoomResponseDto>.Fail("Not Found");
 
-            room.CreatedAt = DateTime.UtcNow;
-
             await _unitOfWork.Rooms.InsertAsync(room);
             await _unitOfWork.Save();
 
