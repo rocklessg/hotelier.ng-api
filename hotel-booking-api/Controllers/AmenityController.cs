@@ -19,19 +19,21 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet("{hotelId}")]
-
-        public IActionResult GetAmenityByHotelId(string hotelId)
+        public async Task<IActionResult> GetAmenityByHotelIdAsync(string hotelId)
         {
-            try
+
+            var result = await _amenityService.GetAmenityByHotelIdAsync(hotelId);
+
+            if (result is not null)
             {
-                var result = _amenityService.GetAmenityByHotelId(hotelId);
                 return StatusCode(result.StatusCode, result);
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(ex);
+                return BadRequest(result);
             }
         }
+
 
         [HttpPut("update-amenity")]
         public ActionResult<Response<UpdateAmenityDto>> UpdateAmenity(string id, [FromBody] UpdateAmenityDto update)
