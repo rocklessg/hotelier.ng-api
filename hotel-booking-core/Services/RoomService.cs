@@ -27,25 +27,6 @@ namespace hotel_booking_core.Services
             _mapper = mapper;
         }
 
-        public Response<RoomDTo> GetHotelRooomById(string roomId)
-        {
-            var room = _unitOfWork.Rooms.GetHotelRoom(roomId);
-
-            if (room != null)
-            {
-                var response = HotelRoomsResponse.GetResponse(room);
-
-                var result = new Response<RoomDTo>
-                {
-                    StatusCode = StatusCodes.Status200OK,
-                    Succeeded = true,
-                    Message = $"is the room with id {roomId}",
-                    Data = response
-                };
-                return result;
-            }
-            return Response<RoomDTo>.Fail("Not Found");
-        }
 
         public async Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelid, AddRoomDto roomDto)
         {
