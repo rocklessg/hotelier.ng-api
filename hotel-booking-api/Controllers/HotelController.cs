@@ -117,8 +117,10 @@ namespace hotel_booking_api.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetHotelStatistics(string hotelId)
         {
-            _logger.LogInformation("Getting statistics for hotel with ID {hotelId}");
+            _logger.LogInformation($"About Getting statistics for hotel with ID {hotelId}");
             var result = await _hotelStatistics.GetHotelStatistics(hotelId);
+            _logger.LogInformation($"Gotten stats for hotel with ID {hotelId}");
+
             return Ok(result);
         }
     }
