@@ -2,6 +2,7 @@ using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,7 @@ namespace hotel_booking_api.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
@@ -29,6 +31,7 @@ namespace hotel_booking_api.Controllers
             
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -41,6 +44,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -53,6 +57,8 @@ namespace hotel_booking_api.Controllers
             var result = await _authService.Login(model);
             return StatusCode(result.StatusCode, result);
         }
+
+
 
         [HttpPost]
         [Route("confirm-email")]
@@ -79,7 +85,7 @@ namespace hotel_booking_api.Controllers
         }
 
 
-
+        [Authorize]
         [HttpPatch]
         [Route("update-password")]
         [ProducesResponseType(StatusCodes.Status200OK)]

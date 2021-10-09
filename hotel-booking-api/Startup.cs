@@ -63,10 +63,11 @@ namespace hotel_booking_api
                 fv.ImplicitlyValidateChildProperties = true;
             });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hotel Management Api", Version = "v1" });
-            });                       
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hotel Management Api", Version = "v1" });
+            //});                       
+            services.AddSwagger(); 
 
             services.AddCors(c =>
             {
