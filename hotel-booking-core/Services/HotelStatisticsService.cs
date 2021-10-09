@@ -68,7 +68,7 @@ namespace hotel_booking_core.Services
         public async Task<int> GetTotalNoOfOccupiedRooms(string hotelId)
         {
             var roomType = await _unitOfWork.RoomType.GetRoomTypesInEachHotel(hotelId);
-            //var roomType = db.RoomTypes.Where(x => x.HotelId == hotelId).ToList();
+            
             var totalOccupiedRooms = 0;
             foreach (var item in roomType)
             {
@@ -131,7 +131,6 @@ namespace hotel_booking_core.Services
 
         public int GetTotalAmenities(string hotelId)
         {
-            //var amenitiesCount = db.Amenities.Where(x => x.HotelId == hotelId).ToList().Count;
             var amenities = _unitOfWork.Amenities.GetAmenityByHotelId(hotelId).ToList();
             return amenities.Count;
         }
@@ -159,7 +158,6 @@ namespace hotel_booking_core.Services
 
         public async Task<HotelStatisticDto> GetHotelStatistics(string hotelId)
         {
-            //var hotel = await db.Hotels.Where(x => x.Id == hotelId).FirstOrDefaultAsync();
             var hotel = await _unitOfWork.Hotels.GetHotelsById(hotelId);
             if (hotel != null)
             {
@@ -200,7 +198,6 @@ namespace hotel_booking_core.Services
 
         public async Task<HotelManagerStatisticsDto> GetHotelManagerStatistics(string managerId)
         {
-            //var manager = await db.Managers.Where(x => x.AppUserId == managerId).FirstOrDefaultAsync();
             var manager = await _unitOfWork.Managers.GetManagerStatistics(managerId);
 
             var averageRating = 0.0;

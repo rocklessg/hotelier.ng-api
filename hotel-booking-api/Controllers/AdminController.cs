@@ -1,4 +1,5 @@
 ﻿using hotel_booking_core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,6 +24,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet("get-statistics/manager")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetManagerStatistics(string managerId)
         {
             _logger.LogInformation($"About Getting Manager Statistics for {managerId}");
@@ -33,6 +35,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet("{managerId}/statistics")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetHotelManagerStatistics(string managerId)
         {
             _logger.LogInformation($"About Getting Hotel Manager Statistics for {managerId}");
