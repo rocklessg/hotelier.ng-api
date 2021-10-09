@@ -13,13 +13,12 @@ namespace hotel_booking_api.Controllers
     {
         private readonly IAmenityService _amenityService;
 
-        public AmenityController(IAmenityService AmenityService)
+        public AmenityController(IAmenityService amenityService)
         {
-            _amenityService = AmenityService;
+            _amenityService = amenityService;
         }
 
         [HttpGet("{hotelId}")]
-
         public IActionResult GetAmenityByHotelId(string hotelId)
         {
             try

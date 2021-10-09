@@ -77,20 +77,28 @@ namespace hotel_booking_core.Services
 
         public Response<IEnumerable<AmenityDto>> GetAmenityByHotelId(string hotelId)
         {
-            var hotelAmenities = _unitOfWork.Amenities.GetAmenityByHotelId(hotelId);
-            var amenityList = new List<AmenityDto>();
-            foreach (var amenity in hotelAmenities)
-            {
-                amenityList.Add(AmenityMapper.MapToAmenityDTO(amenity));
-            }
-            var response = new Response<IEnumerable<AmenityDto>>()
-            {
-                StatusCode = (int)HttpStatusCode.OK,
-                Succeeded = true,
-                Data = amenityList,
-                Message = $"Rooms for {hotelAmenities.Select(x => x.Hotel.Name).FirstOrDefault()}"
+            var hotel = _unitOfWork.Amenities.GetAmenityByHotelId(hotelId);
+            var response = new Response<IEnumerable<AmenityDto>>();
 
-            };
+            if (hotel != null)
+            {
+                var amenitiesOfHotel = hotel.Amenities.ToList();
+                var amenityList = new List<AmenityDto>();
+                foreach (var amenity in amenitiesOfHotel)
+                {
+                    amenityList.Add(_mapper.Map<AmenityDto>(amenity));
+                }
+
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Data = amenityList;
+                response.Message = $"Rooms for {amenitiesOfHotel.Select(x => x.Hotel.Name).FirstOrDefault()}";
+                return response;
+
+            }
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Message = "Hotel does not exist";
+            response.Succeeded = false;
             return response;
         }
     }
