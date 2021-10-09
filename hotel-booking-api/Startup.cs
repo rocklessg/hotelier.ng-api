@@ -6,6 +6,7 @@ using hotel_booking_data.Seeder;
 using hotel_booking_models;
 using hotel_booking_models.Cloudinary;
 using hotel_booking_models.Mail;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace hotel_booking_api
 {
@@ -65,10 +67,7 @@ namespace hotel_booking_api
                 fv.ImplicitlyValidateChildProperties = true;
             });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hotel Management Api", Version = "v1" });
-            });
+            services.AddSwagger();
 
             services.AddCors(c =>
             {
@@ -76,11 +75,7 @@ namespace hotel_booking_api
             });
 
             // Register Dependency Injection Service Extension
-            services.AddDependencyInjection();
-
-            // Register Fluent Validation Service Extension
-            
-
+            services.AddDependencyInjection(); 
 
         }
 
@@ -96,7 +91,7 @@ namespace hotel_booking_api
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hotel Management Api v1"));
 
-            HbaSeeder.SeedData(dbContext, userManager, roleManager).Wait();
+            HbaSeeder.SeedData(dbContext, userManager, roleManager).GetAwaiter().GetResult();
 
             app.UseHttpsRedirection();
 
