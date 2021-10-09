@@ -15,16 +15,14 @@ namespace hotel_booking_core.Services
 {
     public class ManagerStatistics : IManagerStatistics
     {
-        private readonly HbaDbContext db;
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
         private readonly IManagerRepository _managerRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ManagerStatistics(HbaDbContext db, IMapper mapper, IManagerRepository managerRepository,
+        public ManagerStatistics(IMapper mapper, IManagerRepository managerRepository,
             IUnitOfWork unitOfWork)
         {
-            this.db = db;
-            this.mapper = mapper;
+            _mapper = mapper;
             _managerRepository = managerRepository;
             _unitOfWork = unitOfWork;
            
@@ -37,7 +35,7 @@ namespace hotel_booking_core.Services
 
             if(manager != null) 
             {
-                var managerStat = mapper.Map<ManagersStatisticsDto>(manager);
+                var managerStat = _mapper.Map<ManagersStatisticsDto>(manager);
                 return managerStat;
             }
 
