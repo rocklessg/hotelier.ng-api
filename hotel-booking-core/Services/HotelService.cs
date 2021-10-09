@@ -274,9 +274,6 @@ namespace hotel_booking_core.Services
         {
             Hotel hotel = _mapper.Map<Hotel>(hotelDto);
 
-            if (hotel == null)
-                return Response<AddHotelResponseDto>.Fail("Not Found");
-
             hotel.ManagerId = managerId;
 
             await _unitOfWork.Hotels.InsertAsync(hotel);
@@ -294,13 +291,13 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public async Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelid, AddRoomDto roomDto)
+        public async Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelId, AddRoomDto roomDto)
         {
             Room room = _mapper.Map<Room>(roomDto);
 
-            if (room == null)
-                return Response<AddRoomResponseDto>.Fail("Not Found");
-
+            var checkHotelId = _unitOfWork.Hotels.GetHotelById(hotelId);
+            if (checkHotelId == null)
+                return Response<AddRoomResponseDto>.Fail("Hotel Not Found");
 
             await _unitOfWork.Rooms.InsertAsync(room);
             await _unitOfWork.Save();
@@ -312,7 +309,7 @@ namespace hotel_booking_core.Services
                 StatusCode = StatusCodes.Status200OK,
                 Succeeded = true,
                 Data = roomResponse,
-                Message = $"Room with id {room.Id} added to Hotel with id {hotelid}"
+                Message = $"Room with id {room.Id} added to Hotel with id {hotelId}"
             };
             return response;
         }
