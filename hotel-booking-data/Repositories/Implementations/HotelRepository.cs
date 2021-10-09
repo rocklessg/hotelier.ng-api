@@ -19,11 +19,10 @@ namespace hotel_booking_data.Repositories.Implementations
             _context = context;
             _dbSet = _context.Set<Hotel>();
         }
-
         public async Task<List<Hotel>> GetAllAsync(Expression<Func<Hotel, bool>> expression = null, Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderby = null, List<string> Includes = null)
         {
             var query = _dbSet.AsNoTracking();
-            if (Includes != null) Includes.ForEach(x => query.Include(x));
+            if (Includes != null) Includes.ForEach(x => query = query.Include(x));
             if (expression != null) query = query.Where(expression);
             if (orderby != null) query = orderby(query);
             return await query.ToListAsync();
@@ -56,6 +55,12 @@ namespace hotel_booking_data.Repositories.Implementations
                     .Where(x => x.HotelId == hotelId).ToListAsync();
 
             return ratings;
+        }
+
+        public Hotel GetHotelByIdForAddAmenity(string id)
+        {
+           return  _context.Hotels.FirstOrDefault(x => x.Id == id);
+            
         }
     }
 }

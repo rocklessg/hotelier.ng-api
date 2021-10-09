@@ -18,7 +18,7 @@ namespace hotel_booking_utilities.Validators.AuthenticationValidators
 
             RuleFor(user => user.Password).Password();
 
-            RuleFor(user => user.Age).GreaterThanOrEqualTo(18);
+            RuleFor(user => user.Age).GreaterThanOrEqualTo(18).WithMessage("Must be 18 and above");
         }
     }
 }
