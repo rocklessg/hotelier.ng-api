@@ -122,7 +122,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet("{hotelId}/statistics")]
-        [Authorize(Roles = "Manager")]
+       // [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetHotelStatistics(string hotelId)
         {
             _logger.LogInformation($"About Getting statistics for hotel with ID {hotelId}");
