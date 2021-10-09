@@ -1,21 +1,22 @@
-﻿using hotel_booking_models;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace hotel_booking_dto.commons
+namespace hotel_booking_dto.HotelDtos
 {
-    public class HotelBasicDto
+    public class AddHotelResponseDto
     {
-        [Display(Name = "ManagerId")]
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Email { get; set; }
-        public string Phone { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public string thumbnails { get; set; }
-        public ICollection<Gallery> Galleries { get; set; }
+        public string ManagerId { get; set; }
+        public string ImageUrl { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

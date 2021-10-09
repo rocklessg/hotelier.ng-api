@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models; 
+using Microsoft.OpenApi.Models;
 
 namespace hotel_booking_api
 {
@@ -35,7 +35,7 @@ namespace hotel_booking_api
             services.AddDbContextAndConfigurations(Environment, Configuration);
 
             // Configure Mailing Service
-            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));            
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
             // Add Jwt Authentication and Authorization
             services.ConfigureAuthentication();
@@ -53,9 +53,11 @@ namespace hotel_booking_api
             services.Configure<ImageUploadSettings>(Configuration.GetSection("CloudSettings"));
             services.AddCloudinary(CloudinaryServiceExtension.GetAccount(Configuration));
 
+            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling 
+            = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers()
                 .AddNewtonsoftJson(op => op.SerializerSettings
-                .ReferenceLoopHandling= Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                    .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddMvc().AddFluentValidation(fv => {
                 fv.DisableDataAnnotationsValidation = true;
@@ -66,7 +68,7 @@ namespace hotel_booking_api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hotel Management Api", Version = "v1" });
-            });                       
+            });
 
             services.AddCors(c =>
             {
@@ -75,6 +77,9 @@ namespace hotel_booking_api
 
             // Register Dependency Injection Service Extension
             services.AddDependencyInjection();
+
+            // Register Fluent Validation Service Extension
+            
 
 
         }
@@ -85,7 +90,7 @@ namespace hotel_booking_api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();                
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseSwagger();

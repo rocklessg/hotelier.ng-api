@@ -8,5 +8,6 @@ namespace hotel_booking_core.Interface
     {
         Task<UploadResult> UploadAsync(IFormFile image);
         Task<DelResResult> DeleteResourcesAsync(string publicId);
+
     }
 }

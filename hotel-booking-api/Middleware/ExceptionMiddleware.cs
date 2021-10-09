@@ -61,5 +61,5 @@ namespace hotel_booking_api.Middleware
         }
     }
 
-   
+
 }

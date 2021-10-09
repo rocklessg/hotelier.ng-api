@@ -9,5 +9,6 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IManagerRepository : IGenericRepository<Manager>
     {
+        Task<Manager> GetManagerStatistics(string managerId);
     }
 }
