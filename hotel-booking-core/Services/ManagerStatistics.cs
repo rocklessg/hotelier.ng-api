@@ -16,23 +16,17 @@ namespace hotel_booking_core.Services
     public class ManagerStatistics : IManagerStatistics
     {
         private readonly IMapper _mapper;
-       
         private readonly IUnitOfWork _unitOfWork;
-
-        public ManagerStatistics(IMapper mapper,
-            IUnitOfWork unitOfWork)
+        public ManagerStatistics(IMapper mapper,IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
-           
             _unitOfWork = unitOfWork;
-           
         }
 
         public async Task<ManagersStatisticsDto> GetManagerStatistics(string managersId) 
         {
             var manager = await _unitOfWork.Managers.GetManagerStatistics(managersId);
             
-
             if(manager != null) 
             {
                 var managerStat = _mapper.Map<ManagersStatisticsDto>(manager);
