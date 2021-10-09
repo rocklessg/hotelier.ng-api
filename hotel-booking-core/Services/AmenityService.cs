@@ -4,6 +4,7 @@ using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.AmenityDtos;
+using hotel_booking_models;
 using hotel_booking_utilities;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,11 @@ namespace hotel_booking_core.Services
 {
     public class AmenityService : IAmenityService
     {
-        private readonly IAmenityRepository _amenityRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AmenityService(IAmenityRepository amenityRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        public AmenityService( IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _amenityRepository = amenityRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
@@ -33,7 +32,7 @@ namespace hotel_booking_core.Services
             if (amenity != null)
             {
                 var updatedAmenity = _mapper.Map(model, amenity);
-                _unitOfWork.Amenities.UpdateAsync(updatedAmenity);
+                _unitOfWork.Amenities.Update(updatedAmenity);
                 _unitOfWork.Save();
                 var result = _mapper.Map<UpdateAmenityDto>(updatedAmenity);
 
@@ -58,7 +57,7 @@ namespace hotel_booking_core.Services
 
             if (hotel != null)
             {
-                var amenityToAdd = AddAmenityResponseDto.Add(id, model);
+                var amenityToAdd = _mapper.Map<Amenity>(model);
                 await _unitOfWork.Amenities.InsertAsync(amenityToAdd);
                 await _unitOfWork.Save();
                 var result = _mapper.Map<AddAmenityResponseDto>(amenityToAdd);

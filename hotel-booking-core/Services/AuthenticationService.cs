@@ -110,11 +110,9 @@ namespace hotel_booking_core.Services
 
             response.Succeeded = false;
             response.Message = "Something went wrong. Please try again.";
-            response.StatusCode = 503;
+            response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
             return response;
-        }
-
-       
+        }       
       
         /// <summary>
         /// Logs in a user
@@ -162,7 +160,7 @@ namespace hotel_booking_core.Services
             {
                 try
                 {
-                    var result = await _userManager.CreateAsync(user, model.Password);
+                    var result = await _userManager.CreateAsync(user, model.Password);                    
 
                     if (result.Succeeded)
                     {
@@ -184,6 +182,7 @@ namespace hotel_booking_core.Services
 
                         if (emailResult)
                         {
+                            user.IsActive = true;
                             response.StatusCode = (int)HttpStatusCode.Created;
                             response.Succeeded = true;
                             response.Data = user.Id;
@@ -306,7 +305,7 @@ namespace hotel_booking_core.Services
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return response;
             }
-            if(!await _userManager.IsEmailConfirmedAsync(user))
+            if(!await _userManager.IsEmailConfirmedAsync(user) && user.IsActive)
             {
                 response.Message = "Account not activated";
                 response.Succeeded = false;
