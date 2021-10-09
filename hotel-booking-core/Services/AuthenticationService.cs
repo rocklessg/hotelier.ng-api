@@ -305,7 +305,7 @@ namespace hotel_booking_core.Services
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return response;
             }
-            if(!await _userManager.IsEmailConfirmedAsync(user))
+            if(!await _userManager.IsEmailConfirmedAsync(user) && user.IsActive)
             {
                 response.Message = "Account not activated";
                 response.Succeeded = false;
