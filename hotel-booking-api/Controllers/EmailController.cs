@@ -22,8 +22,8 @@ namespace hotel_booking_api.Controllers
         {
             try
             {
-                await mailService.SendEmailAsync(request);
-                return Ok();
+                var result = await mailService.SendEmailAsync(request);
+                return Ok(result);
             }
             catch (Exception)
             {
