@@ -18,15 +18,14 @@ namespace hotel_booking_core.Services
     {
         private readonly HbaDbContext _db;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<HotelStatisticsService> _logger;
+        
         private readonly IMapper _mapper;
 
-        public HotelStatisticsService(HbaDbContext db, ILogger<HotelStatisticsService> logger, IMapper mapper,
+        public HotelStatisticsService(HbaDbContext db, IMapper mapper,
             IUnitOfWork unitOfWork)
         {
             _db = db;
             _unitOfWork = unitOfWork;
-            _logger = logger;
             _mapper = mapper;
         }
 
@@ -198,7 +197,7 @@ namespace hotel_booking_core.Services
 
         public async Task<HotelManagerStatisticsDto> GetHotelManagerStatistics(string managerId)
         {
-            var manager = await _unitOfWork.Managers.GetManagerStatistics(managerId);
+            var managerStats = await _unitOfWork.Managers.GetManagerStatistics(managerId);
 
             var averageRating = 0.0;
             var numberOfHotels = 0;
@@ -208,7 +207,7 @@ namespace hotel_booking_core.Services
             decimal transactions = 0;
             var totalRooms = 0;
 
-            if (manager != null)
+            if (managerStats != null)
             {
                 var hotels = _db.Hotels.Where(x => x.ManagerId == managerId).ToList();
                 numberOfHotels = hotels.Count;

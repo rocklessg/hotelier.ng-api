@@ -20,15 +20,15 @@ namespace hotel_booking_api.Controllers
     {
         private readonly IHotelService _hotelService;
         private readonly UserManager<AppUser> _userManager;
-        private readonly IHotelStatisticsService _hotelStatistics;
+        private readonly IHotelStatisticsService _hotelStatisticsService;
         private readonly ILogger<HotelController> _logger;
 
 
-        public HotelController(ILogger<HotelController> logger, IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatistics)
+        public HotelController(ILogger<HotelController> logger, IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatisticsService)
         {
             _hotelService = hotelService;
             _userManager = userManager;
-            _hotelStatistics = hotelStatistics;
+            _hotelStatisticsService = hotelStatisticsService;
             _logger = logger;
         }
 
@@ -126,7 +126,7 @@ namespace hotel_booking_api.Controllers
         public async Task<IActionResult> GetHotelStatistics(string hotelId)
         {
             _logger.LogInformation($"About Getting statistics for hotel with ID {hotelId}");
-            var result = await _hotelStatistics.GetHotelStatistics(hotelId);
+            var result = await _hotelStatisticsService.GetHotelStatistics(hotelId);
             _logger.LogInformation($"Gotten stats for hotel with ID {hotelId}");
             return Ok(result);
 
