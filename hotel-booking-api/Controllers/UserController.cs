@@ -16,33 +16,32 @@ namespace hotel_booking_api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AppUserController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IConfiguration _config;
         private readonly IImageService _imageService;
-        private readonly IAppUserService _AppUserService;
-        public AppUserController(IConfiguration config, IImageService imageService, IAppUserService AppUserService)
+        private readonly IUserService _userService;
+        public UserController(IConfiguration config, IImageService imageService, IUserService userService)
         {
             _config = config;
             _imageService = imageService;
-            _AppUserService = AppUserService;
+            _userService = userService;
 
         }
 
 
-        [HttpPut("updateAppUser")]
+        [HttpPut("updateUser/{id}" )]
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        //[Authorize(Roles = "Regular")]
+        //[Authorize(Roles = "Customer")]
         public async Task<ActionResult<Response<string>>> Update(string id, [FromBody] UpdateAppUserDto updateAppUser)
         {
 
-            //var id = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            var result = await _AppUserService.UpdateAppUser(id, updateAppUser);
+            var result = await _userService.UpdateAppUser(id, updateAppUser);
             return StatusCode(result.StatusCode, result);
 
 
@@ -67,7 +66,7 @@ namespace hotel_booking_api.Controllers
 
 
             string customerId = "2ccd5586-51f2-444c-aa63-e13012748dfa";
-            var result = await _AppUserService.UpdateCustomerPhoto(customerId, url);
+            var result = await _userService.UpdateCustomerPhoto(customerId, url);
             return StatusCode(result.StatusCode, result);
 
         }

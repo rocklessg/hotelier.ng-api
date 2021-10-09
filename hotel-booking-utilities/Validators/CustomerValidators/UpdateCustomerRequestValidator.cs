@@ -13,13 +13,10 @@ namespace hotel_booking_utilities.Validators.CustomerValidators
     {
         public UpdateCustomerRequestValidator()
         {
-            RuleFor(customer => customer.FirstName).HumanName()
-                .NotEmpty().WithMessage("First name required")
-                .NotNull().WithMessage("First name required");
-            RuleFor(customer => customer.LastName).HumanName()
-                .NotEmpty().WithMessage("First name required")
-                .NotNull().WithMessage("First name required");
-
+            RuleFor(user => user.CreditCard).CreditCard();
+            RuleFor(user => user.Address).Address();
+            RuleFor(user => user.State).State();
+            
 
         }
     }

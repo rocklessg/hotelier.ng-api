@@ -35,5 +35,26 @@ namespace hotel_booking_utilities.ValidatorSettings
 
             return options;
         }
+       
+        public static IRuleBuilder<T, string> Address<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            var options = ruleBuilder.NotNull().WithMessage("Address is required")
+                .NotEmpty()
+                .MinimumLength(8).WithMessage("Address must contain at least 6 characters")
+                .Matches("[0-9A-Za-z]").WithMessage("Address must contain a number");   // Must start with Number
+                
+
+            return options;
+        }
+        public static IRuleBuilder<T, string> State<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            var options = ruleBuilder.NotNull().WithMessage("State cannot be null")
+                 .NotEmpty().WithMessage("State must be provided")
+                 .Matches("[A-Za-z]").WithMessage("State can only contain alphabeths")
+                 .MinimumLength(2).WithMessage("State is limited to a minimum of 2 characters")
+                 .MaximumLength(25).WithMessage("State is limited to a maximum of 25 characters");
+
+            return options;
+        }
     }
 }

@@ -12,20 +12,19 @@ using hotel_booking_dto.CustomerDtos;
 
 namespace hotel_booking_core.Services
 {
-    public class AppUserService : IAppUserService
+    public class UserService : Interfaces.IUserService
     {
 
         private readonly UserManager<AppUser> _UserManager;
         private readonly IMapper _mapper;
 
-        public AppUserService(UserManager<AppUser> userManager, IMapper mapper)
+        public UserService(UserManager<AppUser> userManager, IMapper mapper)
         {
             _UserManager = userManager;
             _mapper = mapper;
         }
 
 
-        #region UpdateAppUser
         /// <summary>
         /// A method to update an AppUser
         /// </summary>
@@ -65,9 +64,9 @@ namespace hotel_booking_core.Services
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Succeeded = false;
             return response;
-            #endregion
 
         }
+
         public async Task<Response<UpdateUserImageDto>> UpdateCustomerPhoto(string customerId, string url)
         {
             AppUser customer = await _UserManager.FindByIdAsync(customerId);
