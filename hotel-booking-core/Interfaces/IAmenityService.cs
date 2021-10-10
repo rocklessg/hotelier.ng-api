@@ -10,7 +10,7 @@ namespace hotel_booking_core.Interfaces
 {
     public interface IAmenityService
     {
-        Response<IEnumerable<AmenityDto>> GetAmenityByHotelId(string hotelId);
+        Task<Response<IEnumerable<AmenityDto>>> GetAmenityByHotelIdAsync(string hotelId);
         Response<UpdateAmenityDto> UpdateAmenity(string id, UpdateAmenityDto update);
         Task<Response<AddAmenityResponseDto>> AddAmenity(string id, AddAmenityRequestDto model);
     }

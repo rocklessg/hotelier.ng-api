@@ -30,6 +30,7 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<Amenity, UpdateAmenityDto>().ReverseMap();
             CreateMap<Amenity, AddAmenityRequestDto>().ReverseMap();
             CreateMap<Amenity, AddAmenityResponseDto>().ReverseMap();
+            CreateMap<Amenity, AmenityDto>().ReverseMap();
 
 
             // Hotel Maps
