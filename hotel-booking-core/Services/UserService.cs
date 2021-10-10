@@ -12,16 +12,18 @@ using hotel_booking_dto.CustomerDtos;
 
 namespace hotel_booking_core.Services
 {
-    public class UserService : Interfaces.IUserService
+    public class UserService : IUserService
     {
 
         private readonly UserManager<AppUser> _UserManager;
         private readonly IMapper _mapper;
+        private readonly ICustomerService _customerService;
 
-        public UserService(UserManager<AppUser> userManager, IMapper mapper)
+        public UserService(UserManager<AppUser> userManager, IMapper mapper, ICustomerService customerService)
         {
             _UserManager = userManager;
             _mapper = mapper;
+            _customerService = customerService;
         }
 
 
@@ -33,37 +35,57 @@ namespace hotel_booking_core.Services
         /// <returns>ask<Response<string>></returns>
         public async Task<Response<string>> UpdateAppUser(string appUserId, UpdateAppUserDto updateAppUser)
         {
+            UpdateCustomerDto updateCustomer = new UpdateCustomerDto
+            {
+                CreditCard = updateAppUser.CreditCard,
+                Address = updateAppUser.Address,
+                State = updateAppUser.State
+
+            };
             var response = new Response<string>();
 
-            var user = await _UserManager.FindByIdAsync(appUserId);
-            if (user != null)
+            //Update the customer table
+            var customerServiceResponse = await _customerService.UpdateCustomer(appUserId, updateCustomer);
+            if (customerServiceResponse.Succeeded == false)
             {
-
-                var model = _mapper.Map(updateAppUser, user);
-
-                var result = await _UserManager.UpdateAsync(model);
-
-                if (result.Succeeded)
+                response = customerServiceResponse;
+                return response;
+            } 
+            else //After the customer table updates successfully, update the user table
+            {
+                var user = await _UserManager.FindByIdAsync(appUserId);
+                if (user != null)
                 {
-                    response.Message = "Update Successful";
-                    response.StatusCode = (int)HttpStatusCode.OK;
-                    response.Succeeded = true;
-                    response.Data = user.Id;
+
+                    var model = _mapper.Map(updateAppUser, user);
+
+                    var result = await _UserManager.UpdateAsync(model);
+
+                    if (result.Succeeded)
+                    {
+                        response.Message = "Update Successful";
+                        response.StatusCode = (int)HttpStatusCode.OK;
+                        response.Succeeded = true;
+                        response.Data = user.Id;
+                        return response;
+                    }
+
+                    response.Message = "Something went wrong, when updating the AppUser table. Please try again later";
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    response.Succeeded = false;
                     return response;
+
+
                 }
 
-                response.Message = "Something went wrong. Please try again later";
+                response.Message = "Not Found";
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
                 response.Succeeded = false;
                 return response;
-
-
             }
+            
 
-            response.Message = "Not Found";
-            response.StatusCode = (int)HttpStatusCode.BadRequest;
-            response.Succeeded = false;
-            return response;
+            
 
         }
 

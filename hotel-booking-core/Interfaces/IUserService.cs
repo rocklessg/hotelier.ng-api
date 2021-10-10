@@ -14,6 +14,7 @@ namespace hotel_booking_core.Interfaces
 {
     public interface IUserService
     {
+
         Task<Response<string>> UpdateAppUser(string appUserId, UpdateAppUserDto updateAppUser);
         Task<Response<UpdateUserImageDto>> UpdateCustomerPhoto(string customerId, string url);
     }
