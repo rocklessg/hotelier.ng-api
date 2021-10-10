@@ -16,6 +16,9 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<AppUser, LoginDto>().ReverseMap();
             CreateMap<Hotel, HotelBasicDto>();
             CreateMap<Manager, ManagersStatisticsDto>().ReverseMap();
+
+            // Amenity Maps
+            CreateMap<Amenity, AmenityDto>().ReverseMap();
         }
 
     }

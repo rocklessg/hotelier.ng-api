@@ -17,5 +17,6 @@ namespace hotel_booking_data.Repositories.Abstractions
         Hotel GetHotelById(string id);
         Task<List<Rating>> HotelRatings(string hotelId);
         Hotel GetHotelByIdForAddAmenity(string id);
+        Task<Hotel> GetHotelsById(string hotelId);
     }
 }
