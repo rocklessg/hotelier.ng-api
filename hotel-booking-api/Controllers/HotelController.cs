@@ -101,9 +101,9 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("{hotelId}/ratings")]
-        public async Task<IActionResult> HotelRatingsAsync(string id)
+        public async Task<IActionResult> HotelRatingsAsync(string hotelId)
         {
-            var rating = await _hotelService.GetHotelRatings(id);
+            var rating = await _hotelService.GetHotelRatings(hotelId);
             return Ok(rating);
         }
 
