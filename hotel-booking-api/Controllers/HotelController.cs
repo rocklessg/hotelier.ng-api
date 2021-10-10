@@ -46,7 +46,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        //[Authorize("Manager")]
+        [Authorize("Manager")]
         [HttpPut("{hotelId}")]
         public async Task<IActionResult> UpdateHotel(string hotelId, [FromBody] UpdateHotelDto update)
         {
@@ -74,7 +74,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetHotelRoomsByPriceAsync([FromQuery]PriceDto pricing)
+        public async Task<IActionResult> GetHotelRoomsByPriceAsync([FromQuery] PriceDto pricing)
         {
             var result = await _hotelService.GetRoomByPriceAsync(pricing);
             var response = new Response<List<RoomInfoDTo>>(StatusCodes.Status200OK, true, "List of Rooms By Price", result);
