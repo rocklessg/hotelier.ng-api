@@ -9,6 +9,7 @@ namespace hotel_booking_models.Cloudinary
 {
     public class AddImageDto
     {
+        
         public IFormFile Image { get; set; }
 
     }
