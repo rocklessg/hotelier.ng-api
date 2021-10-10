@@ -28,7 +28,7 @@ namespace hotel_booking_core.Interfaces
         /// <param name="model"></param>
         /// <returns></returns>
         Task<Response<UpdateHotelDto>> UpdateHotelAsync(string hotelId, UpdateHotelDto model);
-        Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId);
+        Task<Response<IEnumerable<RoomTypeByHotelDTo>>> GetHotelRoomType(Paginator paginator, string hotelId);
         Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId);
         Response<RoomDTo> GetHotelRooomById(string roomId);
         Task<List<RoomInfoDTo>> GetTopDealsAsync(Paging paging);

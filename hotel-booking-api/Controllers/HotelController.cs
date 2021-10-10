@@ -84,10 +84,10 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet]
-        [Route("{id}/rooms")]
-        public async Task<IActionResult> GetAvailableHotelRoomAsync([FromQuery] Paginator paginator, string id)
+        [Route("{hotelId}/roomTypes")]
+        public async Task<IActionResult> GetHotelRoomTypeAsync([FromQuery] Paginator paginator, string id)
         {
-            var rooms = await _hotelService.GetAvailableRoomByHotel(paginator, id);
+            var rooms = await _hotelService.GetHotelRoomType(paginator, id);
             return Ok(rooms);
         }
 
@@ -100,7 +100,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet]
-        [Route("ratings/{id}")]
+        [Route("{hotelId}/ratings")]
         public async Task<IActionResult> HotelRatingsAsync(string id)
         {
             var rating = await _hotelService.GetHotelRatings(id);

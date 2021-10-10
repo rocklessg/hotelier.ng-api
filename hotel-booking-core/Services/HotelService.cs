@@ -135,9 +135,9 @@ namespace hotel_booking_core.Services
             return Response<RoomDTo>.Fail("Not Found");
         }
 
-        public async Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId)
+        public async Task<Response<IEnumerable<RoomTypeByHotelDTo>>> GetHotelRoomType(Paginator paginator, string hotelId)
         {
-            var roomList = await _unitOfWork.Rooms.GetAvailableRoomsByHotel(hotelId);
+            var roomList = await _unitOfWork.Rooms.GetRoomTypeByHotel(hotelId);
 
             if (roomList.Count() > 0)
             {
@@ -146,7 +146,7 @@ namespace hotel_booking_core.Services
                 var item = dtoList.Skip(paginator.PageSize * (paginator.CurrentPage - 1))
                 .Take(paginator.PageSize);
 
-                var result = new Response<IEnumerable<RoomsByHotelDTo>>
+                var result = new Response<IEnumerable<RoomTypeByHotelDTo>>
                 {
                     StatusCode = StatusCodes.Status200OK,
                     Succeeded = true,
@@ -156,7 +156,7 @@ namespace hotel_booking_core.Services
 
                 return result;
             }
-            return Response<IEnumerable<RoomsByHotelDTo>>.Fail("Not Found");
+            return Response<IEnumerable<RoomTypeByHotelDTo>>.Fail("Not Found");
         }
 
 

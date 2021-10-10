@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_dto.HotelDtos
 {
-    public class RoomsByHotelDTo
+    public class RoomTypeByHotelDTo
     {
         public string Id { get; set; }
         public bool IsBooked { get; set; }

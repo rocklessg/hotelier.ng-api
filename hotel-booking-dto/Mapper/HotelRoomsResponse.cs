@@ -12,13 +12,13 @@ namespace hotel_booking_dto.Mapper
 {
     public class HotelRoomsResponse
     {
-        public static IEnumerable<RoomsByHotelDTo> GetResponse(List<Room> room) 
+        public static IEnumerable<RoomTypeByHotelDTo> GetResponse(List<Room> room) 
         {
-            var newList = new List<RoomsByHotelDTo>();
+            var newList = new List<RoomTypeByHotelDTo>();
 
             for (int i = 0; i < room.Count(); i++)
             {
-                var listNew = new RoomsByHotelDTo
+                var listNew = new RoomTypeByHotelDTo
                 {
                     Id = room[i].Id,
                     IsBooked = room[i].IsBooked,
