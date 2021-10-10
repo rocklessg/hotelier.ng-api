@@ -1,6 +1,7 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
 using hotel_booking_dto.AmenityDtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -36,6 +37,8 @@ namespace hotel_booking_api.Controllers
 
 
         [HttpPut("update-amenity")]
+        [Authorize(Roles = "Manager")]
+
         public ActionResult<Response<UpdateAmenityDto>> UpdateAmenity(string id, [FromBody] UpdateAmenityDto update)
         {
             var response = _amenityService.UpdateAmenity(id, update);
@@ -43,6 +46,8 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpPost("add-amenity")]
+        [Authorize(Roles = "Manager")]
+
         public async Task<ActionResult> AddAmenity(string id, [FromBody] AddAmenityRequestDto amenity)
         {
             var response = await _amenityService.AddAmenity(id, amenity);
