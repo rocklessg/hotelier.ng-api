@@ -10,8 +10,7 @@ namespace hotel_booking_dto.HotelDtos
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public int TotalBookRoom { get; set; }
-        public int TotalUnbookedRoom { get; set; }
+        public decimal Price { get; set; }
         public string Thumbnail { get; set; }
 
     }

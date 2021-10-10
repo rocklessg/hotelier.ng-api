@@ -30,7 +30,7 @@ namespace hotel_booking_core.Interfaces
         Task<Response<UpdateHotelDto>> UpdateHotelAsync(string hotelId, UpdateHotelDto model);
         Task<Response<IEnumerable<RoomTypeByHotelDTo>>> GetHotelRoomType(Paginator paginator, string hotelId);
         Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId);
-        Response<RoomDTo> GetHotelRooomById(string roomId);
+        Response<RoomDTo> GetHotelRooomById(string hotelId, string roomTypeId);
         Task<List<RoomInfoDTo>> GetTopDealsAsync(Paging paging);
         Task<List<RoomInfoDTo>> GetRoomByPriceAsync(PriceDto priceDto);
         Task<List<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging);

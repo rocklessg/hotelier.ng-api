@@ -92,10 +92,10 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet]
-        [Route("room/{id}")]
-        public IActionResult HotelRoomById(string id)
+        [Route("{hotelId}/room/{roomTypeId}")]
+        public IActionResult HotelRoomById(string hotelId, string roomTypeId)
         {
-            var room = _hotelService.GetHotelRooomById(id);
+            var room = _hotelService.GetHotelRooomById(hotelId, roomTypeId);
             return Ok(room);
         }
 

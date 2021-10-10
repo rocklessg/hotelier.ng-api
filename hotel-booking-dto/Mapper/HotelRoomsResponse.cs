@@ -22,8 +22,7 @@ namespace hotel_booking_dto.Mapper
                 {
                     Id = roomType[i].Id,
                     Name = roomType[i].Name,
-                    TotalBookRoom = roomType[i].Rooms.Where(x => x.IsBooked).Count(),
-                    TotalUnbookedRoom = roomType[i].Rooms.Where(x => !x.IsBooked).Count(),
+                    Price = roomType[i].Price,
                     Thumbnail = roomType[i].Thumbnail
                 };
 

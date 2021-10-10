@@ -115,9 +115,9 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public Response<RoomDTo> GetHotelRooomById(string roomId)
+        public Response<RoomDTo> GetHotelRooomById(string hotelId, string roomTypeId)
         {
-            var room = _unitOfWork.Rooms.GetHotelRoom(roomId);
+            var room = _unitOfWork.Rooms.GetHotelRoom(hotelId);
 
             if (room != null)
             {
