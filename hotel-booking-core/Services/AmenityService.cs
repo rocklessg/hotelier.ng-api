@@ -75,31 +75,33 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public Response<IEnumerable<AmenityDto>> GetAmenityByHotelId(string hotelId)
+        public async Task<Response<IEnumerable<AmenityDto>>> GetAmenityByHotelIdAsync(string hotelId)
         {
-            var hotel = _unitOfWork.Amenities.GetAmenityByHotelId(hotelId);
             var response = new Response<IEnumerable<AmenityDto>>();
-
-            if (hotel != null)
+            var hotel = _unitOfWork.Hotels.GetHotelById(hotelId);
+            if (hotel is null)
             {
-                var amenitiesOfHotel = hotel.Amenities.ToList();
-                var amenityList = new List<AmenityDto>();
-                foreach (var amenity in amenitiesOfHotel)
-                {
-                    amenityList.Add(_mapper.Map<AmenityDto>(amenity));
-                }
-
-                response.StatusCode = (int)HttpStatusCode.OK;
-                response.Succeeded = true;
-                response.Data = amenityList;
-                response.Message = $"Rooms for {amenitiesOfHotel.Select(x => x.Hotel.Name).FirstOrDefault()}";
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Message = "Hotel does not exist";
+                response.Succeeded = false;
                 return response;
-
             }
-            response.StatusCode = (int)HttpStatusCode.BadRequest;
-            response.Message = "Hotel does not exist";
-            response.Succeeded = false;
+
+            var amenities = await _unitOfWork.Amenities.GetAmenityByHotelIdAsync(hotelId);
+
+            var amenitiesOfHotel = amenities;
+            var amenityList = new List<AmenityDto>();
+            foreach (var amenity in amenitiesOfHotel)
+            {
+                amenityList.Add(_mapper.Map<AmenityDto>(amenity));
+            }
+
+            response.StatusCode = (int)HttpStatusCode.OK;
+            response.Succeeded = true;
+            response.Data = amenityList;
+            response.Message = $"Rooms for {hotelId}";
             return response;
+
         }
     }
 }
