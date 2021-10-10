@@ -37,10 +37,12 @@ namespace hotel_booking_data.Repositories.Implementations
             return rooms;
         }
 
-        public Room GetHotelRoom(string roomId)
+        public async Task<ICollection<Room>> GetHotelRoom(string hotelId, string roomTypeId)
         {
-            var getRoom = _context.Rooms.Include(x => x.Roomtype)
-                    .Where(x => x.Id == roomId).FirstOrDefault();
+            var getRoom = await _context.RoomTypes
+                .Include(x => x.Rooms)
+                .Where(x => x.Id == roomTypeId).Where(x => x.HotelId == hotelId)
+                .Select(x => x.Rooms).FirstOrDefaultAsync();
 
             return getRoom;
         }

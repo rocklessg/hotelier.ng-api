@@ -93,9 +93,9 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("{hotelId}/room/{roomTypeId}")]
-        public IActionResult HotelRoomById(string hotelId, string roomTypeId)
+        public async Task<IActionResult> HotelRoomById(string hotelId, string roomTypeId)
         {
-            var room = _hotelService.GetHotelRooomById(hotelId, roomTypeId);
+            var room = await _hotelService.GetHotelRooomById(hotelId, roomTypeId);
             return Ok(room);
         }
 

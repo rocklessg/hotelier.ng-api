@@ -115,24 +115,24 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public Response<RoomDTo> GetHotelRooomById(string hotelId, string roomTypeId)
+        public async Task<Response<List<RoomDTo>>> GetHotelRooomById(string hotelId, string roomTypeId)
         {
-            var room = _unitOfWork.Rooms.GetHotelRoom(hotelId);
+            var room = await _unitOfWork.Rooms.GetHotelRoom(hotelId, roomTypeId);
 
             if (room != null)
             {
-                var response = HotelRoomsResponse.GetResponse(room);
+                var response = HotelRoomsResponse.GetResponse(room.ToList());
 
-                var result = new Response<RoomDTo>
+                var result = new Response<List<RoomDTo>>
                 {
                     StatusCode = StatusCodes.Status200OK,
                     Succeeded = true,
-                    Message = $"is the room with id {roomId}",
+                    Message = $"Hotel Rooms for roomType with id {roomTypeId} in hotel with  id {hotelId}",
                     Data = response
                 };
                 return result;
             }
-            return Response<RoomDTo>.Fail("Not Found");
+            return Response<List<RoomDTo>>.Fail("Not Found");
         }
 
         public async Task<Response<IEnumerable<RoomTypeByHotelDTo>>> GetHotelRoomType(Paginator paginator, string hotelId)

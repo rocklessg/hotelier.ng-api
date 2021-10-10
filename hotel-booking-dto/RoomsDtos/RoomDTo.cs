@@ -11,7 +11,6 @@ namespace hotel_booking_dto.RoomsDtos
         public string Id { get; set; }
         public string RoomNo { get; set; }
         public bool IsBooked { get; set; }
-        public string RoomType { get; set; }
 
     }
 }

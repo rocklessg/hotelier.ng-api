@@ -30,15 +30,24 @@ namespace hotel_booking_dto.Mapper
             }
             return newList;
         }
-        public static RoomDTo GetResponse(Room room)
+        public static List<RoomDTo> GetResponse(List<Room> room)
         {
-            return new RoomDTo
+
+            var newList = new List<RoomDTo>();
+
+            for (int i = 0; i < room.Count; i++)
             {
-                Id = room.Id,
-                RoomNo = room.RoomNo,
-                IsBooked = room.IsBooked,
-                RoomType = room.Roomtype.Name
-            };
+                var listNew = new RoomDTo
+                {
+                    Id = room[i].Id,
+                    RoomNo = room[i].RoomNo,
+                    IsBooked = room[i].IsBooked
+                };
+
+                newList.Add(listNew);
+            }
+            return newList;
+
         }
         public static IEnumerable<HotelRatingsDTo> GetResponse(List<Rating> rating)
         {
