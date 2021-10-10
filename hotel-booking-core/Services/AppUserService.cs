@@ -82,9 +82,10 @@ namespace hotel_booking_core.Services
                 var upload = await _imageService.UploadAsync(imageDto.Image);
                 string url = upload.Url.ToString();
                 user.Avatar = url;
-                var result = await _UserManager.UpdateAsync(user);
+                user.PublicId = upload.PublicId;
+                await _UserManager.UpdateAsync(user);
 
-                return Response<UpdateUserImageDto>.Success("image upload successful", new UpdateUserImageDto { Url = url });
+                return Response<UpdateUserImageDto>.Success("image upload successful", new UpdateUserImageDto { Url = url}); 
             }
             return Response<UpdateUserImageDto>.Fail("user not found");
             

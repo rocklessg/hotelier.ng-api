@@ -18,17 +18,16 @@ namespace hotel_booking_api.Controllers
     [Route("[controller]")]
     public class AppUserController : ControllerBase
     {
-        private readonly IConfiguration _config;
+
         private readonly IAppUserService _AppUserService;
-        public AppUserController (IConfiguration config, IAppUserService AppUserService)
+        public AppUserController (IAppUserService AppUserService)
         {
-            _config = config;
             _AppUserService = AppUserService;
 
         }
 
         [Authorize]
-        [HttpPatch("updateuserimage")]
+        [HttpPatch("Api/user/{userid}/image")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
