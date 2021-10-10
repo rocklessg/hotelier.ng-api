@@ -28,7 +28,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-       // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetManagerStatistics(string managerId)
         {
             _logger.LogInformation($"About Getting Manager Statistics for {managerId}");
@@ -42,7 +42,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-       // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetHotelManagerStatistics(string managerId)
         {
             _logger.LogInformation($"About Getting Hotel Manager Statistics for {managerId}");
