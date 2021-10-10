@@ -221,7 +221,6 @@ namespace hotel_booking_core.Services
                     occupiedRooms += await GetTotalNoOfOccupiedRooms(hotelId);
                     unoccupiedRooms += await GetTotalNoOfVacantRooms(hotelId);
                     transactions += GetTotalEarnings(hotelId);
-
                 }
 
                 var hotelManagerStats = new HotelManagerStatisticsDto
