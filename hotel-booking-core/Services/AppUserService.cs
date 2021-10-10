@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.Identity;
 using System.Net;
 using System.Threading.Tasks;
 using hotel_booking_dto.CustomerDtos;
-
+using hotel_booking_core.Interface;
+using Microsoft.AspNetCore.Mvc;
+using hotel_booking_models.Cloudinary;
+using Microsoft.AspNetCore.Http;
 
 namespace hotel_booking_core.Services
 {
@@ -17,15 +20,16 @@ namespace hotel_booking_core.Services
 
         private readonly UserManager<AppUser> _UserManager;
         private readonly IMapper _mapper;
+        private readonly IImageService _imageService;
 
-        public AppUserService(UserManager<AppUser> userManager, IMapper mapper)
+        public AppUserService(UserManager<AppUser> userManager, IMapper mapper, IImageService imageService)
         {
             _UserManager = userManager;
             _mapper = mapper;
+            _imageService = imageService;
         }
 
 
-        #region UpdateAppUser
         /// <summary>
         /// A method to update an AppUser
         /// </summary>
@@ -65,33 +69,35 @@ namespace hotel_booking_core.Services
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Succeeded = false;
             return response;
-            #endregion
 
         }
-        public async Task<Response<UpdateUserImageDto>> UpdateCustomerPhoto(string customerId, string url)
+        public async Task<Response<UpdateUserImageDto>> UpdateUserPhoto([FromForm] AddImageDto imageDto, string userId)
         {
-            AppUser customer = await _UserManager.FindByIdAsync(customerId);
-            customer.Avatar = url;
 
-            var result = await _UserManager.UpdateAsync(customer);
+            AppUser user = await _UserManager.FindByIdAsync(userId);
 
-            var response = new Response<UpdateUserImageDto>()
+
+            if (user is not null)
             {
-                StatusCode = result.Succeeded == true ? 200 : 400,
-                Succeeded = result.Succeeded == true ? true : false,
-                Data = new UpdateUserImageDto { Url = url },
-                Message = result.Succeeded == true ? "image upload successful" : "failed"
-            };
-            return response;
-        }
+                var upload = await _imageService.UploadAsync(imageDto.Image);
+                string url = upload.Url.ToString();
+                user.Avatar = url;
+                user.PublicId = upload.PublicId;
+                await _UserManager.UpdateAsync(user);
 
+                return Response<UpdateUserImageDto>.Success("image upload successful", new UpdateUserImageDto { Url = url}); 
+            }
+            return Response<UpdateUserImageDto>.Fail("user not found");
+            
+        }
     }
 }
 
 
-       
-       
-       
-   
-    
+
+
+
+
+
+
 
