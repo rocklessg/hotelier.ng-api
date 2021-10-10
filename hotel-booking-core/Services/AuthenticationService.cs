@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interface;
 using hotel_booking_core.Interfaces;
+using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_models;
@@ -24,16 +25,18 @@ namespace hotel_booking_core.Services
         private readonly IMapper _mapper;
         private readonly ITokenGeneratorService _tokenGenerator;
         private readonly IMailService _mailService;
+        private readonly IUnitOfWork _unitOfWork;
         private const string FilePath = "../hotel-booking-api/StaticFiles/";
 
 
-        public AuthenticationService(UserManager<AppUser> userManager,
+        public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork,
             IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
         {
             _userManager = userManager;
             _mapper = mapper;
             _tokenGenerator = tokenGenerator;
             _mailService = mailService;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -154,6 +157,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<string>> Register(RegisterUserDto model)
         {
             var user = _mapper.Map<AppUser>(model);
+            user.IsActive = true;
             var response = new Response<string>();
 
             using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -181,8 +185,13 @@ namespace hotel_booking_core.Services
                         var emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
 
                         if (emailResult)
-                        {
-                            user.IsActive = true;
+                        {                            
+                            var customer = new Customer
+                            {
+                                AppUser = user
+                            };
+                            await _unitOfWork.Customers.InsertAsync(customer);
+                            await _unitOfWork.Save();
                             response.StatusCode = (int)HttpStatusCode.Created;
                             response.Succeeded = true;
                             response.Data = user.Id;

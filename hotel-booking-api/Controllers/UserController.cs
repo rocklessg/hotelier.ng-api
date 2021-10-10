@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using hotel_booking_core.Interface;
+using System.Security.Claims;
 
 namespace hotel_booking_api.Controllers
 {
@@ -30,23 +31,23 @@ namespace hotel_booking_api.Controllers
         }
 
 
-        [HttpPut("updateUser/{id}" )]
+        [HttpPut("update-user" )]
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        //[Authorize(Roles = "Customer")]
-        public async Task<ActionResult<Response<string>>> Update(string id, [FromBody] UpdateAppUserDto updateAppUser)
+        [Authorize(Roles = "Customer")]
+        public async Task<ActionResult<Response<string>>> Update([FromBody] UpdateAppUserDto updateAppUser)
         {
-
-            var result = await _userService.UpdateAppUser(id, updateAppUser);
+            var userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _userService.UpdateAppUser(userId, updateAppUser);
             return StatusCode(result.StatusCode, result);
 
 
         }
-        [HttpPatch("updateImage")]
+        [HttpPatch("update-image")]
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

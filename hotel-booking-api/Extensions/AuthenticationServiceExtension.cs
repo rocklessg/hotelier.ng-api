@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -14,7 +15,7 @@ namespace hotel_booking_api.Extensions
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static void ConfigureAuthentication(this IServiceCollection services)
+        public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(options =>
             {
@@ -30,10 +31,10 @@ namespace hotel_booking_api.Extensions
                    ValidateIssuer = true,
                    ValidateLifetime = true,
                    ValidateIssuerSigningKey = true,
-                   ValidAudience = Startup.StaticConfig["JwtSettings:Audience"],
-                   ValidIssuer = Startup.StaticConfig["JwtSettings:Issuer"],
+                   ValidAudience = configuration["JwtSettings:Audience"],
+                   ValidIssuer = configuration["JwtSettings:Issuer"],
                    IssuerSigningKey = new SymmetricSecurityKey(Encoding
-                   .UTF8.GetBytes(Startup.StaticConfig["JwtSettings:SecretKey"])),
+                   .UTF8.GetBytes(configuration["JwtSettings:SecretKey"])),
                    ClockSkew = TimeSpan.Zero
                };
            });

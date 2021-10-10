@@ -62,7 +62,7 @@ namespace hotel_booking_api.Extensions
             services.AddTransient<IValidator<ResetPasswordDto>, ResetPasswordDtoValidator>();
 
             services.AddTransient<IValidator<UpdateAppUserDto>, UpdateAppUserDtoValidator>();
-            services.AddTransient<IValidator<UpdateCustomerRequest>, UpdateCustomerRequestValidator>();
+            services.AddTransient<IValidator<UpdateCustomerDto>, UpdateCustomerRequestValidator>();
 
         }
     }

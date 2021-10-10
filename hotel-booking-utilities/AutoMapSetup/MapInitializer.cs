@@ -45,8 +45,8 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<AddRoomResponseDto, Room>().ReverseMap();
 
 
-            //User
-            CreateMap<Customer, UpdateCustomerRequest>().ReverseMap();
+            //Customer
+            CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
 
 
         }

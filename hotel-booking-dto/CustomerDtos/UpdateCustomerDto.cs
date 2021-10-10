@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_dto.CustomerDtos
 {
-    public class UpdateCustomerRequest
-    {
-        
+    public class UpdateCustomerDto
+    {       
 
         public string CreditCard { get; set; }
         public string Address { get; set; }

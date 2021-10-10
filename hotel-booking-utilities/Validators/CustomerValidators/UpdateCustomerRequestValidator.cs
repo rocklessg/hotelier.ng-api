@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_utilities.Validators.CustomerValidators
 {
-    public class UpdateCustomerRequestValidator : AbstractValidator<UpdateCustomerRequest>
+    public class UpdateCustomerRequestValidator : AbstractValidator<UpdateCustomerDto>
     {
         public UpdateCustomerRequestValidator()
         {

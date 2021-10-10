@@ -38,15 +38,18 @@ namespace hotel_booking_api
 
             // Configure Mailing Service
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
-
-            // Add Jwt Authentication and Authorization
-            services.ConfigureAuthentication();
+            
 
             // Adds our Authorization Policies to the Dependecy Injection Container
             services.AddPolicyAuthorization();
 
+            
+            services.AddAuthentication();
+
             // Configure Identity
             services.ConfigureIdentity();
+            // Add Jwt Authentication and Authorization
+            services.ConfigureAuthentication(Configuration);
 
             // Configure AutoMapper
             services.ConfigureAutoMappers();

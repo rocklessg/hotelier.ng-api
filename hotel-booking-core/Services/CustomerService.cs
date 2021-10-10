@@ -24,7 +24,7 @@ namespace hotel_booking_core.Services
             
         }
 
-        public async Task<Response<string>> UpdateCustomer(string CustomerId, UpdateCustomerRequest updateCustomer)
+        public async Task<Response<string>> UpdateCustomer(string CustomerId, UpdateCustomerDto updateCustomer)
         {
             var response = new Response<string>();
 
@@ -33,25 +33,24 @@ namespace hotel_booking_core.Services
             {
 
                 //using manual mapping for now 
-                customer.Address = updateCustomer.Address;
-                customer.State = updateCustomer.State;
-                customer.CreditCard = updateCustomer.CreditCard;
+                //customer.Address = updateCustomer.Address;
+                //customer.State = updateCustomer.State;
+                //customer.CreditCard = updateCustomer.CreditCard;
+                var result = _mapper.Map(updateCustomer, customer);
 
 
-                
-               // var model = _mapper.Map<Customer>(customer);
-                _unitOfWork.Customers.UpdateAsync(customer);
+                _unitOfWork.Customers.Update(result);
                 await _unitOfWork.Save();
 
-                    response.Message = "Update Successful";
-                    response.StatusCode = (int)HttpStatusCode.OK;
-                    response.Succeeded = true;
-                    response.Data = CustomerId;
-                    return response;
+                response.Message = "Update Successful";
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Data = CustomerId;
+                return response;
 
             }
 
-            response.Message = "Not Found";
+            response.Message = "Customer Not Found";
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Succeeded = false;
             return response;
