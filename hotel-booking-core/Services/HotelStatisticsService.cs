@@ -128,9 +128,9 @@ namespace hotel_booking_core.Services
             return reviews;
         }
 
-        public int GetTotalAmenities(string hotelId)
+        public async Task<int> GetTotalAmenities(string hotelId)
         {
-            var amenities = _unitOfWork.Amenities.GetAmenityByHotelId(hotelId).ToList();
+            var amenities =  await _unitOfWork.Amenities.GetAmenityByHotelIdAsync(hotelId);
             return amenities.Count;
         }
 
@@ -165,7 +165,7 @@ namespace hotel_booking_core.Services
                 var vacantRooms = await GetTotalNoOfVacantRooms(hotelId);
                 var roomTypeCount = await GetNoOfRoomTypes(hotelId);
                 var reviews = GetTotalReviews(hotelId);
-                var noOfAmenities = GetTotalAmenities(hotelId);
+                var noOfAmenities = await GetTotalAmenities(hotelId);
                 var totalBookings = GetTotalBookings(hotelId);
                 var averageRatings = GetAverageRatings(hotelId);
                 var totalEarnings = GetTotalEarnings(hotelId);
