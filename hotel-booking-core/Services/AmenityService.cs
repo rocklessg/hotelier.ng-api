@@ -75,23 +75,33 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public Response<IEnumerable<AmenityDto>> GetAmenityByHotelId(string hotelId)
+        public async Task<Response<IEnumerable<AmenityDto>>> GetAmenityByHotelIdAsync(string hotelId)
         {
-            var hotelAmenities = _unitOfWork.Amenities.GetAmenityByHotelId(hotelId);
-            var amenityList = new List<AmenityDto>();
-            foreach (var amenity in hotelAmenities)
+            var response = new Response<IEnumerable<AmenityDto>>();
+            var hotel = _unitOfWork.Hotels.GetHotelById(hotelId);
+            if (hotel is null)
             {
-                amenityList.Add(AmenityMapper.MapToAmenityDTO(amenity));
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Message = "Hotel does not exist";
+                response.Succeeded = false;
+                return response;
             }
-            var response = new Response<IEnumerable<AmenityDto>>()
-            {
-                StatusCode = (int)HttpStatusCode.OK,
-                Succeeded = true,
-                Data = amenityList,
-                Message = $"Rooms for {hotelAmenities.Select(x => x.Hotel.Name).FirstOrDefault()}"
 
-            };
+            var amenities = await _unitOfWork.Amenities.GetAmenityByHotelIdAsync(hotelId);
+
+            var amenitiesOfHotel = amenities;
+            var amenityList = new List<AmenityDto>();
+            foreach (var amenity in amenitiesOfHotel)
+            {
+                amenityList.Add(_mapper.Map<AmenityDto>(amenity));
+            }
+
+            response.StatusCode = (int)HttpStatusCode.OK;
+            response.Succeeded = true;
+            response.Data = amenityList;
+            response.Message = $"Rooms for {hotelId}";
             return response;
+
         }
     }
 }

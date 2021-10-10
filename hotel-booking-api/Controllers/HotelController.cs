@@ -18,16 +18,18 @@ namespace hotel_booking_api.Controllers
     [ApiController]
     public class HotelController : ControllerBase
     {
-        private readonly ILogger<HotelController> _logger;
         private readonly IHotelService _hotelService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IHotelStatisticsService _hotelStatisticsService;
+        private readonly ILogger<HotelController> _logger;
 
-        public HotelController(ILogger<HotelController> logger, 
-            IHotelService hotelService, UserManager<AppUser> userManager)
+
+        public HotelController(ILogger<HotelController> logger, IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatisticsService)
         {
-            _logger = logger;
             _hotelService = hotelService;
             _userManager = userManager;
+            _hotelStatisticsService = hotelStatisticsService;
+            _logger = logger;
         }
 
         [AllowAnonymous]
@@ -46,7 +48,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        //[Authorize("Manager")]
+        [Authorize(Roles = "Manager")]
         [HttpPut("{hotelId}")]
         public async Task<IActionResult> UpdateHotel(string hotelId, [FromBody] UpdateHotelDto update)
         {
@@ -116,6 +118,32 @@ namespace hotel_booking_api.Controllers
             var loggedInUser = await _userManager.GetUserAsync(User);
             var result = await _hotelService.AddHotel(loggedInUser.Id, hotelDto);
             return StatusCode(result.StatusCode, result);
+        }
+
+
+        [HttpGet("{hotelId}/statistics")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> GetHotelStatistics(string hotelId)
+        {
+            _logger.LogInformation($"About Getting statistics for hotel with ID {hotelId}");
+            var result = await _hotelStatisticsService.GetHotelStatistics(hotelId);
+            _logger.LogInformation($"Gotten stats for hotel with ID {hotelId}");
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("rooms/{hotelId}")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddHotelRoom(string hotelId, [FromBody] AddRoomDto roomDto)
+        {
+            var result = await _hotelService.AddHotelRoom(hotelId, roomDto);
+            return StatusCode(result.StatusCode, result);
+
         }
     }
 }
