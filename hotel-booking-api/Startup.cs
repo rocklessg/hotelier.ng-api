@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace hotel_booking_api
 {
@@ -37,14 +36,16 @@ namespace hotel_booking_api
             // Configure Mailing Service
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
-            // Add Jwt Authentication and Authorization
-            services.ConfigureAuthentication();
-
             // Adds our Authorization Policies to the Dependecy Injection Container
             services.AddPolicyAuthorization();
 
+            services.AddAuthorization();
+
             // Configure Identity
             services.ConfigureIdentity();
+
+            // Add Jwt Authentication and Authorization
+            services.ConfigureAuthentication();
 
             // Configure AutoMapper
             services.ConfigureAutoMappers();
@@ -65,10 +66,7 @@ namespace hotel_booking_api
                 fv.ImplicitlyValidateChildProperties = true;
             });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hotel Management Api", Version = "v1" });
-            });
+            services.AddSwagger();
 
             services.AddCors(c =>
             {
@@ -76,11 +74,7 @@ namespace hotel_booking_api
             });
 
             // Register Dependency Injection Service Extension
-            services.AddDependencyInjection();
-
-            // Register Fluent Validation Service Extension
-            
-
+            services.AddDependencyInjection(); 
 
         }
 
@@ -96,7 +90,7 @@ namespace hotel_booking_api
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hotel Management Api v1"));
 
-            HbaSeeder.SeedData(dbContext, userManager, roleManager).Wait();
+            HbaSeeder.SeedData(dbContext, userManager, roleManager).GetAwaiter().GetResult();
 
             app.UseHttpsRedirection();
 

@@ -39,7 +39,6 @@ namespace hotel_booking_core.Services
             hotelList = hotelList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
             return HotelBasicDtoMapper.MapToHotelBAsicDtoList(hotelList, _mapper);
         }
-
         public async Task<List<RoomInfoDTo>> GetRoomByPriceAsync(PriceDto priceDto)
         {
             var roomList = await _unitOfWork.RoomType.GetAllAsync(
@@ -52,7 +51,6 @@ namespace hotel_booking_core.Services
             roomList = roomList.Skip(priceDto.PageNumber - 1).Take(priceDto.PageSize).ToList();
             return HotelBasicDtoMapper.MapToRoomInfoDtoList(roomList, _mapper);
         }
-
         public async Task<List<RoomInfoDTo>> GetTopDealsAsync(Paging paging)
         {
             var roomList = await _unitOfWork.RoomType.GetAllAsync(
@@ -62,7 +60,6 @@ namespace hotel_booking_core.Services
             roomList = roomList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
             return HotelBasicDtoMapper.MapToRoomInfoDtoList(roomList, _mapper);
         }
-
         public async Task<Response<List<GetHotelDto>>> GetAllHotelsAsync(Paginator paging)
         {
             List<Hotel> hotelList = (await _unitOfWork.Hotels.GetAllHotelsAsync())
@@ -111,7 +108,6 @@ namespace hotel_booking_core.Services
             response.Data = resultList;
             return response;
         }
-
         public async Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId)
         {
             var roomList = await _unitOfWork.Rooms.GetAvailableRoomsByHotel(hotelId);
@@ -135,8 +131,6 @@ namespace hotel_booking_core.Services
             }
             return Response<IEnumerable<RoomsByHotelDTo>>.Fail("Not Found");
         }
-
-
         public async Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId)
         {
             var ratings = await _unitOfWork.Hotels.HotelRatings(hotelId);
@@ -157,7 +151,6 @@ namespace hotel_booking_core.Services
             }
             return Response<IEnumerable<HotelRatingsDTo>>.Fail("Not found");
         }
-
         public Response<GetHotelDto> GetHotelById(string id)
         {
             var response = new Response<GetHotelDto>();
@@ -217,8 +210,6 @@ namespace hotel_booking_core.Services
             return response;
 
         }
-
-
         public async Task<Response<UpdateHotelDto>> UpdateHotelAsync(string hotelId, UpdateHotelDto model)
         {
             var response = new Response<UpdateHotelDto>();
