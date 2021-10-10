@@ -26,12 +26,13 @@ namespace hotel_booking_utilities.ValidatorSettings
                 .MaximumLength(25).WithMessage("Name is limited to a maximum of 25 characters");
 
             return options;
-        }
+        }        
 
         public static IRuleBuilder<T, string> PhoneNumber<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             var options = ruleBuilder
-                .Matches(@"^[0]\d{10}$").WithMessage("Phone number must start with 0 and must be 11 digits");
+                .Matches(@"^[0]\d{10}$").WithMessage("Phone number must start with 0 and must be 11 digits")
+                .OverridePropertyName("phone_number");
 
             return options;
         }

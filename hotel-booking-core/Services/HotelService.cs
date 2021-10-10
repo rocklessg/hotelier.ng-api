@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interfaces;
+using hotel_booking_data.Contexts;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.Mapper;
+using hotel_booking_dto.RoomsDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
@@ -19,15 +21,16 @@ namespace hotel_booking_core.Services
 {
     public class HotelService : IHotelService
     {
-        private readonly ILogger<HotelService> _logger;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+       
 
-        public HotelService(ILogger<HotelService> logger, IUnitOfWork unitOfWork, IMapper mapper)
+        public HotelService(IUnitOfWork unitOfWork, IMapper mapper)
+
         {
-            _logger = logger;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+           
         }
 
         public async Task<List<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging)
@@ -110,6 +113,26 @@ namespace hotel_booking_core.Services
             response.Succeeded = true;
             response.Data = resultList;
             return response;
+        }
+
+        public Response<RoomDTo> GetHotelRooomById(string roomId)
+        {
+            var room = _unitOfWork.Rooms.GetHotelRoom(roomId);
+
+            if (room != null)
+            {
+                var response = HotelRoomsResponse.GetResponse(room);
+
+                var result = new Response<RoomDTo>
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Succeeded = true,
+                    Message = $"is the room with id {roomId}",
+                    Data = response
+                };
+                return result;
+            }
+            return Response<RoomDTo>.Fail("Not Found");
         }
 
         public async Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId)
@@ -236,7 +259,7 @@ namespace hotel_booking_core.Services
                 hotel.UpdatedAt = DateTime.Now;
                 
                 // Update the hotel and save changes to database
-                _unitOfWork.Hotels.UpdateAsync(hotel);
+                _unitOfWork.Hotels.Update(hotel);
                 await _unitOfWork.Save();
                 
                 // Map properties of updated hotel to the response DTO
@@ -251,13 +274,11 @@ namespace hotel_booking_core.Services
             response.Succeeded = false;
             return response;
         }
+
         public async Task<Response<AddHotelResponseDto>> AddHotel(string managerId, AddHotelDto hotelDto)
         {
             Hotel hotel = _mapper.Map<Hotel>(hotelDto);
 
-            string message = "hotel data is empty";
-
-            hotel.Id = Guid.NewGuid().ToString();
             hotel.ManagerId = managerId;
 
             await _unitOfWork.Hotels.InsertAsync(hotel);
@@ -267,13 +288,37 @@ namespace hotel_booking_core.Services
 
             var response = new Response<AddHotelResponseDto>()
             {
-                StatusCode = hotel.Id != null ? 200 : 400,
-                Succeeded = hotel.Id != null ? true : false,
+                StatusCode = StatusCodes.Status200OK,
+                Succeeded = true,
                 Data = hotelResponse,
-                Message = hotel.Id != null ? $"{hotel.Name} with id {hotel.Id} has been added" : message
+                Message = $"{hotel.Name} with id {hotel.Id} has been added"
             };
-
             return response;
         }
+
+        public async Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelId, AddRoomDto roomDto)
+        {
+            Room room = _mapper.Map<Room>(roomDto);
+
+            var checkHotelId = _unitOfWork.Hotels.GetHotelById(hotelId);
+            if (checkHotelId == null)
+                return Response<AddRoomResponseDto>.Fail("Hotel Not Found");
+
+            await _unitOfWork.Rooms.InsertAsync(room);
+            await _unitOfWork.Save();
+
+            var roomResponse = _mapper.Map<AddRoomResponseDto>(room);
+
+            var response = new Response<AddRoomResponseDto>()
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Succeeded = true,
+                Data = roomResponse,
+                Message = $"Room with id {room.Id} added to Hotel with id {hotelId}"
+            };
+            return response;
+        }
+
+        
     }
 }
