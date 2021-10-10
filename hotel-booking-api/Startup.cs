@@ -6,12 +6,15 @@ using hotel_booking_data.Seeder;
 using hotel_booking_models;
 using hotel_booking_models.Cloudinary;
 using hotel_booking_models.Mail;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System;
 
 namespace hotel_booking_api
 {
@@ -36,16 +39,14 @@ namespace hotel_booking_api
             // Configure Mailing Service
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
+            // Add Jwt Authentication and Authorization
+            services.ConfigureAuthentication();
+
             // Adds our Authorization Policies to the Dependecy Injection Container
             services.AddPolicyAuthorization();
 
-            services.AddAuthorization();
-
             // Configure Identity
             services.ConfigureIdentity();
-
-            // Add Jwt Authentication and Authorization
-            services.ConfigureAuthentication();
 
             // Configure AutoMapper
             services.ConfigureAutoMappers();

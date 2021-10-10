@@ -32,9 +32,9 @@ namespace hotel_booking_data.Repositories.Implementations
             await _dbSet.AddAsync(entity);
         }
 
-        public void UpdateAsync(T entity)
+        public void Update(T entity)
         {
-            var a = _dbSet.Update(entity);
+             _dbSet.Update(entity);
         }
     }
 }

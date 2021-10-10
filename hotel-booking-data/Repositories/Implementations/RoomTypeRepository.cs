@@ -34,6 +34,13 @@ namespace hotel_booking_data.Repositories.Implementations
             return await query.ToListAsync();
         }
 
+        public async Task<List<RoomType>> GetRoomTypesInEachHotel(string hotelId)
+        {
+            var rooms = await _context.RoomTypes.Where(x => x.HotelId == hotelId).ToListAsync();
+
+            return rooms;
+        }
+
 
 
     }

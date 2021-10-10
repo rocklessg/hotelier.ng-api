@@ -26,11 +26,10 @@ namespace hotel_booking_data.Repositories.Implementations
 
 
 
-        public IEnumerable<Amenity> GetAmenityByHotelId(string hotelId)
+        public async Task<List<Amenity>> GetAmenityByHotelIdAsync(string hotelId)
         {
-            var hotel = _context.Hotels.Include("Amenities").FirstOrDefault(x => x.Id == hotelId);
-            var selectedAmenities = hotel.Amenities.ToList();
-            return selectedAmenities;
+            var amenities = await _context.Amenities.Where(x => x.HotelId == hotelId).ToListAsync();
+            return amenities;
         }
     }
 }
