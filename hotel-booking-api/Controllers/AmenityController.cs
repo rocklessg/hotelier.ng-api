@@ -36,21 +36,22 @@ namespace hotel_booking_api.Controllers
         }
 
 
-        [HttpPut("update-amenity")]
+        [HttpPut("{AmenityId}")]
         [Authorize(Roles = "Manager")]
 
-        public ActionResult<Response<UpdateAmenityDto>> UpdateAmenity(string id, [FromBody] UpdateAmenityDto update)
+        public ActionResult<Response<UpdateAmenityDto>> UpdateAmenity(string amenityId, [FromBody] UpdateAmenityDto update)
         {
-            var response = _amenityService.UpdateAmenity(id, update);
+            var response = _amenityService.UpdateAmenity(amenityId, update);
             return Ok(response);
         }
 
-        [HttpPost("add-amenity")]
+        [HttpPost]
         [Authorize(Roles = "Manager")]
 
-        public async Task<ActionResult> AddAmenity(string id, [FromBody] AddAmenityRequestDto amenity)
+        public async Task<ActionResult> AddAmenity([FromBody] AddAmenityRequestDto amenity)
         {
-            var response = await _amenityService.AddAmenity(id, amenity);
+            var hotelId = amenity.HotelId;
+            var response = await _amenityService.AddAmenity(hotelId, amenity);
             return Ok(response);
         }
     }
