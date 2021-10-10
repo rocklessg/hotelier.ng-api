@@ -81,9 +81,9 @@ namespace hotel_booking_core.Services
             if (user == null)
             {
                 response.Message = $"An email has been sent to {email} if it exists";
-                response.Succeeded = false;
+                response.Succeeded = true;
                 response.Data = null;
-                response.StatusCode = (int)HttpStatusCode.NotFound;
+                response.StatusCode = (int)HttpStatusCode.OK;
                 return response;
             }
 
