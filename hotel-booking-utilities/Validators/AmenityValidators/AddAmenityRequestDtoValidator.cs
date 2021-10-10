@@ -9,7 +9,7 @@ namespace hotel_booking_utilities.Validators.AmenityValidators
         {
             RuleFor(Amenity => Amenity.Name).NotEmpty().WithMessage("Name cannot be empty")
                .NotNull().WithMessage("Name is required")
-               .Matches("[A-Za-z]").WithMessage("Name can only contain alphabeths")
+               .Matches("[A-Za-z]").WithMessage("Name can only contain alphabets")
                .MinimumLength(2).WithMessage("Name is limited to a minimum of 2 characters");
 
             RuleFor(Amenity => Amenity.Price).NotEmpty().WithMessage("Price cannot be empty")

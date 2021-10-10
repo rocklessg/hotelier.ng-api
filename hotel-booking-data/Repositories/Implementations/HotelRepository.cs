@@ -62,5 +62,11 @@ namespace hotel_booking_data.Repositories.Implementations
            return  _context.Hotels.FirstOrDefault(x => x.Id == id);
             
         }
+
+        public async Task<Hotel> GetHotelsById(string hotelId) 
+        {
+            var hotel = await _context.Hotels.Where(x => x.Id == hotelId).FirstOrDefaultAsync();
+            return hotel;
+        }
     }
 }

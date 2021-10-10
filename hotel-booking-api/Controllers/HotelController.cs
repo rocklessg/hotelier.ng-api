@@ -20,11 +20,16 @@ namespace hotel_booking_api.Controllers
     {
         private readonly IHotelService _hotelService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IHotelStatisticsService _hotelStatisticsService;
+        private readonly ILogger<HotelController> _logger;
 
-        public HotelController(IHotelService hotelService, UserManager<AppUser> userManager)
+
+        public HotelController(ILogger<HotelController> logger, IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatisticsService)
         {
             _hotelService = hotelService;
             _userManager = userManager;
+            _hotelStatisticsService = hotelStatisticsService;
+            _logger = logger;
         }
 
         [AllowAnonymous]
@@ -115,6 +120,18 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
+
+        [HttpGet("{hotelId}/statistics")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> GetHotelStatistics(string hotelId)
+        {
+            _logger.LogInformation($"About Getting statistics for hotel with ID {hotelId}");
+            var result = await _hotelStatisticsService.GetHotelStatistics(hotelId);
+            _logger.LogInformation($"Gotten stats for hotel with ID {hotelId}");
+            return Ok(result);
+
+        }
+
         [HttpPost]
         [Route("rooms/{hotelId}")]
         [Authorize(Roles = "Manager")]
@@ -126,6 +143,7 @@ namespace hotel_booking_api.Controllers
         {
             var result = await _hotelService.AddHotelRoom(hotelId, roomDto);
             return StatusCode(result.StatusCode, result);
+
         }
     }
 }

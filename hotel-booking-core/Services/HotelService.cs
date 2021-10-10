@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interfaces;
+using hotel_booking_data.Contexts;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
@@ -9,6 +10,7 @@ using hotel_booking_dto.RoomsDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +23,14 @@ namespace hotel_booking_core.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+       
 
         public HotelService(IUnitOfWork unitOfWork, IMapper mapper)
+
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+           
         }
 
         public async Task<List<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging)
@@ -313,5 +318,7 @@ namespace hotel_booking_core.Services
             };
             return response;
         }
+
+        
     }
 }

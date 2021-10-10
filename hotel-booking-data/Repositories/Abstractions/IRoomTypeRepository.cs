@@ -13,5 +13,7 @@ namespace hotel_booking_data.Repositories.Abstractions
             Expression<Func<RoomType, bool>> expression = null, 
             Func<IQueryable<RoomType>, IOrderedQueryable<RoomType>> orderby = null, 
             List<string> Includes = null);
+        Task<List<RoomType>> GetRoomTypesInEachHotel(string hotelId);
+
     }
 }
