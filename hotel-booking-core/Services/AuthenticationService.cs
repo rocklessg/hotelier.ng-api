@@ -159,63 +159,51 @@ namespace hotel_booking_core.Services
             var user = _mapper.Map<AppUser>(model);
             user.IsActive = true;
             var response = new Response<string>();
-
             using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                try
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
                 {
-                    var result = await _userManager.CreateAsync(user, model.Password);                    
-
-                    if (result.Succeeded)
+                    await _userManager.AddToRoleAsync(user, UserRoles.Customer);
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var mailBody = await GetEmailBody(user, emailTempPath: "Html/ConfirmEmail.html", linkName: "confirm-email", token);
+                    var mailRequest = new MailRequest()
                     {
-                        await _userManager.AddToRoleAsync(user, UserRoles.Customer);
-
-                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                        var mailBody = await GetEmailBody(user, emailTempPath: "Html/ConfirmEmail.html", linkName:"confirm-email", token);
-                        
-
-                        var mailRequest = new MailRequest()
+                        Subject = "Confirm Your Registration",
+                        Body = mailBody,
+                        ToEmail = model.Email
+                    };
+                    var emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
+                    if (emailResult)
+                    {
+                        var customer = new Customer
                         {
-                            Subject = "Confirm Your Registration",
-                            Body = mailBody,
-                            ToEmail = model.Email
+                            AppUser = user
                         };
-
-                        var emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
-
-                        if (emailResult)
-                        {                            
-                            var customer = new Customer
-                            {
-                                AppUser = user
-                            };
-                            await _unitOfWork.Customers.InsertAsync(customer);
-                            await _unitOfWork.Save();
-                            response.StatusCode = (int)HttpStatusCode.Created;
-                            response.Succeeded = true;
-                            response.Data = user.Id;
-                            response.Message = "User created successfully! Please check your mail to verify your account.";
-                            transaction.Complete();
-                            return response;
-                        }
+                        await _unitOfWork.Customers.InsertAsync(customer);
+                        await _unitOfWork.Save();
+                        response.StatusCode = (int)HttpStatusCode.Created;
+                        response.Succeeded = true;
+                        response.Data = user.Id;
+                        response.Message = "User created successfully! Please check your mail to verify your account.";
+                        transaction.Complete();
+                        return response;
                     }
-                    response.Message = GetErrors(result);
-                    response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    response.Succeeded = false;
-                    transaction.Complete();
-                    return response;
-                }
-                catch (Exception)
-                {
                     transaction.Dispose();
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     response.Succeeded = false;
                     response.Message = "Registration failed. Please try again";
                     return response;
                 }
+                response.Message = GetErrors(result);
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Succeeded = false;
+                transaction.Complete();
+                return response;
+
+
             };
-            
+
         }
 
         /// <summary>
