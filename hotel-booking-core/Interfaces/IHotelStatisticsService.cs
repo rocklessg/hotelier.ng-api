@@ -19,7 +19,7 @@ namespace hotel_booking_core.Interfaces
         Task<HotelStatisticDto> GetHotelStatistics(string hotelId);
         Task<int> GetNoOfRoomTypes(string hotelId);
         int GetTotalReviews(string hotelId);
-        int GetTotalAmenities(string hotelId);
+        Task<int> GetTotalAmenities(string hotelId);
         int GetTotalBookings(string hotelId);
         double GetAverageRatings(string hotelId);
         decimal GetTotalEarnings(string hotelId);
