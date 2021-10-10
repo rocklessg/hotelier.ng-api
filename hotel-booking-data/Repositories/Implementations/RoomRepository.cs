@@ -32,6 +32,7 @@ namespace hotel_booking_data.Repositories.Implementations
         public async Task<List<RoomType>> GetRoomTypeByHotel(string hotelId)
         {
             var rooms = await _context.RoomTypes
+                .Include(room => room.Rooms)
                 .Where(room => room.Hotel.Id == hotelId).ToListAsync();
 
             return rooms;

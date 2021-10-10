@@ -85,9 +85,9 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("{hotelId}/roomTypes")]
-        public async Task<IActionResult> GetHotelRoomTypeAsync([FromQuery] Paginator paginator, string id)
+        public async Task<IActionResult> GetHotelRoomTypeAsync([FromQuery] Paginator paginator, string hotelId)
         {
-            var rooms = await _hotelService.GetHotelRoomType(paginator, id);
+            var rooms = await _hotelService.GetHotelRoomType(paginator, hotelId);
             return Ok(rooms);
         }
 

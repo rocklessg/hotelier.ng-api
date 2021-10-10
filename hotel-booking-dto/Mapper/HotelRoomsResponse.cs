@@ -12,18 +12,19 @@ namespace hotel_booking_dto.Mapper
 {
     public class HotelRoomsResponse
     {
-        public static IEnumerable<RoomTypeByHotelDTo> GetResponse(List<Room> room) 
+        public static IEnumerable<RoomTypeByHotelDTo> GetResponse(List<RoomType> roomType) 
         {
             var newList = new List<RoomTypeByHotelDTo>();
 
-            for (int i = 0; i < room.Count(); i++)
+            for (int i = 0; i < roomType.Count(); i++)
             {
                 var listNew = new RoomTypeByHotelDTo
                 {
-                    Id = room[i].Id,
-                    IsBooked = room[i].IsBooked,
-                    RoomtypeName = room[i].Roomtype.Name,
-                    RoomTypeThumbnail = room[i].Roomtype.Thumbnail
+                    Id = roomType[i].Id,
+                    Name = roomType[i].Name,
+                    TotalBookRoom = roomType[i].Rooms.Where(x => x.IsBooked).Count(),
+                    TotalUnbookedRoom = roomType[i].Rooms.Where(x => !x.IsBooked).Count(),
+                    Thumbnail = roomType[i].Thumbnail
                 };
 
                 newList.Add(listNew);

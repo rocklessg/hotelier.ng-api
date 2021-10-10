@@ -150,7 +150,7 @@ namespace hotel_booking_core.Services
                 {
                     StatusCode = StatusCodes.Status200OK,
                     Succeeded = true,
-                    Message = "available rooms",
+                    Message = $"Total RoomType in hotel with id {hotelId}",
                     Data = item
                 };
 

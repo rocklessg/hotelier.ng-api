@@ -9,9 +9,10 @@ namespace hotel_booking_dto.HotelDtos
     public class RoomTypeByHotelDTo
     {
         public string Id { get; set; }
-        public bool IsBooked { get; set; }
-        public string RoomtypeName { get; set; }
-        public string RoomTypeThumbnail { get; set; }
+        public string Name { get; set; }
+        public int TotalBookRoom { get; set; }
+        public int TotalUnbookedRoom { get; set; }
+        public string Thumbnail { get; set; }
 
     }
 }
