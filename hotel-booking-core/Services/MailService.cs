@@ -47,8 +47,12 @@ namespace hotel_booking_core.Services
                 }
             }
 
+
+
             builder.HtmlBody = mailRequest.Body;
             email.Body = builder.ToMessageBody();
+
+
 
             try
             {
@@ -62,7 +66,7 @@ namespace hotel_booking_core.Services
             catch (Exception e)
             {
                 _logger.LogError(e, e.Source, e.InnerException, e.Message, e.ToString());
-                throw;
+                return false;
             }
 
         }
