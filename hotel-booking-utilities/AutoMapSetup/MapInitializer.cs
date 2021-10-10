@@ -6,6 +6,7 @@ using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_models;
+using System.Linq;
 
 namespace hotel_booking_utilities.AutoMapSetup
 {
@@ -34,8 +35,15 @@ namespace hotel_booking_utilities.AutoMapSetup
 
 
             // Hotel Maps
-            CreateMap<Hotel, HotelBasicDto>().ReverseMap();
-            CreateMap<RoomType, RoomInfoDTo>().ReverseMap();
+            CreateMap<Hotel, HotelBasicDto>()
+                .ForMember(x => x.Thumbnail, y => y.MapFrom(src => src.Galleries.FirstOrDefault(opt => opt.IsFeature).ImageUrl))
+                .ForMember(x => x.Rating, y => y.MapFrom(src => src.Ratings.Sum(r => r.Ratings) / (double)src.Ratings.Count))
+                .ForMember(x => x.NumberOfReviews, y => y.MapFrom(c => c.Ratings.Count));
+
+            CreateMap<RoomType, RoomInfoDTo>()
+                .ForMember(x => x.HotelName, y => y.MapFrom(c => c.Hotel.Name))
+                .ForMember(x => x.DiscountPrice, y => y.MapFrom(c => c.Discount));
+
             CreateMap<GalleryDto, Gallery>().ReverseMap();
             CreateMap<Hotel, UpdateHotelDto>().ReverseMap();
 

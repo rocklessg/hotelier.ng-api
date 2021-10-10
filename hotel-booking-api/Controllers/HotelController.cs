@@ -59,27 +59,25 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("top-hotels")]
-        public async Task<IActionResult> HotelsByRatingsAsync([FromQuery] Paging paging)
+        public async Task<IActionResult> HotelsByRatingsAsync()
         {
-            var result = await _hotelService.GetHotelsByRatingsAsync(paging);
-            var response = new Response<List<HotelBasicDto>>(StatusCodes.Status200OK, true, "List of Hotels by ratings", result);
+            var response = await _hotelService.GetHotelsByRatingsAsync();
             return StatusCode(response.StatusCode, response);
         }
 
         [HttpGet]
         [Route("top-deals")]
-        public async Task<IActionResult> TopDealsAsync([FromQuery] Paging paging)
+        public async Task<IActionResult> TopDealsAsync()
         {
-            var result = await _hotelService.GetTopDealsAsync(paging);
-            var response = new Response<List<RoomInfoDTo>>(StatusCodes.Status200OK, true, "List of Top Deals", result);
+            var response = await _hotelService.GetTopDealsAsync();
             return StatusCode(response.StatusCode, response);
         }
 
         [HttpGet]
+        [Route("room-by-price")]
         public async Task<IActionResult> GetHotelRoomsByPriceAsync([FromQuery]PriceDto pricing)
         {
-            var result = await _hotelService.GetRoomByPriceAsync(pricing);
-            var response = new Response<List<RoomInfoDTo>>(StatusCodes.Status200OK, true, "List of Rooms By Price", result);
+            var response = await _hotelService.GetRoomByPriceAsync(pricing);
             return StatusCode(response.StatusCode, response);
         }
 
