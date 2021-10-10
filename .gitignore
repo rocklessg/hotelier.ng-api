@@ -44,7 +44,7 @@ dlldata.c
 project.lock.json
 project.fragment.lock.json
 artifacts/
-**/Properties/launchSettings.json
+# **/Properties/launchSettings.json
 
 *_i.c
 *_p.c
@@ -163,7 +163,6 @@ ClientBin/
 *.dbmdl
 *.dbproj.schemaview
 *.jfm
-*.pfx
 *.publishsettings
 orleans.codegen.cs
 
@@ -194,5 +193,6 @@ UpgradeLog*.htm
 
 hotel-booking-api/appsettings.json
 hotel-booking-api/appsettings.[Dd]evelopment.json
+hotel-booking-api/Logs
 
 # End of https://www.gitignore.io/api/visualstudio

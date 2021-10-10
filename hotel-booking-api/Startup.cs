@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using hotel_booking_api.Extensions;
 using hotel_booking_api.Middleware;
 using hotel_booking_data.Contexts;
@@ -5,13 +6,15 @@ using hotel_booking_data.Seeder;
 using hotel_booking_models;
 using hotel_booking_models.Cloudinary;
 using hotel_booking_models.Mail;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models; 
+using Microsoft.OpenApi.Models;
+using System;
 
 namespace hotel_booking_api
 {
@@ -34,7 +37,7 @@ namespace hotel_booking_api
             services.AddDbContextAndConfigurations(Environment, Configuration);
 
             // Configure Mailing Service
-            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));            
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
             // Add Jwt Authentication and Authorization
             services.ConfigureAuthentication();
@@ -45,15 +48,26 @@ namespace hotel_booking_api
             // Configure Identity
             services.ConfigureIdentity();
 
+            // Configure AutoMapper
+            services.ConfigureAutoMappers();
+
             // Configure Cloudinary
             services.Configure<ImageUploadSettings>(Configuration.GetSection("CloudSettings"));
             services.AddCloudinary(CloudinaryServiceExtension.GetAccount(Configuration));
 
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "hotel_booking_api", Version = "v1" });
-            });                       
+            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling 
+            = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllers()
+                .AddNewtonsoftJson(op => op.SerializerSettings
+                    .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddMvc().AddFluentValidation(fv => {
+                fv.DisableDataAnnotationsValidation = true;
+                fv.RegisterValidatorsFromAssemblyContaining<Startup>();
+                fv.ImplicitlyValidateChildProperties = true;
+            });
+
+            services.AddSwagger();
 
             services.AddCors(c =>
             {
@@ -61,8 +75,7 @@ namespace hotel_booking_api
             });
 
             // Register Dependency Injection Service Extension
-            services.AddDependencyInjection();
-
+            services.AddDependencyInjection(); 
 
         }
 
@@ -73,11 +86,12 @@ namespace hotel_booking_api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "hotel_booking_api v1"));
             }
 
-            HbaSeeder.SeedData(dbContext, userManager, roleManager).Wait();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hotel Management Api v1"));
+
+            HbaSeeder.SeedData(dbContext, userManager, roleManager).GetAwaiter().GetResult();
 
             app.UseHttpsRedirection();
 

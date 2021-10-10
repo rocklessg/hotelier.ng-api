@@ -35,17 +35,17 @@ namespace hotel_booking_api.Middleware
                 switch (error)
                 {
                     case UnauthorizedAccessException e:
-                        _logger.LogError(e.StackTrace, e.Source, e.ToString());
+                        _logger.LogError(e, e.StackTrace, e.Source, e.ToString());
                         response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         responseModel.Message = e.Message;
                         break;
                     case ArgumentOutOfRangeException e:
-                        _logger.LogError(e.StackTrace, e.Source, e.ToString());
+                        _logger.LogError(e, e.StackTrace, e.Source, e.ToString());
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         responseModel.Message = e.Message;
                         break;
                     case ArgumentNullException e:
-                        _logger.LogError(e.StackTrace, e.Source, e.ToString());
+                        _logger.LogError(e, e.StackTrace, e.Source, e.ToString());
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         responseModel.Message = e.Message;
                         break;
@@ -61,5 +61,5 @@ namespace hotel_booking_api.Middleware
         }
     }
 
-   
+
 }
