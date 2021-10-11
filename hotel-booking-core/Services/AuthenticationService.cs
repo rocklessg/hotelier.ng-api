@@ -97,7 +97,7 @@ namespace hotel_booking_core.Services
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var actualToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            var mailBody = await GetEmailBody(user, emailTempPath: "Html/ForgotPassword.html", linkName: "reset-password", actualToken);
+            var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "reset-password", actualToken);
 
             var mailRequest = new MailRequest()
             {
@@ -171,7 +171,7 @@ namespace hotel_booking_core.Services
                 {
                     await _userManager.AddToRoleAsync(user, UserRoles.Customer);
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var mailBody = await GetEmailBody(user, emailTempPath: "Html/ConfirmEmail.html", linkName: "confirm-email", token);
+                    var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ConfirmEmail.html", linkName: "confirm-email", token);
                     var mailRequest = new MailRequest()
                     {
                         Subject = "Confirm Your Registration",
@@ -347,7 +347,7 @@ namespace hotel_booking_core.Services
 
 
             var link = $"http://www.example.com/{linkName}/{token}/{user.Email}";
-            var temp = await File.ReadAllTextAsync(Path.Combine(FilePath, emailTempPath));
+            var temp = await File.ReadAllTextAsync(emailTempPath);
             var newTemp =  temp.Replace("**link**", link);
             var emailBody = newTemp.Replace("**User**", userName);
             return emailBody;
