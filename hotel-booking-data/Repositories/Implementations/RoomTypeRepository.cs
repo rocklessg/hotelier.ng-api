@@ -26,7 +26,7 @@ namespace hotel_booking_data.Repositories.Implementations
         public IQueryable<RoomType> GetRoomByPrice(decimal minPrice, decimal maxPrice)
         {
             var query = _dbSet.AsNoTracking();
-            query = query.Include("Hotel");
+            query = query.Include(rt => rt.Hotel);
             query = query.Where(rt => (!(maxPrice > minPrice) ? rt.Price >= minPrice
                                         : (rt.Price >= minPrice) && (rt.Price <= maxPrice)));
             query = query.OrderBy(rt => rt.Price);

@@ -33,20 +33,16 @@ namespace hotel_booking_utilities.AutoMapSetup
 
 
             // Hotel Maps
-<<<<<<< HEAD
             CreateMap<Hotel, HotelBasicDto>()
                 .ForMember(x => x.Thumbnail, y => y.MapFrom(src => src.Galleries.FirstOrDefault(opt => opt.IsFeature).ImageUrl))
                 .ForMember(x => x.Rating, y => y.MapFrom(src => src.Ratings.Sum(r => r.Ratings) / (double)src.Ratings.Count))
                 .ForMember(x => x.NumberOfReviews, y => y.MapFrom(c => c.Ratings.Count));
 
-            CreateMap<RoomType, RoomInfoDTo>()
+            CreateMap<RoomType, RoomInfoDto>()
                 .ForMember(x => x.HotelName, y => y.MapFrom(c => c.Hotel.Name))
                 .ForMember(x => x.DiscountPrice, y => y.MapFrom(c => c.Discount));
 
             CreateMap<GalleryDto, Gallery>().ReverseMap();
-=======
-            CreateMap<Hotel, HotelBasicDto>().ReverseMap();  
->>>>>>> 43e12049bd335d0a966befe0ee5dbeb4d593efaa
             CreateMap<Hotel, UpdateHotelDto>().ReverseMap();
             CreateMap<Hotel, AddHotelDto>().ReverseMap();
             CreateMap<Hotel, AddHotelResponseDto>().ReverseMap();
@@ -60,14 +56,10 @@ namespace hotel_booking_utilities.AutoMapSetup
             // RoomType Maps
             CreateMap<RoomType, RoomInfoDto>().ReverseMap();
 
-
             // Gallery Maps
             CreateMap<Gallery, GalleryDto>().ReverseMap();
-
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
-
-
         }
 
     }
