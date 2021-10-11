@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace hotel_booking_api
 {
@@ -33,6 +34,8 @@ namespace hotel_booking_api
 
             // Configure Mailing Service
             services.ConfigureMailService(Configuration);
+
+            services.AddSingleton(Log.Logger);
 
             // Adds our Authorization Policies to the Dependecy Injection Container
             services.AddPolicyAuthorization();

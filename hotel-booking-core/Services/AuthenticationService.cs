@@ -17,6 +17,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using ILogger = Serilog.ILogger;
 
 namespace hotel_booking_core.Services
 {
@@ -27,10 +28,11 @@ namespace hotel_booking_core.Services
         private readonly ITokenGeneratorService _tokenGenerator;
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
         private const string FilePath = "../hotel-booking-api/StaticFiles/";
 
 
-        public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork,
+        public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ILogger logger,
             IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
         {
             _userManager = userManager;
@@ -38,6 +40,7 @@ namespace hotel_booking_core.Services
             _tokenGenerator = tokenGenerator;
             _mailService = mailService;
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         /// <summary>
@@ -158,26 +161,35 @@ namespace hotel_booking_core.Services
         /// <returns></returns>
         public async Task<Response<string>> Register(RegisterUserDto model)
         {
+            _logger.Information("Registration Starting");
             var user = _mapper.Map<AppUser>(model);
             user.IsActive = true;
             var response = new Response<string>();
+            _logger.Information("Applying transaction");
             using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    _logger.Information($"{user.FirstName} created successfully");
                     await _userManager.AddToRoleAsync(user, UserRoles.Customer);
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    _logger.Information("token generated");
+                    _logger.Information("Attempting to generate mail body");
                     var mailBody = await GetEmailBody(user, emailTempPath: "Html/ConfirmEmail.html", linkName: "confirm-email", token);
+                    _logger.Information("Mail body generated successfully");
                     var mailRequest = new MailRequest()
                     {
                         Subject = "Confirm Your Registration",
                         Body = mailBody,
                         ToEmail = model.Email
                     };
-                    var emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
+
+                    _logger.Information("attempting mail service");
+                    bool emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
                     if (emailResult)
                     {
+                        _logger.Information("Mail sent successfully");
                         var customer = new Customer
                         {
                             AppUser = user
@@ -191,6 +203,7 @@ namespace hotel_booking_core.Services
                         transaction.Complete();
                         return response;
                     }
+                    _logger.Information("Mail service failed");
                     transaction.Dispose();
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     response.Succeeded = false;
@@ -202,8 +215,6 @@ namespace hotel_booking_core.Services
                 response.Succeeded = false;
                 transaction.Complete();
                 return response;
-
-
             };
 
         }

@@ -7,15 +7,16 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+using ILogger = Serilog.ILogger;
+
 
 namespace hotel_booking_core.Services
 {
     public class MailService : IMailService
     {
         private readonly MailSettings _mailSettings;
-        private readonly ILogger<MailService> _logger;
-        public MailService(MailSettings mailSettings, ILogger<MailService> logger)
+        private readonly ILogger _logger;
+        public MailService(MailSettings mailSettings, ILogger logger)
 
         {
             _logger = logger;
@@ -57,7 +58,7 @@ namespace hotel_booking_core.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(e, e.Source, e.InnerException, e.Message, e.ToString());
+                _logger.Error(e, e.Source, e.InnerException, e.Message, e.ToString());
                 return false;
             }
 
