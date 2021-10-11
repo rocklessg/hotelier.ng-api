@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interface;
 using hotel_booking_core.Interfaces;
+using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_models;
@@ -9,12 +10,14 @@ using hotel_booking_utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using ILogger = Serilog.ILogger;
 
 namespace hotel_booking_core.Services
 {
@@ -24,16 +27,20 @@ namespace hotel_booking_core.Services
         private readonly IMapper _mapper;
         private readonly ITokenGeneratorService _tokenGenerator;
         private readonly IMailService _mailService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
         private const string FilePath = "../hotel-booking-api/StaticFiles/";
 
 
-        public AuthenticationService(UserManager<AppUser> userManager,
+        public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ILogger logger,
             IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
         {
             _userManager = userManager;
             _mapper = mapper;
             _tokenGenerator = tokenGenerator;
             _mailService = mailService;
+            _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         /// <summary>
@@ -80,9 +87,9 @@ namespace hotel_booking_core.Services
             if (user == null)
             {
                 response.Message = $"An email has been sent to {email} if it exists";
-                response.Succeeded = false;
+                response.Succeeded = true;
                 response.Data = null;
-                response.StatusCode = (int)HttpStatusCode.NotFound;
+                response.StatusCode = (int)HttpStatusCode.OK;
                 return response;
             }
 
@@ -105,6 +112,7 @@ namespace hotel_booking_core.Services
                 response.Succeeded = true;
                 response.Message = $"An email has been sent to {email} if it exists";
                 response.StatusCode = (int)HttpStatusCode.OK;
+                response.Data = email;
                 return response;
             }
 
@@ -153,60 +161,62 @@ namespace hotel_booking_core.Services
         /// <returns></returns>
         public async Task<Response<string>> Register(RegisterUserDto model)
         {
+            _logger.Information("Registration Starting");
             var user = _mapper.Map<AppUser>(model);
+            user.IsActive = true;
             var response = new Response<string>();
-
+            _logger.Information("Applying transaction");
             using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                try
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
                 {
-                    var result = await _userManager.CreateAsync(user, model.Password);                    
-
-                    if (result.Succeeded)
+                    _logger.Information($"{user.FirstName} created successfully");
+                    await _userManager.AddToRoleAsync(user, UserRoles.Customer);
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    _logger.Information("token generated");
+                    _logger.Information("Attempting to generate mail body");
+                    var mailBody = await GetEmailBody(user, emailTempPath: "Html/ConfirmEmail.html", linkName: "confirm-email", token);
+                    _logger.Information("Mail body generated successfully");
+                    var mailRequest = new MailRequest()
                     {
-                        await _userManager.AddToRoleAsync(user, UserRoles.Customer);
+                        Subject = "Confirm Your Registration",
+                        Body = mailBody,
+                        ToEmail = model.Email
+                    };
 
-                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                        var mailBody = await GetEmailBody(user, emailTempPath: "Html/ConfirmEmail.html", linkName:"confirm-email", token);
-                        
-
-                        var mailRequest = new MailRequest()
+                    _logger.Information("attempting mail service");
+                    bool emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
+                    if (emailResult)
+                    {
+                        _logger.Information("Mail sent successfully");
+                        var customer = new Customer
                         {
-                            Subject = "Confirm Your Registration",
-                            Body = mailBody,
-                            ToEmail = model.Email
+                            AppUser = user
                         };
-
-                        var emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
-
-                        if (emailResult)
-                        {
-                            user.IsActive = true;
-                            response.StatusCode = (int)HttpStatusCode.Created;
-                            response.Succeeded = true;
-                            response.Data = user.Id;
-                            response.Message = "User created successfully! Please check your mail to verify your account.";
-                            transaction.Complete();
-                            return response;
-                        }
+                        await _unitOfWork.Customers.InsertAsync(customer);
+                        await _unitOfWork.Save();
+                        response.StatusCode = (int)HttpStatusCode.Created;
+                        response.Succeeded = true;
+                        response.Data = user.Id;
+                        response.Message = "User created successfully! Please check your mail to verify your account.";
+                        transaction.Complete();
+                        return response;
                     }
-                    response.Message = GetErrors(result);
-                    response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    response.Succeeded = false;
-                    transaction.Complete();
-                    return response;
-                }
-                catch (Exception)
-                {
+                    _logger.Information("Mail service failed");
                     transaction.Dispose();
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     response.Succeeded = false;
                     response.Message = "Registration failed. Please try again";
                     return response;
                 }
+                response.Message = GetErrors(result);
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Succeeded = false;
+                transaction.Complete();
+                return response;
             };
-            
+
         }
 
         /// <summary>
@@ -339,10 +349,14 @@ namespace hotel_booking_core.Services
         /// <returns></returns>
         private static async Task<string> GetEmailBody(AppUser user, string emailTempPath, string linkName, string token)
         {
+            TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
+            var userName = textInfo.ToTitleCase(user.FirstName);
+
+
             var link = $"http://www.example.com/{linkName}/{token}/{user.Email}";
             var temp = await File.ReadAllTextAsync(Path.Combine(FilePath, emailTempPath));
             var newTemp =  temp.Replace("**link**", link);
-            var emailBody = newTemp.Replace("**User**", user.FirstName);
+            var emailBody = newTemp.Replace("**User**", userName);
             return emailBody;
         }
     }
