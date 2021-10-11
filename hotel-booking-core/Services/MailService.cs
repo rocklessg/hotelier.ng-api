@@ -2,7 +2,6 @@
 using hotel_booking_models.Mail;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 using System.IO;
