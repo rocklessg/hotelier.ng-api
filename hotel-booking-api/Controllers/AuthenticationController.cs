@@ -87,7 +87,6 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Response<string>>> UpdatePassword([FromBody] UpdatePasswordDto model)
         {
-
             var result = await _authService.UpdatePassword(model);
             return StatusCode(result.StatusCode, result);
         }

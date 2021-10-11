@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
 
@@ -13,11 +12,11 @@ namespace hotel_booking_api.Extensions
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "hotel_booking_api", Version = "v1" });
-                //To Enable authorization using Swagger (JWT) 
+                // To Enable authorization using Swagger (JWT) 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
-                    Name = "JWT Authentication",
-                    Type = SecuritySchemeType.Http,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
@@ -31,7 +30,7 @@ namespace hotel_booking_api.Extensions
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = JwtBearerDefaults.AuthenticationScheme
+                                Id = "Bearer"
                             }
                         },
                         Array.Empty<string>()

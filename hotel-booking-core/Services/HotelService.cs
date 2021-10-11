@@ -6,7 +6,7 @@ using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.Mapper;
-using hotel_booking_dto.RoomsDtos;
+using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
@@ -43,7 +43,7 @@ namespace hotel_booking_core.Services
             return HotelBasicDtoMapper.MapToHotelBAsicDtoList(hotelList, _mapper);
         }
 
-        public async Task<List<RoomInfoDTo>> GetRoomByPriceAsync(PriceDto priceDto)
+        public async Task<List<RoomInfoDto>> GetRoomByPriceAsync(PriceDto priceDto)
         {
             var roomList = await _unitOfWork.RoomType.GetAllAsync(
                 Includes: new List<string>() { "Hotel" },
@@ -56,7 +56,7 @@ namespace hotel_booking_core.Services
             return HotelBasicDtoMapper.MapToRoomInfoDtoList(roomList, _mapper);
         }
 
-        public async Task<List<RoomInfoDTo>> GetTopDealsAsync(Paging paging)
+        public async Task<List<RoomInfoDto>> GetTopDealsAsync(Paging paging)
         {
             var roomList = await _unitOfWork.RoomType.GetAllAsync(
                 Includes: new List<string>() { "Hotel" },

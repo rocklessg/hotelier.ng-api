@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using hotel_booking_dto.RoomDtos;
+using System.Collections.Generic;
 
 namespace hotel_booking_dto.HotelDtos
 {
