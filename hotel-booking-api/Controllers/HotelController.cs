@@ -2,6 +2,7 @@
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Authorization;
@@ -71,7 +72,7 @@ namespace hotel_booking_api.Controllers
         public async Task<IActionResult> TopDealsAsync([FromQuery] Paging paging)
         {
             var result = await _hotelService.GetTopDealsAsync(paging);
-            var response = new Response<List<RoomInfoDTo>>(StatusCodes.Status200OK, true, "List of Top Deals", result);
+            var response = new Response<List<RoomInfoDto>>(StatusCodes.Status200OK, true, "List of Top Deals", result);
             return StatusCode(response.StatusCode, response);
         }
 
@@ -79,7 +80,7 @@ namespace hotel_booking_api.Controllers
         public async Task<IActionResult> GetHotelRoomsByPriceAsync([FromQuery] PriceDto pricing)
         {
             var result = await _hotelService.GetRoomByPriceAsync(pricing);
-            var response = new Response<List<RoomInfoDTo>>(StatusCodes.Status200OK, true, "List of Rooms By Price", result);
+            var response = new Response<List<RoomInfoDto>>(StatusCodes.Status200OK, true, "List of Rooms By Price", result);
             return StatusCode(response.StatusCode, response);
         }
 
@@ -122,14 +123,16 @@ namespace hotel_booking_api.Controllers
 
 
         [HttpGet("{hotelId}/statistics")]
-        [Authorize(Roles = "Manager")]
+      //  [Authorize(Roles = "Manager")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetHotelStatistics(string hotelId)
         {
             _logger.LogInformation($"About Getting statistics for hotel with ID {hotelId}");
             var result = await _hotelStatisticsService.GetHotelStatistics(hotelId);
             _logger.LogInformation($"Gotten stats for hotel with ID {hotelId}");
-            return Ok(result);
-
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpPost]

@@ -6,7 +6,7 @@ using hotel_booking_data.Repositories.Abstractions;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
-    public class CustomerRepository : GenericRepository<AppUser>, ICustomerRepository
+    public class CustomerRepository : GenericRepository<Customer>, ICustomerRepository
     {
 
         private readonly HbaDbContext _context;
@@ -18,7 +18,11 @@ namespace hotel_booking_data.Repositories.Implementations
             _customers = _context.Set<Customer>();
         }
 
-
+        public Customer GetCustomer(string id)
+        {
+            Customer customer = _customers.Find(id);
+            return customer;
+        }
 
 
     }

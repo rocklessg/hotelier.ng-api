@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using hotel_booking_dto;
 using hotel_booking_dto.commons;
+using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,16 +31,16 @@ namespace hotel_booking_utilities
             return dtoList;
         }
 
-        public static RoomInfoDTo MapToRoomInfoDto(RoomType roomType, IMapper mapper)
+        public static RoomInfoDto MapToRoomInfoDto(RoomType roomType, IMapper mapper)
         {
-            var roomInfoDto = mapper.Map<RoomInfoDTo>(roomType);
+            var roomInfoDto = mapper.Map<RoomInfoDto>(roomType);
             roomInfoDto.HotelName = roomType.Hotel.Name;
             return roomInfoDto;
         }
-        public static List<RoomInfoDTo> MapToRoomInfoDtoList(List<RoomType> roomTypeList, IMapper mapper)
+        public static List<RoomInfoDto> MapToRoomInfoDtoList(List<RoomType> roomTypeList, IMapper mapper)
         {
             
-            var dtoList = new List<RoomInfoDTo>();
+            var dtoList = new List<RoomInfoDto>();
             if (roomTypeList.Count == 0)
             {
                 return dtoList;
