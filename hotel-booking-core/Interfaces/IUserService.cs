@@ -7,15 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using hotel_booking_dto.CustomerDtos;
-
+using Microsoft.AspNetCore.Mvc;
+using hotel_booking_models.Cloudinary;
 
 namespace hotel_booking_core.Interfaces
 
 {
-    public interface IAppUserService
+    public interface IUserService
     {
+
         Task<Response<string>> UpdateAppUser(string appUserId, UpdateAppUserDto updateAppUser);
-        Task<Response<UpdateUserImageDto>> UpdateCustomerPhoto(string customerId, string url);
+        Task<Response<UpdateUserImageDto>> UpdateUserPhoto(AddImageDto imageDto, string userId);
     }
 }
 
