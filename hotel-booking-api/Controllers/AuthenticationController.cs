@@ -14,13 +14,13 @@ namespace hotel_booking_api.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly ILogger<AuthController> _logger;
+        private readonly ILogger<AuthenticationController> _logger;
         private readonly IAuthenticationService _authService;
 
-        public AuthController(ILogger<AuthController> logger,
+        public AuthenticationController(ILogger<AuthenticationController> logger,
             IAuthenticationService authService, UserManager<AppUser> userManager)
         {
             _logger = logger;

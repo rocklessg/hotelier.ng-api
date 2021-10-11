@@ -19,11 +19,11 @@ namespace hotel_booking_core.Services
 
 
         private readonly ILogger<MailService> _logger;
-        public MailService(IOptions<MailSettings> mailSettings, ILogger<MailService> logger)
+        public MailService(MailSettings mailSettings, ILogger<MailService> logger)
 
         {
             _logger = logger;
-            _mailSettings = mailSettings.Value;
+            _mailSettings = mailSettings;
         }
 
 
@@ -62,7 +62,7 @@ namespace hotel_booking_core.Services
             catch (Exception e)
             {
                 _logger.LogError(e, e.Source, e.InnerException, e.Message, e.ToString());
-                throw;
+                return false;
             }
 
         }
