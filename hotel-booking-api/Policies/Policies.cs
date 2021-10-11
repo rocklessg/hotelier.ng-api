@@ -11,7 +11,7 @@ namespace hotel_booking_api
         /// <summary>
         /// Policy for HotelManager role
         /// </summary>
-        public const string HotelManager = "HotelManager";
+        public const string Manager = "Manager";
         /// <summary>
         /// Policy for a Regular User role
         /// </summary>
@@ -19,11 +19,11 @@ namespace hotel_booking_api
         /// <summary>
         /// Policy for an Admin and a Hotel Manager
         /// </summary>
-        public const string AdminAndHotelManager = "AdminAndHotelManager";
+        public const string AdminAndManager = "AdminAndHotelManager";
         /// <summary>
         /// policy for a Hotel Manager and a Regular User
         /// </summary>
-        public const string HotelManagerAndCustomer = "HotelManagerAndCustomer";
+        public const string ManagerAndCustomer = "HotelManagerAndCustomer";
 
         /// <summary>
         /// Grants Admin User Rights
@@ -40,7 +40,7 @@ namespace hotel_booking_api
         /// <returns></returns>
         public static AuthorizationPolicy HotelManagerPolicy()
         {
-            return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(HotelManager).Build();
+            return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(Manager).Build();
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace hotel_booking_api
         /// <returns></returns>
         public static AuthorizationPolicy AdminAndHotelManagerPolicy()
         {
-            return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(Admin, HotelManager).Build();
+            return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(Admin, Manager).Build();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace hotel_booking_api
         /// <returns></returns>
         public static AuthorizationPolicy HotelManagerAndCustomerPolicy()
         {
-            return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(HotelManager, Customer).Build();
+            return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().RequireRole(Manager, Customer).Build();
         }
     }
 }
