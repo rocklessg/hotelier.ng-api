@@ -65,7 +65,8 @@ namespace hotel_booking_core.Services
             foreach (var item in roomType)
             {
                 var roomTypeId = item.Id;
-                var rooms = _db.Rooms.Where(x => x.RoomTypeId == roomTypeId).ToList().Count;
+                var roomList = await _db.Rooms.Where(x => x.RoomTypeId == roomTypeId).ToListAsync();
+                var rooms = roomList.Count;
 
                 totalRooms += rooms;
 
@@ -83,17 +84,18 @@ namespace hotel_booking_core.Services
             foreach (var item in roomType)
             {
                 var roomTypeId = item.Id;
-                var occupiedRooms = _db.Rooms.Where(x => x.RoomTypeId == roomTypeId).
-                                 Where(z => z.IsBooked == true).ToList().Count;
+                var occupiedRoomsList = await _db.Rooms.Where(x => x.RoomTypeId == roomTypeId).
+                                 Where(z => z.IsBooked == true).ToListAsync();
+                var occupiedRooms = occupiedRoomsList.Count;
 
                 totalOccupiedRooms += occupiedRooms;
             }
             return totalOccupiedRooms;
         }
 
-        public decimal GetTotalEarnings(string hotelId)
+        public async Task<decimal> GetTotalEarnings(string hotelId)
         {
-            var hotelBookings = _db.Bookings.Where(x => x.HotelId == hotelId).ToList();
+            var hotelBookings = await _db.Bookings.Where(x => x.HotelId == hotelId).ToListAsync();
 
             decimal totalPayments = 0;
 
@@ -110,6 +112,32 @@ namespace hotel_booking_core.Services
             return totalPayments;
         }
 
+        public async Task<decimal> GetMonthlyEarnings(string hotelId) 
+        {
+            string sMonth = "06";
+            var hotelBookings = await _db.Bookings.Where(x => x.HotelId == hotelId).ToListAsync();
+
+            decimal totalMonthlyPayments = 0;
+
+            foreach (var item in hotelBookings)
+            {
+                var bookingId = item.Id;
+                var payment = await _db.Payments.Where(x => x.BookingId == bookingId).ToListAsync();
+
+                foreach(var x in payment) 
+                {
+                    var paymentTime = x.CreatedAt.ToString();
+                    var paymentMonth = paymentTime.Substring(3, 2);
+                    if(sMonth == paymentMonth) 
+                    {
+                        totalMonthlyPayments += x.Amount;
+                    }
+                }
+            }
+
+            return totalMonthlyPayments;
+        }
+
         public async Task<int> GetTotalNoOfVacantRooms(string hotelId)
         {
             var roomType = await _unitOfWork.RoomType.GetRoomTypesInEachHotel(hotelId);
@@ -117,9 +145,10 @@ namespace hotel_booking_core.Services
             foreach (var item in roomType)
             {
                 var roomTypeId = item.Id;
-                var unoccupiedRooms = _db.Rooms.Where(x => x.RoomTypeId == roomTypeId).
-                                 Where(z => z.IsBooked != true).ToList().Count;
+                var unoccupiedRoomsList = await _db.Rooms.Where(x => x.RoomTypeId == roomTypeId).
+                                 Where(z => z.IsBooked != true).ToListAsync();
 
+                var unoccupiedRooms = unoccupiedRoomsList.Count;
                 totalOccupiedRooms += unoccupiedRooms;
             }
 
@@ -133,10 +162,10 @@ namespace hotel_booking_core.Services
             return roomType.Count;
         }
 
-        public int GetTotalReviews(string hotelId)
+        public async Task<int> GetTotalReviews(string hotelId)
         {
-            var reviews = _db.Reviews.Where(x => x.HotelId == hotelId).ToList().Count;
-            return reviews;
+            var reviews = await _db.Reviews.Where(x => x.HotelId == hotelId).ToListAsync();
+            return reviews.Count;
         }
 
         public async Task<int> GetTotalAmenities(string hotelId)
@@ -145,15 +174,15 @@ namespace hotel_booking_core.Services
             return amenities.Count;
         }
 
-        public int GetTotalBookings(string hotelId)
+        public async Task<int> GetTotalBookings(string hotelId)
         {
-            var totalBookings = _db.Bookings.Where(x => x.HotelId == hotelId).ToList().Count;
-            return totalBookings;
+            var totalBookings = await _db.Bookings.Where(x => x.HotelId == hotelId).ToListAsync();
+            return totalBookings.Count;
         }
 
-        public double GetAverageRatings(string hotelId)
+        public async Task<double> GetAverageRatings(string hotelId)
         {
-            var ratings = _db.Ratings.Where(x => x.HotelId == hotelId).ToList();
+            var ratings = await _db.Ratings.Where(x => x.HotelId == hotelId).ToListAsync();
             double totalRatings = 0;
             foreach (var item in ratings)
             {
@@ -209,9 +238,9 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public int GetNoOfCustomers(string hotelId)
+        public async Task<int> GetNoOfCustomers(string hotelId)
         {
-            var noOfCustomers = _db.Bookings.Where(x => x.HotelId == hotelId).ToList();
+            var noOfCustomers = await _db.Bookings.Where(x => x.HotelId == hotelId).ToListAsync();
             return noOfCustomers.Count;
         }
 
@@ -223,9 +252,9 @@ namespace hotel_booking_core.Services
             var averageRating = 0.0;
             var numberOfHotels = 0;
             var totalNoOfCustomers = 0;
-            var occupiedRooms = 0;
-            var unoccupiedRooms = 0;
-            decimal transactions = 0;
+            var availableRooms = 0;
+            var bookedRooms = 0;
+            decimal monthlyTransactions = 0;
             var totalRooms = 0;
 
             if (managerStats != null)
@@ -239,22 +268,23 @@ namespace hotel_booking_core.Services
                     averageRating += GetAverageRatings(hotelId);
                     totalNoOfCustomers += GetNoOfCustomers(hotelId);
                     totalRooms += await GetTotalRoomsInEachHotel(hotelId);
-                    occupiedRooms += await GetTotalNoOfOccupiedRooms(hotelId);
-                    unoccupiedRooms += await GetTotalNoOfVacantRooms(hotelId);
-                    transactions += GetTotalEarnings(hotelId);
+                    availableRooms += await GetTotalNoOfOccupiedRooms(hotelId);
+                    bookedRooms += await GetTotalNoOfVacantRooms(hotelId);
+                    monthlyTransactions += GetMonthlyEarnings(hotelId);
 
                 }
 
                 var hotelManagerStats = new HotelManagerStatisticsDto
                 {
-                    NumberOfHotels = numberOfHotels,
+                    TotalHotels = numberOfHotels,
                     AverageHotelRatings = averageRating,
                     TotalNumberOfCustomers = totalNoOfCustomers,
-                    TotalManagerRooms = totalRooms,
-                    TotalManagerOccupiedRooms = occupiedRooms,
-                    TotalManagerUnoccupiedRooms = unoccupiedRooms,
-                    TotalManagerTransactionAmount = transactions
-                };
+                    TotalRooms = totalRooms,
+                    BookedRooms = bookedRooms,
+                    AvailableRooms = availableRooms,
+                    TotalMonthlyTransactions = monthlyTransactions
+
+    };
                 response.StatusCode = (int)HttpStatusCode.OK;
                 response.Succeeded = true;
                 response.Data = hotelManagerStats;
