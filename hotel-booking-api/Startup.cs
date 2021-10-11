@@ -54,8 +54,6 @@ namespace hotel_booking_api
             services.ConfigureAutoMappers();
 
             // Configure Cloudinary
-            //services.AddMailService(Configuration);
-            //services.Configure<ImageUploadSettings>(Configuration.GetSection("ImageUploadSettings"));
             services.AddCloudinary(CloudinaryServiceExtension.GetAccount(Configuration));
 
             services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling 
