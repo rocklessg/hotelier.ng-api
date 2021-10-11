@@ -1,6 +1,8 @@
 using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
+using hotel_booking_models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,31 +14,33 @@ namespace hotel_booking_api.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AuthenticationController : ControllerBase
     {
         private readonly ILogger<AuthenticationController> _logger;
         private readonly IAuthenticationService _authService;
 
-        public AuthenticationController(ILogger<AuthenticationController> logger,
-            IAuthenticationService authService)
+        public AuthenticationController(ILogger<AuthenticationController> logger, IAuthenticationService authService)
         {
             _logger = logger;
             _authService = authService;
 
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Response<LoginResponseDto>>> Register([FromBody] RegisterUserDto model)
-        {
+         {
             _logger.LogInformation($"Registration Attempt for {model.Email}");
             var result = await _authService.Register(model);
             return StatusCode(result.StatusCode, result);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -49,6 +53,8 @@ namespace hotel_booking_api.Controllers
             var result = await _authService.Login(model);
             return StatusCode(result.StatusCode, result);
         }
+
+
 
         [HttpPost]
         [Route("confirm-email")]
@@ -75,7 +81,7 @@ namespace hotel_booking_api.Controllers
         }
 
 
-
+        [Authorize]
         [HttpPatch]
         [Route("update-password")]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -10,6 +10,7 @@ using hotel_booking_utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -83,9 +84,9 @@ namespace hotel_booking_core.Services
             if (user == null)
             {
                 response.Message = $"An email has been sent to {email} if it exists";
-                response.Succeeded = false;
+                response.Succeeded = true;
                 response.Data = null;
-                response.StatusCode = (int)HttpStatusCode.NotFound;
+                response.StatusCode = (int)HttpStatusCode.OK;
                 return response;
             }
 
@@ -108,6 +109,7 @@ namespace hotel_booking_core.Services
                 response.Succeeded = true;
                 response.Message = $"An email has been sent to {email} if it exists";
                 response.StatusCode = (int)HttpStatusCode.OK;
+                response.Data = email;
                 return response;
             }
 
@@ -336,10 +338,14 @@ namespace hotel_booking_core.Services
         /// <returns></returns>
         private static async Task<string> GetEmailBody(AppUser user, string emailTempPath, string linkName, string token)
         {
+            TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
+            var userName = textInfo.ToTitleCase(user.FirstName);
+
+
             var link = $"http://www.example.com/{linkName}/{token}/{user.Email}";
             var temp = await File.ReadAllTextAsync(Path.Combine(FilePath, emailTempPath));
             var newTemp =  temp.Replace("**link**", link);
-            var emailBody = newTemp.Replace("**User**", user.FirstName);
+            var emailBody = newTemp.Replace("**User**", userName);
             return emailBody;
         }
     }
