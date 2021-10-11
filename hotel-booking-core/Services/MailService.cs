@@ -2,7 +2,6 @@
 using hotel_booking_models.Mail;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 using System.IO;
@@ -15,9 +14,6 @@ namespace hotel_booking_core.Services
     public class MailService : IMailService
     {
         private readonly MailSettings _mailSettings;
-
-
-
         private readonly ILogger<MailService> _logger;
         public MailService(MailSettings mailSettings, ILogger<MailService> logger)
 

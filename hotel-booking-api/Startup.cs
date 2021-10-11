@@ -4,17 +4,12 @@ using hotel_booking_api.Middleware;
 using hotel_booking_data.Contexts;
 using hotel_booking_data.Seeder;
 using hotel_booking_models;
-using hotel_booking_models.Cloudinary;
-using hotel_booking_models.Mail;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using System;
 
 namespace hotel_booking_api
 {
@@ -56,7 +51,7 @@ namespace hotel_booking_api
             // Configure Cloudinary
             services.AddCloudinary(CloudinaryServiceExtension.GetAccount(Configuration));
 
-            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling 
+            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling
             = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers()
                 .AddNewtonsoftJson(op => op.SerializerSettings
@@ -76,7 +71,7 @@ namespace hotel_booking_api
             });
 
             // Register Dependency Injection Service Extension
-            services.AddDependencyInjection(); 
+            services.AddDependencyInjection();
 
         }
 
