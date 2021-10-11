@@ -341,7 +341,7 @@ namespace hotel_booking_core.Services
         /// <returns></returns>
         private static async Task<string> GetEmailBody(AppUser user, string emailTempPath, string linkName, string token)
         {
-            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
             var userName = textInfo.ToTitleCase(user.FirstName);
 
 
