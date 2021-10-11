@@ -51,6 +51,7 @@ namespace hotel_booking_api.Middleware
                         break;
                     default:
                         // unhandled error
+                        _logger.LogError(error, error.Source, error.InnerException, error.Message, error.ToString());
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         responseModel.Message = "Internal Server Error. Please Try Again Later.";
                         break;

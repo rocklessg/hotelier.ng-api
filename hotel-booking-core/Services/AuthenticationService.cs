@@ -17,6 +17,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using ILogger = Serilog.ILogger;
 
 namespace hotel_booking_core.Services
 {
@@ -27,10 +28,11 @@ namespace hotel_booking_core.Services
         private readonly ITokenGeneratorService _tokenGenerator;
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
         private const string FilePath = "../hotel-booking-api/StaticFiles/";
 
 
-        public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork,
+        public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ILogger logger,
             IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
         {
             _userManager = userManager;
@@ -38,6 +40,7 @@ namespace hotel_booking_core.Services
             _tokenGenerator = tokenGenerator;
             _mailService = mailService;
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         /// <summary>
@@ -175,9 +178,12 @@ namespace hotel_booking_core.Services
                         Body = mailBody,
                         ToEmail = model.Email
                     };
-                    var emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
+
+                    _logger.Information("attempting mail service");
+                    bool emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
                     if (emailResult)
                     {
+                        _logger.Information("Mail sent successfully");
                         var customer = new Customer
                         {
                             AppUser = user
@@ -191,6 +197,7 @@ namespace hotel_booking_core.Services
                         transaction.Complete();
                         return response;
                     }
+                    _logger.Information("Mail service failed");
                     transaction.Dispose();
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     response.Succeeded = false;
@@ -202,8 +209,6 @@ namespace hotel_booking_core.Services
                 response.Succeeded = false;
                 transaction.Complete();
                 return response;
-
-
             };
 
         }
