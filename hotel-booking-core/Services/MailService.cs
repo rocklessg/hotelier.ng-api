@@ -15,9 +15,6 @@ namespace hotel_booking_core.Services
     public class MailService : IMailService
     {
         private readonly MailSettings _mailSettings;
-
-
-
         private readonly ILogger<MailService> _logger;
         public MailService(MailSettings mailSettings, ILogger<MailService> logger)
 
@@ -47,12 +44,8 @@ namespace hotel_booking_core.Services
                 }
             }
 
-
-
             builder.HtmlBody = mailRequest.Body;
             email.Body = builder.ToMessageBody();
-
-
 
             try
             {
