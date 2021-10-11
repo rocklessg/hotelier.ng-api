@@ -10,12 +10,14 @@ using hotel_booking_utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using ILogger = Serilog.ILogger;
 
 namespace hotel_booking_core.Services
 {
@@ -26,10 +28,11 @@ namespace hotel_booking_core.Services
         private readonly ITokenGeneratorService _tokenGenerator;
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
         private const string FilePath = "../hotel-booking-api/StaticFiles/";
 
 
-        public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork,
+        public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ILogger logger,
             IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
         {
             _userManager = userManager;
@@ -37,6 +40,7 @@ namespace hotel_booking_core.Services
             _tokenGenerator = tokenGenerator;
             _mailService = mailService;
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         /// <summary>
@@ -83,9 +87,9 @@ namespace hotel_booking_core.Services
             if (user == null)
             {
                 response.Message = $"An email has been sent to {email} if it exists";
-                response.Succeeded = false;
+                response.Succeeded = true;
                 response.Data = null;
-                response.StatusCode = (int)HttpStatusCode.NotFound;
+                response.StatusCode = (int)HttpStatusCode.OK;
                 return response;
             }
 
@@ -108,6 +112,7 @@ namespace hotel_booking_core.Services
                 response.Succeeded = true;
                 response.Message = $"An email has been sent to {email} if it exists";
                 response.StatusCode = (int)HttpStatusCode.OK;
+                response.Data = email;
                 return response;
             }
 
@@ -173,9 +178,12 @@ namespace hotel_booking_core.Services
                         Body = mailBody,
                         ToEmail = model.Email
                     };
-                    var emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
+
+                    _logger.Information("attempting mail service");
+                    bool emailResult = await _mailService.SendEmailAsync(mailRequest); //Sends confirmation link to users email
                     if (emailResult)
                     {
+                        _logger.Information("Mail sent successfully");
                         var customer = new Customer
                         {
                             AppUser = user
@@ -189,6 +197,7 @@ namespace hotel_booking_core.Services
                         transaction.Complete();
                         return response;
                     }
+                    _logger.Information("Mail service failed");
                     transaction.Dispose();
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     response.Succeeded = false;
@@ -200,8 +209,6 @@ namespace hotel_booking_core.Services
                 response.Succeeded = false;
                 transaction.Complete();
                 return response;
-
-
             };
 
         }
@@ -336,10 +343,14 @@ namespace hotel_booking_core.Services
         /// <returns></returns>
         private static async Task<string> GetEmailBody(AppUser user, string emailTempPath, string linkName, string token)
         {
+            TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
+            var userName = textInfo.ToTitleCase(user.FirstName);
+
+
             var link = $"http://www.example.com/{linkName}/{token}/{user.Email}";
             var temp = await File.ReadAllTextAsync(Path.Combine(FilePath, emailTempPath));
             var newTemp =  temp.Replace("**link**", link);
-            var emailBody = newTemp.Replace("**User**", user.FirstName);
+            var emailBody = newTemp.Replace("**User**", userName);
             return emailBody;
         }
     }
