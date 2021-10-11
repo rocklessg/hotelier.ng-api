@@ -51,29 +51,19 @@ namespace hotel_booking_api.Controllers
 
 
         }
-        [HttpPatch("update-image")]
 
+        
+        [HttpPatch("update-image")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> UpdateUserImage([FromForm] AddImageDto imageDto)
         {
-
-
-            var upload = await _imageService.UploadAsync(imageDto.Image);
-
-            string url = upload.Url.ToString();
-
-            //auth user id
-            
-            //string customerId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-
-
-            string customerId = "2ccd5586-51f2-444c-aa63-e13012748dfa";
-            var result = await _userService.UpdateCustomerPhoto(customerId, url);
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _userService.UpdateUserPhoto(imageDto, userId);
             return StatusCode(result.StatusCode, result);
-
         }
 
 

@@ -32,10 +32,7 @@ namespace hotel_booking_core.Services
             if (customer != null)
             {
 
-                //using manual mapping for now 
-                //customer.Address = updateCustomer.Address;
-                //customer.State = updateCustomer.State;
-                //customer.CreditCard = updateCustomer.CreditCard;
+               
                 var result = _mapper.Map(updateCustomer, customer);
 
 

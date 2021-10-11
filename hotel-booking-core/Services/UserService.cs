@@ -20,23 +20,16 @@ namespace hotel_booking_core.Services
 
         private readonly UserManager<AppUser> _UserManager;
         private readonly IMapper _mapper;
-<<<<<<< HEAD:hotel-booking-core/Services/UserService.cs
         private readonly ICustomerService _customerService;
+        private readonly IImageService _imageService;
 
-        public UserService(UserManager<AppUser> userManager, IMapper mapper, ICustomerService customerService)
+        public UserService(UserManager<AppUser> userManager, IMapper mapper, ICustomerService customerService, IImageService imageService)
         {
             _UserManager = userManager;
             _mapper = mapper;
             _customerService = customerService;
-=======
-        private readonly IImageService _imageService;
-
-        public AppUserService(UserManager<AppUser> userManager, IMapper mapper, IImageService imageService)
-        {
-            _UserManager = userManager;
-            _mapper = mapper;
             _imageService = imageService;
->>>>>>> 72ab5039726c89141fa97d84ceb1275b48a976f5:hotel-booking-core/Services/AppUserService.cs
+
         }
 
 
@@ -97,22 +90,13 @@ namespace hotel_booking_core.Services
                 return response;
             }
             
-
-<<<<<<< HEAD:hotel-booking-core/Services/UserService.cs
-            
+        
 
         }
 
-        public async Task<Response<UpdateUserImageDto>> UpdateCustomerPhoto(string customerId, string url)
-=======
-            response.Message = "Not Found";
-            response.StatusCode = (int)HttpStatusCode.BadRequest;
-            response.Succeeded = false;
-            return response;
-
-        }
+       
         public async Task<Response<UpdateUserImageDto>> UpdateUserPhoto([FromForm] AddImageDto imageDto, string userId)
->>>>>>> 72ab5039726c89141fa97d84ceb1275b48a976f5:hotel-booking-core/Services/AppUserService.cs
+
         {
 
             AppUser user = await _UserManager.FindByIdAsync(userId);
