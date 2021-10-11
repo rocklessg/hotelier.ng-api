@@ -1,12 +1,9 @@
 ﻿using System.Threading.Tasks;
 using hotel_booking_data.UnitOfWork.Abstraction;
-using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_core.Interfaces;
 using hotel_booking_dto.CustomerDtos;
-using hotel_booking_models;
 using hotel_booking_dto;
 using AutoMapper;
-using hotel_booking_dto.AppUserDto;
 using System.Net;
 
 namespace hotel_booking_core.Services
