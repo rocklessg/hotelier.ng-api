@@ -37,10 +37,7 @@ namespace hotel_booking_api
             services.AddDbContextAndConfigurations(Environment, Configuration);
 
             // Configure Mailing Service
-            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
-
-            // Add Jwt Authentication and Authorization
-            services.ConfigureAuthentication();
+            services.ConfigureMailService(Configuration);
 
             // Adds our Authorization Policies to the Dependecy Injection Container
             services.AddPolicyAuthorization();
@@ -48,11 +45,15 @@ namespace hotel_booking_api
             // Configure Identity
             services.ConfigureIdentity();
 
+            services.AddAuthentication();
+
+            // Add Jwt Authentication and Authorization
+            services.ConfigureAuthentication(Configuration);
+
             // Configure AutoMapper
             services.ConfigureAutoMappers();
 
             // Configure Cloudinary
-            services.Configure<ImageUploadSettings>(Configuration.GetSection("CloudSettings"));
             services.AddCloudinary(CloudinaryServiceExtension.GetAccount(Configuration));
 
             services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling 
