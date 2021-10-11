@@ -29,8 +29,6 @@ namespace hotel_booking_core.Services
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
-        private const string FilePath = "../hotel-booking-api/StaticFiles/";
-
 
         public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ILogger logger,
             IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
@@ -347,7 +345,7 @@ namespace hotel_booking_core.Services
 
 
             var link = $"http://www.example.com/{linkName}/{token}/{user.Email}";
-            var temp = await File.ReadAllTextAsync(emailTempPath);
+            var temp = await File.ReadAllTextAsync(Path.Combine(Directory.GetCurrentDirectory(), emailTempPath));
             var newTemp =  temp.Replace("**link**", link);
             var emailBody = newTemp.Replace("**User**", userName);
             return emailBody;
