@@ -16,16 +16,14 @@ namespace hotel_booking_api.Controllers
     [Route("api/[controller]")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<AuthenticationController> _logger;
         private readonly IAuthenticationService _authService;
 
         public AuthenticationController(ILogger<AuthenticationController> logger,
-            IAuthenticationService authService, UserManager<AppUser> userManager)
+            IAuthenticationService authService)
         {
             _logger = logger;
             _authService = authService;
-            _userManager = userManager;
 
         }
 
