@@ -19,11 +19,11 @@ namespace hotel_booking_core.Services
 
 
         private readonly ILogger<MailService> _logger;
-        public MailService(IOptions<MailSettings> mailSettings, ILogger<MailService> logger)
+        public MailService(MailSettings mailSettings, ILogger<MailService> logger)
 
         {
             _logger = logger;
-            _mailSettings = mailSettings.Value;
+            _mailSettings = mailSettings;
         }
 
 

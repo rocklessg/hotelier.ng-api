@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace hotel_booking_core.Services
 {
@@ -20,14 +22,16 @@ namespace hotel_booking_core.Services
         }
         public async Task<UploadResult> UploadAsync(IFormFile image)
         {
-            var pictureSize = Convert.ToInt64(_config.GetSection("PhotoSettings:Size").Get<string>());
+            var pictureSize = Convert.ToInt64(_config["PhotoSettings:Size"]);
             if (image.Length > pictureSize)
             {
                 throw new ArgumentException("File size exceeded");
             }
             var pictureFormat = false;
 
-            var listOfImageExtensions = _config.GetSection("PhotoSettings:Formats").Get<List<string>>();
+            
+
+            var listOfImageExtensions = new List<string>() { ".jpg", ".png", ".jpeg" };
 
             foreach (var item in listOfImageExtensions)
             {
