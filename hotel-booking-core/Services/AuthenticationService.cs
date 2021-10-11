@@ -154,6 +154,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<string>> Register(RegisterUserDto model)
         {
             var user = _mapper.Map<AppUser>(model);
+            user.IsActive = true;
             var response = new Response<string>();
 
             using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -182,7 +183,6 @@ namespace hotel_booking_core.Services
 
                         if (emailResult)
                         {
-                            user.IsActive = true;
                             response.StatusCode = (int)HttpStatusCode.Created;
                             response.Succeeded = true;
                             response.Data = user.Id;
@@ -197,7 +197,7 @@ namespace hotel_booking_core.Services
                     transaction.Complete();
                     return response;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     transaction.Dispose();
                     response.StatusCode = (int)HttpStatusCode.BadRequest;

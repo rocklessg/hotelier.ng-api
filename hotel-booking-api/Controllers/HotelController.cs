@@ -122,7 +122,7 @@ namespace hotel_booking_api.Controllers
 
 
         [HttpGet("{hotelId}/statistics")]
-        [Authorize(Roles = "Manager")]
+      //  [Authorize(Roles = "Manager")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -132,7 +132,6 @@ namespace hotel_booking_api.Controllers
             var result = await _hotelStatisticsService.GetHotelStatistics(hotelId);
             _logger.LogInformation($"Gotten stats for hotel with ID {hotelId}");
             return StatusCode(result.StatusCode, result);
-
         }
 
         [HttpPost]
