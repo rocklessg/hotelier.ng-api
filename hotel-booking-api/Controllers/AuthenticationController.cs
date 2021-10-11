@@ -1,10 +1,8 @@
 using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
-using hotel_booking_models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -14,18 +12,16 @@ namespace hotel_booking_api.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly ILogger<AuthController> _logger;
+        private readonly ILogger<AuthenticationController> _logger;
         private readonly IAuthenticationService _authService;
 
-        public AuthController(ILogger<AuthController> logger,
-            IAuthenticationService authService, UserManager<AppUser> userManager)
+        public AuthenticationController(ILogger<AuthenticationController> logger,
+            IAuthenticationService authService)
         {
             _logger = logger;
             _authService = authService;
-            _userManager = userManager;
 
         }
 
@@ -87,7 +83,6 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Response<string>>> UpdatePassword([FromBody] UpdatePasswordDto model)
         {
-
             var result = await _authService.UpdatePassword(model);
             return StatusCode(result.StatusCode, result);
         }
