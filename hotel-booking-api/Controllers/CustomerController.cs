@@ -25,7 +25,6 @@ namespace hotel_booking_api.Controllers
 
 
         [HttpPut("update" )]
-
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
