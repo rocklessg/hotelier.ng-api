@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,17 +30,27 @@ namespace hotel_booking_core.Services
             _mapper = mapper;
         }
 
-        public async Task<ManagersStatisticsDto> GetManagerStatistics(string managersId)
+        public async Task<Response<ManagersStatisticsDto>> GetManagerStatistics(string managersId)
         {
             var manager = await _unitOfWork.Managers.GetManagerStatistics(managersId);
+            var response = new Response<ManagersStatisticsDto>();
 
             if (manager != null)
             {
+                
                 var managerStat = _mapper.Map<ManagersStatisticsDto>(manager);
-                return managerStat;
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Data = managerStat;
+                response.Message = $"are the statistics for manager with {managerStat.AppUserId}";
+                return response;
             }
 
-            throw new ArgumentException("This manager doesn't exist");
+            response.Data = default;
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = true;
+            response.Message = $"Manager with Id = { managersId} doesn't exist";
+            return response;
         }
 
 
@@ -155,9 +166,10 @@ namespace hotel_booking_core.Services
 
 
 
-        public async Task<HotelStatisticDto> GetHotelStatistics(string hotelId)
+        public async Task<Response<HotelStatisticDto>> GetHotelStatistics(string hotelId)
         {
             var hotel = await _unitOfWork.Hotels.GetHotelsById(hotelId);
+            var response = new Response<HotelStatisticDto>();
             if (hotel != null)
             {
                 var totalRooms = await GetTotalRoomsInEachHotel(hotelId);
@@ -170,7 +182,7 @@ namespace hotel_booking_core.Services
                 var averageRatings = GetAverageRatings(hotelId);
                 var totalEarnings = GetTotalEarnings(hotelId);
 
-                HotelStatisticDto hotelstatistics = new HotelStatisticDto
+                var hotelstatistics = new HotelStatisticDto
                 {
                     Name = hotel.Name,
                     NumberOfRooms = totalRooms,
@@ -183,10 +195,18 @@ namespace hotel_booking_core.Services
                     RoomTypes = roomTypeCount,
                     NumberOfAmenities = noOfAmenities
                 };
-                return hotelstatistics;
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Data = hotelstatistics;
+                response.Message = $"are the statistics for hotel with {hotel.Id}";
+                return response;
             }
 
-            throw new ArgumentNullException("This hotel doesn't exist");
+            response.Data = default;
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = true;
+            response.Message = $"Hotel with Id = { hotel.Id} doesn't exist";
+            return response;
         }
 
         public int GetNoOfCustomers(string hotelId)
@@ -195,9 +215,10 @@ namespace hotel_booking_core.Services
             return noOfCustomers.Count;
         }
 
-        public async Task<HotelManagerStatisticsDto> GetHotelManagerStatistics(string managerId)
+        public async Task<Response<HotelManagerStatisticsDto>> GetHotelManagerStatistics(string managerId)
         {
             var managerStats = await _unitOfWork.Managers.GetManagerStatistics(managerId);
+            var response = new Response<HotelManagerStatisticsDto>();
 
             var averageRating = 0.0;
             var numberOfHotels = 0;
@@ -221,7 +242,6 @@ namespace hotel_booking_core.Services
                     occupiedRooms += await GetTotalNoOfOccupiedRooms(hotelId);
                     unoccupiedRooms += await GetTotalNoOfVacantRooms(hotelId);
                     transactions += GetTotalEarnings(hotelId);
-
                 }
 
                 var hotelManagerStats = new HotelManagerStatisticsDto
@@ -234,11 +254,18 @@ namespace hotel_booking_core.Services
                     TotalManagerUnoccupiedRooms = unoccupiedRooms,
                     TotalManagerTransactionAmount = transactions
                 };
-
-                return hotelManagerStats;
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Data = hotelManagerStats;
+                response.Message = $"are the statistics for the hotel manager with {managerId}";
+                return response;
             }
 
-            throw new ArgumentNullException("No record exists for this manager");
+            response.Data = default;
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = true;
+            response.Message = $"No record exists for this manager";
+            return response;
 
         }
 

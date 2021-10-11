@@ -1,10 +1,8 @@
 ﻿using hotel_booking_core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
@@ -24,6 +22,9 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet("get-statistics/manager")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetManagerStatistics(string managerId)
         {
@@ -31,10 +32,13 @@ namespace hotel_booking_api.Controllers
 
             var result = await _hotelStatisticsService.GetManagerStatistics(managerId);
             _logger.LogInformation($"Gotten Manager Statistics for {managerId}");
-            return Ok(result);
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet("{managerId}/statistics")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetHotelManagerStatistics(string managerId)
         {
@@ -43,7 +47,7 @@ namespace hotel_booking_api.Controllers
             var result = await _hotelStatisticsService.GetHotelManagerStatistics(managerId);
 
             _logger.LogInformation($"Gotten Hotel Manager Statistics for {managerId}");
-            return Ok(result);
+            return StatusCode(result.StatusCode, result);
         }
     }
 }

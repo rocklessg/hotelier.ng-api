@@ -1,7 +1,7 @@
 ﻿using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
-using hotel_booking_dto.RoomsDtos;
+using hotel_booking_dto.RoomDtos;
 using hotel_booking_utilities;
 using System.Collections.Generic;
 using System.Threading.Tasks;

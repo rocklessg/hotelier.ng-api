@@ -1,7 +1,7 @@
 ﻿using hotel_booking_dto;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -11,10 +11,10 @@ namespace hotel_booking_api.Middleware
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionMiddleware> _logger;
+        private readonly ILogger _logger;
 
         public ExceptionMiddleware(RequestDelegate next,
-            ILogger<ExceptionMiddleware> logger)
+            ILogger logger)
         {
             _logger = logger;
             _next = next;
@@ -35,22 +35,23 @@ namespace hotel_booking_api.Middleware
                 switch (error)
                 {
                     case UnauthorizedAccessException e:
-                        _logger.LogError(e, e.StackTrace, e.Source, e.ToString());
+                        _logger.Error(e, e.StackTrace, e.Source, e.ToString());
                         response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         responseModel.Message = e.Message;
                         break;
                     case ArgumentOutOfRangeException e:
-                        _logger.LogError(e, e.StackTrace, e.Source, e.ToString());
+                        _logger.Error(e, e.StackTrace, e.Source, e.ToString());
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         responseModel.Message = e.Message;
                         break;
                     case ArgumentNullException e:
-                        _logger.LogError(e, e.StackTrace, e.Source, e.ToString());
+                        _logger.Error(e, e.StackTrace, e.Source, e.ToString());
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         responseModel.Message = e.Message;
                         break;
                     default:
                         // unhandled error
+                        _logger.Error(error, error.Source, error.InnerException, error.Message, error.ToString());
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         responseModel.Message = "Internal Server Error. Please Try Again Later.";
                         break;

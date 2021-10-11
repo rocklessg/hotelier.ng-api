@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hotel_booking_dto.RoomsDtos
+namespace hotel_booking_dto.RoomDtos
 {
     public class RoomDTo
     {

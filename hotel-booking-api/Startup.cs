@@ -4,17 +4,13 @@ using hotel_booking_api.Middleware;
 using hotel_booking_data.Contexts;
 using hotel_booking_data.Seeder;
 using hotel_booking_models;
-using hotel_booking_models.Cloudinary;
-using hotel_booking_models.Mail;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using System;
+using Serilog;
 
 namespace hotel_booking_api
 {
@@ -37,10 +33,9 @@ namespace hotel_booking_api
             services.AddDbContextAndConfigurations(Environment, Configuration);
 
             // Configure Mailing Service
-            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.ConfigureMailService(Configuration);
 
-            // Add Jwt Authentication and Authorization
-            services.ConfigureAuthentication();
+            services.AddSingleton(Log.Logger);
 
             // Adds our Authorization Policies to the Dependecy Injection Container
             services.AddPolicyAuthorization();
@@ -48,14 +43,18 @@ namespace hotel_booking_api
             // Configure Identity
             services.ConfigureIdentity();
 
+            services.AddAuthentication();
+
+            // Add Jwt Authentication and Authorization
+            services.ConfigureAuthentication(Configuration);
+
             // Configure AutoMapper
             services.ConfigureAutoMappers();
 
             // Configure Cloudinary
-            services.Configure<ImageUploadSettings>(Configuration.GetSection("CloudSettings"));
             services.AddCloudinary(CloudinaryServiceExtension.GetAccount(Configuration));
 
-            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling 
+            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling
             = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers()
                 .AddNewtonsoftJson(op => op.SerializerSettings
@@ -75,7 +74,7 @@ namespace hotel_booking_api
             });
 
             // Register Dependency Injection Service Extension
-            services.AddDependencyInjection(); 
+            services.AddDependencyInjection();
 
         }
 
