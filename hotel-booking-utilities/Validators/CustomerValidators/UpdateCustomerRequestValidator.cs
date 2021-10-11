@@ -1,11 +1,6 @@
 ﻿using FluentValidation;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_utilities.ValidatorSettings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace hotel_booking_utilities.Validators.CustomerValidators
 {
@@ -15,8 +10,7 @@ namespace hotel_booking_utilities.Validators.CustomerValidators
         {
             RuleFor(user => user.CreditCard).CreditCard();
             RuleFor(user => user.Address).Address();
-            RuleFor(user => user.State).State();
-            
+            RuleFor(user => user.State).State();           
 
         }
     }

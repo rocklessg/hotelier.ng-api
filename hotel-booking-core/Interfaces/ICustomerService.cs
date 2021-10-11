@@ -1,5 +1,4 @@
 ﻿using hotel_booking_dto;
-using hotel_booking_dto.AppUserDto;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_models.Cloudinary;
 using System.Threading.Tasks;
