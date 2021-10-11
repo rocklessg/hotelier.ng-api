@@ -1,7 +1,7 @@
 ﻿using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
-using hotel_booking_dto.RoomsDtos;
+using hotel_booking_dto.RoomDtos;
 using hotel_booking_utilities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -34,7 +34,7 @@ namespace hotel_booking_core.Interfaces
         Task<Response<AddHotelResponseDto>> AddHotel(string managerId, AddHotelDto hotelDto);
         Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelid, AddRoomDto roomDto);
         Task<Response<IEnumerable<HotelBasicDto>>> GetHotelsByRatingsAsync();
-        Task<Response<hotel_booking_utilities.Pagination.Paginator.PageResult<IEnumerable<RoomInfoDTo>>>> GetRoomByPriceAsync(PriceDto priceDto);
-        Task<Response<IEnumerable<RoomInfoDTo>>> GetTopDealsAsync();
+        Task<Response<hotel_booking_utilities.Pagination.Paginator.PageResult<IEnumerable<RoomInfoDto>>>> GetRoomByPriceAsync(PriceDto priceDto);
+        Task<Response<IEnumerable<RoomInfoDto>>> GetTopDealsAsync();
     }
 }

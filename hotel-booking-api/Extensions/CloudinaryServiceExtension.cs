@@ -15,11 +15,10 @@ namespace hotel_booking_api.Extensions
 
         public static Account GetAccount(IConfiguration Configuration)
         {
-            var cloudSettings = Configuration.GetSection("ImageUploadSettings");
             Account account = new(
-                                cloudSettings.GetSection("CloudName").Value,
-                                cloudSettings.GetSection("ApiKey").Value,
-                                cloudSettings.GetSection("ApiSecret").Value);
+                                Configuration["ImageUploadSettings:CloudName"],
+                                Configuration["ImageUploadSettings:ApiKey"],
+                                Configuration["ImageUploadSettings:ApiSecret"]);
             return account;
         }
     }

@@ -1,9 +1,9 @@
 ﻿using hotel_booking_dto.commons;
 using hotel_booking_models;
 
-namespace hotel_booking_dto
+namespace hotel_booking_dto.RoomDtos
 {
-    public class RoomInfoDTo
+    public class RoomInfoDto
     {
         public string HotelId { get; set; }
         public string Name { get; set; }

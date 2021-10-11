@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interfaces;
-using hotel_booking_data.Contexts;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.Mapper;
-using hotel_booking_dto.RoomsDtos;
+using hotel_booking_dto.ReviewDtos;
+using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,19 +41,19 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public async Task<Response<PageResult<IEnumerable<RoomInfoDTo>>>> GetRoomByPriceAsync(PriceDto priceDto)
+        public async Task<Response<PageResult<IEnumerable<RoomInfoDto>>>> GetRoomByPriceAsync(PriceDto priceDto)
         {
             var roomQuery = _unitOfWork.RoomType.GetRoomByPrice(priceDto.MinPrice, priceDto.MaxPrice);
-            var pageResult = await roomQuery.PaginationAsync<RoomType, RoomInfoDTo>(priceDto.PageSize, priceDto.PageNumber, _mapper);
-            var response = new Response<PageResult<IEnumerable<RoomInfoDTo>>>(StatusCodes.Status200OK, true, "List of rooms by price", pageResult);
+            var pageResult = await roomQuery.PaginationAsync<RoomType, RoomInfoDto>(priceDto.PageSize, priceDto.PageNumber, _mapper);
+            var response = new Response<PageResult<IEnumerable<RoomInfoDto>>>(StatusCodes.Status200OK, true, "List of rooms by price", pageResult);
             return response;
         }
 
-        public async Task<Response<IEnumerable<RoomInfoDTo>>> GetTopDealsAsync()
+        public async Task<Response<IEnumerable<RoomInfoDto>>> GetTopDealsAsync()
         {
             var roomList = await _unitOfWork.RoomType.GetTopDealsAsync();
-            var roomDto = _mapper.Map<IEnumerable<RoomInfoDTo>>(roomList);
-            var response = new Response<IEnumerable<RoomInfoDTo>>(StatusCodes.Status200OK, true, "Top 5 Deals", roomDto);
+            var roomDto = _mapper.Map<IEnumerable<RoomInfoDto>>(roomList);
+            var response = new Response<IEnumerable<RoomInfoDto>>(StatusCodes.Status200OK, true, "Top 5 Deals", roomDto);
             return response;
         }
 
