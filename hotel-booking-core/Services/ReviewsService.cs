@@ -6,6 +6,7 @@ using hotel_booking_dto.ReviewDtos;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using hotel_booking_dto.commons;
 using hotel_booking_models;
 using Microsoft.AspNetCore.Http;
 using static hotel_booking_utilities.Pagination.Paginator;
@@ -17,8 +18,6 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHotelService _hotelService;
         private readonly IMapper _mapper;
-        private readonly int _pageSize;
-        private readonly int _pageNumber;
         
 
         public ReviewsService(IUnitOfWork unitOfWork, IHotelService hotelService, IMapper mapper)
@@ -34,13 +33,13 @@ namespace hotel_booking_core.Services
             throw new NotImplementedException();
         }
  
-        public async Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(string hotelId)
+        public async Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging, string hotelId)
         {
             var hotel = _unitOfWork.Reviews.GetAllReviewsByHotelAsync(hotelId);
            
 
             
-            var pageResult = await hotel.PaginationAsync<Review, ReviewToReturnDto>(_pageSize, _pageNumber, _mapper);
+            var pageResult = await hotel.PaginationAsync<Review, ReviewToReturnDto>(paging.PageSize, paging.PageNumber, _mapper);
 
             var response =
                 new Response<PageResult<IEnumerable<ReviewToReturnDto>>>(StatusCodes.Status200OK, true, "All reviews",
