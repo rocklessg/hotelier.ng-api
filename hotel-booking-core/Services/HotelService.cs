@@ -310,6 +310,30 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        
+        public async Task<Response<PageResult<IEnumerable<HotelBasicDto>>>> GetHotelByLocation(string location, Paging paging)
+        {
+            var hotels = _unitOfWork.Hotels.GetAllHotels()
+                .Where(q => q.State.Contains(location) || q.City.Contains(location));
+
+            var response = new Response<PageResult<IEnumerable<HotelBasicDto>>>();
+
+            if (hotels != null)
+            {
+                var result = await hotels.PaginationAsync<Hotel, HotelBasicDto>(pageSize: paging.PageSize, pageNumber: paging.PageNumber, mapper: _mapper);
+
+                response.Data = result;
+                response.StatusCode = StatusCodes.Status200OK;
+                response.Succeeded = true;
+                return response;
+            }
+
+            response.Data = default;
+            response.StatusCode = StatusCodes.Status200OK;
+            response.Message = "On your request nothing has been found.";
+            response.Succeeded = false;
+            return response;
+        }
+
+
     }
 }
