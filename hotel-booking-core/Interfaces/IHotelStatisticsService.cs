@@ -10,20 +10,21 @@ namespace hotel_booking_core.Interfaces
 {
     public interface IHotelStatisticsService
     {
-        int GetTotalHotels();
-        int GetTotalRoomsInEachHotel(string hotelId);
-        int GetTotalNoOfOccupiedRooms(string hotelId);
+        Task<Response<ManagersStatisticsDto>> GetManagerStatistics(string managersId);
 
-        int GetTotalNoOfVacantRooms(string hotelId);
-        Task<HotelStatisticDto> GetHotelStatistics(string hotelId);
-        int GetNoOfRoomTypes(string hotelId);
+        Task<int> GetTotalRoomsInEachHotel(string hotelId);
+        Task<int> GetTotalNoOfOccupiedRooms(string hotelId);
+
+        Task<int> GetTotalNoOfVacantRooms(string hotelId);
+        Task<Response<HotelStatisticDto>> GetHotelStatistics(string hotelId);
+        Task<int> GetNoOfRoomTypes(string hotelId);
         int GetTotalReviews(string hotelId);
-        int GetTotalAmenities(string hotelId);
+        Task<int> GetTotalAmenities(string hotelId);
         int GetTotalBookings(string hotelId);
         double GetAverageRatings(string hotelId);
         decimal GetTotalEarnings(string hotelId);
         int GetNoOfCustomers(string hotelId);
-        Task<HotelManagerStatisticsDto> GetHotelManagerStatistics(string managerId);
+        Task<Response<HotelManagerStatisticsDto>> GetHotelManagerStatistics(string managerId);
 
 
 

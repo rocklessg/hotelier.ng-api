@@ -10,10 +10,12 @@ using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_data.UnitOfWork.Implementation;
 using hotel_booking_dto.AppUserDto;
 using hotel_booking_dto.AuthenticationDtos;
+using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_utilities;
 using hotel_booking_utilities.Validators.AppUserValidator;
 using hotel_booking_utilities.Validators.AuthenticationValidators;
+using hotel_booking_utilities.Validators.CustomerValidators;
 using hotel_booking_utilities.Validators.HotelValidators;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -33,13 +35,12 @@ namespace hotel_booking_api.Extensions
 
 
             services.AddScoped<ICustomerService, CustomerService>();
-            services.AddScoped<IAppUserService, AppUserService>();
 
             services.AddScoped<IAmenityService, AmenityService>();
             services.AddScoped<IHotelService, HotelService>();
 
             services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
-            services.AddScoped<IManagerStatistics, ManagerStatistics>();
+            
             services.AddScoped<IManagerRepository, ManagerRepository>();
             
 
@@ -48,7 +49,6 @@ namespace hotel_booking_api.Extensions
             // Add Repository Injections Here
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             // Add Model Services Injection Here
-            services.AddScoped<IRoomService, RoomService>();
 
             services.AddScoped<IAmenityRepository, AmenityRepository>();
             // Add Fluent Validator Injections Here
@@ -60,6 +60,7 @@ namespace hotel_booking_api.Extensions
             services.AddTransient<IValidator<ResetPasswordDto>, ResetPasswordDtoValidator>();
 
             services.AddTransient<IValidator<UpdateAppUserDto>, UpdateAppUserDtoValidator>();
+            services.AddTransient<IValidator<UpdateCustomerDto>, UpdateCustomerDtoValidator>();
 
         }
     }

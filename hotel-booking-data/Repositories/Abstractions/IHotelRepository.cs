@@ -9,13 +9,12 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IHotelRepository : IGenericRepository<Hotel>
     {
-        Task<List<Hotel>> GetAllAsync(
-            Expression<Func<Hotel, bool>> expression = null,
-            Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderby = null,
-            List<string> Includes = null);
+        
         Task<List<Hotel>> GetAllHotelsAsync();
         Hotel GetHotelById(string id);
         Task<List<Rating>> HotelRatings(string hotelId);
         Hotel GetHotelByIdForAddAmenity(string id);
+        Task<Hotel> GetHotelsById(string hotelId);
+        Task<IEnumerable<Hotel>> GetHotelsByRatingAsync();
     }
 }

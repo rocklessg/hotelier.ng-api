@@ -22,16 +22,29 @@ namespace hotel_booking_data.Repositories.Implementations
             _dbSet = _context.Set<RoomType>();
         }
 
-        public async Task<List<RoomType>> GetAllAsync(
-            Expression<Func<RoomType, bool>> expression = null,
-            Func<IQueryable<RoomType>, IOrderedQueryable<RoomType>> orderby = null,
-            List<string> Includes = null)
+
+        public IQueryable<RoomType> GetRoomByPrice(decimal minPrice, decimal maxPrice)
         {
             var query = _dbSet.AsNoTracking();
-            if (Includes != null) Includes.ForEach(x => query = query.Include(x));
-            if (expression != null) query = query.Where(expression);
-            if (orderby != null) query = orderby(query);
+            query = query.Include(rt => rt.Hotel);
+            query = query.Where(rt => (!(maxPrice > minPrice) ? rt.Price >= minPrice
+                                        : (rt.Price >= minPrice) && (rt.Price <= maxPrice)));
+            query = query.OrderBy(rt => rt.Price);
+            return query;
+        }
+        public async Task<IEnumerable<RoomType>> GetTopDealsAsync()
+        {
+            var query = _dbSet.AsNoTracking();
+            query = query.Include(rt => rt.Hotel);
+            query = query.OrderByDescending(rt => rt.Discount / rt.Price);
+            query = query.Take(5);
             return await query.ToListAsync();
+        }
+        public async Task<List<RoomType>> GetRoomTypesInEachHotel(string hotelId)
+        {
+            var rooms = await _context.RoomTypes.Where(x => x.HotelId == hotelId).ToListAsync();
+
+            return rooms;
         }
 
 

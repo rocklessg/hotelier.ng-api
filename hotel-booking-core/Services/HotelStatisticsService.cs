@@ -1,5 +1,7 @@
-﻿using hotel_booking_core.Interfaces;
+﻿using AutoMapper;
+using hotel_booking_core.Interfaces;
 using hotel_booking_data.Contexts;
+using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,48 +17,73 @@ namespace hotel_booking_core.Services
 {
     public class HotelStatisticsService : IHotelStatisticsService
     {
-        private readonly HbaDbContext db;
-        private readonly ILogger<HotelStatisticsService> _logger;
-
-        public HotelStatisticsService(HbaDbContext db, ILogger<HotelStatisticsService> logger)
-        {
-            this.db = db;
-            _logger = logger;
-        }
+        private readonly HbaDbContext _db;
+        private readonly IUnitOfWork _unitOfWork;
         
-        public int GetTotalHotels() 
+        private readonly IMapper _mapper;
+
+        public HotelStatisticsService(HbaDbContext db, IMapper mapper,
+            IUnitOfWork unitOfWork)
         {
-            var hotelCount = db.Hotels.Count();
-            return hotelCount;
+            _db = db;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public int GetTotalRoomsInEachHotel(string hotelId) 
+        public async Task<Response<ManagersStatisticsDto>> GetManagerStatistics(string managersId)
         {
-            var roomType = db.RoomTypes.Where(x => x.HotelId == hotelId).ToList();
+            var manager = await _unitOfWork.Managers.GetManagerStatistics(managersId);
+            var response = new Response<ManagersStatisticsDto>();
+
+            if (manager != null)
+            {
+                
+                var managerStat = _mapper.Map<ManagersStatisticsDto>(manager);
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Data = managerStat;
+                response.Message = $"are the statistics for manager with {managerStat.AppUserId}";
+                return response;
+            }
+
+            response.Data = default;
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = true;
+            response.Message = $"Manager with Id = { managersId} doesn't exist";
+            return response;
+        }
+
+
+        public async Task<int> GetTotalRoomsInEachHotel(string hotelId)
+        {
+            var roomType = await _unitOfWork.RoomType.GetRoomTypesInEachHotel(hotelId);
+            
+
             var totalRooms = 0;
 
 
             foreach (var item in roomType)
-                {
-                    var roomTypeId = item.Id;
-                    var rooms = db.Rooms.Where(x => x.RoomTypeId == roomTypeId).ToList().Count;
+            {
+                var roomTypeId = item.Id;
+                var rooms = _db.Rooms.Where(x => x.RoomTypeId == roomTypeId).ToList().Count;
 
-                    totalRooms += rooms;
+                totalRooms += rooms;
 
-                }
+            }
 
-                return totalRooms;
-           
+            return totalRooms;
+
         }
 
-        public int GetTotalNoOfOccupiedRooms(string hotelId) 
+        public async Task<int> GetTotalNoOfOccupiedRooms(string hotelId)
         {
-            var roomType = db.RoomTypes.Where(x => x.HotelId == hotelId).ToList();
+            var roomType = await _unitOfWork.RoomType.GetRoomTypesInEachHotel(hotelId);
+            
             var totalOccupiedRooms = 0;
             foreach (var item in roomType)
             {
                 var roomTypeId = item.Id;
-                var occupiedRooms = db.Rooms.Where(x => x.RoomTypeId == roomTypeId).
+                var occupiedRooms = _db.Rooms.Where(x => x.RoomTypeId == roomTypeId).
                                  Where(z => z.IsBooked == true).ToList().Count;
 
                 totalOccupiedRooms += occupiedRooms;
@@ -65,14 +93,15 @@ namespace hotel_booking_core.Services
 
         public decimal GetTotalEarnings(string hotelId)
         {
-            var hotelBookings = db.Bookings.Where(x => x.HotelId == hotelId).ToList();
+            var hotelBookings = _db.Bookings.Where(x => x.HotelId == hotelId).ToList();
+
             decimal totalPayments = 0;
 
             foreach (var item in hotelBookings)
             {
                 var bookingId = item.Id;
-                var payment = db.Payments.Where(x => x.BookingId == bookingId).ToList();
-                foreach(var x in payment) 
+                var payment = _db.Payments.Where(x => x.BookingId == bookingId).ToList();
+                foreach (var x in payment)
                 {
                     totalPayments += x.Amount;
                 }
@@ -81,50 +110,50 @@ namespace hotel_booking_core.Services
             return totalPayments;
         }
 
-        public int GetTotalNoOfVacantRooms(string hotelId)
+        public async Task<int> GetTotalNoOfVacantRooms(string hotelId)
         {
-            var roomType = db.RoomTypes.Where(x => x.HotelId == hotelId).ToList();
+            var roomType = await _unitOfWork.RoomType.GetRoomTypesInEachHotel(hotelId);
             var totalOccupiedRooms = 0;
             foreach (var item in roomType)
             {
                 var roomTypeId = item.Id;
-                var unoccupiedRooms = db.Rooms.Where(x => x.RoomTypeId == roomTypeId).
+                var unoccupiedRooms = _db.Rooms.Where(x => x.RoomTypeId == roomTypeId).
                                  Where(z => z.IsBooked != true).ToList().Count;
 
                 totalOccupiedRooms += unoccupiedRooms;
-                }
+            }
 
-                return totalOccupiedRooms;
-            
+            return totalOccupiedRooms;
+
         }
 
-        public int GetNoOfRoomTypes(string hotelId) 
+        public async Task<int> GetNoOfRoomTypes(string hotelId)
         {
-            var roomType = db.RoomTypes.Where(x => x.HotelId == hotelId).ToList().Count;
-            return roomType;
+            var roomType = await _unitOfWork.RoomType.GetRoomTypesInEachHotel(hotelId);
+            return roomType.Count;
         }
 
-        public int GetTotalReviews(string hotelId) 
+        public int GetTotalReviews(string hotelId)
         {
-            var reviews = db.Reviews.Where(x => x.HotelId == hotelId).ToList().Count;
+            var reviews = _db.Reviews.Where(x => x.HotelId == hotelId).ToList().Count;
             return reviews;
         }
 
-        public int GetTotalAmenities(string hotelId)
+        public async Task<int> GetTotalAmenities(string hotelId)
         {
-            var amenitiesCount = db.Amenities.Where(x => x.HotelId == hotelId).ToList().Count;
-            return amenitiesCount;
+            var amenities =  await _unitOfWork.Amenities.GetAmenityByHotelIdAsync(hotelId);
+            return amenities.Count;
         }
 
-        public int GetTotalBookings(string hotelId) 
+        public int GetTotalBookings(string hotelId)
         {
-            var totalBookings = db.Bookings.Where(x => x.HotelId == hotelId).ToList().Count;
+            var totalBookings = _db.Bookings.Where(x => x.HotelId == hotelId).ToList().Count;
             return totalBookings;
         }
 
-        public double GetAverageRatings(string hotelId) 
+        public double GetAverageRatings(string hotelId)
         {
-            var ratings = db.Ratings.Where(x => x.HotelId == hotelId).ToList();
+            var ratings = _db.Ratings.Where(x => x.HotelId == hotelId).ToList();
             double totalRatings = 0;
             foreach (var item in ratings)
             {
@@ -135,24 +164,25 @@ namespace hotel_booking_core.Services
             return averageRatings;
         }
 
-       
 
-        public async Task<HotelStatisticDto> GetHotelStatistics(string hotelId) 
+
+        public async Task<Response<HotelStatisticDto>> GetHotelStatistics(string hotelId)
         {
-            var hotel = await db.Hotels.Where(x => x.Id == hotelId).FirstOrDefaultAsync();
-            if(hotel != null) 
+            var hotel = await _unitOfWork.Hotels.GetHotelsById(hotelId);
+            var response = new Response<HotelStatisticDto>();
+            if (hotel != null)
             {
-                var totalRooms = GetTotalRoomsInEachHotel(hotelId);
-                var occupiedRooms = GetTotalNoOfOccupiedRooms(hotelId);
-                var vacantRooms = GetTotalNoOfVacantRooms (hotelId);
-                var roomTypeCount = GetNoOfRoomTypes(hotelId);
+                var totalRooms = await GetTotalRoomsInEachHotel(hotelId);
+                var occupiedRooms = await GetTotalNoOfOccupiedRooms(hotelId);
+                var vacantRooms = await GetTotalNoOfVacantRooms(hotelId);
+                var roomTypeCount = await GetNoOfRoomTypes(hotelId);
                 var reviews = GetTotalReviews(hotelId);
-                var noOfAmenities = GetTotalAmenities(hotelId);
+                var noOfAmenities = await GetTotalAmenities(hotelId);
                 var totalBookings = GetTotalBookings(hotelId);
                 var averageRatings = GetAverageRatings(hotelId);
                 var totalEarnings = GetTotalEarnings(hotelId);
 
-                HotelStatisticDto hotelstatistics = new HotelStatisticDto
+                var hotelstatistics = new HotelStatisticDto
                 {
                     Name = hotel.Name,
                     NumberOfRooms = totalRooms,
@@ -165,21 +195,31 @@ namespace hotel_booking_core.Services
                     RoomTypes = roomTypeCount,
                     NumberOfAmenities = noOfAmenities
                 };
-                return hotelstatistics;
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Data = hotelstatistics;
+                response.Message = $"are the statistics for hotel with {hotel.Id}";
+                return response;
             }
 
-            throw new ArgumentNullException("This hotel doesn't exist");
+            response.Data = default;
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = true;
+            response.Message = $"Hotel with Id = { hotel.Id} doesn't exist";
+            return response;
         }
 
-        public int GetNoOfCustomers(string hotelId) 
+        public int GetNoOfCustomers(string hotelId)
         {
-            var noOfCustomers = db.Bookings.Where(x => x.HotelId == hotelId).ToList();
+            var noOfCustomers = _db.Bookings.Where(x => x.HotelId == hotelId).ToList();
             return noOfCustomers.Count;
         }
 
-        public async Task<HotelManagerStatisticsDto> GetHotelManagerStatistics(string managerId)
+        public async Task<Response<HotelManagerStatisticsDto>> GetHotelManagerStatistics(string managerId)
         {
-            var manager = await db.Managers.Where(x => x.AppUserId == managerId).FirstOrDefaultAsync();
+            var managerStats = await _unitOfWork.Managers.GetManagerStatistics(managerId);
+            var response = new Response<HotelManagerStatisticsDto>();
+
             var averageRating = 0.0;
             var numberOfHotels = 0;
             var totalNoOfCustomers = 0;
@@ -187,22 +227,21 @@ namespace hotel_booking_core.Services
             var unoccupiedRooms = 0;
             decimal transactions = 0;
             var totalRooms = 0;
-            
-            if(manager != null) 
+
+            if (managerStats != null)
             {
-                var hotels = db.Hotels.Where(x => x.ManagerId == managerId).ToList();
+                var hotels = _db.Hotels.Where(x => x.ManagerId == managerId).ToList();
                 numberOfHotels = hotels.Count;
 
-                foreach (var hotel in hotels) 
+                foreach (var hotel in hotels)
                 {
                     var hotelId = hotel.Id;
                     averageRating += GetAverageRatings(hotelId);
                     totalNoOfCustomers += GetNoOfCustomers(hotelId);
-                    totalRooms += GetTotalRoomsInEachHotel(hotelId);
-                    occupiedRooms += GetTotalNoOfOccupiedRooms(hotelId);
-                    unoccupiedRooms += GetTotalNoOfVacantRooms(hotelId);
+                    totalRooms += await GetTotalRoomsInEachHotel(hotelId);
+                    occupiedRooms += await GetTotalNoOfOccupiedRooms(hotelId);
+                    unoccupiedRooms += await GetTotalNoOfVacantRooms(hotelId);
                     transactions += GetTotalEarnings(hotelId);
-
                 }
 
                 var hotelManagerStats = new HotelManagerStatisticsDto
@@ -215,11 +254,18 @@ namespace hotel_booking_core.Services
                     TotalManagerUnoccupiedRooms = unoccupiedRooms,
                     TotalManagerTransactionAmount = transactions
                 };
-
-                return hotelManagerStats;
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Data = hotelManagerStats;
+                response.Message = $"are the statistics for the hotel manager with {managerId}";
+                return response;
             }
 
-            throw new ArgumentNullException("No record exists for this manager");
+            response.Data = default;
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = true;
+            response.Message = $"No record exists for this manager";
+            return response;
 
         }
 
