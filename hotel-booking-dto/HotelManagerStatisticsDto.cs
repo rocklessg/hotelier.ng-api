@@ -15,6 +15,7 @@ namespace hotel_booking_dto
         public int AvailableRooms { get; set; }
         public int BookedRooms { get; set; }
         public decimal TotalMonthlyTransactions { get; set; }
+        public Dictionary<string, decimal> TotalAnnualRevenue { get; set; }
 
     }
 }

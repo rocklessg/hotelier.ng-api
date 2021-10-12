@@ -30,31 +30,53 @@ namespace hotel_booking_core.Services
             _mapper = mapper;
         }
 
-        public async Task<Response<ManagersStatisticsDto>> GetManagerStatistics(string managersId)
+       private async Task<List<string>> GetAllManagers() 
         {
-            var manager = await _unitOfWork.Managers.GetManagerStatistics(managersId);
-            var response = new Response<ManagersStatisticsDto>();
+            var hotelObj = await _db.Hotels.ToListAsync();
+            var managersIdList = from manager in hotelObj select manager.ManagerId;
+            var managersList = new List<string>();
+            var userObj = await _db.Users.ToListAsync();
+            var usersIdList = from user in userObj select user.Id;
 
-            if (manager != null)
+            foreach(var item in usersIdList) 
             {
-                
-                var managerStat = _mapper.Map<ManagersStatisticsDto>(manager);
-                response.StatusCode = (int)HttpStatusCode.OK;
-                response.Succeeded = true;
-                response.Data = managerStat;
-                response.Message = $"are the statistics for manager with {managerStat.AppUserId}";
-                return response;
+                if (managersIdList.Contains(item)) 
+                {
+                    var manager = userObj.Where(x => x.Id == item).FirstOrDefault();
+                    var managersName = $"{ manager.FirstName} {manager.LastName}";
+                    managersList.Add(managersName);
+                }
             }
 
-            response.Data = default;
-            response.StatusCode = (int)HttpStatusCode.BadRequest;
-            response.Succeeded = true;
-            response.Message = $"Manager with Id = { managersId} doesn't exist";
-            return response;
+            
+            return managersList;
+        }
+
+       private async Task<decimal> GetAllTotalMonthlyTransactions() 
+       {
+            string transactionMonth = DateTime.Now.ToString("MM");
+            decimal totalMonthlyPayments = 0;
+            var payments = await _db.Payments.ToListAsync();
+            foreach (var item in payments)
+            {
+                var paymentDate = item.CreatedAt.ToString();
+                var paymentMonth = paymentDate.Substring(3, 2);
+                if (transactionMonth == paymentMonth)
+                {
+                    totalMonthlyPayments += item.Amount;
+                }
+            }
+            return totalMonthlyPayments;
+        }
+
+        private async Task<int> GetTotalHotels() 
+        {
+            var hotelsList = await _db.Hotels.ToListAsync();
+            return hotelsList.Count();
         }
 
 
-        public async Task<int> GetTotalRoomsInEachHotel(string hotelId)
+        private async Task<int> GetTotalRoomsInEachHotel(string hotelId)
         {
             var roomType = await _unitOfWork.RoomType.GetRoomTypesInEachHotel(hotelId);
             
@@ -76,7 +98,7 @@ namespace hotel_booking_core.Services
 
         }
 
-        public async Task<int> GetTotalNoOfOccupiedRooms(string hotelId)
+        private async Task<int> GetTotalNoOfOccupiedRooms(string hotelId)
         {
             var roomType = await _unitOfWork.RoomType.GetRoomTypesInEachHotel(hotelId);
             
@@ -93,7 +115,7 @@ namespace hotel_booking_core.Services
             return totalOccupiedRooms;
         }
 
-        public async Task<decimal> GetTotalEarnings(string hotelId)
+        private async Task<decimal> GetTotalEarnings(string hotelId)
         {
             var hotelBookings = await _db.Bookings.Where(x => x.HotelId == hotelId).ToListAsync();
 
@@ -112,9 +134,9 @@ namespace hotel_booking_core.Services
             return totalPayments;
         }
 
-        public async Task<decimal> GetMonthlyEarnings(string hotelId) 
+        private async Task<decimal> GetMonthlyEarnings(string hotelId) 
         {
-            string sMonth = "06";
+            string sMonth = DateTime.Now.ToString("MM");
             var hotelBookings = await _db.Bookings.Where(x => x.HotelId == hotelId).ToListAsync();
 
             decimal totalMonthlyPayments = 0;
@@ -138,7 +160,7 @@ namespace hotel_booking_core.Services
             return totalMonthlyPayments;
         }
 
-        public async Task<int> GetTotalNoOfVacantRooms(string hotelId)
+        private async Task<int> GetTotalNoOfVacantRooms(string hotelId)
         {
             var roomType = await _unitOfWork.RoomType.GetRoomTypesInEachHotel(hotelId);
             var totalOccupiedRooms = 0;
@@ -156,31 +178,31 @@ namespace hotel_booking_core.Services
 
         }
 
-        public async Task<int> GetNoOfRoomTypes(string hotelId)
+        private async Task<int> GetNoOfRoomTypes(string hotelId)
         {
             var roomType = await _unitOfWork.RoomType.GetRoomTypesInEachHotel(hotelId);
             return roomType.Count;
         }
 
-        public async Task<int> GetTotalReviews(string hotelId)
+        private async Task<int> GetTotalReviews(string hotelId)
         {
             var reviews = await _db.Reviews.Where(x => x.HotelId == hotelId).ToListAsync();
             return reviews.Count;
         }
 
-        public async Task<int> GetTotalAmenities(string hotelId)
+        private async Task<int> GetTotalAmenities(string hotelId)
         {
             var amenities =  await _unitOfWork.Amenities.GetAmenityByHotelIdAsync(hotelId);
             return amenities.Count;
         }
 
-        public async Task<int> GetTotalBookings(string hotelId)
+        private async Task<int> GetTotalBookings(string hotelId)
         {
             var totalBookings = await _db.Bookings.Where(x => x.HotelId == hotelId).ToListAsync();
             return totalBookings.Count;
         }
 
-        public async Task<double> GetAverageRatings(string hotelId)
+        private async Task<double> GetAverageRatings(string hotelId)
         {
             var ratings = await _db.Ratings.Where(x => x.HotelId == hotelId).ToListAsync();
             double totalRatings = 0;
@@ -193,8 +215,114 @@ namespace hotel_booking_core.Services
             return averageRatings;
         }
 
+        private async Task<int> GetNoOfCustomers(string hotelId)
+        {
+            var noOfCustomers = await _db.Bookings.Where(x => x.HotelId == hotelId).ToListAsync();
+            return noOfCustomers.Count;
+        }
+        private async Task<List<string>> GetAManagerHotels(string managerId)
+        {
+            var requests = await _db.Managers.Where(s => s.AppUserId == managerId)
+            .Include(s => s.Hotels)
+            .FirstOrDefaultAsync();
+            List<string> result = new List<string>();
+            foreach (var item in requests.Hotels)
+            {
+                result.Add(item.Id);
+            }
+            return result;
+        }
+        private async Task<Dictionary<string, decimal>> GetManagerTotalRevenueInAYear(string managerId)
+        {
+            //Get managers transactions
+            var hotels = await GetAManagerHotels(managerId);
+            List<List<Booking>> bookings = new List<List<Booking>>();
 
 
+
+            foreach (var item in hotels)
+            {
+                var req = _db.Bookings.Where(e => DateTime.Now.AddMonths(-12) < e.CreatedAt)
+                .Where(s => s.HotelId == item)
+                .Include(s => s.Payment)
+                .OrderByDescending(e => e.CreatedAt).ToList();
+                bookings.Add(req);
+            }
+
+
+            //Now calculate the revenue
+
+            Dictionary<string, decimal> result = new Dictionary<string, decimal>()
+            {
+                {"January", 0.0m},
+                {"February", 0.0m},
+                {"March", 0.0m},
+                {"April", 0.0m},
+                {"May", 0.0m},
+                {"June", 0.0m},
+                {"July", 0.0m},
+                {"August", 0.0m},
+                {"September", 0.0m},
+                {"October", 0.0m},
+                {"November", 0.0m},
+                {"December", 0.0m}
+                };
+
+
+
+            foreach (var item in bookings)
+            {
+
+                foreach (var modl in item)
+                {
+                    string mm = modl.Payment.CreatedAt.ToString("MMMM");
+                    decimal actual = modl.Payment.Amount * 0.90m;
+                    result[mm] += actual;
+                }
+            }
+
+
+            return result;
+        }
+
+        public async Task<Response<AdminStatisticsDto>> GetAdminStatistics()
+        {
+
+            var response = new Response<AdminStatisticsDto>();
+            var totalHotels = await GetTotalHotels();
+            var totalMonthlyTransactions = await GetAllTotalMonthlyTransactions();
+            decimal commission = 0.1M;
+            var totalMonthlyCommission = commission * totalMonthlyTransactions;
+            var allManagers = await GetAllManagers();
+            var annualRevenue = await GetAdminAnnualRevenue();
+
+
+            var adminStatistics = new AdminStatisticsDto
+            {
+                TotalNumberOfHotels = totalHotels,
+                TotalMonthlyTransactions = totalMonthlyTransactions,
+                Commission = commission,
+                TotalMonthlyCommission = totalMonthlyCommission,
+                Managers = allManagers,
+                AnnualRevenue = annualRevenue
+            };
+
+            if (adminStatistics != null)
+            {
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Data = adminStatistics;
+                response.Message = $"are the statistics for the Admin Manager";
+                return response;
+            }
+
+            response.Data = default;
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = false;
+            response.Message = $"No record exists in the database";
+            return response;
+
+        }
         public async Task<Response<HotelStatisticDto>> GetHotelStatistics(string hotelId)
         {
             var hotel = await _unitOfWork.Hotels.GetHotelsById(hotelId);
@@ -215,12 +343,12 @@ namespace hotel_booking_core.Services
                 {
                     Name = hotel.Name,
                     NumberOfRooms = totalRooms,
-                    AverageRatings = averageRatings,
+                    AverageRatings = await averageRatings,
                     RoomsOccupied = occupiedRooms,
                     RoomsUnOccupied = vacantRooms,
-                    NumberOfReviews = reviews,
-                    TotalNumberOfBookings = totalBookings,
-                    TotalEarnings = totalEarnings,
+                    NumberOfReviews = await reviews,
+                    TotalNumberOfBookings = await totalBookings,
+                    TotalEarnings = await totalEarnings,
                     RoomTypes = roomTypeCount,
                     NumberOfAmenities = noOfAmenities
                 };
@@ -233,15 +361,9 @@ namespace hotel_booking_core.Services
 
             response.Data = default;
             response.StatusCode = (int)HttpStatusCode.BadRequest;
-            response.Succeeded = true;
+            response.Succeeded = false;
             response.Message = $"Hotel with Id = { hotel.Id} doesn't exist";
             return response;
-        }
-
-        public async Task<int> GetNoOfCustomers(string hotelId)
-        {
-            var noOfCustomers = await _db.Bookings.Where(x => x.HotelId == hotelId).ToListAsync();
-            return noOfCustomers.Count;
         }
 
         public async Task<Response<HotelManagerStatisticsDto>> GetHotelManagerStatistics(string managerId)
@@ -256,6 +378,7 @@ namespace hotel_booking_core.Services
             var bookedRooms = 0;
             decimal monthlyTransactions = 0;
             var totalRooms = 0;
+            var totalAnnualTransactions = new Dictionary<string, decimal>();
 
             if (managerStats != null)
             {
@@ -265,14 +388,16 @@ namespace hotel_booking_core.Services
                 foreach (var hotel in hotels)
                 {
                     var hotelId = hotel.Id;
-                    averageRating += GetAverageRatings(hotelId);
-                    totalNoOfCustomers += GetNoOfCustomers(hotelId);
+                    averageRating += await GetAverageRatings(hotelId);
+                    totalNoOfCustomers += await GetNoOfCustomers(hotelId);
                     totalRooms += await GetTotalRoomsInEachHotel(hotelId);
                     availableRooms += await GetTotalNoOfOccupiedRooms(hotelId);
                     bookedRooms += await GetTotalNoOfVacantRooms(hotelId);
-                    monthlyTransactions += GetMonthlyEarnings(hotelId);
+                    monthlyTransactions += await GetMonthlyEarnings(hotelId);
 
                 }
+
+                totalAnnualTransactions = await GetManagerTotalRevenueInAYear(managerId);
 
                 var hotelManagerStats = new HotelManagerStatisticsDto
                 {
@@ -282,23 +407,88 @@ namespace hotel_booking_core.Services
                     TotalRooms = totalRooms,
                     BookedRooms = bookedRooms,
                     AvailableRooms = availableRooms,
-                    TotalMonthlyTransactions = monthlyTransactions
+                    TotalMonthlyTransactions = monthlyTransactions,
+                    TotalAnnualRevenue = totalAnnualTransactions
 
-    };
+                };
                 response.StatusCode = (int)HttpStatusCode.OK;
                 response.Succeeded = true;
                 response.Data = hotelManagerStats;
-                response.Message = $"are the statistics for the hotel manager with {managerId}";
+                response.Message = $"are the statistics for the hotel manager with Id: {managerId}";
                 return response;
             }
 
             response.Data = default;
             response.StatusCode = (int)HttpStatusCode.BadRequest;
-            response.Succeeded = true;
+            response.Succeeded = false;
             response.Message = $"No record exists for this manager";
             return response;
 
         }
+
+
+
+        private async Task<Dictionary<string, decimal>> GetAdminAnnualRevenue() 
+        {
+            var hotels = await _db.Hotels.ToListAsync();
+            List<string> listOfhotelsId = new List<string>();
+
+            foreach(var item in hotels) 
+            {
+                listOfhotelsId.Add(item.Id);
+            }
+
+            List<List<Booking>> bookings = new List<List<Booking>>();
+            foreach (var item in listOfhotelsId)
+            {
+                var req = _db.Bookings.Where(e => DateTime.Now.AddMonths(-12) < e.CreatedAt)
+                .Where(s => s.HotelId == item)
+                .Include(s => s.Payment)
+                .OrderByDescending(e => e.CreatedAt).ToList();
+                bookings.Add(req);
+            }
+
+            Dictionary<string, decimal> result = new Dictionary<string, decimal>()
+            {
+                {"January", 0.0m},
+                {"February", 0.0m},
+                {"March", 0.0m},
+                {"April", 0.0m},
+                {"May", 0.0m},
+                {"June", 0.0m},
+                {"July", 0.0m},
+                {"August", 0.0m},
+                {"September", 0.0m},
+                {"October", 0.0m},
+                {"November", 0.0m},
+                {"December", 0.0m}
+                };
+
+
+
+            foreach (var item in bookings)
+            {
+
+                foreach (var modl in item)
+                {
+                    string mm = modl.Payment.CreatedAt.ToString("MMMM");
+                    decimal actual = modl.Payment.Amount * 0.1m;
+                    result[mm] += actual;
+                }
+            }
+
+            return result;
+        }
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -10,12 +10,12 @@ namespace hotel_booking_core.Interfaces
 {
     public interface IHotelStatisticsService
     {
-        Task<Response<ManagersStatisticsDto>> GetManagerStatistics(string managersId);
+        Task<Response<AdminStatisticsDto>> GetAdminStatistics();
 
         Task<Response<HotelStatisticDto>> GetHotelStatistics(string hotelId);
         
         Task<Response<HotelManagerStatisticsDto>> GetHotelManagerStatistics(string managerId);
-
+        
 
 
 
