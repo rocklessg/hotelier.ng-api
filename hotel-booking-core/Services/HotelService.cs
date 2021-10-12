@@ -126,17 +126,17 @@ namespace hotel_booking_core.Services
             return Response<List<RoomDTo>>.Fail("Not Found");
         }
 
-        public async Task<Response<IEnumerable<RoomTypeByHotelDTo>>> GetHotelRoomType(Paging paging, string hotelId)
+        public async Task<Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>> GetHotelRoomType(Paging paging, string hotelId)
         {
-            var roomList = await _unitOfWork.Rooms.GetRoomTypeByHotel(hotelId);
+            var roomList = _unitOfWork.Rooms.GetRoomTypeByHotel(hotelId);
 
             if (roomList.Count() > 0)
             {
                 var dtoList = _mapper.Map<IEnumerable< RoomTypeByHotelDTo>>(roomList);
 
-                var item = await roomList.Pagination
+                var item = await roomList.PaginationAsync<RoomType, RoomTypeByHotelDTo>(paging.PageSize, paging.PageNumber, _mapper);
 
-                var result = new Response<IEnumerable<RoomTypeByHotelDTo>>
+                var result = new Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>
                 {
                     StatusCode = StatusCodes.Status200OK,
                     Succeeded = true,
@@ -146,7 +146,7 @@ namespace hotel_booking_core.Services
 
                 return result;
             }
-            return Response<IEnumerable<RoomTypeByHotelDTo>>.Fail("Not Found");
+            return Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>.Fail("Hotel is not valid", StatusCodes.Status404NotFound);
         }
 
 
