@@ -5,6 +5,7 @@ using hotel_booking_dto.RoomDtos;
 using hotel_booking_utilities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static hotel_booking_utilities.Pagination.Paginator;
 
 namespace hotel_booking_core.Interfaces
 {
@@ -34,7 +35,7 @@ namespace hotel_booking_core.Interfaces
         Task<Response<AddHotelResponseDto>> AddHotel(string managerId, AddHotelDto hotelDto);
         Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelid, AddRoomDto roomDto);
         Task<Response<IEnumerable<HotelBasicDto>>> GetHotelsByRatingsAsync();
-        Task<Response<hotel_booking_utilities.Pagination.Paginator.PageResult<IEnumerable<RoomInfoDto>>>> GetRoomByPriceAsync(PriceDto priceDto);
+        Task<Response<PageResult<IEnumerable<RoomInfoDto>>>> GetRoomByPriceAsync(PriceDto priceDto);
         Task<Response<IEnumerable<RoomInfoDto>>> GetTopDealsAsync();
     }
 }
