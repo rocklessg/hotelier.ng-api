@@ -391,10 +391,13 @@ namespace hotel_booking_core.Services
                     averageRating += await GetAverageRatings(hotelId);
                     totalNoOfCustomers += await GetNoOfCustomers(hotelId);
                     totalRooms += await GetTotalRoomsInEachHotel(hotelId);
-                    availableRooms += await GetTotalNoOfOccupiedRooms(hotelId);
-                    bookedRooms += await GetTotalNoOfVacantRooms(hotelId);
-                    monthlyTransactions += await GetMonthlyEarnings(hotelId);
 
+                    availableRooms += await GetTotalNoOfVacantRooms(hotelId);
+                    bookedRooms += await GetTotalNoOfOccupiedRooms(hotelId);
+                    monthlyTransactions += await GetMonthlyEarnings(hotelId);
+                    
+
+                    
                 }
 
                 totalAnnualTransactions = await GetManagerTotalRevenueInAYear(managerId);

@@ -15,9 +15,9 @@ namespace hotel_booking_dto.commons
         public string Address { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public string Thumbnails { get; set; }
-        public string Ratings { get; set; }
-        public ICollection<GalleryDto> Galleries { get; set; }
+        public string Thumbnail { get; set; }
+        public double Rating { get; set; }
+        public int NumberOfReviews { get; set; }
     }
     
 }

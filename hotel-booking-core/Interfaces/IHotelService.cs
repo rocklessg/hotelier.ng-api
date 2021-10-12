@@ -1,10 +1,11 @@
 ﻿using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
-using hotel_booking_dto.RoomsDtos;
+using hotel_booking_dto.RoomDtos;
 using hotel_booking_utilities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static hotel_booking_utilities.Pagination.Paginator;
 
 namespace hotel_booking_core.Interfaces
 {
@@ -28,15 +29,13 @@ namespace hotel_booking_core.Interfaces
         /// <param name="model"></param>
         /// <returns></returns>
         Task<Response<UpdateHotelDto>> UpdateHotelAsync(string hotelId, UpdateHotelDto model);
-        Task<Response<IEnumerable<RoomsByHotelDTo>>> GetAvailableRoomByHotel(Paginator paginator, string hotelId);
+        Task<Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>> GetHotelRoomType(Paging paging, string hotelId);
         Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId);
-        Response<RoomDTo> GetHotelRooomById(string roomId);
-        Task<List<RoomInfoDTo>> GetTopDealsAsync(Paging paging);
-        Task<List<RoomInfoDTo>> GetRoomByPriceAsync(PriceDto priceDto);
-        Task<List<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging);
+        Task<Response<IEnumerable<RoomDTo>>> GetHotelRooomById(string hotelId, string roomTypeId);
         Task<Response<AddHotelResponseDto>> AddHotel(string managerId, AddHotelDto hotelDto);
-
         Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelid, AddRoomDto roomDto);
-
+        Task<Response<IEnumerable<HotelBasicDto>>> GetHotelsByRatingsAsync();
+        Task<Response<PageResult<IEnumerable<RoomInfoDto>>>> GetRoomByPriceAsync(PriceDto priceDto);
+        Task<Response<IEnumerable<RoomInfoDto>>> GetTopDealsAsync();
     }
 }
