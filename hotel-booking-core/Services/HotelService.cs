@@ -10,6 +10,7 @@ using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +24,15 @@ namespace hotel_booking_core.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
        
 
-        public HotelService(IUnitOfWork unitOfWork, IMapper mapper)
+        public HotelService(IUnitOfWork unitOfWork, IMapper mapper, ILogger logger)
 
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-           
+           _logger = logger;
         }
 
         public async Task<Response<IEnumerable<HotelBasicDto>>> GetHotelsByRatingsAsync()
@@ -312,6 +314,7 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<PageResult<IEnumerable<HotelBasicDto>>>> GetHotelByLocation(string location, Paging paging)
         {
+            _logger.Information($"Attempting to get hotel in {location}");
             var hotels = _unitOfWork.Hotels.GetAllHotels()
                 .Where(q => q.State.Contains(location) || q.City.Contains(location));
 
@@ -319,6 +322,7 @@ namespace hotel_booking_core.Services
 
             if (hotels != null)
             {
+                _logger.Information("Search completed successfully");
                 var result = await hotels.PaginationAsync<Hotel, HotelBasicDto>(pageSize: paging.PageSize, pageNumber: paging.PageNumber, mapper: _mapper);
 
                 response.Data = result;
@@ -327,6 +331,7 @@ namespace hotel_booking_core.Services
                 return response;
             }
 
+            _logger.Information("Search completed with no results");
             response.Data = default;
             response.StatusCode = StatusCodes.Status200OK;
             response.Message = "On your request nothing has been found.";
