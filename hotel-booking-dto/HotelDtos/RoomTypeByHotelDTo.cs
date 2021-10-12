@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_dto.HotelDtos
 {
-    public class RoomsByHotelDTo
+    public class RoomTypeByHotelDTo
     {
         public string Id { get; set; }
-        public bool IsBooked { get; set; }
-        public string RoomtypeName { get; set; }
-        public string RoomTypeThumbnail { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public string Thumbnail { get; set; }
 
     }
 }
