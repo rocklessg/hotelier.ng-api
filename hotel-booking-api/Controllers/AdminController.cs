@@ -61,5 +61,13 @@ namespace hotel_booking_api.Controllers
             var newManagerRequest = await _managerService.AddManagerRequest(managerRequestDto);
             return Ok(newManagerRequest);
         }
+
+        [HttpGet]
+        [Route("send-invite")]
+        public async Task<IActionResult> SendManagerInvite(string email)
+        {
+            var sendInvite = await _managerService.SendManagerInvite(email);
+            return Ok(sendInvite);
+        }
     }
 }

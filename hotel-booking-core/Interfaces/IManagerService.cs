@@ -10,5 +10,6 @@ namespace hotel_booking_core.Interfaces
     public interface IManagerService
     {
         Task<Response<string>> AddManagerRequest(ManagerRequestDto managerRequest);
+        Task<Response<string>> SendManagerInvite(string email);
     }
 }

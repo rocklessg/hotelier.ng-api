@@ -7,9 +7,10 @@ using hotel_booking_models;
 using hotel_booking_models.Mail;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
-using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
+using System.Transactions;
+using Serilog;
 
 namespace hotel_booking_core.Services
 {
@@ -19,14 +20,17 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITokenGeneratorService _tokenGenerator;
         private readonly IMailService _mailService;
+        private readonly ILogger _logger;
 
         public ManagerService(IMapper mapper, IUnitOfWork unitOfWork,
-            ITokenGeneratorService tokenGenerator, IMailService mailService)
+            ITokenGeneratorService tokenGenerator, IMailService mailService,
+            ILogger logger)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _tokenGenerator = tokenGenerator;
             _mailService = mailService;
+            _logger = logger;
 
         }
 
@@ -51,8 +55,9 @@ namespace hotel_booking_core.Services
             return Response<string>.Fail("Email already exist", StatusCodes.Status409Conflict);
         }
 
-        public async Task<string> SendManagerInvite(string email)
+        public async Task<Response<string>> SendManagerInvite(string email)
         {
+            using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             var check = await _unitOfWork.ManagerRequest.GetHotelManager(email);
 
             if (check != null)
@@ -69,9 +74,21 @@ namespace hotel_booking_core.Services
                 var result = await _mailService.SendEmailAsync(mailRequest);
                 if (result)
                 {
-
+                    _logger.Information("Mail sent successfully");
+                    return new Response<string>
+                    {
+                        Data = check.Id,
+                        StatusCode = StatusCodes.Status200OK,
+                        Message = $"Message successfully sent",
+                        Succeeded = true
+                    };
                 }
+                _logger.Information("Mail service failed");
+                transaction.Dispose();
+                return Response<string>.Fail("Mail service failed", StatusCodes.Status503ServiceUnavailable);
             }
+            transaction.Complete();
+            return Response<string>.Fail("Message successfully sent", StatusCodes.Status404NotFound);
         }
 
         private static async Task<string> GetEmailBody(string emailTempPath, string token)

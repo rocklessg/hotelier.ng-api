@@ -38,6 +38,7 @@ COPY --from=publish /src/hotel-booking-api/Json/wishlists.json ./
 COPY --from=publish /src/hotel-booking-api/ErrorLoggingCertificate.pfx ./
 COPY --from=publish /src/hotel-booking-api/StaticFiles/Html/ConfirmEmail.html ./
 COPY --from=publish /src/hotel-booking-api/StaticFiles/Html/ForgotPassword.html ./
+COPY --from=publish /src/hotel-booking-api/StaticFiles/Html/ManagerInvite.html ./
 
-#ENTRYPOINT ["dotnet", "hotel-booking-api.dll"]
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet hotel-booking-api.dll
+ENTRYPOINT ["dotnet", "hotel-booking-api.dll"]
+#CMD ASPNETCORE_URLS=http://*:$PORT dotnet hotel-booking-api.dll
