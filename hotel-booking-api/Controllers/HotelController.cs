@@ -1,8 +1,6 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
-using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
-using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
@@ -70,12 +67,7 @@ namespace hotel_booking_api.Controllers
         [Route("top-deals")]
         public async Task<IActionResult> TopDealsAsync()
         {
-<<<<<<< HEAD
             var response = await _hotelService.GetTopDealsAsync();
-=======
-            var result = await _hotelService.GetTopDealsAsync(paging);
-            var response = new Response<List<RoomInfoDto>>(StatusCodes.Status200OK, true, "List of Top Deals", result);
->>>>>>> 43e12049bd335d0a966befe0ee5dbeb4d593efaa
             return StatusCode(response.StatusCode, response);
         }
 
@@ -83,12 +75,7 @@ namespace hotel_booking_api.Controllers
         [Route("room-by-price")]
         public async Task<IActionResult> GetHotelRoomsByPriceAsync([FromQuery]PriceDto pricing)
         {
-<<<<<<< HEAD
             var response = await _hotelService.GetRoomByPriceAsync(pricing);
-=======
-            var result = await _hotelService.GetRoomByPriceAsync(pricing);
-            var response = new Response<List<RoomInfoDto>>(StatusCodes.Status200OK, true, "List of Rooms By Price", result);
->>>>>>> 43e12049bd335d0a966befe0ee5dbeb4d593efaa
             return StatusCode(response.StatusCode, response);
         }
 
