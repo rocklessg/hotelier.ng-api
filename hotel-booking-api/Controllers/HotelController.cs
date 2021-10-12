@@ -1,5 +1,6 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
+using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
@@ -69,6 +70,15 @@ namespace hotel_booking_api.Controllers
         {
             var response = await _hotelService.GetTopDealsAsync();
             return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpGet("search/{location}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetHotelByLocation(string location, [FromQuery] Paging paging)
+        {
+            var result = await _hotelService.GetHotelByLocation(location, paging);
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet]

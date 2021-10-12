@@ -339,6 +339,5 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-
     }
 }
