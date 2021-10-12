@@ -1,4 +1,5 @@
 ﻿using hotel_booking_core.Interfaces;
+using hotel_booking_dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +13,14 @@ namespace hotel_booking_api.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IHotelStatisticsService _hotelStatisticsService;
+        private readonly IManagerService _managerService;
         private readonly ILogger<AdminController> _logger;
 
 
-        public AdminController(IHotelStatisticsService hotelStatisticsService, ILogger<AdminController> logger)
+        public AdminController(IHotelStatisticsService hotelStatisticsService, 
+            ILogger<AdminController> logger, IManagerService managerService)
         {
+            _managerService = managerService;
             _hotelStatisticsService = hotelStatisticsService;
             _logger = logger;
         }
@@ -48,6 +52,14 @@ namespace hotel_booking_api.Controllers
 
             _logger.LogInformation($"Gotten Hotel Manager Statistics for {managerId}");
             return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        [Route("join")]
+        public async Task<IActionResult> addHotelManagerRequest([FromBody]ManagerRequestDto managerRequestDto)
+        {
+            var a = await _managerService.AddManagerRequest(managerRequestDto);
+            return Ok();
         }
     }
 }

@@ -15,11 +15,14 @@ namespace hotel_booking_utilities
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<ManagerRequest> _hotelManager;
 
-        public TokenGeneratorService(IConfiguration configuration, UserManager<AppUser> userManager)
+        public TokenGeneratorService(IConfiguration configuration, UserManager<AppUser> userManager,
+            UserManager<ManagerRequest> hotelManager)
         {
             _configuration = configuration;
             _userManager = userManager;
+            _hotelManager = hotelManager;
         }
 
         /// <summary>
@@ -41,6 +44,27 @@ namespace hotel_booking_utilities
             {
                 authClaims.Add(new Claim(ClaimTypes.Role, role));
             }
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]));
+
+            // Specifying JWTSecurityToken Parameters
+            var token = new JwtSecurityToken
+            (audience: _configuration["JwtSettings:Audience"],
+             issuer: _configuration["JwtSettings:Issuer"],
+             claims: authClaims,
+             expires: DateTime.Now.AddMinutes(10),
+             signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256));
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public string GenerateToken(ManagerRequest manager)
+        {
+            var authClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, manager.Id),
+                new Claim(ClaimTypes.Email, manager.Email)
+            };
+
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]));
 
             // Specifying JWTSecurityToken Parameters
