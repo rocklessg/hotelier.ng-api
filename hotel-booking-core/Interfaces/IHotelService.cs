@@ -31,12 +31,10 @@ namespace hotel_booking_core.Interfaces
         Task<Response<IEnumerable<RoomTypeByHotelDTo>>> GetHotelRoomType(Paginator paginator, string hotelId);
         Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId);
         Task<Response<List<RoomDTo>>> GetHotelRooomById(string hotelId, string roomTypeId);
-        Task<List<RoomInfoDTo>> GetTopDealsAsync(Paging paging);
-        Task<List<RoomInfoDTo>> GetRoomByPriceAsync(PriceDto priceDto);
-        Task<List<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging);
         Task<Response<AddHotelResponseDto>> AddHotel(string managerId, AddHotelDto hotelDto);
-
         Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelid, AddRoomDto roomDto);
-
+        Task<Response<IEnumerable<HotelBasicDto>>> GetHotelsByRatingsAsync();
+        Task<Response<hotel_booking_utilities.Pagination.Paginator.PageResult<IEnumerable<RoomInfoDto>>>> GetRoomByPriceAsync(PriceDto priceDto);
+        Task<Response<IEnumerable<RoomInfoDto>>> GetTopDealsAsync();
     }
 }
