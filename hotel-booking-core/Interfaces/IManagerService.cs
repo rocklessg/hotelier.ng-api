@@ -1,4 +1,5 @@
-﻿using System;
+﻿using hotel_booking_dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace hotel_booking_core.Interfaces
 {
     public interface IManagerService
     {
+        Task<string> AddManagerRequest(ManagerRequestDto managerRequest);
     }
 }
