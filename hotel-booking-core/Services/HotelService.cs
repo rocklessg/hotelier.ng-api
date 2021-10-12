@@ -152,7 +152,6 @@ namespace hotel_booking_core.Services
             return Response<IEnumerable<RoomsByHotelDTo>>.Fail("Not Found");
         }
 
-
         public async Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId)
         {
             var ratings = await _unitOfWork.Hotels.HotelRatings(hotelId);
@@ -233,7 +232,6 @@ namespace hotel_booking_core.Services
             return response;
 
         }
-
 
         public async Task<Response<UpdateHotelDto>> UpdateHotelAsync(string hotelId, UpdateHotelDto model)
         {
@@ -323,7 +321,12 @@ namespace hotel_booking_core.Services
             if (hotels != null)
             {
                 _logger.Information("Search completed successfully");
-                var result = await hotels.PaginationAsync<Hotel, HotelBasicDto>(pageSize: paging.PageSize, pageNumber: paging.PageNumber, mapper: _mapper);
+                var result = await hotels.PaginationAsync<Hotel, HotelBasicDto>
+                    (
+                        pageSize: paging.PageSize, 
+                        pageNumber: paging.PageNumber, 
+                        mapper: _mapper
+                    );
 
                 response.Data = result;
                 response.StatusCode = StatusCodes.Status200OK;
