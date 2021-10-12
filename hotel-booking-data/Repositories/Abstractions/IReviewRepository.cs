@@ -1,13 +1,13 @@
 ﻿using hotel_booking_models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IReviewRepository : IGenericRepository<Review>
     {
-        int TotalCount { get; set; }
-        Task<IEnumerable<Review>> GetAllReviewsByHotelAsync(string livestockId, int page, int perPage);
+        IQueryable<Review> GetAllReviewsByHotelAsync(string HotelId);
         Task<bool> AddReviewAsync(Review review);
     }
 }

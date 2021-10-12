@@ -6,6 +6,7 @@ using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using System.Linq;
@@ -60,6 +61,10 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<Gallery, GalleryDto>().ReverseMap();
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
+
+            //Review Maps
+            CreateMap<Review, ReviewToReturnDto>().ReverseMap();
+            CreateMap<Review, AddReviewDto>().ReverseMap();
         }
 
     }

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MailKit.Search;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
@@ -19,7 +20,7 @@ namespace hotel_booking_data.Repositories.Implementations
             _context = context;
             _reviews = _context.Set<Review>();
         }
-        public int TotalCount { get; set; }
+        
 
         public async Task<bool> AddReviewAsync(Review review)
         {
@@ -27,22 +28,13 @@ namespace hotel_booking_data.Repositories.Implementations
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<IEnumerable<Review>> GetAllReviewsByHotelAsync(string HotelId, int page, int perPage)
+        public IQueryable<Review> GetAllReviewsByHotelAsync(string hotelId)
         {
-            var reviews = _reviews
-                .Where(reviews => reviews.HotelId == HotelId)
-                .OrderByDescending(reviews => reviews.CreatedAt);
-
-            TotalCount = await reviews.CountAsync();
-            var paginateReviews = await Paginator(reviews, page, perPage);
-
-            return paginateReviews;
-
-        }
-
-        private static async Task<IEnumerable<Review>> Paginator(IQueryable<Review> reviews, int page, int perPage)
-        {
-            return await reviews.Skip((page - 1) * perPage).Take(perPage).ToListAsync();
+            var query = _reviews.AsNoTracking();
+            query = query.Include(h => h.Hotel);
+            query = query.Where(r => r.HotelId == hotelId);
+            query = query.OrderBy(r => r.CreatedAt);
+            return query;
         }
     }
 }

@@ -19,14 +19,16 @@ namespace hotel_booking_api.Controllers
         private readonly IHotelService _hotelService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IHotelStatisticsService _hotelStatisticsService;
+        private readonly IReviewsService _reviewsService;
         private readonly ILogger<HotelController> _logger;
 
 
-        public HotelController(ILogger<HotelController> logger, IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatisticsService)
+        public HotelController(ILogger<HotelController> logger, IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatisticsService, IReviewsService reviewsService)
         {
             _hotelService = hotelService;
             _userManager = userManager;
             _hotelStatisticsService = hotelStatisticsService;
+            _reviewsService = reviewsService;
             _logger = logger;
         }
 
@@ -142,6 +144,18 @@ namespace hotel_booking_api.Controllers
             var result = await _hotelService.AddHotelRoom(hotelId, roomDto);
             return StatusCode(result.StatusCode, result);
 
+        }
+
+        [HttpGet]
+        [Route("reviews/{hotelId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllReviewsByHotel( string hotelId)
+        {
+            var response = await _reviewsService.GetAllReviewsByHotelAsync(hotelId);
+            return StatusCode(response.StatusCode, response);
         }
     }
 }
