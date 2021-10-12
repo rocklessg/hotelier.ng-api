@@ -14,5 +14,7 @@ namespace hotel_booking_data.Repositories.Implementations
             _context = context;
             _dbSet = _context.Set<ManagerRequest>();
         }
+
+
     }
 }

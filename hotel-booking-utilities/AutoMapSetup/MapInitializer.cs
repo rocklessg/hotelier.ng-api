@@ -58,8 +58,13 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             // Gallery Maps
             CreateMap<Gallery, GalleryDto>().ReverseMap();
+
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
+
+            //Manager Request Map
+
+            CreateMap<ManagerRequest, ManagerRequestDto>().ReverseMap();
         }
 
     }
