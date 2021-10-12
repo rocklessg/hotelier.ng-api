@@ -10,7 +10,7 @@ namespace hotel_booking_data.Repositories.Abstractions
     public interface IRoomRepository : IGenericRepository<Room>
     {
         Task<List<Room>> GetAllAsync(Expression<Func<Room, bool>> expression = null, Func<IQueryable<Room>, IOrderedQueryable<Room>> orderby = null, List<string> Includes = null);
-        Task<List<RoomType>> GetRoomTypeByHotel(string hotelId);
+        IQueryable<RoomType> GetRoomTypeByHotel(string hotelId);
         Task<ICollection<Room>> GetHotelRoom(string hotelId, string roomTypeId);
         
     }

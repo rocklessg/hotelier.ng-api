@@ -55,6 +55,7 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             // RoomType Maps
             CreateMap<RoomType, RoomInfoDto>().ReverseMap();
+            CreateMap<RoomType, RoomTypeByHotelDTo>();
 
             // Gallery Maps
             CreateMap<Gallery, GalleryDto>().ReverseMap();

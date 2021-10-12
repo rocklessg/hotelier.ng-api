@@ -126,16 +126,15 @@ namespace hotel_booking_core.Services
             return Response<List<RoomDTo>>.Fail("Not Found");
         }
 
-        public async Task<Response<IEnumerable<RoomTypeByHotelDTo>>> GetHotelRoomType(Paginator paginator, string hotelId)
+        public async Task<Response<IEnumerable<RoomTypeByHotelDTo>>> GetHotelRoomType(Paging paging, string hotelId)
         {
             var roomList = await _unitOfWork.Rooms.GetRoomTypeByHotel(hotelId);
 
             if (roomList.Count() > 0)
             {
-                var dtoList = HotelRoomsResponse.GetResponse(roomList);
+                var dtoList = _mapper.Map<IEnumerable< RoomTypeByHotelDTo>>(roomList);
 
-                var item = dtoList.Skip(paginator.PageSize * (paginator.CurrentPage - 1))
-                .Take(paginator.PageSize);
+                var item = await roomList.Pagination
 
                 var result = new Response<IEnumerable<RoomTypeByHotelDTo>>
                 {

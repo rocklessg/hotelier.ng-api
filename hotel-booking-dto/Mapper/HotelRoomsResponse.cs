@@ -12,6 +12,7 @@ namespace hotel_booking_dto.Mapper
         {
             var newList = new List<RoomTypeByHotelDTo>();
 
+
             for (int i = 0; i < roomType.Count(); i++)
             {
                 var listNew = new RoomTypeByHotelDTo
