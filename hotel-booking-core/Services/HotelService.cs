@@ -4,7 +4,6 @@ using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
-using hotel_booking_dto.Mapper;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
@@ -106,15 +105,15 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public async Task<Response<List<RoomDTo>>> GetHotelRooomById(string hotelId, string roomTypeId)
+        public async Task<Response<IEnumerable<RoomDTo>>> GetHotelRooomById(string hotelId, string roomTypeId)
         {
             var room = await _unitOfWork.Rooms.GetHotelRoom(hotelId, roomTypeId);
 
             if (room != null)
             {
-                var response = HotelRoomsResponse.GetResponse(room.ToList());
+                var response = _mapper.Map<IEnumerable<RoomDTo>>(room);
 
-                var result = new Response<List<RoomDTo>>
+                var result = new Response<IEnumerable<RoomDTo>>
                 {
                     StatusCode = StatusCodes.Status200OK,
                     Succeeded = true,
@@ -123,19 +122,16 @@ namespace hotel_booking_core.Services
                 };
                 return result;
             }
-            return Response<List<RoomDTo>>.Fail("Not Found");
+            return Response<IEnumerable<RoomDTo>>.Fail("No room found for this particular roomtype", StatusCodes.Status404NotFound);
         }
 
         public async Task<Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>> GetHotelRoomType(Paging paging, string hotelId)
         {
             var roomList = _unitOfWork.Rooms.GetRoomTypeByHotel(hotelId);
 
-            if (roomList.Count() > 0)
+            if (roomList.Any())
             {
-                var dtoList = _mapper.Map<IEnumerable< RoomTypeByHotelDTo>>(roomList);
-
                 var item = await roomList.PaginationAsync<RoomType, RoomTypeByHotelDTo>(paging.PageSize, paging.PageNumber, _mapper);
-
                 var result = new Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>
                 {
                     StatusCode = StatusCodes.Status200OK,
@@ -143,20 +139,18 @@ namespace hotel_booking_core.Services
                     Message = $"Total RoomType in hotel with id {hotelId}",
                     Data = item
                 };
-
                 return result;
             }
             return Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>.Fail("Hotel is not valid", StatusCodes.Status404NotFound);
         }
 
-
         public async Task<Response<IEnumerable<HotelRatingsDTo>>> GetHotelRatings(string hotelId)
         {
             var ratings = await _unitOfWork.Hotels.HotelRatings(hotelId);
 
-            if (ratings.Count() > 0)
+            if (ratings.Any())
             {
-                var response = HotelRoomsResponse.GetResponse(ratings);
+                var response = _mapper.Map<IEnumerable<HotelRatingsDTo>>(ratings);
 
                 var result = new Response<IEnumerable<HotelRatingsDTo>>
                 {
@@ -168,7 +162,7 @@ namespace hotel_booking_core.Services
 
                 return result;
             }
-            return Response<IEnumerable<HotelRatingsDTo>>.Fail("Not found");
+            return Response<IEnumerable<HotelRatingsDTo>>.Fail("No ratings for this hotel", StatusCodes.Status404NotFound);
         }
 
         public Response<GetHotelDto> GetHotelById(string id)
