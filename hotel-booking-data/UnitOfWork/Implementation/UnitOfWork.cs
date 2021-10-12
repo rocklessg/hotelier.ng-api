@@ -17,6 +17,7 @@ namespace hotel_booking_data.UnitOfWork.Implementation
         private IRoomRepository _rooms;
         private IWishListRepository _wishLists;
         private IRoomTypeRepository _roomType;
+        private IManagerRequestRepository _managerRequest;
 
         private readonly HbaDbContext _context;
 
@@ -41,6 +42,7 @@ namespace hotel_booking_data.UnitOfWork.Implementation
         public IWishListRepository WishLists => _wishLists ??= new WishListRepository(_context);
 
         public IRoomTypeRepository RoomType => _roomType ??= new RoomTypeRepository(_context);
+        public IManagerRequestRepository ManagerRequests => _managerRequest ??= new ManagerRequestRepository(_context);
 
 
         public async Task Save()
