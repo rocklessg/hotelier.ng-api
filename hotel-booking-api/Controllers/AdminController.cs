@@ -58,8 +58,8 @@ namespace hotel_booking_api.Controllers
         [Route("join")]
         public async Task<IActionResult> AddHotelManagerRequest([FromBody]ManagerRequestDto managerRequestDto)
         {
-            var a = await _managerService.AddManagerRequest(managerRequestDto);
-            return Ok();
+            var newManagerRequest = await _managerService.AddManagerRequest(managerRequestDto);
+            return Ok(newManagerRequest);
         }
     }
 }

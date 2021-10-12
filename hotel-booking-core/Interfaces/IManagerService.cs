@@ -9,6 +9,6 @@ namespace hotel_booking_core.Interfaces
 {
     public interface IManagerService
     {
-        Task<string> AddManagerRequest(ManagerRequestDto managerRequest);
+        Task<Response<string>> AddManagerRequest(ManagerRequestDto managerRequest);
     }
 }

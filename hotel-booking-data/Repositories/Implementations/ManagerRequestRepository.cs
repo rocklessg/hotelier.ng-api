@@ -2,6 +2,7 @@
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
@@ -15,6 +16,10 @@ namespace hotel_booking_data.Repositories.Implementations
             _dbSet = _context.Set<ManagerRequest>();
         }
 
-
+        public async Task<ManagerRequest> GetHotelManager(string email)
+        {
+            var check = await _dbSet.FirstOrDefaultAsync(x => x.Email == email);
+            return check;
+        }
     }
 }

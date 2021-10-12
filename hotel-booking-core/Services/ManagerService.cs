@@ -4,6 +4,7 @@ using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_models;
 using hotel_booking_utilities;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.Services
@@ -22,13 +23,25 @@ namespace hotel_booking_core.Services
             _tokenGenerator = tokenGenerator;
         }
 
-        public async Task<string> AddManagerRequest(ManagerRequestDto managerRequest)
+        public async Task<Response<string>> AddManagerRequest(ManagerRequestDto managerRequest)
         {
-            var addManager = _mapper.Map<ManagerRequest>(managerRequest);
-            addManager.Token = _tokenGenerator.GenerateToken(addManager);
-            await _unitOfWork.ManagerRequest.InsertAsync(addManager);
-            await _unitOfWork.Save();
-            return "allos";
+            var getManager = await _unitOfWork.ManagerRequest.GetHotelManager(managerRequest.Email);
+
+            if (getManager == null)
+            {
+                var addManager = _mapper.Map<ManagerRequest>(managerRequest);
+                addManager.Token = _tokenGenerator.GenerateToken(addManager);
+                await _unitOfWork.ManagerRequest.InsertAsync(addManager);
+                await _unitOfWork.Save();
+
+                return new Response<string>
+                {
+                    Message = "Thank you for interest, you will get a response from us shortly",
+                    StatusCode = StatusCodes.Status200OK,
+                    Succeeded = true
+                };
+            }
+            return Response<string>.Fail("Email already exist", StatusCodes.Status409Conflict);
         }
     }
 }

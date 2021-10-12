@@ -61,7 +61,6 @@ namespace hotel_booking_utilities
         {
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, manager.Id),
                 new Claim(ClaimTypes.Email, manager.Email)
             };
 
