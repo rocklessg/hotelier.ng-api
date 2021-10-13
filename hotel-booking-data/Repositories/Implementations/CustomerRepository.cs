@@ -28,7 +28,7 @@ namespace hotel_booking_data.Repositories.Implementations
             return customer;
         }
 
-        public IEnumerable<Customer> GetAllUsers(Expression<Func<Customer,bool>> expression = null, List<string> includes = null, Func<IQueryable<Customer>, IOrderedQueryable<Customer>> orderby = null)
+        public IEnumerable<Customer> GetAllUsers()
         {
            return _customers.Include(x => x.AppUser).ToList();
         }

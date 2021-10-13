@@ -55,14 +55,14 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpGet("Users")]
+        [HttpGet("Customers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         //[Authorize(Roles = "")]
-        public IActionResult GetAllUsers([FromQuery] Paginator pagenator)
+        public IActionResult GetAllCustomers([FromQuery] Paginator pagenator)
         {
-           var result =   _customerService.GetAllUsersAsync(pagenator);
+           var result =   _customerService.GetAllCustomers(pagenator);
             return Ok(result);
         }
     }

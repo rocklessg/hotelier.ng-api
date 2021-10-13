@@ -24,8 +24,7 @@ namespace hotel_booking_api.Controllers
         [HttpPatch("hotelId")]
         public IActionResult UpdateCustomerReview([FromBody]ReviewRequestDto reviewRequestDto)
         {
-            // var customerId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            var customerId = "d296434c-13bc-4f44-a8d7-4426bf0cbd56";
+            var customerId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var response = _reviewService.UpdateUserReview(customerId, reviewRequestDto);
             return StatusCode(response.StatusCode, response);
         }

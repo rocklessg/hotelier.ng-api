@@ -13,6 +13,7 @@ using hotel_booking_core.Interface;
 using System.Collections.Generic;
 using hotel_booking_utilities;
 using System.Linq;
+using hotel_booking_dto.Mapper;
 
 namespace hotel_booking_core.Services
 {
@@ -109,28 +110,16 @@ namespace hotel_booking_core.Services
             return await _userManager.UpdateAsync(user);
         }
 
-        public  List<GetUsersResponseDto> GetAllUsersAsync(Paginator pagenator)
+        public  List<GetUsersResponseDto> GetAllCustomers(Paginator pagenator)
         {
-           // List<string> appUser = new List<string>() { "AppUser"};
-
             IEnumerable<Customer> customers =  _unitOfWork.Customers.GetAllUsers();
             var pagenatedCustomers = new List<GetUsersResponseDto>();
             List<GetUsersResponseDto> getUsersResponseDto = new List<GetUsersResponseDto>();
 
             foreach (var customer in customers)
             {
-                GetUsersResponseDto custon = new GetUsersResponseDto()
-                {
-                    FirstName = customer.AppUser.FirstName,
-                    LastName = customer.AppUser.LastName,
-                    Age = customer.AppUser.Age,
-                    Id = customer.AppUser.Id,
-                    Email = customer.AppUser.Email,
-                    PhoneNumber = customer.AppUser.PhoneNumber,
-                    UserName = customer.AppUser.UserName,
-                    CreatedAt = customer.AppUser.CreatedAt
-                };
-                getUsersResponseDto.Add(custon);
+                GetUsersResponseDto customerToReturn = GetUsersResponseDtoMap.GetUsersResponse(customer);
+                getUsersResponseDto.Add(customerToReturn);
             }
 
             pagenatedCustomers = getUsersResponseDto.Skip((pagenator.CurrentPage - 1) * pagenator.PageSize)

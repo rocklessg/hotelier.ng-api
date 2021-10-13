@@ -12,6 +12,6 @@ namespace hotel_booking_core.Interfaces
     {
         Task<Response<string>> UpdateCustomer(string CustomerId, UpdateCustomerDto updateCustomer);
         Task<Response<UpdateUserImageDto>> UpdatePhoto(AddImageDto imageDto, string userId);
-        List<GetUsersResponseDto> GetAllUsersAsync(Paginator pagenator);
+        List<GetUsersResponseDto> GetAllCustomers(Paginator pagenator);
     }
 }

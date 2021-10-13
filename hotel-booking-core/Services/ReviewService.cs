@@ -17,7 +17,7 @@ namespace hotel_booking_core.Services
 
         public Response<string> UpdateUserReview(string customerId, ReviewRequestDto reviewRequestDto)
         {
-            var response = new Response<string>();
+            Response<string> response = new();
 
             var review =  _unitOfWork.Reviews.GetUserReview(reviewRequestDto.HotelId)
                                              .FirstOrDefault(x => x.CustomerId == customerId);
@@ -28,7 +28,6 @@ namespace hotel_booking_core.Services
                 _unitOfWork.Reviews.Update(review);
                 _unitOfWork.Save();
 
-                response.Data = default;
                 response.Succeeded = true;
                 response.StatusCode = (int)HttpStatusCode.Created;
                 response.Message = $"Comment updated successfully";
@@ -36,7 +35,6 @@ namespace hotel_booking_core.Services
                 return response;
             }
 
-            response.Data = default;
             response.Succeeded = false;
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Message = $"No review exist";
