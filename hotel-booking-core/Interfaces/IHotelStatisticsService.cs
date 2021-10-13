@@ -1,5 +1,6 @@
 ﻿using hotel_booking_dto;
 using hotel_booking_models;
+using hotel_booking_utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +26,5 @@ namespace hotel_booking_core.Interfaces
         decimal GetTotalEarnings(string hotelId);
         int GetNoOfCustomers(string hotelId);
         Task<Response<HotelManagerStatisticsDto>> GetHotelManagerStatistics(string managerId);
-
-
-
-
     }
 }
