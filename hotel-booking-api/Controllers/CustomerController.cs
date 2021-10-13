@@ -22,6 +22,7 @@ namespace hotel_booking_api.Controllers
         private readonly ILogger<CustomerController> _logger;
         public CustomerController(ICustomerService customerService, IBookingService bookingService, ILogger<CustomerController> logger)
         {
+            HttpClientInitializer.Initialize();
             _customerService = customerService;
             _bookingService = bookingService;
             _logger = logger;
@@ -63,11 +64,10 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> CreateBooking([FromRoute] string hotelId, [FromBody] HotelBookingRequestDto bookingDto)
         {
-            // string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            string userId = "2ccd5586-51f2-444c-aa63-e13012748dfa";
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _bookingService.Book(hotelId, userId, bookingDto);
             return StatusCode(result.StatusCode, result);
         }

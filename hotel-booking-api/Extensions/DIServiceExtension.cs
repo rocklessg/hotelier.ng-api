@@ -13,6 +13,8 @@ using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_utilities;
+using hotel_booking_utilities.HttpClientService.Implementation;
+using hotel_booking_utilities.HttpClientService.Interface;
 using hotel_booking_utilities.PaymentGatewaySettings;
 using hotel_booking_utilities.Validators.AppUserValidator;
 using hotel_booking_utilities.Validators.AuthenticationValidators;
@@ -48,6 +50,10 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<PaystackPaymentHandler>();
+            services.AddScoped<FlutterwavePaymentHandler>();
+
+
+            services.AddScoped<IHttpClientService, HttpClientService>();
 
 
             // Add Repository Injections Here

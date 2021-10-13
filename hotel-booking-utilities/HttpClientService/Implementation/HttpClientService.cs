@@ -1,14 +1,9 @@
-﻿using hotel_booking_core.Interfaces;
-using hotel_booking_utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using hotel_booking_utilities.HttpClientService.Interface;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace hotel_booking_core.Services
+namespace hotel_booking_utilities.HttpClientService.Implementation
 {
     public class HttpClientService : IHttpClientService
     {

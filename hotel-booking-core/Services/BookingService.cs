@@ -6,6 +6,7 @@ using hotel_booking_dto.HotelDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,14 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPaymentService _paymentService;
+        private readonly IConfiguration _configuration;
 
-        public BookingService(IUnitOfWork unitOfWork, IMapper mapper, IPaymentService paymentService)
+        public BookingService(IUnitOfWork unitOfWork, IMapper mapper, IPaymentService paymentService, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _paymentService = paymentService;
+            _configuration = configuration;
         }
 
         public async Task<Response<IEnumerable<Booking>>> GetCustomerBookings(string userId, Paginator paginator)
@@ -84,9 +87,11 @@ namespace hotel_booking_core.Services
 
             decimal amount = room.Roomtype.Price;
 
+            string transactionRef = $"{ReferenceGen.Generate()}";
+
             try
             {
-                string authorizationUrl = await _paymentService.InitializePayment(amount, customer, bookingDto.PaymentService, booking.Id);
+                string authorizationUrl = await _paymentService.InitializePayment(amount, customer, bookingDto.PaymentService, booking.Id, transactionRef, _configuration["Payment:RedirectUrl"]);
                 HotelBookingResponseDto bookingResponse = _mapper.Map<HotelBookingResponseDto>(booking);
                 bookingResponse.PaymentUrl = authorizationUrl;
                 Response<HotelBookingResponseDto> response = new Response<HotelBookingResponseDto>()

@@ -4,6 +4,7 @@ using hotel_booking_models;
 using hotel_booking_utilities.PaymentGatewaySettings;
 using PayStack.Net;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.Services
@@ -12,20 +13,23 @@ namespace hotel_booking_core.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly PaystackPaymentHandler _paystack;
+        private readonly FlutterwavePaymentHandler _flutterwave;
 
-        public PaymentService(IUnitOfWork unitOfWork, PaystackPaymentHandler paystack)
+        public PaymentService(IUnitOfWork unitOfWork, PaystackPaymentHandler paystack, FlutterwavePaymentHandler flutterwave)
         {
             _unitOfWork = unitOfWork;
             _paystack = paystack;
+            _flutterwave = flutterwave;
         }
-        public async Task<string> InitializePayment(decimal amount, Customer customer, string paymentService, string bookingId)
+        public async Task<string> InitializePayment(decimal amount, Customer customer, string paymentService, string bookingId, string transactionRef, string redirect_url)
         {
 
             Payment payment = new()
             {
                 BookingId = bookingId,
                 Amount = amount,
-                MethodOfPayment = paymentService
+                MethodOfPayment = paymentService,
+                TransactionReference = transactionRef,
             };
 
             await _unitOfWork.Payments.InsertAsync(payment);
@@ -39,8 +43,22 @@ namespace hotel_booking_core.Services
                     {
                         AmountInKobo = (int)(amount * 100),
                         Email = customer.AppUser.Email,
+                        Reference = transactionRef,
+                        CallbackUrl = redirect_url
                     };
                     return _paystack.InitializePayment(request).Data.AuthorizationUrl;
+                } else if(paymentService == "Flutterwave")
+                {
+                    FlutterwaveRequestDTO request = new()
+                    {
+                        amount = amount,
+                        tx_ref = transactionRef,
+                        redirect_url = redirect_url,
+                        payment_options = new List<string>() { "card", "mobilemoney", "ussd"},
+                        customer = new() { email = customer.AppUser.Email, name = $"{customer.AppUser.FirstName} {customer.AppUser.LastName}"}
+                    };
+                    var response = await _flutterwave.InitializePayment(request);
+                    return response.Data.Link;
                 }
                 throw new ArgumentException("Invalid Payment Service");
             }
