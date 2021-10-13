@@ -14,7 +14,6 @@ namespace hotel_booking_api.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AuthenticationController : ControllerBase
     {
         private readonly ILogger _logger;
@@ -27,7 +26,6 @@ namespace hotel_booking_api.Controllers
 
         }
 
-        [AllowAnonymous]
         [HttpPost]
         [Route("register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -40,7 +38,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        [AllowAnonymous]
+
         [HttpPost]
         [Route("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -67,7 +65,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        [AllowAnonymous]
+
         [HttpPatch]
         [Route("reset-password")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -93,7 +91,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        [AllowAnonymous]
+
         [HttpPost]
         [Route("forgot-password")]
         [ProducesResponseType(StatusCodes.Status200OK)]
