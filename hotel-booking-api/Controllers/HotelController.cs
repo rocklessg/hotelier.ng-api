@@ -49,7 +49,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Policy = "Manager")]
         [HttpPut("{hotelId}")]
         public async Task<IActionResult> UpdateHotel(string hotelId, [FromBody] UpdateHotelDto update)
         {
