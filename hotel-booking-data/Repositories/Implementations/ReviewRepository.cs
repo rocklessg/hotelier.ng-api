@@ -2,10 +2,8 @@
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MailKit.Search;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
@@ -22,10 +20,9 @@ namespace hotel_booking_data.Repositories.Implementations
         }
         
 
-        public async Task<bool> AddReviewAsync(Review review)
+        public async Task<Review> CheckReviewByCustomerAsync(string customerId, string hotelId)
         {
-            await _reviews.AddAsync(review);
-            return await _context.SaveChangesAsync() > 0;
+            return await _reviews.Where(x => x.CustomerId == customerId && x.HotelId == hotelId).SingleOrDefaultAsync();
         }
 
         public IQueryable<Review> GetAllReviewsByHotelAsync(string hotelId)

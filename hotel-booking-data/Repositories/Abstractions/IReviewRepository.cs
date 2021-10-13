@@ -8,6 +8,6 @@ namespace hotel_booking_data.Repositories.Abstractions
     public interface IReviewRepository : IGenericRepository<Review>
     {
         IQueryable<Review> GetAllReviewsByHotelAsync(string HotelId);
-        Task<bool> AddReviewAsync(Review review);
+        Task<Review> CheckReviewByCustomerAsync(string customerId, string HotelId);
     }
 }
