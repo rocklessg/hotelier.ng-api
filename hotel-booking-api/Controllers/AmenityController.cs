@@ -49,9 +49,8 @@ namespace hotel_booking_api.Controllers
         [Authorize(Roles = "Manager")]
 
         public async Task<ActionResult> AddAmenity([FromBody] AddAmenityRequestDto amenity)
-        {
-            var hotelId = amenity.HotelId;
-            var response = await _amenityService.AddAmenity(hotelId, amenity);
+        {         
+            var response = await _amenityService.AddAmenity(amenity.HotelId, amenity);
             return Ok(response);
         }
     }
