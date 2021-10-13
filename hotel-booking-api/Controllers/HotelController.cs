@@ -75,12 +75,8 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet]
-<<<<<<< HEAD
-        public async Task<IActionResult> GetHotelRoomsByPriceAsync([FromQuery] PriceDto pricing)
-=======
         [Route("room-by-price")]
         public async Task<IActionResult> GetHotelRoomsByPriceAsync([FromQuery]PriceDto pricing)
->>>>>>> e077c1a53b627278b6bb3fad0c861a12465c0da8
         {
             var response = await _hotelService.GetRoomByPriceAsync(pricing);
             return StatusCode(response.StatusCode, response);

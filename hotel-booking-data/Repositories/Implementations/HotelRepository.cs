@@ -45,6 +45,7 @@ namespace hotel_booking_data.Repositories.Implementations
                          .Include(hotel => hotel.Galleries)
                          .Include(hotel => hotel.Ratings)
                          .Include(hotel => hotel.RoomTypes)
+                         .Include(hotel => hotel.Amenities)
                          .Include(hotel => hotel.Reviews)
                          .ThenInclude(review => review.Customer.AppUser);
             return hotel.FirstOrDefault();
