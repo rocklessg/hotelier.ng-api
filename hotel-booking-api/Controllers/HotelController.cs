@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using ILogger = Serilog.ILogger;
+using Serilog;
 
 
 namespace hotel_booking_api.Controllers
