@@ -13,5 +13,6 @@ namespace hotel_booking_core.Interfaces
         Task<Response<IEnumerable<AmenityDto>>> GetAmenityByHotelIdAsync(string hotelId);
         Response<UpdateAmenityDto> UpdateAmenity(string id, UpdateAmenityDto update);
         Task<Response<AddAmenityResponseDto>> AddAmenity(string id, AddAmenityRequestDto model);
+        Task<Response<string>> DeleteAmenityAsync(string amenityId);
     }
 }
