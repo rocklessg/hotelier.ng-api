@@ -2,6 +2,7 @@
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.ReviewDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +11,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using hotel_booking_dto.ReviewDtos;
 
 namespace hotel_booking_api.Controllers
 {
@@ -169,12 +169,11 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddReviews([FromBody] AddReviewDto model)
-        {
-            var loggedInUser = await _userManager.GetUserAsync(User);
-            var result = await _reviewsService.AddReviewAsync(loggedInUser.Id, model);
-            
+        { 
+            var result = await _reviewsService.AddReviewAsync(model);
             return StatusCode(result.StatusCode, result);
         }
     }

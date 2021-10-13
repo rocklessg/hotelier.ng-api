@@ -13,6 +13,6 @@ namespace hotel_booking_core.Interfaces
         Task<Response<Paginator.PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging,
             string hotelId);
 
-        Task<Response<ReviewToReturnDto>> AddReviewAsync(string customerId, AddReviewDto model);
+        Task<Response<ReviewToReturnDto>> AddReviewAsync(AddReviewDto model);
     }
 }

@@ -30,11 +30,11 @@ namespace hotel_booking_core.Services
            
         }
        
-        public async Task<Response<ReviewToReturnDto>> AddReviewAsync(string customerId, AddReviewDto model)
+        public async Task<Response<ReviewToReturnDto>> AddReviewAsync(AddReviewDto model)
         {
             var response = new Response<ReviewToReturnDto>();
            
-            var currentUser = await  _unitOfWork.Reviews.CheckReviewByCustomerAsync(customerId, model.HotelId);
+            var currentUser = await  _unitOfWork.Reviews.CheckReviewByCustomerAsync(model.CustomerId, model.HotelId);
             if (currentUser == null)
             {
                 response.Succeeded = false;
@@ -46,7 +46,7 @@ namespace hotel_booking_core.Services
             await _unitOfWork.Save();
 
             var reviewToReturn = _mapper.Map<ReviewToReturnDto>(review);
-            reviewToReturn.Id = customerId;
+            reviewToReturn.Id = model.CustomerId;
             //response
             response.Succeeded = true;
             response.Data = reviewToReturn;
