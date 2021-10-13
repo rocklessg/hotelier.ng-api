@@ -9,6 +9,7 @@ using System.Security.Claims;
 using hotel_booking_dto.CustomerDtos;
 using Microsoft.Extensions.Logging;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_utilities;
 
 namespace hotel_booking_api.Controllers
 {
@@ -17,12 +18,12 @@ namespace hotel_booking_api.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
-        private readonly IHotelService _hotelService;
+        private readonly IBookingService _bookingService;
         private readonly ILogger<CustomerController> _logger;
-        public CustomerController(ICustomerService customerService, IHotelService hotelService, ILogger<CustomerController> logger)
+        public CustomerController(ICustomerService customerService, IBookingService bookingService, ILogger<CustomerController> logger)
         {
             _customerService = customerService;
-            _hotelService = hotelService;
+            _bookingService = bookingService;
             _logger = logger;
         }
 
@@ -62,12 +63,21 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Customer")]
+        // [Authorize(Roles = "Customer")]
         public async Task<IActionResult> CreateBooking([FromRoute] string hotelId, [FromBody] HotelBookingRequestDto bookingDto)
         {
-            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            // string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            string userId = "2ccd5586-51f2-444c-aa63-e13012748dfa";
+            var result = await _bookingService.Book(hotelId, userId, bookingDto);
+            return StatusCode(result.StatusCode, result);
+        }
 
-            var result = await _hotelService.BookHotel(hotelId, userId, bookingDto);
+        [HttpGet("{userId}/bookings")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetCustomerBooking([FromRoute] string userId, [FromQuery] Paginator paginator)
+        {
+            var result = await _bookingService.GetCustomerBookings(userId, paginator);
             return StatusCode(result.StatusCode, result);
         }
     }

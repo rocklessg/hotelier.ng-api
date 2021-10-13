@@ -26,7 +26,10 @@ namespace hotel_booking_data.Repositories.Implementations
 
         public async Task<Customer> GetCustomerAsync(string id)
         {
-            return await _customers.Include(x => x.AppUser).FirstOrDefaultAsync(x => x.AppUserId == id);
+            return await _customers
+                .Include(x => x.AppUser)
+                .Include(x => x.Bookings)
+                .FirstOrDefaultAsync(x => x.AppUserId == id);
         }
     }
 }

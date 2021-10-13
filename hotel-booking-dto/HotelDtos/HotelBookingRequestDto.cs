@@ -13,7 +13,7 @@ namespace hotel_booking_dto.HotelDtos
         [Required]
         public DateTime CheckOut { get; set; }
         public int NoOfPeople { get; set; }
+        [Required]
         public string PaymentService { get; set; }
-
     }
 }

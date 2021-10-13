@@ -44,6 +44,8 @@ namespace hotel_booking_api.Extensions
             
             services.AddScoped<IManagerRepository, ManagerRepository>();
 
+
+            services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<PaystackPaymentHandler>();
 
