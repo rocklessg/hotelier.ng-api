@@ -29,20 +29,20 @@ namespace hotel_booking_data.Repositories.Implementations
             return await query.ToListAsync();
         }
 
-        public async Task<List<Room>> GetAvailableRoomsByHotel(string hotelId)
+        public IQueryable<RoomType> GetRoomTypeByHotel(string hotelId)
         {
-            var rooms = await _context.Rooms
-                .Include(room => room.Roomtype)
-                .Where(room => room.Roomtype.Hotel.Id == hotelId)
-                .Where(room => !room.IsBooked).ToListAsync();
+            var rooms = _context.RoomTypes
+                .Where(room => room.Hotel.Id == hotelId);
 
             return rooms;
         }
 
-        public Room GetHotelRoom(string roomId)
+        public async Task<ICollection<Room>> GetHotelRoom(string hotelId, string roomTypeId)
         {
-            var getRoom = _context.Rooms.Include(x => x.Roomtype)
-                    .Where(x => x.Id == roomId).FirstOrDefault();
+            var getRoom = await _context.RoomTypes
+                .Include(x => x.Rooms)
+                .Where(x => x.Id == roomTypeId).Where(x => x.HotelId == hotelId)
+                .Select(x => x.Rooms).FirstOrDefaultAsync();
 
             return getRoom;
         }

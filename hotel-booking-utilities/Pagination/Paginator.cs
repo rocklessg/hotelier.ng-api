@@ -9,7 +9,6 @@ namespace hotel_booking_utilities.Pagination
 {
     public static partial class Paginator
     {
-
         public static async Task<PageResult<IEnumerable<TDestination>>> PaginationAsync<TSource, TDestination>(this IQueryable<TSource> querable, int pageSize, int pageNumber, IMapper mapper)
             where TSource : class
             where TDestination : class
@@ -17,8 +16,8 @@ namespace hotel_booking_utilities.Pagination
             var count = querable.Count();
             var pageResult = new PageResult<IEnumerable<TDestination>>
             {
-                PageSize = (pageSize > 10) ? 10 : pageSize,
-                CurrentPage = pageNumber,
+                PageSize = (pageSize > 10 || pageSize < 1) ? 10 : pageSize,
+                CurrentPage = pageNumber > 1 ? pageNumber : 1,
                 PreviousPage = pageNumber - 1
             };
             pageResult.NumberOfPages = count % pageResult.PageSize != 0
@@ -28,8 +27,6 @@ namespace hotel_booking_utilities.Pagination
             var destinationList = mapper.Map<IEnumerable<TSource>, IEnumerable<TDestination>>(sourceList);
             pageResult.PageItems = destinationList;
             return pageResult;
-        }
-
-        
+        }        
     }
 }
