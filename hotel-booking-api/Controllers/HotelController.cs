@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using ILogger = Serilog.ILogger;
+
 
 namespace hotel_booking_api.Controllers
 {
@@ -23,10 +25,10 @@ namespace hotel_booking_api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IHotelStatisticsService _hotelStatisticsService;
         private readonly IReviewsService _reviewsService;
-        private readonly ILogger<HotelController> _logger;
+        private readonly ILogger _logger;
 
 
-        public HotelController(ILogger<HotelController> logger, IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatisticsService, IReviewsService reviewsService)
+        public HotelController(ILogger logger, IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatisticsService)
         {
             _hotelService = hotelService;
             _userManager = userManager;
@@ -51,7 +53,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Policy = "Manager")]
         [HttpPut("{hotelId}")]
         public async Task<IActionResult> UpdateHotel(string hotelId, [FromBody] UpdateHotelDto update)
         {
@@ -123,15 +125,15 @@ namespace hotel_booking_api.Controllers
 
 
         [HttpGet("{hotelId}/statistics")]
-      //  [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetHotelStatistics(string hotelId)
         {
-            _logger.LogInformation($"About Getting statistics for hotel with ID {hotelId}");
+            _logger.Information($"About Getting statistics for hotel with ID {hotelId}");
             var result = await _hotelStatisticsService.GetHotelStatistics(hotelId);
-            _logger.LogInformation($"Gotten stats for hotel with ID {hotelId}");
+            _logger.Information($"Gotten stats for hotel with ID {hotelId}");
             return StatusCode(result.StatusCode, result);
         }
 

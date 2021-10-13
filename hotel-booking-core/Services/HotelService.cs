@@ -191,7 +191,7 @@ namespace hotel_booking_core.Services
                     FeaturedImage = hotel.Galleries.FirstOrDefault(gallery => gallery.IsFeature).ImageUrl,
                     Gallery = hotel.Galleries.Select(gallery => gallery.ImageUrl),
 
-                    // Map Room types to Get all hotels room type DTO
+                    // Map Room types to Hotel room type DTO
                     RoomTypes = hotel.RoomTypes.Select(roomType =>
                         new RoomTypeDto()
                         {
@@ -203,7 +203,17 @@ namespace hotel_booking_core.Services
                             Thumbnail = roomType.Thumbnail
                         }),
 
-                    // Map Reviews to Get all hotels review DTO
+                    // Map Amenities to Hotel Amenities DTO
+                    Amenities = hotel.Amenities.Select(amenity =>
+                        new AmenityDto()
+                        {
+                            Id = amenity.Id,
+                            Name = amenity.Name,
+                            Price = amenity.Price,
+                            Discount = amenity.Discount,
+                        }),
+
+                    // Map Reviews to Hotel review DTO
                     Reviews = hotel.Reviews.Select(review =>
                         new ReviewDto()
                         {
