@@ -13,6 +13,7 @@ using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_utilities;
+using hotel_booking_utilities.PaymentGatewaySettings;
 using hotel_booking_utilities.Validators.AppUserValidator;
 using hotel_booking_utilities.Validators.AuthenticationValidators;
 using hotel_booking_utilities.Validators.CustomerValidators;
@@ -38,12 +39,13 @@ namespace hotel_booking_api.Extensions
 
             services.AddScoped<IAmenityService, AmenityService>();
             services.AddScoped<IHotelService, HotelService>();
-
+            
             services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
             
             services.AddScoped<IManagerRepository, ManagerRepository>();
-            
 
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<PaystackPaymentHandler>();
 
 
             // Add Repository Injections Here
@@ -61,7 +63,7 @@ namespace hotel_booking_api.Extensions
 
             services.AddTransient<IValidator<UpdateAppUserDto>, UpdateAppUserDtoValidator>();
             services.AddTransient<IValidator<UpdateCustomerDto>, UpdateCustomerDtoValidator>();
-
+            services.AddTransient<IValidator<HotelBookingRequestDto>, HotelBookingRequestDtoValidator>();
         }
     }
 }

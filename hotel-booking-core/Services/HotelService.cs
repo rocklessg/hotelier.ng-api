@@ -9,7 +9,9 @@ using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
+using hotel_booking_utilities.PaymentGatewaySettings;
 using Microsoft.AspNetCore.Http;
+using PayStack.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,21 +24,21 @@ namespace hotel_booking_core.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-       
+        private readonly IPaymentService _paymentService;
 
-        public HotelService(IUnitOfWork unitOfWork, IMapper mapper)
+        public HotelService(IUnitOfWork unitOfWork, IMapper mapper, IPaymentService paymentService)
 
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-           
+            _paymentService = paymentService;
         }
 
         public async Task<List<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging)
         {
             var hotelList = await _unitOfWork.Hotels.GetAllAsync(
                 orderby: x => x.OrderBy(h => h.Ratings.Sum(r => r.Ratings) / h.Ratings.Count),
-                Includes: new List<string>() { "Galleries"}
+                Includes: new List<string>() { "Galleries" }
                 );
             hotelList = hotelList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
             return HotelBasicDtoMapper.MapToHotelBAsicDtoList(hotelList, _mapper);
@@ -47,7 +49,7 @@ namespace hotel_booking_core.Services
             var roomList = await _unitOfWork.RoomType.GetAllAsync(
                 Includes: new List<string>() { "Hotel" },
                 expression: (roomType => (!(priceDto.MaxPrice > priceDto.MinPrice) ? roomType.Price >= priceDto.MinPrice
-                                         : (roomType.Price >= priceDto.MinPrice) && (roomType.Price <= priceDto.MaxPrice) 
+                                         : (roomType.Price >= priceDto.MinPrice) && (roomType.Price <= priceDto.MaxPrice)
                                          )),
                 orderby: x => x.OrderBy(x => x.Price)
                 );
@@ -59,7 +61,7 @@ namespace hotel_booking_core.Services
         {
             var roomList = await _unitOfWork.RoomType.GetAllAsync(
                 Includes: new List<string>() { "Hotel" },
-                orderby: x => x.OrderBy(rt => rt.Discount/rt.Price)
+                orderby: x => x.OrderBy(rt => rt.Discount / rt.Price)
                 );
             roomList = roomList.Skip(paging.PageNumber - 1).Take(paging.PageSize).ToList();
             return HotelBasicDtoMapper.MapToRoomInfoDtoList(roomList, _mapper);
@@ -68,7 +70,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<List<GetHotelDto>>> GetAllHotelsAsync(Paginator paging)
         {
             List<Hotel> hotelList = (await _unitOfWork.Hotels.GetAllHotelsAsync())
-                                    .Skip((paging.CurrentPage - 1)*paging.PageSize)
+                                    .Skip((paging.CurrentPage - 1) * paging.PageSize)
                                     .Take(paging.PageSize).ToList();
 
             var response = new Response<List<GetHotelDto>>();
@@ -184,7 +186,7 @@ namespace hotel_booking_core.Services
         {
             var response = new Response<GetHotelDto>();
             Hotel hotel = _unitOfWork.Hotels.GetHotelById(id);
-            if(hotel!=null)
+            if (hotel != null)
             {
                 // Get the average rating for the hotel
                 int numberOfRatings = hotel.Ratings.Count;
@@ -256,11 +258,11 @@ namespace hotel_booking_core.Services
                 hotel.City = model.City;
                 hotel.State = model.State;
                 hotel.UpdatedAt = DateTime.Now;
-                
+
                 // Update the hotel and save changes to database
                 _unitOfWork.Hotels.Update(hotel);
                 await _unitOfWork.Save();
-                
+
                 // Map properties of updated hotel to the response DTO
                 response.StatusCode = (int)HttpStatusCode.OK;
                 response.Succeeded = true;
@@ -318,6 +320,67 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        
+        public async Task<Response<HotelBookingResponseDto>> BookHotel(string hotelId, string userId, HotelBookingRequestDto bookingDto)
+        {
+            Hotel hotel = _unitOfWork.Hotels.GetHotelById(hotelId);
+
+            if (hotel == null)
+            {
+                return Response<HotelBookingResponseDto>.Fail("Hotel not Found");
+            }
+
+            Room room = _unitOfWork.Rooms.GetHotelRoom(bookingDto.RoomId);
+            if (room == null)
+            {
+                return Response<HotelBookingResponseDto>.Fail("Room not found");
+            }
+
+            if (room.Roomtype.HotelId != hotelId)
+            {
+                return Response<HotelBookingResponseDto>.Fail("Room not found in selected Hotel");
+            }
+
+            if (room.IsBooked)
+            {
+                return Response<HotelBookingResponseDto>.Fail("Room already booked", StatusCodes.Status422UnprocessableEntity);
+            }
+
+            Customer customer = await _unitOfWork.Customers.GetCustomerAsync(userId);
+
+            Booking booking = _mapper.Map<Booking>(bookingDto);
+            booking.BookingReference = $"HBA-${DateTime.Today.Millisecond}";
+            booking.HotelId = hotelId;
+
+            room.IsBooked = true;
+
+            await _unitOfWork.Booking.InsertAsync(booking);
+            _unitOfWork.Rooms.Update(room);
+            await _unitOfWork.Save();
+
+            decimal amount = room.Roomtype.Price;
+
+            try
+            {
+                string authorizationUrl = await _paymentService.InitializePayment(amount, customer, bookingDto.PaymentService, booking.Id);
+                HotelBookingResponseDto bookingResponse = _mapper.Map<HotelBookingResponseDto>(booking);
+                bookingResponse.PaymentUrl = authorizationUrl;
+                Response<HotelBookingResponseDto> response = new Response<HotelBookingResponseDto>()
+                {
+                    Data = bookingResponse,
+                    Message = "Booking Reserved",
+                    StatusCode = StatusCodes.Status201Created,
+                    Succeeded = true
+                };
+                return response;
+            }
+            catch (ArgumentException argEx)
+            {
+                return Response<HotelBookingResponseDto>.Fail(argEx.Message, StatusCodes.Status500InternalServerError);
+            }
+            catch (Exception ex)
+            {
+                return Response<HotelBookingResponseDto>.Fail(ex.Message, StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }

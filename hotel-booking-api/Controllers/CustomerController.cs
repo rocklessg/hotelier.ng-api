@@ -1,18 +1,14 @@
-<<<<<<< HEAD
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-=======
 using hotel_booking_dto;
 using hotel_booking_models.Cloudinary;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using hotel_booking_core.Interfaces;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using hotel_booking_dto.CustomerDtos;
 using Microsoft.Extensions.Logging;
->>>>>>> reviews
+using hotel_booking_dto.HotelDtos;
 
 namespace hotel_booking_api.Controllers
 {
@@ -20,21 +16,13 @@ namespace hotel_booking_api.Controllers
     [Route("api/[controller]")]
     public class CustomerController : ControllerBase
     {
-<<<<<<< HEAD
-        [HttpPost]
-        [Route("create-booking")]
-        [Authorize(Roles = "Customer")]
-        public IActionResult CreateBooking()
-        {
-
-            return Ok();
-        }
-=======
         private readonly ICustomerService _customerService;
+        private readonly IHotelService _hotelService;
         private readonly ILogger<CustomerController> _logger;
-        public CustomerController(ICustomerService customerService, ILogger<CustomerController> logger)
+        public CustomerController(ICustomerService customerService, IHotelService hotelService, ILogger<CustomerController> logger)
         {
             _customerService = customerService;
+            _hotelService = hotelService;
             _logger = logger;
         }
 
@@ -69,7 +57,16 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
+        [HttpPost("{hotelId}/book-hotel")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        /*[Authorize(Roles = "Customer")]*/
+        public async Task<IActionResult> CreateBooking([FromRoute] string hotelId, [FromBody] HotelBookingRequestDto bookingDto)
+        {
+            //string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            string userId = "2ccd5586-51f2-444c-aa63-e13012748dfa";
 
->>>>>>> reviews
+            var result = await _hotelService.BookHotel(hotelId, userId, bookingDto);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }
