@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
-using hotel_booking_models.Cloudinary;
-using Microsoft.AspNetCore.Http;
-using hotel_booking_core.Interfaces;
-using System.Threading.Tasks;
-using System.Security.Claims;
 using hotel_booking_dto.CustomerDtos;
-using Microsoft.Extensions.Logging;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_models.Cloudinary;
 using hotel_booking_utilities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
 {
@@ -29,7 +29,7 @@ namespace hotel_booking_api.Controllers
         }
 
 
-        [HttpPut("update" )]
+        [HttpPut("update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -44,7 +44,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        
+
         [HttpPatch("update-image")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

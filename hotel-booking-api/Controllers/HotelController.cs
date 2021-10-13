@@ -2,7 +2,6 @@
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
-using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Authorization;
@@ -10,8 +9,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using ILogger = Serilog.ILogger;
+
 
 namespace hotel_booking_api.Controllers
 {
@@ -22,10 +22,10 @@ namespace hotel_booking_api.Controllers
         private readonly IHotelService _hotelService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IHotelStatisticsService _hotelStatisticsService;
-        private readonly ILogger<HotelController> _logger;
+        private readonly ILogger _logger;
 
 
-        public HotelController(ILogger<HotelController> logger, IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatisticsService)
+        public HotelController(ILogger logger, IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatisticsService)
         {
             _hotelService = hotelService;
             _userManager = userManager;
@@ -60,51 +60,49 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("top-hotels")]
-        public async Task<IActionResult> HotelsByRatingsAsync([FromQuery] Paging paging)
+        public async Task<IActionResult> HotelsByRatingsAsync()
         {
-            var result = await _hotelService.GetHotelsByRatingsAsync(paging);
-            var response = new Response<List<HotelBasicDto>>(StatusCodes.Status200OK, true, "List of Hotels by ratings", result);
+            var response = await _hotelService.GetHotelsByRatingsAsync();
             return StatusCode(response.StatusCode, response);
         }
 
         [HttpGet]
         [Route("top-deals")]
-        public async Task<IActionResult> TopDealsAsync([FromQuery] Paging paging)
+        public async Task<IActionResult> TopDealsAsync()
         {
-            var result = await _hotelService.GetTopDealsAsync(paging);
-            var response = new Response<List<RoomInfoDto>>(StatusCodes.Status200OK, true, "List of Top Deals", result);
+            var response = await _hotelService.GetTopDealsAsync();
             return StatusCode(response.StatusCode, response);
         }
 
         [HttpGet]
+        [Route("room-by-price")]
         public async Task<IActionResult> GetHotelRoomsByPriceAsync([FromQuery]PriceDto pricing)
         {
-            var result = await _hotelService.GetRoomByPriceAsync(pricing);
-            var response = new Response<List<RoomInfoDto>>(StatusCodes.Status200OK, true, "List of Rooms By Price", result);
+            var response = await _hotelService.GetRoomByPriceAsync(pricing);
             return StatusCode(response.StatusCode, response);
         }
 
         [HttpGet]
-        [Route("{id}/rooms")]
-        public async Task<IActionResult> GetAvailableHotelRoomAsync([FromQuery] Paginator paginator, string id)
+        [Route("{hotelId}/roomTypes")]
+        public async Task<IActionResult> GetHotelRoomTypeAsync([FromQuery] Paging paging, string hotelId)
         {
-            var rooms = await _hotelService.GetAvailableRoomByHotel(paginator, id);
+            var rooms = await _hotelService.GetHotelRoomType(paging, hotelId);
             return Ok(rooms);
         }
 
         [HttpGet]
-        [Route("room/{id}")]
-        public IActionResult HotelRoomById(string id)
+        [Route("{hotelId}/room/{roomTypeId}")]
+        public async Task<IActionResult> HotelRoomById(string hotelId, string roomTypeId)
         {
-            var room = _hotelService.GetHotelRooomById(id);
+            var room = await _hotelService.GetHotelRooomById(hotelId, roomTypeId);
             return Ok(room);
         }
 
         [HttpGet]
-        [Route("ratings/{id}")]
-        public async Task<IActionResult> HotelRatingsAsync(string id)
+        [Route("{hotelId}/ratings")]
+        public async Task<IActionResult> HotelRatingsAsync(string hotelId)
         {
-            var rating = await _hotelService.GetHotelRatings(id);
+            var rating = await _hotelService.GetHotelRatings(hotelId);
             return Ok(rating);
         }
 
@@ -123,15 +121,15 @@ namespace hotel_booking_api.Controllers
 
 
         [HttpGet("{hotelId}/statistics")]
-      //  [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetHotelStatistics(string hotelId)
         {
-            _logger.LogInformation($"About Getting statistics for hotel with ID {hotelId}");
+            _logger.Information($"About Getting statistics for hotel with ID {hotelId}");
             var result = await _hotelStatisticsService.GetHotelStatistics(hotelId);
-            _logger.LogInformation($"Gotten stats for hotel with ID {hotelId}");
+            _logger.Information($"Gotten stats for hotel with ID {hotelId}");
             return StatusCode(result.StatusCode, result);
         }
 

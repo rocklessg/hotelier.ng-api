@@ -19,12 +19,13 @@ namespace hotel_booking_data.Repositories.Implementations
             _context = context;
             _dbSet = _context.Set<Hotel>();
         }
-        public async Task<List<Hotel>> GetAllAsync(Expression<Func<Hotel, bool>> expression = null, Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderby = null, List<string> Includes = null)
+        public async Task<IEnumerable<Hotel>> GetHotelsByRatingAsync()
         {
             var query = _dbSet.AsNoTracking();
-            if (Includes != null) Includes.ForEach(x => query = query.Include(x));
-            if (expression != null) query = query.Where(expression);
-            if (orderby != null) query = orderby(query);
+            query = query.Include(x => x.Galleries);
+            query = query.Include(x => x.Ratings);
+            query = query.OrderByDescending(h => h.Ratings.Sum(r => r.Ratings) / (double)h.Ratings.Count);
+            query = query.Take(5);
             return await query.ToListAsync();
         }
 

@@ -9,11 +9,8 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IRoomTypeRepository : IGenericRepository<RoomType>
     {
-        Task<List<RoomType>> GetAllAsync(
-            Expression<Func<RoomType, bool>> expression = null, 
-            Func<IQueryable<RoomType>, IOrderedQueryable<RoomType>> orderby = null, 
-            List<string> Includes = null);
+        IQueryable<RoomType> GetRoomByPrice(decimal minPrice, decimal maxPrice);
         Task<List<RoomType>> GetRoomTypesInEachHotel(string hotelId);
-
+        Task<IEnumerable<RoomType>> GetTopDealsAsync();
     }
 }
