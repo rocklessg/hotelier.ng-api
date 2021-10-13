@@ -1,11 +1,9 @@
 ﻿using hotel_booking_core.Interfaces;
-using hotel_booking_dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using Serilog;
+using System.Threading.Tasks;
 
 
 namespace hotel_booking_api.Controllers
@@ -15,14 +13,12 @@ namespace hotel_booking_api.Controllers
     public class StatisticsController : ControllerBase
     {
         private readonly IHotelStatisticsService _hotelStatisticsService;
-        private readonly IManagerService _managerService;
         private readonly ILogger _logger;
 
 
-        public AdminController(IHotelStatisticsService hotelStatisticsService, 
-            ILogger logger, IManagerService managerService)
+        public StatisticsController(IHotelStatisticsService hotelStatisticsService, 
+            ILogger logger)
         {
-            _managerService = managerService;
             _hotelStatisticsService = hotelStatisticsService;
             _logger = logger;
         }
@@ -54,25 +50,6 @@ namespace hotel_booking_api.Controllers
 
             _logger.Information($"Gotten Hotel Manager Statistics for {managerId}");
             return StatusCode(result.StatusCode, result);
-        }
-
-        [HttpPost]
-        [Route("manager/join")]
-        public async Task<IActionResult> AddHotelManagerRequest([FromBody]ManagerRequestDto managerRequestDto)
-        {
-            var newManagerRequest = await _managerService.AddManagerRequest(managerRequestDto);
-            _logger.Information($"Request to join is successfully added to the database");
-            return Ok(newManagerRequest);
-        }
-
-        [HttpGet]
-        [Route("manager/send-invite")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> SendManagerInvite(string email)
-        {
-            var sendInvite = await _managerService.SendManagerInvite(email);
-            _logger.Information($"Invite has been successfully sent to {email}");
-            return Ok(sendInvite);
         }
     }
 }
