@@ -15,14 +15,11 @@ namespace hotel_booking_utilities
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<AppUser> _userManager;
-        //private readonly UserManager<ManagerRequest> _hotelManager;
 
-        public TokenGeneratorService(IConfiguration configuration, UserManager<AppUser> userManager
-            /*UserManager<ManagerRequest> hotelManager*/)
+        public TokenGeneratorService(IConfiguration configuration, UserManager<AppUser> userManager)
         {
             _configuration = configuration;
             _userManager = userManager;
-            //_hotelManager = hotelManager;
         }
 
         /// <summary>

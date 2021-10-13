@@ -7,10 +7,10 @@ using hotel_booking_models;
 using hotel_booking_models.Mail;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
+using Serilog;
 using System.IO;
 using System.Threading.Tasks;
 using System.Transactions;
-using Serilog;
 
 namespace hotel_booking_core.Services
 {
@@ -66,7 +66,7 @@ namespace hotel_booking_core.Services
 
                 var mailRequest = new MailRequest()
                 {
-                    Subject = "Continue Your Registration",
+                    Subject = "Request Approved",
                     Body = mailBody,
                     ToEmail = check.Email
                 };
@@ -88,7 +88,8 @@ namespace hotel_booking_core.Services
                 return Response<string>.Fail("Mail service failed", StatusCodes.Status503ServiceUnavailable);
             }
             transaction.Complete();
-            return Response<string>.Fail("Message successfully sent", StatusCodes.Status404NotFound);
+            _logger.Information("Invalid email address");
+            return Response<string>.Fail("Invalid email address", StatusCodes.Status404NotFound);
         }
 
         private static async Task<string> GetEmailBody(string emailTempPath, string token)
