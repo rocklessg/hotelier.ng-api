@@ -49,7 +49,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer, Admin")]
         public async Task<IActionResult> UpdateImage([FromForm] AddImageDto imageDto)
         {
             string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
