@@ -117,12 +117,11 @@ namespace hotel_booking_core.Services
 
                 response.Message = $"Amenity with Id = {amenity.Id} deleted successfully";
                 response.StatusCode = (int)HttpStatusCode.OK;
-                response.Data = default;
                 response.Succeeded = true;
                 return response;
             }
             response.Message = $"Amenity with Id = {amenityId} does not exist";
-            response.StatusCode = (int)HttpStatusCode.NotFound;
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Succeeded = false;
             return response;
         }
