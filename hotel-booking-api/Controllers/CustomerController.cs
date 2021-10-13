@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using hotel_booking_dto.CustomerDtos;
 using Microsoft.Extensions.Logging;
+using hotel_booking_utilities;
 
 namespace hotel_booking_api.Controllers
 {
@@ -54,6 +55,15 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-
+        [HttpGet("Users")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //[Authorize(Roles = "")]
+        public IActionResult GetAllUsers([FromQuery] Paginator pagenator)
+        {
+           var result =   _customerService.GetAllUsersAsync(pagenator);
+            return Ok(result);
+        }
     }
 }

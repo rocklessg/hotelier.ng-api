@@ -16,7 +16,7 @@
 
         public Paginator(int pageSize, int currentPage)
         {
-            PageSize = pageSize > 20 ? 20 : pageSize;
+            PageSize = pageSize > 50 ? 50 : pageSize;
             CurrentPage = currentPage < 1 ? 1 : currentPage;
         }
         //To implement this pagenator, accept a pagenator input

@@ -10,6 +10,9 @@ using hotel_booking_models;
 using System.Transactions;
 using hotel_booking_models.Cloudinary;
 using hotel_booking_core.Interface;
+using System.Collections.Generic;
+using hotel_booking_utilities;
+using System.Linq;
 
 namespace hotel_booking_core.Services
 {
@@ -19,13 +22,15 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IImageService _imageService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IMapper _mapper;
 
         public CustomerService(IUnitOfWork unitOfWork,
-            UserManager<AppUser> userManager, IImageService imageService)
+            UserManager<AppUser> userManager, IImageService imageService, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _imageService = imageService;
+            _mapper = mapper;
         }
 
         public async Task<Response<string>> UpdateCustomer(string customerId, UpdateCustomerDto updateCustomer)
@@ -104,5 +109,34 @@ namespace hotel_booking_core.Services
             return await _userManager.UpdateAsync(user);
         }
 
+        public  List<GetUsersResponseDto> GetAllUsersAsync(Paginator pagenator)
+        {
+           // List<string> appUser = new List<string>() { "AppUser"};
+
+            IEnumerable<Customer> customers =  _unitOfWork.Customers.GetAllUsers();
+            var pagenatedCustomers = new List<GetUsersResponseDto>();
+            List<GetUsersResponseDto> getUsersResponseDto = new List<GetUsersResponseDto>();
+
+            foreach (var customer in customers)
+            {
+                GetUsersResponseDto custon = new GetUsersResponseDto()
+                {
+                    FirstName = customer.AppUser.FirstName,
+                    LastName = customer.AppUser.LastName,
+                    Age = customer.AppUser.Age,
+                    Id = customer.AppUser.Id,
+                    Email = customer.AppUser.Email,
+                    PhoneNumber = customer.AppUser.PhoneNumber,
+                    UserName = customer.AppUser.UserName,
+                    CreatedAt = customer.AppUser.CreatedAt
+                };
+                getUsersResponseDto.Add(custon);
+            }
+
+            pagenatedCustomers = getUsersResponseDto.Skip((pagenator.CurrentPage - 1) * pagenator.PageSize)
+                                                        .Take(pagenator.PageSize)
+                                                        .ToList();
+            return pagenatedCustomers;
+        }
     }
 }

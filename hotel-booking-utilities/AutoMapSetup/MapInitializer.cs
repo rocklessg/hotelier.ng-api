@@ -52,9 +52,6 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
-
-
         }
-
     }
 }
