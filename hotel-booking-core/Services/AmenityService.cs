@@ -103,5 +103,27 @@ namespace hotel_booking_core.Services
             return response;
 
         }
+
+        public async Task<Response<string>> DeleteAmenityAsync(string amenityId)
+        {
+            var amenity = _unitOfWork.Amenities.GetAmenityById(amenityId);
+
+            var response = new Response<string>();
+
+            if (amenity != null)
+            {
+                _unitOfWork.Amenities.DeleteAsync(amenity);
+                await _unitOfWork.Save();
+
+                response.Message = $"Amenity with Id = {amenity.Id} deleted successfully";
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                return response;
+            }
+            response.Message = $"Amenity with Id = {amenityId} does not exist";
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = false;
+            return response;
+        }
     }
 }

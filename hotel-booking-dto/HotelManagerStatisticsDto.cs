@@ -8,13 +8,14 @@ namespace hotel_booking_dto
 {
     public class HotelManagerStatisticsDto
     {
-        public int NumberOfHotels { get; set; }
+        public int TotalHotels { get; set; }
         public double AverageHotelRatings { get; set; }
         public int TotalNumberOfCustomers { get; set; }
-        public int TotalManagerRooms { get; set; }
-        public int TotalManagerUnoccupiedRooms { get; set; }
-        public int TotalManagerOccupiedRooms { get; set; }
-        public decimal TotalManagerTransactionAmount { get; set; }
+        public int TotalRooms { get; set; }
+        public int AvailableRooms { get; set; }
+        public int BookedRooms { get; set; }
+        public decimal TotalMonthlyTransactions { get; set; }
+        public Dictionary<string, decimal> TotalAnnualRevenue { get; set; }
 
     }
 }
