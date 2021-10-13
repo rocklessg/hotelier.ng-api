@@ -1,6 +1,7 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
 using hotel_booking_dto.AmenityDtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -35,18 +36,29 @@ namespace hotel_booking_api.Controllers
         }
 
 
-        [HttpPut("update-amenity")]
-        public ActionResult<Response<UpdateAmenityDto>> UpdateAmenity(string id, [FromBody] UpdateAmenityDto update)
+        [HttpPut("{AmenityId}")]
+        [Authorize(Roles = "Manager")]
+
+        public ActionResult<Response<UpdateAmenityDto>> UpdateAmenity(string amenityId, [FromBody] UpdateAmenityDto update)
         {
-            var response = _amenityService.UpdateAmenity(id, update);
+            var response = _amenityService.UpdateAmenity(amenityId, update);
             return Ok(response);
         }
 
-        [HttpPost("add-amenity")]
-        public async Task<ActionResult> AddAmenity(string id, [FromBody] AddAmenityRequestDto amenity)
-        {
-            var response = await _amenityService.AddAmenity(id, amenity);
+        [HttpPost]
+        [Authorize(Roles = "Manager")]
+
+        public async Task<ActionResult> AddAmenity([FromBody] AddAmenityRequestDto amenity)
+        {         
+            var response = await _amenityService.AddAmenity(amenity.HotelId, amenity);
             return Ok(response);
+        }
+
+        [HttpDelete("amenity{amenityId}")]
+        public async Task<ActionResult> DeleteAmenityByIdAsync(string amenityId)
+        {
+            var response = await _amenityService.DeleteAmenityAsync(amenityId);
+            return StatusCode(response.StatusCode, response);
         }
     }
 }

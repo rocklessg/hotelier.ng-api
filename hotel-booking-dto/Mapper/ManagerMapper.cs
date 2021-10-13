@@ -12,7 +12,7 @@ namespace hotel_booking_dto.Mapper
     {
         public ManagerMapper()
         {
-            CreateMap<Manager, ManagersStatisticsDto>().ReverseMap();
+            CreateMap<Manager, AdminStatisticsDto>().ReverseMap();
         }
     }
 }
