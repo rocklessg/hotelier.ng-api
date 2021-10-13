@@ -41,7 +41,7 @@ namespace hotel_booking_data.Repositories.Implementations
         public Hotel GetHotelById(string id)
         {
             var hotel = _dbSet.Where(hotel => hotel.Id == id)
-                         //.Include(hotel => hotel.Amenities)
+                         .Include(hotel => hotel.Amenities)
                          .Include(hotel => hotel.Galleries)
                          .Include(hotel => hotel.Ratings)
                          .Include(hotel => hotel.RoomTypes)
