@@ -54,7 +54,7 @@ namespace hotel_booking_api.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("amenity{amenityId}")]
+        [HttpDelete("{amenityId}")]
         public async Task<ActionResult> DeleteAmenityByIdAsync(string amenityId)
         {
             var response = await _amenityService.DeleteAmenityAsync(amenityId);

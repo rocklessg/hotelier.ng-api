@@ -18,7 +18,7 @@ namespace hotel_booking_api.Controllers
             _managerService = managerService;
         }
 
-        [HttpPatch("deactivate/{managerId}")]
+        [HttpPatch("{managerId}/deactivate")]
         public async Task<ActionResult> SoftDeleteAsync(string managerId)
         {
            var response = await _managerService.SoftDeleteManagerAsync(managerId);

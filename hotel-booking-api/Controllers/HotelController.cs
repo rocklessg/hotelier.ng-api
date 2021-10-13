@@ -134,7 +134,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpPost]
-        [Route("rooms/{hotelId}")]
+        [Route("{hotelId}/rooms")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
