@@ -65,6 +65,7 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("manager/send-invite")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SendManagerInvite(string email)
         {
             var sendInvite = await _managerService.SendManagerInvite(email);
