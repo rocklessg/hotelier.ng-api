@@ -34,6 +34,8 @@ namespace hotel_booking_core.Interfaces
         Task<Response<IEnumerable<RoomDTo>>> GetHotelRooomById(string hotelId, string roomTypeId);
         Task<Response<AddHotelResponseDto>> AddHotel(string managerId, AddHotelDto hotelDto);
         Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelid, AddRoomDto roomDto);
+
+        Task<Response<string>> DeleteHotelByIdAsync(string hotelId);
         Task<Response<IEnumerable<HotelBasicDto>>> GetHotelsByRatingsAsync();
         Task<Response<PageResult<IEnumerable<RoomInfoDto>>>> GetRoomByPriceAsync(PriceDto priceDto);
         Task<Response<IEnumerable<RoomInfoDto>>> GetTopDealsAsync();
