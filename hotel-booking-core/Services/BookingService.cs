@@ -56,7 +56,7 @@ namespace hotel_booking_core.Services
                 return Response<HotelBookingResponseDto>.Fail("Hotel not Found");
             }
 
-            Room room = _unitOfWork.Rooms.GetHotelRoom(bookingDto.RoomId);
+            var room = _unitOfWork.Rooms.GetRoomById(bookingDto.RoomId);
             if (room == null)
             {
                 return Response<HotelBookingResponseDto>.Fail("Room not found");

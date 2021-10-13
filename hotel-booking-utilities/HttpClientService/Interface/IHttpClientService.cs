@@ -5,7 +5,10 @@ namespace hotel_booking_utilities.HttpClientService.Interface
 {
     public interface IHttpClientService
     {
-        Task<string> PostRequest(string url, string requestModel, string token = null);
-        Task<HttpResponseMessage> GetRequest(string url, string token = null);
+        Task<TRes> PostRequestAsync<TReq, TRes>(string baseUrl, string requestUrl, TReq requestModel, string token = null)
+            where TRes : class
+            where TReq : class;
+        Task<TRes> GetRequestAsync<TRes>(string baseUrl,string requestUrl, string token = null)
+            where TRes: class;
     }
 }

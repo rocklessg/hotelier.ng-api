@@ -22,7 +22,6 @@ namespace hotel_booking_api.Controllers
         private readonly ILogger<CustomerController> _logger;
         public CustomerController(ICustomerService customerService, IBookingService bookingService, ILogger<CustomerController> logger)
         {
-            HttpClientInitializer.Initialize();
             _customerService = customerService;
             _bookingService = bookingService;
             _logger = logger;

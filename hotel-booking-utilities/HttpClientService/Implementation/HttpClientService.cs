@@ -1,4 +1,7 @@
 ﻿using hotel_booking_utilities.HttpClientService.Interface;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -7,31 +10,48 @@ namespace hotel_booking_utilities.HttpClientService.Implementation
 {
     public class HttpClientService : IHttpClientService
     {
-        public async Task<HttpResponseMessage> GetRequest(string url, string token = null)
+        private readonly IHttpClientFactory _clientFactory;
+
+        public HttpClientService(IHttpClientFactory clientFactory)
         {
-            if (token != null)
-            {
-                HttpClientInitializer.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
-            using HttpResponseMessage response = await HttpClientInitializer.Client.GetAsync(url);
-            return response;
+            _clientFactory = clientFactory;
+        }
+        public async Task<TRes> GetRequestAsync<TRes>(string baseUrl, string url, string token = null) where TRes : class
+        {
+            var client = CreateClient(baseUrl, token);            
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            return await GetResponseResultAsync<TRes>(client, request);
         }
 
-        public async Task<string> PostRequest(string url, string requestModel, string token = null)
+        public async Task<TRes> PostRequestAsync<TReq, TRes>(string baseUrl, string url, TReq requestModel, string token = null) 
+            where TRes : class
+            where TReq : class
         {
-            if (token != null)
-            {
-                HttpClientInitializer.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
-            using (HttpResponseMessage response = await HttpClientInitializer.Client.PostAsync(url, new StringContent(requestModel, null, "application/json")))
-            {
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsStringAsync();
-                    return result;
-                }
-                return response.ReasonPhrase;
+            var client = CreateClient(baseUrl, token);
+            var request = new HttpRequestMessage(HttpMethod.Post, url){
+                Content = new StringContent(JsonConvert.SerializeObject(requestModel), null, "application/json")
             };
+            return await GetResponseResultAsync<TRes>(client, request);
+        }
+
+        private async Task<TRes> GetResponseResultAsync<TRes>(HttpClient client, HttpRequestMessage request) where TRes : class
+        {
+            var response = await client.SendAsync(request);
+            var responseString = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<TRes>(responseString);
+            return response.IsSuccessStatusCode ? result : throw new ArgumentException(response.ReasonPhrase);
+        }
+        private HttpClient CreateClient(string baseUrl, string token)
+        {
+            var client = _clientFactory.CreateClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.BaseAddress = new Uri(baseUrl);
+            if (string.IsNullOrEmpty(token))
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+            return client;
         }
     }
 }

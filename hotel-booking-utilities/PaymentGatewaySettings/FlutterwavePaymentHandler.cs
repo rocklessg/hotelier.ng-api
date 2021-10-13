@@ -1,7 +1,6 @@
 ﻿using hotel_booking_utilities.HttpClientService.Interface;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -21,13 +20,13 @@ namespace hotel_booking_utilities.PaymentGatewaySettings
 
         public async Task<FlutterwaveResponseDTO> InitializePayment(FlutterwaveRequestDTO requestDTO)
         {
-            var response = await _httpClientService.PostRequest("https://api.flutterwave.com/v3/payments", JsonConvert.SerializeObject(requestDTO), _configuration["Payment:FlutterwaveKey"]);
-            var paymentResponse = JsonConvert.DeserializeObject<FlutterwaveResponseDTO>(response);
-            if(paymentResponse.Status == "success")
-            {
-                return paymentResponse;
-            }
-            throw new ArgumentException(paymentResponse.Message);
+            var response = await _httpClientService.PostRequestAsync<FlutterwaveRequestDTO, FlutterwaveResponseDTO>(
+                    baseUrl: "https://api.flutterwave.com",
+                    requestUrl: "v3/payments",
+                    requestModel: requestDTO,
+                    token: _configuration["Payment:FlutterwaveKey"]
+                );
+            return response;
         }
     }
 
@@ -57,11 +56,11 @@ namespace hotel_booking_utilities.PaymentGatewaySettings
     {
         public string Status { get; set; }
         public string Message { get; set; }
-        public FlutterwaveResponseDataDTO Data {  get; set; }
+        public FlutterwaveResponseDataDTO Data { get; set; }
     }
 
     public class FlutterwaveResponseDataDTO
     {
-        public string Link {  get; set; }
+        public string Link { get; set; }
     }
 }
