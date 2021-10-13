@@ -53,8 +53,5 @@ namespace hotel_booking_api.Controllers
             _logger.Information($"Gotten Hotel Manager Statistics for {managerId}");
             return StatusCode(result.StatusCode, result);
         }
-        
-        
-       
     }
 }
