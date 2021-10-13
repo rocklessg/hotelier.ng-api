@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using ILogger = Serilog.ILogger;
 
@@ -28,7 +27,11 @@ namespace hotel_booking_api.Controllers
         private readonly ILogger _logger;
 
 
-        public HotelController(ILogger logger, IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatisticsService)
+        public HotelController(ILogger logger, 
+            IHotelService hotelService, 
+            UserManager<AppUser> userManager, 
+            IHotelStatisticsService hotelStatisticsService, 
+            IReviewsService reviewsService)
         {
             _hotelService = hotelService;
             _userManager = userManager;
