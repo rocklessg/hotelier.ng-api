@@ -16,6 +16,8 @@ namespace hotel_booking_data.UnitOfWork.Abstraction
         IRoomRepository Rooms { get; }
         IWishListRepository WishLists { get; }
         IRoomTypeRepository RoomType { get; }
+        IAdminRepository Booking { get; }
+
 
         Task Save();
     }

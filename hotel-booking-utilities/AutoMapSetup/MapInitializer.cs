@@ -53,7 +53,11 @@ namespace hotel_booking_utilities.AutoMapSetup
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
 
-
+            // Transaction Maps
+            CreateMap<Booking, TransactionResponseDto>()
+                .ForMember(x => x.BookingId, y => y.MapFrom(s => s.Id))
+                 .ForMember(x => x.HotelName, y => y.MapFrom(s => s.Hotel.Name))
+                 .ForMember(x => x.CustomerName, y => y.MapFrom(s => s.Customer.AppUser.FirstName + " " + s.Customer.AppUser.LastName));
         }
 
     }
