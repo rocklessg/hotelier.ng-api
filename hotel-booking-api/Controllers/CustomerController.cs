@@ -59,11 +59,13 @@ namespace hotel_booking_api.Controllers
 
         [HttpPost("{hotelId}/book-hotel")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        /*[Authorize(Roles = "Customer")]*/
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> CreateBooking([FromRoute] string hotelId, [FromBody] HotelBookingRequestDto bookingDto)
         {
-            //string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            string userId = "2ccd5586-51f2-444c-aa63-e13012748dfa";
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
             var result = await _hotelService.BookHotel(hotelId, userId, bookingDto);
             return StatusCode(result.StatusCode, result);
