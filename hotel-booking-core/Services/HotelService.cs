@@ -21,15 +21,12 @@ namespace hotel_booking_core.Services
     public class HotelService : IHotelService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-       
+        private readonly IMapper _mapper;       
 
         public HotelService(IUnitOfWork unitOfWork, IMapper mapper)
-
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-           
         }
 
         public async Task<List<HotelBasicDto>> GetHotelsByRatingsAsync(Paging paging)
@@ -318,6 +315,34 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        
+        public async Task<Response<string>> DeleteHotelByIdAsync(string hotelId)
+        {
+            //var amenities = await _unitOfWork.Amenities.GetAmenityByHotelIdAsync(hotelId); // 1
+            //foreach (var amenity in amenities) // 2
+            //{
+            //    _unitOfWork.Amenities.DeleteAsync(amenity); // 3
+            //}
+            
+
+            var hotel = _unitOfWork.Hotels.GetHotelById(hotelId);
+
+            var response = new Response<string>();
+
+            if (hotel != null)
+            {
+                _unitOfWork.Hotels.DeleteAsync(hotel);
+                await _unitOfWork.Save();
+
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Message = $"Hotel with Id = {hotelId} has been deleted";
+                response.Data = default;
+                response.Succeeded = true;
+                return response;
+            }
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Message = $"Hotel with id = {hotelId} does not exist";
+            response.Succeeded = false;
+            return response;
+        }
     }
 }

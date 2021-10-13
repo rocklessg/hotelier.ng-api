@@ -38,5 +38,6 @@ namespace hotel_booking_core.Interfaces
 
         Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelid, AddRoomDto roomDto);
 
+        Task<Response<string>> DeleteHotelByIdAsync(string hotelId);
     }
 }

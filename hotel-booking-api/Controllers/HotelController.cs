@@ -148,5 +148,19 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
 
         }
+
+
+        [HttpDelete]
+        [Route("{hotelId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        public async Task<IActionResult> DeleteAsync(string hotelId)
+        {
+            var result = await _hotelService.DeleteHotelByIdAsync(hotelId);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }
