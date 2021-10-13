@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+//using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using ILogger = Serilog.ILogger;
+
 
 namespace hotel_booking_api.Controllers
 {
@@ -12,10 +14,10 @@ namespace hotel_booking_api.Controllers
     public class StatisticsController : ControllerBase
     {
         private readonly IHotelStatisticsService _hotelStatisticsService;
-        private readonly ILogger<StatisticsController> _logger;
+        private readonly ILogger _logger;
 
 
-        public StatisticsController(IHotelStatisticsService hotelStatisticsService, ILogger<StatisticsController> logger)
+        public StatisticsController(IHotelStatisticsService hotelStatisticsService, ILogger logger)
         {
             _hotelStatisticsService = hotelStatisticsService;
             _logger = logger;
@@ -28,10 +30,10 @@ namespace hotel_booking_api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAdminStatistics()
         {
-            _logger.LogInformation($"About Getting Admin Statistics");
+            _logger.Information($"About Getting Admin Statistics");
 
             var result = await _hotelStatisticsService.GetAdminStatistics();
-            _logger.LogInformation($"Gotten Admin Statistics");
+            _logger.Information($"Gotten Admin Statistics");
             return StatusCode(result.StatusCode, result);
         }
 
@@ -42,11 +44,11 @@ namespace hotel_booking_api.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetHotelManagerStatistics(string managerId)
         {
-            _logger.LogInformation($"About Getting Hotel Manager Statistics for {managerId}");
+            _logger.Information($"About Getting Hotel Manager Statistics for {managerId}");
 
             var result = await _hotelStatisticsService.GetHotelManagerStatistics(managerId);
 
-            _logger.LogInformation($"Gotten Hotel Manager Statistics for {managerId}");
+            _logger.Information($"Gotten Hotel Manager Statistics for {managerId}");
             return StatusCode(result.StatusCode, result);
         }
         
