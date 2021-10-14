@@ -17,6 +17,7 @@ namespace hotel_booking_utilities.Validators.AmenityValidators
 
             RuleFor(Amenity => Amenity.Discount).NotEmpty().WithMessage("Discount cannot be empty")
             .GreaterThan(0);
+            RuleFor(Amenity => Amenity.HotelId).NotEmpty().WithMessage("Hotel id cannot be empty").Length(32).WithMessage("Id is incomplete");
 
         }
     }

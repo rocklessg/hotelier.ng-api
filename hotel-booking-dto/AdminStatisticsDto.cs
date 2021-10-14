@@ -1,9 +1,4 @@
-﻿using hotel_booking_models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace hotel_booking_dto
 {
@@ -15,7 +10,5 @@ namespace hotel_booking_dto
         public decimal Commission { get; set; }
         public decimal TotalMonthlyCommission { get; set; }
         public Dictionary<string, decimal> AnnualRevenue { get; set; }
-
-
     }
 }
