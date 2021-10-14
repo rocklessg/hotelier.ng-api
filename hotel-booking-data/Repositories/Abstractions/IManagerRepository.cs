@@ -1,4 +1,5 @@
-﻿using hotel_booking_models;
+﻿using hotel_booking_dto.ManagerDtos;
+using hotel_booking_models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace hotel_booking_data.Repositories.Abstractions
     public interface IManagerRepository : IGenericRepository<Manager>
     {
         Task<Manager> GetManagerStatistics(string managerId);
-        Task<bool> AddManagerAsync();
+        Task<bool> AddManagerAsync(ManagerDto manager);
     }
 }
