@@ -307,8 +307,8 @@ namespace hotel_booking_core.Services
         public async Task<Response<PageResult<IEnumerable<HotelBasicDto>>>> GetHotelByLocation(string location, Paging paging)
         {
             _logger.Information($"Attempting to get hotel in {location}");
-            var hotels = _unitOfWork.Hotels.GetAllHotels()
-                .Where(q => q.State.Contains(location) || q.City.Contains(location));
+            var hotels = _unitOfWork.Hotels.GetAllHotels()                
+                .Where(q => q.State.ToLower().Contains(location.ToLower()) || q.City.ToLower().Contains(location.ToLower()));
 
             var response = new Response<PageResult<IEnumerable<HotelBasicDto>>>();
 
