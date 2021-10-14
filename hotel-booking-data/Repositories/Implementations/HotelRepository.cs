@@ -2,10 +2,8 @@
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Implementations
@@ -19,35 +17,45 @@ namespace hotel_booking_data.Repositories.Implementations
             _context = context;
             _dbSet = _context.Set<Hotel>();
         }
-        public async Task<IEnumerable<Hotel>> GetHotelsByRatingAsync()
+        public IQueryable<Hotel> GetHotelsByRating()
         {
             var query = _dbSet.AsNoTracking();
-            query = query.Include(x => x.Galleries);
-            query = query.Include(x => x.Ratings);
-            query = query.OrderByDescending(h => h.Ratings.Sum(r => r.Ratings) / (double)h.Ratings.Count);
-            query = query.Take(5);
-            return await query.ToListAsync();
+            query = query.Include(x => x.Galleries)
+                .Include(x => x.Ratings)
+                .Include(x => x.RoomTypes)
+                .OrderByDescending(h => h.Ratings.Sum(r => r.Ratings) / (double)h.Ratings.Count)
+                .Take(5);
+            return query;
         }
-
-        public async Task<List<Hotel>> GetAllHotelsAsync()
+        public IQueryable<Hotel> GetTopDeals()
         {
-            var hotelList = _dbSet
+            var query = _dbSet.AsNoTracking();
+            query = query.Include(x => x.Galleries)
+                .Include(x => x.Ratings)
+                .Include(x => x.RoomTypes)
+                .OrderBy(x => x.RoomTypes.OrderBy(rt => rt.Price).FirstOrDefault().Price)
+                .Take(5);
+            return query;
+        }
+        public IQueryable<Hotel> GetAllHotels()
+        {
+            var hotelList = _dbSet.AsNoTracking()
                .Include(c => c.Galleries)
                .Include(c => c.Ratings)
                .Include(c => c.RoomTypes);
-            return await hotelList.ToListAsync();
+            return hotelList;
         }
 
-
-        public async Task<Hotel> GetHotelEntitiesById(string id)
+        public async Task<Hotel> GetHotelEntitiesById(string hotelId)
         {
-            var hotel = _dbSet.Where(hotel => hotel.Id == id)
-                         .Include(hotel => hotel.Galleries)
-                         .Include(hotel => hotel.Ratings)
-                         .Include(hotel => hotel.RoomTypes)
-                         .Include(hotel => hotel.Amenities)
-                         .Include(hotel => hotel.Reviews)
-                         .ThenInclude(review => review.Customer.AppUser);
+            var hotel = _dbSet.AsNoTracking()
+                .Where(hotel => hotel.Id == hotelId)
+                .Include(hotel => hotel.Galleries)
+                .Include(hotel => hotel.Ratings)
+                .Include(hotel => hotel.RoomTypes)
+                .Include(hotel => hotel.Amenities)
+                .Include(hotel => hotel.Reviews)
+                .ThenInclude(review => review.Customer.AppUser);
             return await hotel.FirstOrDefaultAsync();
         }
 
@@ -61,8 +69,8 @@ namespace hotel_booking_data.Repositories.Implementations
 
         public Hotel GetHotelByIdForAddAmenity(string id)
         {
-           return  _context.Hotels.FirstOrDefault(x => x.Id == id);
-            
+            return _context.Hotels.FirstOrDefault(x => x.Id == id);
+
         }
 
         public async Task<Hotel> GetHotelById(string hotelId) 

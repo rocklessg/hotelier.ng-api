@@ -22,5 +22,10 @@ namespace hotel_booking_data.Repositories.Implementations
             var manager = await _context.Managers.Where(x => x.AppUserId == managerId).FirstOrDefaultAsync();
             return manager;
         }
+
+        public async Task<Manager> GetManagerAsync(string managerId)
+        {
+           return await _context.Managers.Include(x => x.AppUser).FirstOrDefaultAsync(x => x.AppUserId == managerId);
+        }
     }
 }

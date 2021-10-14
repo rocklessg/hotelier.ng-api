@@ -9,6 +9,7 @@ using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using System.Linq;
+using hotel_booking_dto.ReviewDtos;
 
 namespace hotel_booking_utilities.AutoMapSetup
 {
@@ -35,18 +36,31 @@ namespace hotel_booking_utilities.AutoMapSetup
             // Hotel Maps
             CreateMap<Hotel, HotelBasicDto>()
                 .ForMember(x => x.Thumbnail, y => y.MapFrom(src => src.Galleries.FirstOrDefault(opt => opt.IsFeature).ImageUrl))
-                .ForMember(x => x.Rating, y => y.MapFrom(src => src.Ratings.Sum(r => r.Ratings) / (double)src.Ratings.Count))
-                .ForMember(x => x.NumberOfReviews, y => y.MapFrom(c => c.Ratings.Count));
+                .ForMember(x => x.PercentageRating, y => y.MapFrom(src => (double)src.Ratings.Sum(r => r.Ratings) * 100 / ((double)src.Ratings.Count * 5)))
+                .ForMember(x => x.Price, y => y.MapFrom(src => src.RoomTypes.OrderBy(rt => rt.Price).FirstOrDefault().Price));
 
             CreateMap<RoomType, RoomInfoDto>()
                 .ForMember(x => x.HotelName, y => y.MapFrom(c => c.Hotel.Name))
                 .ForMember(x => x.DiscountPrice, y => y.MapFrom(c => c.Discount));
 
             CreateMap<GalleryDto, Gallery>().ReverseMap();
-            CreateMap<Hotel, UpdateHotelDto>().ReverseMap();
+
+            CreateMap<UpdateHotelDto, Hotel>().ReverseMap();
+
             CreateMap<Hotel, AddHotelDto>().ReverseMap();
             CreateMap<Hotel, AddHotelResponseDto>().ReverseMap();
+            CreateMap<Hotel, GetHotelDto>()
+                .ForMember(hotel => hotel.FeaturedImage, opt => opt.MapFrom(src => src.Galleries.FirstOrDefault(gallery => gallery.IsFeature).ImageUrl))
+                .ForMember(hotel => hotel.Rating, opt => opt.MapFrom(src => (double)src.Ratings.Sum(customer => customer.Ratings) / ((double)src.Ratings.Count)))
+                .ForMember(hotel => hotel.NumberOfReviews, opt => opt.MapFrom(src => src.Reviews.Count))
+                .ForMember(hotel => hotel.Gallery, opt => opt.MapFrom(src => src.Galleries.Select(gallery => gallery.ImageUrl).ToList()));
 
+            CreateMap<Hotel, GetAllHotelDto>()
+               .ForMember(hotel => hotel.FeaturedImage, opt => opt.MapFrom(src => src.Galleries.FirstOrDefault(gallery => gallery.IsFeature).ImageUrl))
+               .ForMember(hotel => hotel.Rating, opt => opt.MapFrom(src => (double)src.Ratings.Sum(customer => customer.Ratings) / ((double)src.Ratings.Count)))
+               .ForMember(hotel => hotel.Gallery, opt => opt.MapFrom(src => src.Galleries.Select(gallery => gallery.ImageUrl).ToList()));
+
+            
 
             // Room Maps
             CreateMap<Room, AddRoomDto>().ReverseMap();
@@ -57,6 +71,8 @@ namespace hotel_booking_utilities.AutoMapSetup
             // RoomType Maps
             CreateMap<RoomType, RoomInfoDto>().ReverseMap();
             CreateMap<RoomType, RoomTypeByHotelDTo>();
+            CreateMap<RoomType, RoomTypeDto>();
+
 
             // Rating Maps
             CreateMap<Rating, HotelRatingsDTo>();
@@ -65,6 +81,15 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<Gallery, GalleryDto>().ReverseMap();
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
+
+            // aminity
+            CreateMap<Amenity, AmenityDto>();
+
+            // reviewdto
+            CreateMap<Review, ReviewDto>()
+                .ForMember(review => review.CustomerImage, opt => opt.MapFrom(review => review.Customer.AppUser.Avatar))
+                .ForMember(review => review.Text, opt => opt.MapFrom(review => review.Comment))
+                .ForMember(review => review.Date, opt => opt.MapFrom(review => review.CreatedAt.ToShortDateString()));
         }
 
     }

@@ -325,7 +325,7 @@ namespace hotel_booking_core.Services
         }
         public async Task<Response<HotelStatisticDto>> GetHotelStatistics(string hotelId)
         {
-            var hotel = await _unitOfWork.Hotels.GetHotelsById(hotelId);
+            var hotel = await _unitOfWork.Hotels.GetHotelById(hotelId);
             var response = new Response<HotelStatisticDto>();
             if (hotel != null)
             {
