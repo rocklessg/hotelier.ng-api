@@ -8,7 +8,7 @@ namespace hotel_booking_utilities.Validators.ReviewValidators
         public ReviewRequestDtoValidator()
         {
             RuleFor(x => x.Comment).NotEmpty().WithMessage("Review can not be empty");
-            RuleFor(x => x.HotelId).NotEmpty().WithMessage("Hotel ID cannot be null");
+            RuleFor(x => x.reviewId).NotEmpty().WithMessage("Review ID cannot be null");
         }
     }
 }

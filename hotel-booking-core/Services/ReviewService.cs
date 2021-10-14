@@ -17,27 +17,32 @@ namespace hotel_booking_core.Services
 
         public Response<string> UpdateUserReview(string customerId, ReviewRequestDto reviewRequestDto)
         {
-            Response<string> response = new();
-
-            var review =  _unitOfWork.Reviews.GetUserReview(reviewRequestDto.HotelId)
-                                             .FirstOrDefault(x => x.CustomerId == customerId);
+            Response<string> response = new Response<string>();
+            var review = _unitOfWork.Reviews.GetUserReview(reviewRequestDto.reviewId);
+                                           
 
             if(review != null)
             {
-                review.Comment = reviewRequestDto.Comment;
-                _unitOfWork.Reviews.Update(review);
-                _unitOfWork.Save();
+                if(review.CustomerId == customerId)
+                {
+                    review.Comment = reviewRequestDto.Comment;
+                    _unitOfWork.Reviews.Update(review);
+                    _unitOfWork.Save();
 
-                response.Succeeded = true;
-                response.StatusCode = (int)HttpStatusCode.Created;
-                response.Message = $"Comment updated successfully";
+                    response.Succeeded = true;
+                    response.StatusCode = (int)HttpStatusCode.Created;
+                    response.Message = $"Comment updated successfully";
+
+                    return response;
+                }
+                response.StatusCode = (int)HttpStatusCode.Forbidden;
+                response.Message = $"You are not authorized to access this resource";
 
                 return response;
             }
 
-            response.Succeeded = false;
             response.StatusCode = (int)HttpStatusCode.BadRequest;
-            response.Message = $"No review exist";
+            response.Message = $"Review with the Id {reviewRequestDto.reviewId} does not exist";
 
             return response;
         }

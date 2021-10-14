@@ -15,6 +15,7 @@ namespace hotel_booking_dto.CustomerDtos
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string UserName { get; set; }
+        public string State { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

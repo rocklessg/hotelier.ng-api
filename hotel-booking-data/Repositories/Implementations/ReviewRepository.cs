@@ -18,11 +18,11 @@ namespace hotel_booking_data.Repositories.Implementations
             _context = context;
         }
 
-        public IEnumerable<Review> GetUserReview(string hotelId)
+        public Review GetUserReview(string reviewId)
         {
-            var hotelReviews =  _context.Reviews.Where(x => x.HotelId == hotelId);
+            var custonerReview =  _context.Reviews.SingleOrDefault(x => x.Id == reviewId);
             
-            return hotelReviews;
+            return custonerReview;
         }
     }
 }

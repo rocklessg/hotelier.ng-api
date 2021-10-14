@@ -9,6 +9,6 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IReviewRepository : IGenericRepository<Review>
     {
-        IEnumerable<Review> GetUserReview(string hotelId);
+        Review GetUserReview(string hotelId);
     }
 }

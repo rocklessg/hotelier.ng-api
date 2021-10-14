@@ -118,7 +118,7 @@ namespace hotel_booking_core.Services
 
             foreach (var customer in customers)
             {
-                GetUsersResponseDto customerToReturn = GetUsersResponseDtoMap.GetUsersResponse(customer);
+                GetUsersResponseDto customerToReturn = _mapper.Map<GetUsersResponseDto>(customer);
                 getUsersResponseDto.Add(customerToReturn);
             }
 

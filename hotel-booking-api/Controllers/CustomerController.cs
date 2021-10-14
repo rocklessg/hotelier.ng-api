@@ -55,7 +55,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpGet("Customers")]
+        [HttpGet("AllCustomers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

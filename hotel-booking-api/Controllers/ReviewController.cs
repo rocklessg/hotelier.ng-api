@@ -21,10 +21,11 @@ namespace hotel_booking_api.Controllers
             _reviewService = reviewService;
         }
 
-        [HttpPatch("hotelId")]
+        [HttpPatch("reviewId")]
         public IActionResult UpdateCustomerReview([FromBody]ReviewRequestDto reviewRequestDto)
         {
             var customerId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+           
             var response = _reviewService.UpdateUserReview(customerId, reviewRequestDto);
             return StatusCode(response.StatusCode, response);
         }
