@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using hotel_booking_utilities;
 using System.Linq;
 using hotel_booking_dto.Mapper;
+using hotel_booking_dto.commons;
+using hotel_booking_utilities.Pagination;
 
 namespace hotel_booking_core.Services
 {
@@ -110,22 +112,26 @@ namespace hotel_booking_core.Services
             return await _userManager.UpdateAsync(user);
         }
 
-        public  List<GetUsersResponseDto> GetAllCustomers(Paginator pagenator)
+        public async Task<Response<PageResult<IEnumerable<GetUsersResponseDto>>>> GetAllCustomersAsync(PagingDto pagenator)
         {
-            IEnumerable<Customer> customers =  _unitOfWork.Customers.GetAllUsers();
-            var pagenatedCustomers = new List<GetUsersResponseDto>();
-            List<GetUsersResponseDto> getUsersResponseDto = new List<GetUsersResponseDto>();
+            var customers =  _unitOfWork.Customers.GetAllUsers();
+            var customersList = await customers.PaginationAsync<Customer, GetUsersResponseDto>(pagenator.PageSize,pagenator.PageNumber, _mapper);
+            var response = new Response<PageResult<IEnumerable<GetUsersResponseDto>>>();
 
-            foreach (var customer in customers)
+            if(customersList != null)
             {
-                GetUsersResponseDto customerToReturn = _mapper.Map<GetUsersResponseDto>(customer);
-                getUsersResponseDto.Add(customerToReturn);
+                response.Data = customersList;
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+
+                return response;
             }
 
-            pagenatedCustomers = getUsersResponseDto.Skip((pagenator.CurrentPage - 1) * pagenator.PageSize)
-                                                        .Take(pagenator.PageSize)
-                                                        .ToList();
-            return pagenatedCustomers;
+            response.StatusCode = (int)HttpStatusCode.NotFound;
+            response.Succeeded = false;
+            response.Message = "No customer exist at this time";
+
+            return response;
         }
     }
 }

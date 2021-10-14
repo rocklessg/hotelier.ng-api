@@ -28,9 +28,9 @@ namespace hotel_booking_data.Repositories.Implementations
             return customer;
         }
 
-        public IEnumerable<Customer> GetAllUsers()
+        public IQueryable<Customer> GetAllUsers()
         {
-           return _customers.Include(x => x.AppUser).ToList();
+           return _customers.Include(x => x.AppUser);
         }
     }
 }

@@ -10,6 +10,6 @@ namespace hotel_booking_data.Repositories.Abstractions
     public interface ICustomerRepository : IGenericRepository<Customer>
     {
         Customer GetCustomer(string id);
-        IEnumerable<Customer> GetAllUsers();
+        IQueryable<Customer> GetAllUsers();
     }
 }

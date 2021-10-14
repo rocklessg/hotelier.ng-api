@@ -9,6 +9,7 @@ using System.Security.Claims;
 using hotel_booking_dto.CustomerDtos;
 using Microsoft.Extensions.Logging;
 using hotel_booking_utilities;
+using hotel_booking_dto.commons;
 
 namespace hotel_booking_api.Controllers
 {
@@ -25,7 +26,7 @@ namespace hotel_booking_api.Controllers
         }
 
 
-        [HttpPut("update" )]
+        [HttpPut("update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -40,7 +41,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        
+
         [HttpPatch("update-image")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -60,10 +61,10 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         //[Authorize(Roles = "")]
-        public IActionResult GetAllCustomers([FromQuery] Paginator pagenator)
+        public async Task<IActionResult> GetAllCustomersAsync([FromQuery] PagingDto pagenator)
         {
-           var result =   _customerService.GetAllCustomers(pagenator);
-            return Ok(result);
+            var result = await _customerService.GetAllCustomersAsync(pagenator);
+            return StatusCode(result.StatusCode, result);
         }
     }
 }

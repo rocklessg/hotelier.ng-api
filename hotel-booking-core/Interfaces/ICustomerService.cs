@@ -1,8 +1,8 @@
 ﻿using hotel_booking_dto;
+using hotel_booking_dto.commons;
 using hotel_booking_dto.CustomerDtos;
-using hotel_booking_models;
 using hotel_booking_models.Cloudinary;
-using hotel_booking_utilities;
+using hotel_booking_utilities.Pagination;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,6 +12,6 @@ namespace hotel_booking_core.Interfaces
     {
         Task<Response<string>> UpdateCustomer(string CustomerId, UpdateCustomerDto updateCustomer);
         Task<Response<UpdateUserImageDto>> UpdatePhoto(AddImageDto imageDto, string userId);
-        List<GetUsersResponseDto> GetAllCustomers(Paginator pagenator);
+        Task<Response<PageResult<IEnumerable<GetUsersResponseDto>>>> GetAllCustomersAsync(PagingDto pagenator);
     }
 }
