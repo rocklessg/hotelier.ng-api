@@ -11,10 +11,10 @@ namespace hotel_booking_data.Repositories.Abstractions
     {
         
         Task<List<Hotel>> GetAllHotelsAsync();
-        Hotel GetHotelById(string id);
+        Task<Hotel> GetHotelEntitiesById(string id);
         Task<List<Rating>> HotelRatings(string hotelId);
         Hotel GetHotelByIdForAddAmenity(string id);
-        Task<Hotel> GetHotelsById(string hotelId);
+        Task<Hotel> GetHotelById(string hotelId);
         Task<IEnumerable<Hotel>> GetHotelsByRatingAsync();
     }
 }

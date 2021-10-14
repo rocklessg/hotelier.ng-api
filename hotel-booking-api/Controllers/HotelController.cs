@@ -43,9 +43,9 @@ namespace hotel_booking_api.Controllers
 
         [AllowAnonymous]
         [HttpGet("{hotelId}")]
-        public IActionResult GetHotelById(string hotelId)
+        public async Task<IActionResult> GetHotelById(string hotelId)
         {
-            var response = _hotelService.GetHotelById(hotelId);
+            var response = await _hotelService.GetHotelByIdAsync(hotelId);
             return StatusCode(response.StatusCode, response);
         }
 

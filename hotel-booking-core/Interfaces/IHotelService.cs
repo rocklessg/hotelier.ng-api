@@ -22,7 +22,7 @@ namespace hotel_booking_core.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Response<GetHotelDto> GetHotelById(string id);
+        Task<Response<GetHotelDto>> GetHotelByIdAsync(string id);
         /// <summary>
         /// Updates an hotel asynchronously and returns update hotel response
         /// </summary>

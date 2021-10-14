@@ -39,7 +39,7 @@ namespace hotel_booking_data.Repositories.Implementations
         }
 
 
-        public Hotel GetHotelById(string id)
+        public async Task<Hotel> GetHotelEntitiesById(string id)
         {
             var hotel = _dbSet.Where(hotel => hotel.Id == id)
                          .Include(hotel => hotel.Galleries)
@@ -48,7 +48,7 @@ namespace hotel_booking_data.Repositories.Implementations
                          .Include(hotel => hotel.Amenities)
                          .Include(hotel => hotel.Reviews)
                          .ThenInclude(review => review.Customer.AppUser);
-            return hotel.FirstOrDefault();
+            return await hotel.FirstOrDefaultAsync();
         }
 
         public async Task<List<Rating>> HotelRatings(string hotelId)
@@ -65,7 +65,7 @@ namespace hotel_booking_data.Repositories.Implementations
             
         }
 
-        public async Task<Hotel> GetHotelsById(string hotelId) 
+        public async Task<Hotel> GetHotelById(string hotelId) 
         {
             var hotel = await _context.Hotels.Where(x => x.Id == hotelId).FirstOrDefaultAsync();
             return hotel;

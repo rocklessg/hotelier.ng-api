@@ -165,10 +165,10 @@ namespace hotel_booking_core.Services
             return Response<IEnumerable<HotelRatingsDTo>>.Fail("No ratings for this hotel", StatusCodes.Status404NotFound);
         }
 
-        public Response<GetHotelDto> GetHotelById(string id)
+        public async Task<Response<GetHotelDto>> GetHotelByIdAsync(string id)
         {
             var response = new Response<GetHotelDto>();
-            Hotel hotel = _unitOfWork.Hotels.GetHotelById(id);
+            Hotel hotel = await _unitOfWork.Hotels.GetHotelEntitiesById(id);
             if(hotel!=null)
             {
                 // Get the average rating for the hotel
@@ -240,7 +240,7 @@ namespace hotel_booking_core.Services
         {
             var response = new Response<UpdateHotelDto>();
             // Get the hotel to be updated using it's Id
-            Hotel hotel = _unitOfWork.Hotels.GetHotelById(hotelId);
+            Hotel hotel = await _unitOfWork.Hotels.GetHotelEntitiesById(hotelId);
             if (hotel != null)
             {
                 hotel.Name = model.Name;
@@ -294,7 +294,7 @@ namespace hotel_booking_core.Services
         {
             Room room = _mapper.Map<Room>(roomDto);
 
-            var checkHotelId = _unitOfWork.Hotels.GetHotelById(hotelId);
+            var checkHotelId = await _unitOfWork.Hotels.GetHotelEntitiesById(hotelId);
             if (checkHotelId == null)
                 return Response<AddRoomResponseDto>.Fail("Hotel Not Found");
 
