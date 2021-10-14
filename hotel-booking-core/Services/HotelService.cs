@@ -129,7 +129,7 @@ namespace hotel_booking_core.Services
             return Response<IEnumerable<RoomDTo>>.Fail("No room found for this particular roomtype", StatusCodes.Status404NotFound);
         }
 
-        public async Task<Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>> GetHotelRoomType(hotel_booking_dto.commons.PagingDto paging, string hotelId)
+        public async Task<Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>> GetHotelRoomType(PagingDto paging, string hotelId)
         {
             var roomList = _unitOfWork.Rooms.GetRoomTypeByHotel(hotelId);
 
@@ -337,7 +337,7 @@ namespace hotel_booking_core.Services
             response.Succeeded = false;
             return response;
         }
-        public async Task<Response<PageResult<IEnumerable<HotelBasicDto>>>> GetHotelByLocation(string location, Paging paging)
+        public async Task<Response<PageResult<IEnumerable<HotelBasicDto>>>> GetHotelByLocation(string location, PagingDto paging)
         {
             _logger.Information($"Attempting to get hotel in {location}");
             var hotels = _unitOfWork.Hotels.GetAllHotels()                
