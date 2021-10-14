@@ -37,6 +37,7 @@ namespace hotel_booking_api.Extensions
 
 
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddTransient<IManagerService,ManagerService>();
 
             services.AddScoped<IAmenityService, AmenityService>();
             services.AddScoped<IHotelService, HotelService>();
