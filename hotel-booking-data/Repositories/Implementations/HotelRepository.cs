@@ -46,6 +46,13 @@ namespace hotel_booking_data.Repositories.Implementations
             return await hotelList.ToListAsync();
         }
 
+        public IQueryable<Hotel> GetAllHotels()
+        {
+            return _dbSet
+               .Include(c => c.Galleries)
+               .Include(c => c.Ratings)
+               .Include(c => c.RoomTypes).AsNoTracking();
+        }
 
         public Hotel GetHotelById(string id)
         {

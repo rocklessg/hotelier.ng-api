@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using ILogger = Serilog.ILogger;
+using Serilog;
 
 
 namespace hotel_booking_api.Controllers
@@ -70,6 +70,15 @@ namespace hotel_booking_api.Controllers
         {
             var response = await _hotelService.GetTopDealsAsync();
             return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpGet("search/{location}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetHotelByLocation(string location, [FromQuery] PagingDto paging)
+        {
+            var result = await _hotelService.GetHotelByLocation(location, paging);
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet]
