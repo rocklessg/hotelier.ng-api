@@ -69,6 +69,17 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             //Manager Maps
             CreateMap<Manager, ManagerDto>().ReverseMap();
+
+            CreateMap<Manager, ManagerResponseDto>()
+                .ForMember(d => d.FirstName, o => o.MapFrom(u => u.AppUser.FirstName))
+                .ForMember(d => d.LastName, o => o.MapFrom(u => u.AppUser.LastName))
+                .ForMember(d => d.Gender, o => o.MapFrom(u => u.AppUser.Gender))
+                .ForMember(d => d.Age, o => o.MapFrom(u => u.AppUser.Age))
+                .ReverseMap();
+
+
+            //AppUser Maps
+            CreateMap<AppUser, ManagerResponseDto>().ReverseMap();
         }
 
     }

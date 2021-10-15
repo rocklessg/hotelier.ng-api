@@ -10,6 +10,7 @@ namespace hotel_booking_core.Interfaces
 {
     public interface IManagerService
     {
-        Task<Response<ManagerResponseDto>> AddManagerAsync(string id, ManagerResponseDto manager);
+        Task<Response<ManagerResponseDto>> AddManagerAsync(ManagerDto manager);
+        
     }
 }

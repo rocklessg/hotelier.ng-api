@@ -9,8 +9,6 @@ namespace hotel_booking_dto.ManagerDtos
 {
     public class ManagerResponseDto
     {
-        [Key]
-        public string AppUserId { get; set; }
         public string CompanyName { get; set; }
         public string BusinessEmail { get; set; }
         public string BusinessPhone { get; set; }
@@ -18,6 +16,10 @@ namespace hotel_booking_dto.ManagerDtos
         public string State { get; set; }
         public string AccountName { get; set; }
         public string AccountNumber { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Gender { get; set; }
+        public int Age { get; set; }
 
     }
 }

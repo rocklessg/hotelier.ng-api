@@ -28,11 +28,19 @@ namespace hotel_booking_data.Repositories.Implementations
             return manager;
         }
 
-        public async Task<bool> AddManagerAsync(ManagerDto entity)
+        public async Task<bool> AddManagerAsync(Manager entity)
         {
                 var manager = await _context.Managers.Where(x => x.AppUserId == entity.AppUserId)
                     .FirstOrDefaultAsync();
             return true; 
+        }
+
+        public async Task<Manager> CheckManagerAsync(string email)
+        {
+            var manager = await _context.Managers
+                .Include(x => x.AppUser)
+                .Where(x => x.AppUser.Email == email).FirstOrDefaultAsync();
+            return manager;
         }
     }
     
