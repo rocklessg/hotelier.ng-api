@@ -23,7 +23,7 @@ namespace hotel_booking_data.Repositories.Implementations
             query = query.Include(x => x.Galleries)
                 .Include(x => x.Ratings)
                 .Include(x => x.RoomTypes)
-                .OrderByDescending(h => h.Ratings.Sum(r => r.Ratings) / (double)h.Ratings.Count)
+                .OrderByDescending(h => h.Ratings.Count == 0 ? 0 : h.Ratings.Sum(r => r.Ratings) / (double)h.Ratings.Count)
                 .Take(5);
             return query;
         }

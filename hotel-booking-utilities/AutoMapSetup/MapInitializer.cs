@@ -36,7 +36,7 @@ namespace hotel_booking_utilities.AutoMapSetup
             // Hotel Maps
             CreateMap<Hotel, HotelBasicDto>()
                 .ForMember(x => x.Thumbnail, y => y.MapFrom(src => src.Galleries.FirstOrDefault(opt => opt.IsFeature).ImageUrl))
-                .ForMember(x => x.PercentageRating, y => y.MapFrom(src => (double)src.Ratings.Sum(r => r.Ratings) * 100 / ((double)src.Ratings.Count * 5)))
+                .ForMember(x => x.PercentageRating, y => y.MapFrom(src => src.Ratings.Count == 0 ? 100 : (double)src.Ratings.Sum(r => r.Ratings) * 100 / ((double)src.Ratings.Count * 5)))
                 .ForMember(x => x.Price, y => y.MapFrom(src => src.RoomTypes.OrderBy(rt => rt.Price).FirstOrDefault().Price));
 
 
