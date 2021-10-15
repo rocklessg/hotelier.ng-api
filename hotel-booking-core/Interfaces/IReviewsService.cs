@@ -10,7 +10,7 @@ namespace hotel_booking_core.Interfaces
     public interface IReviewsService
     {
 
-        Task<Response<Paginator.PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging,
+        Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging,
             string hotelId);
 
         Task<Response<ReviewToReturnDto>> AddReviewAsync(AddReviewDto model, string customerId);

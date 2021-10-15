@@ -5,6 +5,7 @@ using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_models;
+using hotel_booking_utilities.Pagination;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -15,15 +16,12 @@ namespace hotel_booking_core.Services
     public class ReviewsService : IReviewsService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IHotelService _hotelService;
-       
         private readonly IMapper _mapper;
         
 
-        public ReviewsService(IUnitOfWork unitOfWork, IHotelService hotelService, IMapper mapper)
+        public ReviewsService(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _hotelService = hotelService;
             _mapper = mapper;
            
         }

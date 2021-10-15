@@ -2,7 +2,6 @@
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.ReviewDtos;
-using System.Linq;
 using System.Net;
 
 namespace hotel_booking_core.Services
@@ -17,7 +16,7 @@ namespace hotel_booking_core.Services
 
         public Response<string> UpdateUserReview(string customerId, ReviewRequestDto reviewRequestDto)
         {
-            Response<string> response = new Response<string>();
+            var response = new Response<string>();
             var review = _unitOfWork.Reviews.GetUserReview(reviewRequestDto.reviewId);
                                            
 
