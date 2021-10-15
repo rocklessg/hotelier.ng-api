@@ -1,12 +1,12 @@
-﻿using hotel_booking_core.Interfaces;
+﻿using AutoMapper;
+using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
+using hotel_booking_dto.HotelDtos;
 using hotel_booking_models;
-using System;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.Services
@@ -14,12 +14,20 @@ namespace hotel_booking_core.Services
     public class ManagerService : IManagerService
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public ManagerService(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public ManagerService(IUnitOfWork unitOfWork, IMapper mapper = null)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
+        public async Task<Response<IEnumerable<HotelBasicDto>>> GetAllHotelsAsync(string managerId)
+        {
+            var hotelList = await _unitOfWork.Managers.GetAllHotelsForManagerAsync(managerId);
+            var hotelListDto = _mapper.Map<IEnumerable<HotelBasicDto>>(hotelList);
+            var response = new Response<IEnumerable<HotelBasicDto>>(StatusCodes.Status200OK, true, "hotels for manager", hotelListDto);
+            return response;
+        }
         public async Task<Response<string>> SoftDeleteManagerAsync(string managerId)
         {
             Manager manager = await _unitOfWork.Managers.GetManagerAsync(managerId);

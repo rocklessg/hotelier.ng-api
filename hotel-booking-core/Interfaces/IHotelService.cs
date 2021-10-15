@@ -34,9 +34,9 @@ namespace hotel_booking_core.Interfaces
         Task<Response<AddHotelResponseDto>> AddHotel(string managerId, AddHotelDto hotelDto);
         Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelid, AddRoomDto roomDto);
         Task<Response<string>> DeleteHotelByIdAsync(string hotelId);
-        Task<Response<IEnumerable<HotelBasicDto>>> GetHotelsByRatingsAsync();
+        Task<Response<IEnumerable<HotelAndroidDto>>> GetHotelsByRatingsAsync();
         Task<Response<PageResult<IEnumerable<RoomInfoDto>>>> GetRoomByPriceAsync(PriceDto priceDto);
-        Task<Response<IEnumerable<HotelBasicDto>>> GetTopDealsAsync();
+        Task<Response<IEnumerable<HotelAndroidDto>>> GetTopDealsAsync();
 
         /// <summary>
         /// Searches for hotels that are within the provided location
@@ -44,6 +44,6 @@ namespace hotel_booking_core.Interfaces
         /// <param name="location"></param>
         /// <param name="paginator"></param>
         /// <returns>Returns an IEnumerable of hotels within the input location. Returns an empty array is search doesn't match any location in records</returns>
-        Task<Response<PageResult<IEnumerable<HotelBasicDto>>>> GetHotelByLocation(string location, PagingDto paging);
+        Task<Response<PageResult<IEnumerable<HotelAndroidDto>>>> GetHotelByLocation(string location, PagingDto paging);
     }
 }
