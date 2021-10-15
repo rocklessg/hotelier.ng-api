@@ -136,13 +136,14 @@ namespace hotel_booking_core.Services
                 
                 response.Data = hotelDto;
                 response.Succeeded = true;
+                response.Message = $"Details for Hotel with Id: {id}";
                 response.StatusCode = (int)HttpStatusCode.OK;
                 return response;
             }
             response.StatusCode = (int)HttpStatusCode.NotFound;
             response.Succeeded = false;
             response.Data = default;
-            response.Message = $"Hotel with Id = {id} not found";
+            response.Message = $"Hotel with Id: {id} not found";
             return response;
         }
 
@@ -273,6 +274,34 @@ namespace hotel_booking_core.Services
             response.StatusCode = StatusCodes.Status200OK;
             response.Message = "On your request nothing has been found.";
             response.Succeeded = false;
+            return response;
+        }
+
+
+        public async Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging, string hotelId)
+        {
+            _logger.Information($"Attemp to get all review by hotel id {hotelId}");
+            var response = new Response<PageResult<IEnumerable<ReviewToReturnDto>>>();
+            var hotelExistCheck = await _unitOfWork.Hotels.GetHotelById(hotelId);
+
+            if (hotelExistCheck == null)
+            {
+                _logger.Information("Get all reviews by hotelId failed");
+                response.Succeeded = false;
+                response.Data = null;
+                response.Message = "Hotel does not exist";
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return response;
+            }
+
+            var hotel = _unitOfWork.Hotels.GetAllReviewsByHotelAsync(hotelId);
+
+            var pageResult = await hotel.PaginationAsync<Review, ReviewToReturnDto>(paging.PageSize, paging.PageNumber, _mapper);
+            _logger.Information("Get all reviews operation successful");
+            response.Succeeded = true;
+            response.Data = pageResult;
+            response.Message = $"List of all reviews in hotel with id {hotelId}";
+            response.StatusCode = (int)HttpStatusCode.OK;
             return response;
         }
 

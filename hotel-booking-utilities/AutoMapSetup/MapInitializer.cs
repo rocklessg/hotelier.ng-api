@@ -6,10 +6,10 @@ using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using System.Linq;
-using hotel_booking_dto.ReviewDtos;
 
 namespace hotel_booking_utilities.AutoMapSetup
 {
@@ -36,14 +36,13 @@ namespace hotel_booking_utilities.AutoMapSetup
             // Hotel Maps
             CreateMap<Hotel, HotelBasicDto>()
                 .ForMember(x => x.Thumbnail, y => y.MapFrom(src => src.Galleries.FirstOrDefault(opt => opt.IsFeature).ImageUrl))
-                .ForMember(x => x.PercentageRating, y => y.MapFrom(src => (double)src.Ratings.Sum(r => r.Ratings) * 100 / ((double)src.Ratings.Count * 5)))
+                .ForMember(x => x.PercentageRating, y => y.MapFrom(src => src.Ratings.Count == 0 ? 100 : (double)src.Ratings.Sum(r => r.Ratings) * 100 / ((double)src.Ratings.Count * 5)))
                 .ForMember(x => x.Price, y => y.MapFrom(src => src.RoomTypes.OrderBy(rt => rt.Price).FirstOrDefault().Price));
+
 
             CreateMap<RoomType, RoomInfoDto>()
                 .ForMember(x => x.HotelName, y => y.MapFrom(c => c.Hotel.Name))
                 .ForMember(x => x.DiscountPrice, y => y.MapFrom(c => c.Discount));
-
-            CreateMap<GalleryDto, Gallery>().ReverseMap();
 
             CreateMap<UpdateHotelDto, Hotel>().ReverseMap();
 
@@ -51,13 +50,13 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<Hotel, AddHotelResponseDto>().ReverseMap();
             CreateMap<Hotel, GetHotelDto>()
                 .ForMember(hotel => hotel.FeaturedImage, opt => opt.MapFrom(src => src.Galleries.FirstOrDefault(gallery => gallery.IsFeature).ImageUrl))
-                .ForMember(hotel => hotel.Rating, opt => opt.MapFrom(src => (double)src.Ratings.Sum(customer => customer.Ratings) / ((double)src.Ratings.Count)))
+                .ForMember(hotel => hotel.Rating, opt => opt.MapFrom(src => src.Ratings.Count == 0 ? 0 : (double)src.Ratings.Sum(customer => customer.Ratings) / ((double)src.Ratings.Count)))
                 .ForMember(hotel => hotel.NumberOfReviews, opt => opt.MapFrom(src => src.Reviews.Count))
                 .ForMember(hotel => hotel.Gallery, opt => opt.MapFrom(src => src.Galleries.Select(gallery => gallery.ImageUrl).ToList()));
 
             CreateMap<Hotel, GetAllHotelDto>()
                .ForMember(hotel => hotel.FeaturedImage, opt => opt.MapFrom(src => src.Galleries.FirstOrDefault(gallery => gallery.IsFeature).ImageUrl))
-               .ForMember(hotel => hotel.Rating, opt => opt.MapFrom(src => (double)src.Ratings.Sum(customer => customer.Ratings) / ((double)src.Ratings.Count)))
+               .ForMember(hotel => hotel.Rating, opt => opt.MapFrom(src => src.Ratings.Count == 0 ? 0 : (double)src.Ratings.Sum(customer => customer.Ratings) / ((double)src.Ratings.Count)))
                .ForMember(hotel => hotel.Gallery, opt => opt.MapFrom(src => src.Galleries.Select(gallery => gallery.ImageUrl).ToList()));
 
             
@@ -79,6 +78,7 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             // Gallery Maps
             CreateMap<Gallery, GalleryDto>().ReverseMap();
+           
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
 
@@ -90,7 +90,22 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(review => review.CustomerImage, opt => opt.MapFrom(review => review.Customer.AppUser.Avatar))
                 .ForMember(review => review.Text, opt => opt.MapFrom(review => review.Comment))
                 .ForMember(review => review.Date, opt => opt.MapFrom(review => review.CreatedAt.ToShortDateString()));
-        }
+        
+            CreateMap<Customer, GetUsersResponseDto>()
+                .ForMember(x => x.FirstName, y => y.MapFrom(u => u.AppUser.FirstName))
+                .ForMember(x => x.LastName, y => y.MapFrom(u => u.AppUser.LastName))
+                .ForMember(x => x.Age, y => y.MapFrom(u => u.AppUser.Age))
+                .ForMember(x => x.Id, y => y.MapFrom(u => u.AppUser.Id))
+                .ForMember(x => x.Email, y => y.MapFrom(u => u.AppUser.Email))
+                .ForMember(x => x.PhoneNumber, y => y.MapFrom(u => u.AppUser.PhoneNumber))
+                .ForMember(x => x.UserName, y => y.MapFrom(u => u.AppUser.UserName))
+                .ForMember(x => x.Age, y => y.MapFrom(u => u.AppUser.Age))
+                .ForMember(x => x.State, y => y.MapFrom(u => u.State))
+                .ForMember(x => x.CreatedAt, y => y.MapFrom(u => u.AppUser.CreatedAt));
 
+            //Review Maps
+            CreateMap<Review, ReviewToReturnDto>().ReverseMap();
+            CreateMap<Review, AddReviewDto>().ReverseMap();
+        }
     }
 }

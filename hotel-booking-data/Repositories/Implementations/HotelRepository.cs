@@ -23,7 +23,7 @@ namespace hotel_booking_data.Repositories.Implementations
             query = query.Include(x => x.Galleries)
                 .Include(x => x.Ratings)
                 .Include(x => x.RoomTypes)
-                .OrderByDescending(h => h.Ratings.Sum(r => r.Ratings) / (double)h.Ratings.Count)
+                .OrderByDescending(h => h.Ratings.Count == 0 ? 0 : h.Ratings.Sum(r => r.Ratings) / (double)h.Ratings.Count)
                 .Take(5);
             return query;
         }
@@ -77,6 +77,13 @@ namespace hotel_booking_data.Repositories.Implementations
         {
             var hotel = await _context.Hotels.Where(x => x.Id == hotelId).FirstOrDefaultAsync();
             return hotel;
+        }
+
+        public IQueryable<Review> GetAllReviewsByHotelAsync(string hotelId)
+        {
+            var query = _context.Reviews.AsNoTracking().Where(h => h.HotelId == hotelId).Include(h => h.Hotel)
+                .OrderBy(r => r.CreatedAt);
+            return query;
         }
     }
 }

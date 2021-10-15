@@ -7,27 +7,36 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using Serilog;
+using System.Threading.Tasks;
 
 
 namespace hotel_booking_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class HotelController : ControllerBase
     {
+
         private readonly IHotelService _hotelService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IHotelStatisticsService _hotelStatisticsService;
+        
         private readonly ILogger _logger;
 
 
-        public HotelController(ILogger logger, IHotelService hotelService, UserManager<AppUser> userManager, IHotelStatisticsService hotelStatisticsService)
+        public HotelController(ILogger logger, 
+            IHotelService hotelService, 
+            UserManager<AppUser> userManager, 
+            IHotelStatisticsService hotelStatisticsService
+            )
+
         {
             _hotelService = hotelService;
             _userManager = userManager;
             _hotelStatisticsService = hotelStatisticsService;
+            
             _logger = logger;
         }
 
@@ -154,19 +163,31 @@ namespace hotel_booking_api.Controllers
 
         }
 
-
         [HttpDelete]
         [Route("{hotelId}")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)] 
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
         public async Task<IActionResult> DeleteHotelAsync(string hotelId)
         {
             var result = await _hotelService.DeleteHotelByIdAsync(hotelId);
             return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet]
+        [Route("{hotelId}/reviews")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllReviewsByHotel([FromQuery] PagingDto paging, string hotelId)
+        {
+            var response = await _hotelService.GetAllReviewsByHotelAsync(paging, hotelId);
+            return StatusCode(response.StatusCode, response);
         }
     }
 }
