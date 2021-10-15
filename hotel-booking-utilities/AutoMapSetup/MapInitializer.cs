@@ -5,6 +5,7 @@ using hotel_booking_dto.AppUserDto;
 using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.PercentageRating, y => y.MapFrom(src => src.Ratings.Count == 0 ? 100 : (double)src.Ratings.Sum(r => r.Ratings) * 100 / ((double)src.Ratings.Count * 5)))
                 .ForMember(x => x.Price, y => y.MapFrom(src => src.RoomTypes.OrderBy(rt => rt.Price).FirstOrDefault().Price));
 
+
             CreateMap<RoomType, RoomInfoDto>()
                 .ForMember(x => x.HotelName, y => y.MapFrom(c => c.Hotel.Name))
                 .ForMember(x => x.DiscountPrice, y => y.MapFrom(c => c.Discount));
@@ -64,9 +66,24 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             // Gallery Maps
             CreateMap<Gallery, GalleryDto>().ReverseMap();
+           
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
-        }
+            CreateMap<Customer, GetUsersResponseDto>()
+                .ForMember(x => x.FirstName, y => y.MapFrom(u => u.AppUser.FirstName))
+                .ForMember(x => x.LastName, y => y.MapFrom(u => u.AppUser.LastName))
+                .ForMember(x => x.Age, y => y.MapFrom(u => u.AppUser.Age))
+                .ForMember(x => x.Id, y => y.MapFrom(u => u.AppUser.Id))
+                .ForMember(x => x.Email, y => y.MapFrom(u => u.AppUser.Email))
+                .ForMember(x => x.PhoneNumber, y => y.MapFrom(u => u.AppUser.PhoneNumber))
+                .ForMember(x => x.UserName, y => y.MapFrom(u => u.AppUser.UserName))
+                .ForMember(x => x.Age, y => y.MapFrom(u => u.AppUser.Age))
+                .ForMember(x => x.State, y => y.MapFrom(u => u.State))
+                .ForMember(x => x.CreatedAt, y => y.MapFrom(u => u.AppUser.CreatedAt));
 
+            //Review Maps
+            CreateMap<Review, ReviewToReturnDto>().ReverseMap();
+            CreateMap<Review, AddReviewDto>().ReverseMap();
+        }
     }
 }
