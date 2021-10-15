@@ -26,7 +26,7 @@ namespace hotel_booking_data.Repositories.Implementations
         public async Task<Manager> GetAppUserByEmail(string email)
         {
             var checkDatabase = await _context.Managers
-                .Include(x => x.AppUser).FirstOrDefaultAsync(x => x.AppUser.Email != email);
+                .Include(x => x.AppUser).FirstOrDefaultAsync(x => x.AppUser.Email == email);
 
             return checkDatabase;
         }

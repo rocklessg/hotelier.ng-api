@@ -11,5 +11,6 @@ namespace hotel_booking_core.Interfaces
     {
         Task<Response<string>> AddManagerRequest(ManagerRequestDto managerRequest);
         Task<Response<string>> SendManagerInvite(string email);
+        Task<Response<bool>> CheckTokenExpiring(string email, string token);
     }
 }

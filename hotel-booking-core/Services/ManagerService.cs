@@ -5,7 +5,6 @@ using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_models;
 using hotel_booking_models.Mail;
-using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 using System;
@@ -19,17 +18,14 @@ namespace hotel_booking_core.Services
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ITokenGeneratorService _tokenGenerator;
         private readonly IMailService _mailService;
         private readonly ILogger _logger;
 
-        public ManagerService(IMapper mapper, IUnitOfWork unitOfWork,
-            ITokenGeneratorService tokenGenerator, IMailService mailService,
-            ILogger logger)
+        public ManagerService(IMapper mapper, IUnitOfWork unitOfWork, 
+            IMailService mailService, ILogger logger)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _tokenGenerator = tokenGenerator;
             _mailService = mailService;
             _logger = logger;
 
@@ -87,6 +83,10 @@ namespace hotel_booking_core.Services
                     var result = await _mailService.SendEmailAsync(mailRequest);
                     if (result)
                     {
+                        check.ExpiresAt = DateTime.UtcNow.AddHours(24);
+                        _unitOfWork.ManagerRequest.Update(check);
+                        await _unitOfWork.Save();
+
                         _logger.Information("Mail sent successfully");
                         return new Response<string>
                         {
@@ -105,6 +105,23 @@ namespace hotel_booking_core.Services
                 return Response<string>.Fail("Invalid email address", StatusCodes.Status404NotFound);
             }
             return Response<string>.Fail("This email is a registered user", StatusCodes.Status404NotFound);
+        }
+
+        public async Task<Response<bool>> CheckTokenExpiring(string email, string token)
+        {
+            var managerRequest = await _unitOfWork.ManagerRequest.GetHotelManagerByEmailToken(email, token);
+
+            if (managerRequest != null)
+            {
+                var expired = managerRequest.ExpiresAt < DateTime.Now;
+                if (expired)
+                {
+                    await SendManagerInvite(email);
+                    return Response<bool>.Fail("Link has expired, a new link has been sent", StatusCodes.Status408RequestTimeout);
+                }
+                return Response<bool>.Success("Redirection to registration page", true, StatusCodes.Status200OK);
+            }
+            return Response<bool>.Fail("Email or token is not correct", StatusCodes.Status404NotFound);
         }
 
         private static async Task<string> GetEmailBody(string emailTempPath, string token)

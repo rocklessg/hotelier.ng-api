@@ -22,7 +22,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpPost]
-        [Route("join")]
+        [Route("request")]
         public async Task<IActionResult> AddHotelManagerRequest([FromBody]ManagerRequestDto managerRequestDto)
         {
             var newManagerRequest = await _managerService.AddManagerRequest(managerRequestDto);
@@ -38,6 +38,14 @@ namespace hotel_booking_api.Controllers
             var sendInvite = await _managerService.SendManagerInvite(email);
             _logger.Information($"Invite has been successfully sent to {email}");
             return Ok(sendInvite);
+        }
+
+        [HttpGet]
+        [Route("token-expiring")]
+        public async Task<IActionResult> TokenExpiring(string email, string token)
+        {
+            var confirmToken = await _managerService.CheckTokenExpiring(email, token);
+            return Ok(confirmToken);
         }
     }
 }
