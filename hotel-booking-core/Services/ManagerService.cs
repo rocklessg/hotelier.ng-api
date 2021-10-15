@@ -10,7 +10,6 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -43,11 +42,7 @@ namespace hotel_booking_core.Services
                 if (getManager == null)
                 {
                     var addManager = _mapper.Map<ManagerRequest>(managerRequest);
-                    var managerToken = Guid.NewGuid();
-                    var a = managerToken.ToString();
-                    //encode the managerToken
-                    var encodeToken = Encode(managerToken);
-                    addManager.Token = encodeToken;
+                    addManager.Token = Guid.NewGuid().ToString();
                     await _unitOfWork.ManagerRequest.InsertAsync(addManager);
                     await _unitOfWork.Save();
 
@@ -70,10 +65,11 @@ namespace hotel_booking_core.Services
             var check = await _unitOfWork.ManagerRequest.GetHotelManagerByEmail(email);
             var getUser = await _unitOfWork.Managers.GetAppUserByEmail(email);
             if (getUser == null)
-            {
+            { 
                 if (check != null)
                 {
-                    var mailBody = await GetEmailBody(emailTempPath: "StaticFiles/Html/ManagerInvite.html", token: check.Token);
+                    var newGuid = Guid.Parse(check.Token);
+                    var mailBody = await GetEmailBody(emailTempPath: "StaticFiles/Html/ManagerInvite.html", token: Encode(newGuid));
 
                     var mailRequest = new MailRequest()
                     {

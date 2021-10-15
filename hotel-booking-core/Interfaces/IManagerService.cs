@@ -1,6 +1,6 @@
 ﻿using hotel_booking_dto;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+ using System.Threading.Tasks;
 
 namespace hotel_booking_core.Interfaces
 {
