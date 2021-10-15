@@ -47,5 +47,13 @@ namespace hotel_booking_api.Controllers
             var confirmToken = await _managerService.CheckTokenExpiring(email, token);
             return Ok(confirmToken);
         }
+
+        [HttpGet]
+        [Route("getall-request")]
+        public async Task<IActionResult> GetAllRequests()
+        {
+            var getAll = await _managerService.GetAllManagerRequest();
+            return Ok(getAll);
+        }
     }
 }

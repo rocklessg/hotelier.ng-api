@@ -10,6 +10,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -31,7 +32,7 @@ namespace hotel_booking_core.Services
             _logger = logger;
 
         }
-
+        
         public async Task<Response<string>> AddManagerRequest(ManagerRequestDto managerRequest)
         {
             var getManager = await _unitOfWork.ManagerRequest.GetHotelManagerByEmail(managerRequest.Email);
@@ -127,7 +128,12 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<IEnumerable<ManagerRequestResponseDTo>>> GetAllManagerRequest()
         {
+            var getAllManagersRequest = await _unitOfWork.ManagerRequest.GetManagerRequest();
+            
+            var mapResponse = _mapper.Map<List<ManagerRequestResponseDTo>>(getAllManagersRequest);
 
+            return Response<IEnumerable<ManagerRequestResponseDTo>>
+                .Success("All manager requests", mapResponse, StatusCodes.Status200OK); 
         }
 
         private static async Task<string> GetEmailBody(string emailTempPath, string token)
