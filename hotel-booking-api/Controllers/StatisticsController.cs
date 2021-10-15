@@ -14,7 +14,6 @@ namespace hotel_booking_api.Controllers
     [Route("api/[controller]")]
     public class StatisticsController : ControllerBase
     {
-        private readonly IAdminService _adminService;
         private readonly IHotelStatisticsService _hotelStatisticsService;
         private readonly ILogger _logger;
 

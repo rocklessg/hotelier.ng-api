@@ -2,9 +2,12 @@
 using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
-using hotel_booking_models;
+using static hotel_booking_utilities.Pagination.Paginator;
 using System.Collections.Generic;
 using System.Net;
+using hotel_booking_utilities.Pagination;
+using hotel_booking_models;
+using hotel_booking_dto.commons;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.Services
@@ -21,16 +24,38 @@ namespace hotel_booking_core.Services
         }
 
 
-        public async Task<Response<IEnumerable<TransactionResponseDto>>> GetAllTransactions()
+        public async Task<Response<PageResult<IEnumerable<TransactionResponseDto>>>> GetAllTransactions(TransactionFilter filter)
         {
-            var transactions = await _unitOfWork.Booking.GetAllTransactions();
-            var response = new Response<IEnumerable<TransactionResponseDto>>();
-            var transactionList = _mapper.Map<IEnumerable<TransactionResponseDto>>(transactions);
-            
+            var transactions = _unitOfWork.Booking.GetAllTransactions();
+            var response = new Response<PageResult<IEnumerable<TransactionResponseDto>>>();
 
+            if (filter.Month != null && filter.SearchQuery == null)
+            {
+                transactions = _unitOfWork.Booking.GetTransactionsFilterByDate(filter);
+                        
+            }
+            else if (filter.Month == null && filter.SearchQuery == null)
+            {
+                transactions = _unitOfWork.Booking.GetTransactionsFilterByDate(filter.Year);
+            }
+            else if (filter.Month == null && filter.SearchQuery != null)
+            {
+                transactions = _unitOfWork.Booking.GetTransactionsByQuery(filter);
+            }
+            else if (filter.Month != null && filter.SearchQuery != null)
+            {
+                transactions = _unitOfWork.Booking.GetTransactionsByHotelAndMonth(filter);
+            }
+            else
+            {
+                transactions = _unitOfWork.Booking.GetAllTransactions();
+            };
+            
+            //var transactionList = _mapper.Map<IEnumerab.le<TransactionResponseDto>>(transactions);
+            var item =  await transactions.PaginationAsync<Booking, TransactionResponseDto>(filter.PageSize, filter.PageNumber, _mapper);
             response.StatusCode = (int)HttpStatusCode.OK;
             response.Succeeded = true;
-            response.Data = transactionList;
+            response.Data = item;
             response.Message = "All transactions retrieved successfully";
             return response;
         }
