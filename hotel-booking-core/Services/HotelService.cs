@@ -371,11 +371,13 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging, string hotelId)
         {
+            _logger.Information($"Attemp to get all review by hotel id {hotelId}");
             var response = new Response<PageResult<IEnumerable<ReviewToReturnDto>>>();
             var hotelExistCheck = await _unitOfWork.Hotels.GetHotelsById(hotelId);
 
             if (hotelExistCheck == null)
             {
+                _logger.Information("Get all reviews by hotelId failed");
                 response.Succeeded = false;
                 response.Data = null;
                 response.Message = "Hotel does not exist";
@@ -386,7 +388,7 @@ namespace hotel_booking_core.Services
             var hotel = _unitOfWork.Hotels.GetAllReviewsByHotelAsync(hotelId);
 
             var pageResult = await hotel.PaginationAsync<Review, ReviewToReturnDto>(paging.PageSize, paging.PageNumber, _mapper);
-
+            _logger.Information("Get all reviews operation successful");
             response.Succeeded = true;
             response.Data = pageResult;
             response.Message = $"List of all reviews in hotel with id {hotelId}";
