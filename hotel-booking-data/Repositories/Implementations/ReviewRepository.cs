@@ -28,13 +28,6 @@ namespace hotel_booking_data.Repositories.Implementations
 
             return await _reviews.Where(x =>x.HotelId == hotelId).FirstOrDefaultAsync();
         }
-            
-        public IQueryable<Review> GetAllReviewsByHotelAsync(string hotelId)
-        {
-            var query = _reviews.AsNoTracking().Where(h => h.HotelId == hotelId).Include(h => h.Hotel)
-                .OrderBy(r => r.CreatedAt);
-            return query;
-        }
 
         public Review GetUserReview(string reviewId)
         {

@@ -7,7 +7,6 @@ using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
-using hotel_booking_utilities;
 using hotel_booking_utilities.Pagination;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -366,6 +365,32 @@ namespace hotel_booking_core.Services
             response.StatusCode = StatusCodes.Status200OK;
             response.Message = "On your request nothing has been found.";
             response.Succeeded = false;
+            return response;
+        }
+
+
+        public async Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging, string hotelId)
+        {
+            var response = new Response<PageResult<IEnumerable<ReviewToReturnDto>>>();
+            var hotelExistCheck = await _unitOfWork.Hotels.GetHotelsById(hotelId);
+
+            if (hotelExistCheck == null)
+            {
+                response.Succeeded = false;
+                response.Data = null;
+                response.Message = "Hotel does not exist";
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return response;
+            }
+
+            var hotel = _unitOfWork.Hotels.GetAllReviewsByHotelAsync(hotelId);
+
+            var pageResult = await hotel.PaginationAsync<Review, ReviewToReturnDto>(paging.PageSize, paging.PageNumber, _mapper);
+
+            response.Succeeded = true;
+            response.Data = pageResult;
+            response.Message = $"List of all reviews in hotel with id {hotelId}";
+            response.StatusCode = (int)HttpStatusCode.OK;
             return response;
         }
 

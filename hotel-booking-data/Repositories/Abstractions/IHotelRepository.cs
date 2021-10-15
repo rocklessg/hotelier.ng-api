@@ -1,8 +1,6 @@
 ﻿using hotel_booking_models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Abstractions
@@ -17,5 +15,6 @@ namespace hotel_booking_data.Repositories.Abstractions
         Task<Hotel> GetHotelsById(string hotelId);
         IQueryable<Hotel> GetHotelsByRating();
         IQueryable<Hotel> GetTopDeals();
+        IQueryable<Review> GetAllReviewsByHotelAsync(string HotelId);
     }
 }

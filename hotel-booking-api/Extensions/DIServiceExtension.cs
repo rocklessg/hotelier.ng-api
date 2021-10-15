@@ -1,7 +1,5 @@
-
-﻿using FluentValidation;
+using FluentValidation;
 using hotel_booking_core.Interface;
-
 using hotel_booking_core.Interfaces;
 using hotel_booking_core.Services;
 using hotel_booking_data.Repositories.Abstractions;

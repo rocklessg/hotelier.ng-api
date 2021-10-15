@@ -2,14 +2,10 @@
 using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
-using hotel_booking_dto.commons;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_models;
-using hotel_booking_utilities.Pagination;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using static hotel_booking_utilities.Pagination.Paginator;
 
 namespace hotel_booking_core.Services
 {
@@ -26,19 +22,20 @@ namespace hotel_booking_core.Services
            
         }
 
-        public Response<string> UpdateUserReview(string customerId, ReviewRequestDto reviewRequestDto)
+        public Response<string> UpdateUserReview(string customerId, string reviewId, ReviewRequestDto model)
         {
             var response = new Response<string>();
-            var review = _unitOfWork.Reviews.GetUserReview(reviewRequestDto.reviewId);
+            var review = _unitOfWork.Reviews.GetUserReview(reviewId);
 
 
             if (review != null)
             {
                 if (review.CustomerId == customerId)
                 {
-                    review.Comment = reviewRequestDto.Comment;
+                    review.Comment = model.Comment;
                     _unitOfWork.Reviews.Update(review);
                     _unitOfWork.Save();
+                    
 
                     response.Succeeded = true;
                     response.StatusCode = (int)HttpStatusCode.Created;
@@ -53,7 +50,7 @@ namespace hotel_booking_core.Services
             }
 
             response.StatusCode = (int)HttpStatusCode.BadRequest;
-            response.Message = $"Review with the Id {reviewRequestDto.reviewId} does not exist";
+            response.Message = $"Review with the Id {reviewId} does not exist";
 
             return response;
         }
@@ -86,29 +83,6 @@ namespace hotel_booking_core.Services
             return response;
         }
  
-        public async Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging, string hotelId)
-        {
-            var response =  new Response<PageResult<IEnumerable<ReviewToReturnDto>>>();
-            var hotelExistCheck = await _unitOfWork.Hotels.GetHotelsById(hotelId);
-
-            if (hotelExistCheck == null)
-            {
-                response.Succeeded = false;
-                response.Data = null;
-                response.Message = "Hotel does not exist";
-                response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return response;
-            }
-
-            var hotel = _unitOfWork.Reviews.GetAllReviewsByHotelAsync(hotelId);
-      
-            var pageResult = await hotel.PaginationAsync<Review, ReviewToReturnDto>(paging.PageSize, paging.PageNumber, _mapper);
-
-            response.Succeeded = true;
-            response.Data = pageResult;
-            response.Message = $"List of all reviews in hotel with id {hotelId}";
-            response.StatusCode = (int)HttpStatusCode.OK;
-            return response;
-        }
+       
     }
 }
