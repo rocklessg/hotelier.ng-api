@@ -2,12 +2,10 @@
 using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
-using static hotel_booking_utilities.Pagination.Paginator;
 using System.Collections.Generic;
-using System.Net;
 using hotel_booking_utilities.Pagination;
+using System.Net;
 using hotel_booking_models;
-using hotel_booking_dto.commons;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.Services

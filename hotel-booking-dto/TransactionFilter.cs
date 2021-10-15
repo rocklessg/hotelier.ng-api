@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace hotel_booking_dto
 {
-    public class TransactionFilter : Paging
+    public class TransactionFilter : PagingDto
     {
         public string Month { get; set; }
         public string Year { get; set; }
