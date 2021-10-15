@@ -125,7 +125,7 @@ namespace hotel_booking_core.Services
             return Response<IEnumerable<RoomDTo>>.Fail("No room found for this particular roomtype", StatusCodes.Status404NotFound);
         }
 
-        public async Task<Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>> GetHotelRoomType(Paging paging, string hotelId)
+        public async Task<Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>> GetHotelRoomType(PagingDto paging, string hotelId)
         {
             var roomList = _unitOfWork.Rooms.GetRoomTypeByHotel(hotelId);
 

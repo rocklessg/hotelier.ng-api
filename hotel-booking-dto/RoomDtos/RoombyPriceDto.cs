@@ -2,7 +2,7 @@
 
 namespace hotel_booking_dto
 {
-    public class PriceDto : Paging
+    public class PriceDto : PagingDto
     {
         public decimal MinPrice { get; set; }
         public decimal MaxPrice { get; set; }
