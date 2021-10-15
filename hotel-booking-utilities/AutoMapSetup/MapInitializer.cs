@@ -70,6 +70,7 @@ namespace hotel_booking_utilities.AutoMapSetup
             //Manager Request Map
 
             CreateMap<ManagerRequest, ManagerRequestDto>().ReverseMap();
+            CreateMap<ManagerRequest, ManagerRequestResponseDTo>();
         }
 
     }

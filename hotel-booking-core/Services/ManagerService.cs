@@ -8,6 +8,7 @@ using hotel_booking_models.Mail;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -122,6 +123,11 @@ namespace hotel_booking_core.Services
                 return Response<bool>.Success("Redirection to registration page", true, StatusCodes.Status200OK);
             }
             return Response<bool>.Fail("Email or token is not correct", StatusCodes.Status404NotFound);
+        }
+
+        public async Task<Response<IEnumerable<ManagerRequestResponseDTo>>> GetAllManagerRequest()
+        {
+
         }
 
         private static async Task<string> GetEmailBody(string emailTempPath, string token)

@@ -2,6 +2,7 @@
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,5 +30,13 @@ namespace hotel_booking_data.Repositories.Implementations
             var checkToken = check.Token == token;
             return checkToken ? check : null;
         }
+
+        public async Task<IEnumerable<ManagerRequest>> GetManagerRequest()
+        {
+            var check = await _dbSet.Select(x => x).ToListAsync();
+            return check;
+        }
+
+
     }
 }
