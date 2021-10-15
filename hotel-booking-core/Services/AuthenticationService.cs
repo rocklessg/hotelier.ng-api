@@ -9,7 +9,7 @@ using hotel_booking_models.Mail;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using System;
+using Serilog;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -17,7 +17,6 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
-using Serilog;
 
 namespace hotel_booking_core.Services
 {

@@ -8,6 +8,7 @@ using hotel_booking_models.Mail;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Http;
 using Serilog;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -36,60 +37,74 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<string>> AddManagerRequest(ManagerRequestDto managerRequest)
         {
-            var getManager = await _unitOfWork.ManagerRequest.GetHotelManager(managerRequest.Email);
+            var getManager = await _unitOfWork.ManagerRequest.GetHotelManagerByEmail(managerRequest.Email);
+            var getUser = await _unitOfWork.Managers.GetAppUserByEmail(managerRequest.Email);
 
-            if (getManager == null)
+            if (getUser == null)
             {
-                var addManager = _mapper.Map<ManagerRequest>(managerRequest);
-                addManager.Token = _tokenGenerator.GenerateToken(addManager);
-                await _unitOfWork.ManagerRequest.InsertAsync(addManager);
-                await _unitOfWork.Save();
-
-                return new Response<string>
+                if (getManager == null)
                 {
-                    Message = "Thank you for interest, you will get a response from us shortly",
-                    StatusCode = StatusCodes.Status200OK,
-                    Succeeded = true
-                };
+                    var addManager = _mapper.Map<ManagerRequest>(managerRequest);
+                    var managerToken = Guid.NewGuid();
+                    var a = managerToken.ToString();
+                    //encode the managerToken
+                    var encodeToken = Encode(managerToken);
+                    addManager.Token = encodeToken;
+                    await _unitOfWork.ManagerRequest.InsertAsync(addManager);
+                    await _unitOfWork.Save();
+
+                    return new Response<string>
+                    {
+                        Message = "Thank you for your interest, you will get a response from us shortly",
+                        StatusCode = StatusCodes.Status200OK,
+                        Succeeded = true
+                    };
+                }
+                return Response<string>.Fail("Email already exist", StatusCodes.Status409Conflict);
             }
-            return Response<string>.Fail("Email already exist", StatusCodes.Status409Conflict);
+            return Response<string>.Fail("This Email is a registered user", StatusCodes.Status409Conflict);
         }
 
         public async Task<Response<string>> SendManagerInvite(string email)
         {
             using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-            var check = await _unitOfWork.ManagerRequest.GetHotelManager(email);
 
-            if (check != null)
+            var check = await _unitOfWork.ManagerRequest.GetHotelManagerByEmail(email);
+            var getUser = await _unitOfWork.Managers.GetAppUserByEmail(email);
+            if (getUser == null)
             {
-                var mailBody = await GetEmailBody(emailTempPath: "StaticFiles/Html/ManagerInvite.html", token: check.Token);
-
-                var mailRequest = new MailRequest()
+                if (check != null)
                 {
-                    Subject = "Request Approved",
-                    Body = mailBody,
-                    ToEmail = check.Email
-                };
+                    var mailBody = await GetEmailBody(emailTempPath: "StaticFiles/Html/ManagerInvite.html", token: check.Token);
 
-                var result = await _mailService.SendEmailAsync(mailRequest);
-                if (result)
-                {
-                    _logger.Information("Mail sent successfully");
-                    return new Response<string>
+                    var mailRequest = new MailRequest()
                     {
-                        Data = check.Id,
-                        StatusCode = StatusCodes.Status200OK,
-                        Message = $"Message successfully sent",
-                        Succeeded = true
+                        Subject = "Request Approved",
+                        Body = mailBody,
+                        ToEmail = check.Email
                     };
+
+                    var result = await _mailService.SendEmailAsync(mailRequest);
+                    if (result)
+                    {
+                        _logger.Information("Mail sent successfully");
+                        return new Response<string>
+                        {
+                            Data = check.Id,
+                            StatusCode = StatusCodes.Status200OK,
+                            Message = $"Message successfully sent",
+                            Succeeded = true
+                        };
+                    }
+                    _logger.Information("Mail service failed");
+                    transaction.Dispose();
+                    return Response<string>.Fail("Mail service failed", StatusCodes.Status503ServiceUnavailable);
                 }
-                _logger.Information("Mail service failed");
-                transaction.Dispose();
-                return Response<string>.Fail("Mail service failed", StatusCodes.Status503ServiceUnavailable);
+                transaction.Complete();
+                _logger.Information("Invalid email address");
+                return Response<string>.Fail("Invalid email address", StatusCodes.Status404NotFound);
             }
-            transaction.Complete();
-            _logger.Information("Invalid email address");
-            return Response<string>.Fail("Invalid email address", StatusCodes.Status404NotFound);
+            return Response<string>.Fail("This email is a registered user", StatusCodes.Status404NotFound);
         }
 
         private static async Task<string> GetEmailBody(string emailTempPath, string token)
@@ -98,6 +113,20 @@ namespace hotel_booking_core.Services
             var temp = await File.ReadAllTextAsync(Path.Combine(Directory.GetCurrentDirectory(), emailTempPath));
             var emailBody = temp.Replace("**link**", link);
             return emailBody;
+        }
+
+        public static string Encode(Guid guid)
+        {
+            string encoded = Convert.ToBase64String(guid.ToByteArray());
+            encoded = encoded.Replace("/", "_").Replace("+", "-");
+            return encoded.Substring(0, 22);
+        }
+
+        public static Guid Decode(string value)
+        {
+            value = value.Replace("_", "/").Replace("-", "+");
+            var buffer = Convert.FromBase64String(value + "==");
+            return new Guid(buffer);
         }
     }
 }

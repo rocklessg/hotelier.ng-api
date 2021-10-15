@@ -5,6 +5,6 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IManagerRequestRepository : IGenericRepository<ManagerRequest>
     {
-        Task<ManagerRequest> GetHotelManager(string email);
+        Task<ManagerRequest> GetHotelManagerByEmail(string email);
     }
 }
