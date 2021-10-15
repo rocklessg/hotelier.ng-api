@@ -10,6 +10,7 @@ namespace hotel_booking_data.Repositories.Abstractions
     public interface IManagerRepository : IGenericRepository<Manager>
     {
         Task<Manager> GetManagerStatistics(string managerId);
+        Task<Manager> GetManagerAsync(string managerId);
         Task<Manager> GetAppUserByEmail(string email);
     }
 }

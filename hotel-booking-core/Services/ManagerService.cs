@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.IO;
+
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -31,7 +31,41 @@ namespace hotel_booking_core.Services
             _logger = logger;
 
         }
-        
+
+        public async Task<Response<string>> SoftDeleteManagerAsync(string managerId)
+        {
+            Manager manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
+            Response<string> response = new();
+
+            if (manager != null)
+            {
+                if (manager.AppUser.IsActive == true)
+                {
+                    manager.AppUser.IsActive = false;
+                    _unitOfWork.Managers.Update(manager);
+                    await _unitOfWork.Save();
+
+                    response.Message = $"Manager with {manager.AppUser.Id} has been deactivated successfully.";
+                    response.StatusCode = (int)HttpStatusCode.Created;
+                    response.Succeeded = true;
+
+                    return response;
+                }
+
+                response.Message = $"Attention, manager with {manager.AppUser.Id} is already inactive.";
+                response.StatusCode = (int)HttpStatusCode.AlreadyReported;
+                response.Succeeded = false;
+
+                return response;
+
+            }
+            response.Message = $"Sorry, user with {managerId} is not a manager.";
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = false;
+
+            return response;
+    } 
+
         public async Task<Response<string>> AddManagerRequest(ManagerRequestDto managerRequest)
         {
             var getManager = await _unitOfWork.ManagerRequest.GetHotelManagerByEmail(managerRequest.Email);
@@ -83,7 +117,7 @@ namespace hotel_booking_core.Services
                     {
                         check.ExpiresAt = DateTime.UtcNow.AddHours(24);
                         _unitOfWork.ManagerRequest.Update(check);
-                        await _unitOfWork.Save();
+                    await _unitOfWork.Save();
 
                         _logger.Information("Mail sent successfully");
                         return new Response<string>
@@ -120,7 +154,7 @@ namespace hotel_booking_core.Services
                 return Response<bool>.Success("Redirection to registration page", true, StatusCodes.Status200OK);
             }
             return Response<bool>.Fail("Email or token is not correct", StatusCodes.Status404NotFound);
-        }
+            }
 
         public async Task<Response<IEnumerable<ManagerRequestResponseDTo>>> GetAllManagerRequest()
         {
@@ -145,7 +179,7 @@ namespace hotel_booking_core.Services
             string encoded = Convert.ToBase64String(guid.ToByteArray());
             encoded = encoded.Replace("/", "_").Replace("+", "-");
             return encoded.Substring(0, 22);
-        }
+            }
 
         public static Guid Decode(string value)
         {

@@ -51,9 +51,17 @@ namespace hotel_booking_api.Controllers
         [HttpGet]
         [Route("getall-request")]
         public async Task<IActionResult> GetAllRequests()
+        
         {
             var getAll = await _managerService.GetAllManagerRequest();
             return Ok(getAll);
+           
+        }
+        [HttpPatch("{managerId}/deactivate")]
+        public async Task<ActionResult> SoftDeleteAsync(string managerId)
+        {
+            var response = await _managerService.SoftDeleteManagerAsync(managerId);
+            return StatusCode(response.StatusCode, response);
         }
     }
 }

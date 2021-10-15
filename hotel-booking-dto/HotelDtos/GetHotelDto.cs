@@ -21,6 +21,7 @@ namespace hotel_booking_dto.HotelDtos
         public string FeaturedImage { get; set; }
         public IEnumerable<string> Gallery { get; set; }
         public IEnumerable<RoomTypeDto> RoomTypes { get; set; }
+        public IEnumerable<AmenityDto> Amenities { get; set; }
         public IEnumerable<ReviewDto> Reviews { get; set; }
     }
 }
