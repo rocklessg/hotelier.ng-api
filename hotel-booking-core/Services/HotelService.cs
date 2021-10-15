@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using static hotel_booking_utilities.Pagination.Paginator;
 
 namespace hotel_booking_core.Services
 {
@@ -28,18 +27,17 @@ namespace hotel_booking_core.Services
        
 
         public HotelService(IUnitOfWork unitOfWork, IMapper mapper, ILogger logger)
-
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
            _logger = logger;
         }
 
-        public async Task<Response<IEnumerable<HotelBasicDto>>> GetHotelsByRatingsAsync()
+        public async Task<Response<IEnumerable<HotelAndroidDto>>> GetHotelsByRatingsAsync()
         {
             var hotelList = await _unitOfWork.Hotels.GetHotelsByRating().ToListAsync();
-            var hotelListDto = _mapper.Map<IEnumerable<HotelBasicDto>>(hotelList);
-            var response = new Response<IEnumerable<HotelBasicDto>>(StatusCodes.Status200OK, true, "hotels by ratings", hotelListDto);
+            var hotelListDto = _mapper.Map<IEnumerable<HotelAndroidDto>>(hotelList);
+            var response = new Response<IEnumerable<HotelAndroidDto>>(StatusCodes.Status200OK, true, "hotels by ratings", hotelListDto);
             return response;
         }
 
@@ -51,11 +49,11 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public async Task<Response<IEnumerable<HotelBasicDto>>> GetTopDealsAsync()
+        public async Task<Response<IEnumerable<HotelAndroidDto>>> GetTopDealsAsync()
         {
             var hotelList = await _unitOfWork.Hotels.GetTopDeals().ToListAsync(); ;
-            var hotelListDto = _mapper.Map<IEnumerable<HotelBasicDto>>(hotelList);
-            var response = new Response<IEnumerable<HotelBasicDto>>(StatusCodes.Status200OK, true, "hotels top deals", hotelListDto);
+            var hotelListDto = _mapper.Map<IEnumerable<HotelAndroidDto>>(hotelList);
+            var response = new Response<IEnumerable<HotelAndroidDto>>(StatusCodes.Status200OK, true, "hotels top deals", hotelListDto);
             return response;
         }
 
@@ -245,18 +243,18 @@ namespace hotel_booking_core.Services
             response.Succeeded = false;
             return response;
         }
-        public async Task<Response<PageResult<IEnumerable<HotelBasicDto>>>> GetHotelByLocation(string location, PagingDto paging)
+        public async Task<Response<PageResult<IEnumerable<HotelAndroidDto>>>> GetHotelByLocation(string location, PagingDto paging)
         {
             _logger.Information($"Attempting to get hotel in {location}");
             var hotels = _unitOfWork.Hotels.GetAllHotels()                
                 .Where(q => q.State.ToLower().Contains(location.ToLower()) || q.City.ToLower().Contains(location.ToLower()));
 
-            var response = new Response<PageResult<IEnumerable<HotelBasicDto>>>();
+            var response = new Response<PageResult<IEnumerable<HotelAndroidDto>>>();
 
             if (hotels != null)
             {
                 _logger.Information("Search completed successfully");
-                var result = await hotels.PaginationAsync<Hotel, HotelBasicDto>
+                var result = await hotels.PaginationAsync<Hotel, HotelAndroidDto>
                     (
                         pageSize: paging.PageSize, 
                         pageNumber: paging.PageNumber, 
