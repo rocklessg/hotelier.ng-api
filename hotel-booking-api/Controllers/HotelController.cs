@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ILogger = Serilog.ILogger;
 
@@ -20,6 +21,7 @@ namespace hotel_booking_api.Controllers
     
     public class HotelController : ControllerBase
     {
+
         private readonly IHotelService _hotelService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IHotelStatisticsService _hotelStatisticsService;
@@ -32,6 +34,7 @@ namespace hotel_booking_api.Controllers
             UserManager<AppUser> userManager, 
             IHotelStatisticsService hotelStatisticsService, 
             IReviewsService reviewsService)
+
         {
             _hotelService = hotelService;
             _userManager = userManager;
@@ -58,7 +61,7 @@ namespace hotel_booking_api.Controllers
 
         [Authorize(Policy = "Manager")]
         [HttpPut("{hotelId}")]
-        public async Task<IActionResult> UpdateHotel(string hotelId, [FromBody] UpdateHotelDto update)
+        public async Task<IActionResult> UpdateHotel(string hotelId, [FromBody] UpdateHotelDto update) 
         {
             var response = await _hotelService.UpdateHotelAsync(hotelId, update);
             return StatusCode(response.StatusCode, response);
@@ -155,13 +158,13 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet]
-        [Route("reviews/{hotelId}")]
+        [Route("{hotelId}/reviews")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAllReviewsByHotel([FromQuery] PagingDto paging ,string hotelId)
+        public async Task<IActionResult> GetAllReviewsByHotel([FromQuery] PagingDto paging, string hotelId)
         {
             var response = await _reviewsService.GetAllReviewsByHotelAsync(paging, hotelId);
             return StatusCode(response.StatusCode, response);
@@ -177,8 +180,9 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddReviews([FromBody] AddReviewDto model)
-        { 
-            var result = await _reviewsService.AddReviewAsync(model);
+        {
+            var customerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _reviewsService.AddReviewAsync(model, customerId);
             return StatusCode(result.StatusCode, result);
         }
     }

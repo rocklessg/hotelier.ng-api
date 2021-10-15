@@ -20,17 +20,15 @@ namespace hotel_booking_data.Repositories.Implementations
         }
         
 
-        public async Task<Review> CheckReviewByCustomerAsync(string customerId, string hotelId)
+        public async Task<Review> CheckReviewByCustomerAsync( string hotelId)
         {
-            return await _reviews.Where(x => x.CustomerId == customerId && x.HotelId == hotelId).SingleOrDefaultAsync();
+            return await _reviews.Where(x =>x.HotelId == hotelId).FirstOrDefaultAsync();
         }
 
         public IQueryable<Review> GetAllReviewsByHotelAsync(string hotelId)
         {
-            var query = _reviews.AsNoTracking();
-            query = query.Include(h => h.Hotel);
-            query = query.Where(r => r.HotelId == hotelId);
-            query = query.OrderBy(r => r.CreatedAt);
+            var query = _reviews.AsNoTracking().Where(h => h.HotelId == hotelId).Include(h => h.Hotel)
+                .OrderBy(r => r.CreatedAt);
             return query;
         }
     }
