@@ -22,7 +22,7 @@ namespace hotel_booking_data.Repositories.Implementations
         public IQueryable<Booking> GetTransactionsByQuery(TransactionFilter filter)
         {
             var transactions =  GetAllTransactions();
-            transactions = transactions.Where(transaction => transaction.Hotel.Name.Contains(filter.SearchQuery)
+            transactions = transactions.Where(transaction => transaction.Hotel.Name.ToLower().Contains(filter.SearchQuery.ToLower())
             && transaction.CreatedAt.Year.ToString() == (filter.Year))
             .OrderByDescending(booking => booking.CreatedAt);
             return transactions;

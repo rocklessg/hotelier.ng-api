@@ -31,8 +31,7 @@ namespace hotel_booking_core.Services
 
             if (filter.Month != null && filter.SearchQuery == null)
             {
-                transactions = _unitOfWork.Booking.GetTransactionsFilterByDate(filter);
-                        
+                transactions = _unitOfWork.Booking.GetTransactionsFilterByDate(filter);         
             }
             else if (filter.Month == null && filter.SearchQuery == null)
             {
@@ -50,9 +49,9 @@ namespace hotel_booking_core.Services
             {
                 transactions = _unitOfWork.Booking.GetAllTransactions();
             };
-            
-            //var transactionList = _mapper.Map<IEnumerab.le<TransactionResponseDto>>(transactions);
-            var item =  await transactions.PaginationAsync<Booking, TransactionResponseDto>(filter.PageSize, filter.PageNumber, _mapper);
+            var item = await transactions.PaginationAsync<Booking, TransactionResponseDto>(filter.PageSize, filter.PageNumber, _mapper);
+
+
             response.StatusCode = (int)HttpStatusCode.OK;
             response.Succeeded = true;
             response.Data = item;

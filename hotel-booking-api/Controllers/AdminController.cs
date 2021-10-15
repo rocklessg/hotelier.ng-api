@@ -22,7 +22,7 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("transactions")]
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> GetAllTransactions([FromQuery]TransactionFilter filter)
         {
