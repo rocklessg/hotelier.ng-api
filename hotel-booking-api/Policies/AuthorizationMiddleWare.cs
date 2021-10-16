@@ -9,10 +9,10 @@ namespace hotel_booking_api
             services.AddAuthorization(configure =>
             {
                 configure.AddPolicy(Policies.Admin, Policies.AdminPolicy());
-                configure.AddPolicy(Policies.HotelManager, Policies.HotelManagerPolicy());
+                configure.AddPolicy(Policies.Manager, Policies.HotelManagerPolicy());
                 configure.AddPolicy(Policies.Customer, Policies.CustomerPolicy());
-                configure.AddPolicy(Policies.AdminAndHotelManager, Policies.AdminAndHotelManagerPolicy());
-                configure.AddPolicy(Policies.HotelManagerAndCustomer, Policies.HotelManagerAndCustomerPolicy());
+                configure.AddPolicy(Policies.AdminAndManager, Policies.AdminAndHotelManagerPolicy());
+                configure.AddPolicy(Policies.ManagerAndCustomer, Policies.HotelManagerAndCustomerPolicy());
             });
         }
     }

@@ -2,6 +2,7 @@
 using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
+using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.ManagerDtos;
 using hotel_booking_models;
 using Microsoft.AspNetCore.Http;
@@ -49,7 +50,7 @@ namespace hotel_booking_core.Services
                 var manager = _mapper.Map<Manager>(managerDto);
                 var result = await _userManager.CreateAsync(appUser, managerDto.Password);
                 manager.AppUserId = appUser.Id;
-                
+
                 await _unitOfWork.Managers.InsertAsync(manager);
                 await _unitOfWork.Save();
                 if (result.Succeeded)
@@ -67,7 +68,48 @@ namespace hotel_booking_core.Services
                 }
                 return Response<ManagerResponseDto>.Fail("Registration Failed", StatusCodes.Status404NotFound);
             }
-            return Response<ManagerResponseDto>.Fail("There is no such email", StatusCodes.Status404NotFound);
+            return Response<ManagerResponseDto>.Fail("User already exist. Please register a new manager", StatusCodes.Status404NotFound);
+        }
+
+        public async Task<Response<IEnumerable<HotelBasicDto>>> GetAllHotelsAsync(string managerId)
+        {
+            var hotelList = await _unitOfWork.Managers.GetAllHotelsForManagerAsync(managerId);
+            var hotelListDto = _mapper.Map<IEnumerable<HotelBasicDto>>(hotelList);
+            var response = new Response<IEnumerable<HotelBasicDto>>(StatusCodes.Status200OK, true, "hotels for manager", hotelListDto);
+            return response;
+        }
+        public async Task<Response<string>> SoftDeleteManagerAsync(string managerId)
+        {
+            Manager manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
+            Response<string> response = new();
+
+            if (manager != null)
+            {
+                if (manager.AppUser.IsActive == true)
+                {
+                    manager.AppUser.IsActive = false;
+                    _unitOfWork.Managers.Update(manager);
+                    await _unitOfWork.Save();
+
+                    response.Message = $"Manager with {manager.AppUser.Id} has been deactivated successfully.";
+                    response.StatusCode = (int)HttpStatusCode.Created;
+                    response.Succeeded = true;
+
+                    return response;
+                }
+
+                response.Message = $"Attention, manager with {manager.AppUser.Id} is already inactive.";
+                response.StatusCode = (int)HttpStatusCode.AlreadyReported;
+                response.Succeeded = false;
+
+                return response;
+
+            }
+            response.Message = $"Sorry, user with {managerId} is not a manager.";
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = false;
+
+            return response;
         }
     }
 }

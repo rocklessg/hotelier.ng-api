@@ -16,20 +16,15 @@ namespace hotel_booking_api.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IManagerService _managerService;
-        
-        private readonly UserManager<AppUser> _userManager;
 
-
-        public AdminController(IManagerService managerService, UserManager<AppUser> userManager)
+        public AdminController(IManagerService managerService)
         {
             _managerService = managerService;
-            
-            _userManager = userManager;
         }
 
         [HttpPost]
-        [Route("add-manager")]
-        //[Authorize(Roles = "Admin")]
+        [Route("AddManager")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
