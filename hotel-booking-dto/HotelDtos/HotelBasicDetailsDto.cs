@@ -2,7 +2,7 @@
 
 namespace hotel_booking_dto.HotelDtos
 {
-    public class HotelAndroidDto
+    public class HotelBasicDetailsDto
     {
         [Display(Name = "ManagerId")]
         public string Id { get; set; }

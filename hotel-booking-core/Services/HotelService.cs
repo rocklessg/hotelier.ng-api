@@ -33,11 +33,11 @@ namespace hotel_booking_core.Services
            _logger = logger;
         }
 
-        public async Task<Response<IEnumerable<HotelAndroidDto>>> GetHotelsByRatingsAsync()
+        public async Task<Response<IEnumerable<HotelBasicDetailsDto>>> GetHotelsByRatingsAsync()
         {
             var hotelList = await _unitOfWork.Hotels.GetHotelsByRating().ToListAsync();
-            var hotelListDto = _mapper.Map<IEnumerable<HotelAndroidDto>>(hotelList);
-            var response = new Response<IEnumerable<HotelAndroidDto>>(StatusCodes.Status200OK, true, "hotels by ratings", hotelListDto);
+            var hotelListDto = _mapper.Map<IEnumerable<HotelBasicDetailsDto>>(hotelList);
+            var response = new Response<IEnumerable<HotelBasicDetailsDto>>(StatusCodes.Status200OK, true, "hotels by ratings", hotelListDto);
             return response;
         }
 
@@ -49,11 +49,11 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public async Task<Response<IEnumerable<HotelAndroidDto>>> GetTopDealsAsync()
+        public async Task<Response<IEnumerable<HotelBasicDetailsDto>>> GetTopDealsAsync()
         {
             var hotelList = await _unitOfWork.Hotels.GetTopDeals().ToListAsync(); ;
-            var hotelListDto = _mapper.Map<IEnumerable<HotelAndroidDto>>(hotelList);
-            var response = new Response<IEnumerable<HotelAndroidDto>>(StatusCodes.Status200OK, true, "hotels top deals", hotelListDto);
+            var hotelListDto = _mapper.Map<IEnumerable<HotelBasicDetailsDto>>(hotelList);
+            var response = new Response<IEnumerable<HotelBasicDetailsDto>>(StatusCodes.Status200OK, true, "hotels top deals", hotelListDto);
             return response;
         }
 
@@ -243,18 +243,18 @@ namespace hotel_booking_core.Services
             response.Succeeded = false;
             return response;
         }
-        public async Task<Response<PageResult<IEnumerable<HotelAndroidDto>>>> GetHotelByLocation(string location, PagingDto paging)
+        public async Task<Response<PageResult<IEnumerable<HotelBasicDetailsDto>>>> GetHotelByLocation(string location, PagingDto paging)
         {
             _logger.Information($"Attempting to get hotel in {location}");
             var hotels = _unitOfWork.Hotels.GetAllHotels()                
                 .Where(q => q.State.ToLower().Contains(location.ToLower()) || q.City.ToLower().Contains(location.ToLower()));
 
-            var response = new Response<PageResult<IEnumerable<HotelAndroidDto>>>();
+            var response = new Response<PageResult<IEnumerable<HotelBasicDetailsDto>>>();
 
             if (hotels != null)
             {
                 _logger.Information("Search completed successfully");
-                var result = await hotels.PaginationAsync<Hotel, HotelAndroidDto>
+                var result = await hotels.PaginationAsync<Hotel, HotelBasicDetailsDto>
                     (
                         pageSize: paging.PageSize, 
                         pageNumber: paging.PageNumber, 
