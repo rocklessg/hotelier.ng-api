@@ -28,6 +28,7 @@ namespace hotel_booking_data.UnitOfWork.Implementation
             _context = context;
         }
         public IAmenityRepository Amenities => _amenities ??= new AmenityRepository(_context);
+        public IAdminRepository Bookings => _booking ??= new AdminRepository(_context);
 
 
         public ICustomerRepository Customers => _customers ??= new CustomerRepository(_context);
@@ -37,12 +38,14 @@ namespace hotel_booking_data.UnitOfWork.Implementation
 
         public IManagerRepository Managers => _managers ??= new ManagerRepository(_context);
 
+
         public IPaymentRepository Payments => _payments ??= new PaymentRepository(_context);
 
         public IRoomRepository Rooms => _rooms ??= new RoomRepository(_context);
 
         public IWishListRepository WishLists => _wishLists ??= new WishListRepository(_context);
 
+        public IReviewRepository Reviews => _review ??= new ReviewRepository(_context);
         public IRoomTypeRepository RoomType => _roomType ??= new RoomTypeRepository(_context);
 
 
