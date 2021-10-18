@@ -134,27 +134,27 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        //public async Task<Response<PageResult<IEnumerable<CustomerWishListDto>>>> GetCustomerWishList(string customerId, PagingDto paging)
-        //{
-        //    var customer = await _userManager.FindByIdAsync(customerId);
-        //    var response = new Response<PageResult<IEnumerable<CustomerWishListDto>>>();
+        public async Task<Response<PageResult<IEnumerable<CustomerWishListDto>>>> GetCustomerWishList(string customerId, PagingDto paging)
+        {
+            var customer = await _userManager.FindByIdAsync(customerId);
+            var response = new Response<PageResult<IEnumerable<CustomerWishListDto>>>();
 
-        //    if (customer != null)
-        //    {
-        //        var wishList = _unitOfWork.WishLists.GetCustomerWishList(customerId);
-        //        var pageResult = await wishList.PaginationAsync<WishList, CustomerWishListDto>(paging.PageSize, paging.PageNumber, _mapper);
+            if (customer != null)
+            {
+                var wishList = _unitOfWork.WishLists.GetCustomerWishList(customerId);
+                var pageResult = await wishList.PaginationAsync<WishList, CustomerWishListDto>(paging.PageSize, paging.PageNumber, _mapper);
 
-        //        response.StatusCode = (int)HttpStatusCode.OK;
-        //        response.Succeeded = true;
-        //        response.Data = pageResult;
-        //        response.Message = $"are the Wishlists for the customer with Id {customerId}";
-        //        return response;
-        //    }
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Data = pageResult;
+                response.Message = $"are the Wishlists for the customer with Id {customerId}";
+                return response;
+            }
 
-        //    response.StatusCode = (int)HttpStatusCode.BadRequest;
-        //    response.Succeeded = false;
-        //    response.Message = $"Customer with Id = { customerId} doesn't exist";
-        //    return response;
-        //}
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = false;
+            response.Message = $"Customer with Id = { customerId} doesn't exist";
+            return response;
+        }
     }
 }

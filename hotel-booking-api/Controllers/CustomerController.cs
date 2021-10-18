@@ -7,9 +7,11 @@ using hotel_booking_core.Interfaces;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using hotel_booking_dto.CustomerDtos;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using hotel_booking_utilities;
 using hotel_booking_dto.commons;
+using hotel_booking_models;
+using Microsoft.AspNetCore.Identity;
 
 namespace hotel_booking_api.Controllers
 {
@@ -18,11 +20,13 @@ namespace hotel_booking_api.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
-        private readonly ILogger<CustomerController> _logger;
-        public CustomerController(ICustomerService customerService, ILogger<CustomerController> logger)
+        private readonly ILogger _logger;
+        private readonly UserManager<AppUser> _userManager;
+        public CustomerController(ICustomerService customerService, ILogger logger, UserManager<AppUser> userManager)
         {
             _customerService = customerService;
             _logger = logger;
+            _userManager = userManager;
         }
 
 
@@ -36,7 +40,7 @@ namespace hotel_booking_api.Controllers
         {
             var userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
-            _logger.LogInformation($"Update Attempt for user with id = {userId}");
+            _logger.Information($"Update Attempt for user with id = {userId}");
             var result = await _customerService.UpdateCustomer(userId, model);
             return StatusCode(result.StatusCode, result);
         }
@@ -51,7 +55,7 @@ namespace hotel_booking_api.Controllers
         {
             string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
-            _logger.LogInformation($"Update Image Attempt for user with id = {userId}");
+            _logger.Information($"Update Image Attempt for user with id = {userId}");
             var result = await _customerService.UpdatePhoto(imageDto, userId);
             return StatusCode(result.StatusCode, result);
         }
@@ -67,18 +71,18 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        //[HttpGet("wishlist")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //[Authorize(Roles = "Customer")]
-        ////public async Task<IActionResult> GetCustomerWishList([FromQuery] PagingDto paging)
-        ////{
-        ////    string customerId = _userManager.GetUserId(User);
-        ////    _logger.Information($"Retrieving the paginated wishlist for the customer with ID {customerId}");
-        ////    var result = await _customerService.GetCustomerWishList(customerId, paging);
-        ////    _logger.Information($"Retrieved the paginated wishlist for the customer with ID {customerId}");
-        ////    return StatusCode(result.StatusCode, result);
-        //}
-    }
+        [HttpGet("wishlist")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> GetCustomerWishList([FromQuery] PagingDto paging)
+        {
+            string customerId = _userManager.GetUserId(User);
+            _logger.Information($"Retrieving the paginated wishlist for the customer with ID {customerId}");
+            var result = await _customerService.GetCustomerWishList(customerId, paging);
+            _logger.Information($"Retrieved the paginated wishlist for the customer with ID {customerId}");
+            return StatusCode(result.StatusCode, result);
+        }
+}
 }
