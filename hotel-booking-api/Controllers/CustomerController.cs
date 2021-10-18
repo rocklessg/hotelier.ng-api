@@ -66,5 +66,19 @@ namespace hotel_booking_api.Controllers
             var result = await _customerService.GetAllCustomersAsync(pagenator);
             return StatusCode(result.StatusCode, result);
         }
+
+        [HttpGet("wishlist")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> GetCustomerWishList([FromQuery] PagingDto paging)
+        {
+            string customerId = _userManager.GetUserId(User);
+            _logger.Information($"Retrieving the paginated wishlist for the customer with ID {customerId}");
+            var result = await _customerService.GetCustomerWishList(customerId, paging);
+            _logger.Information($"Retrieved the paginated wishlist for the customer with ID {customerId}");
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }
