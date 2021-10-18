@@ -32,7 +32,7 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("send-invite")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> SendManagerInvite(string email)
         {
             var sendInvite = await _managerService.SendManagerInvite(email);
@@ -41,7 +41,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet]
-        [Route("token-expiring")]
+        [Route("validate-email")]
         public async Task<IActionResult> TokenExpiring(string email, string token)
         {
             var confirmToken = await _managerService.CheckTokenExpiring(email, token);

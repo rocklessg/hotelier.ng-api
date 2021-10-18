@@ -6,6 +6,5 @@ namespace hotel_booking_utilities
     public interface ITokenGeneratorService
     {
         Task<string> GenerateToken(AppUser user);
-        string GenerateToken(ManagerRequest manager);
     }
 }

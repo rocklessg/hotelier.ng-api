@@ -104,7 +104,7 @@ namespace hotel_booking_core.Services
                 if (check != null)
                 {
                     var newGuid = Guid.Parse(check.Token);
-                    var mailBody = await GetEmailBody(emailTempPath: "StaticFiles/Html/ManagerInvite.html", token: Encode(newGuid));
+                    var mailBody = await GetEmailBody(emailTempPath: "StaticFiles/Html/ManagerInvite.html", token: Encode(newGuid), email);
 
                     var mailRequest = new MailRequest()
                     {
@@ -143,19 +143,28 @@ namespace hotel_booking_core.Services
         public async Task<Response<bool>> CheckTokenExpiring(string email, string token)
         {
             var managerRequest = await _unitOfWork.ManagerRequest.GetHotelManagerByEmailToken(email, token);
+            var getUser = await _unitOfWork.Managers.GetAppUserByEmail(email);
 
             if (managerRequest != null)
             {
-                var expired = managerRequest.ExpiresAt < DateTime.Now;
-                if (expired)
+                if (getUser == null)
                 {
-                    await SendManagerInvite(email);
-                    return Response<bool>.Fail("Link has expired, a new link has been sent", StatusCodes.Status408RequestTimeout);
+                    var expired = managerRequest.ExpiresAt < DateTime.Now;
+                    if (expired)
+                    {
+                        var resendMail = await SendManagerInvite(email);
+                        if (resendMail.Succeeded)
+                        {
+                            return Response<bool>.Fail("Link has expired, a new link has been sent", StatusCodes.Status408RequestTimeout);
+                        }
+                        return Response<bool>.Fail("Weak or no internet access, please try again", StatusCodes.Status408RequestTimeout);
+                    }
+                    return Response<bool>.Success("Redirecting to registration page", true, StatusCodes.Status200OK);
                 }
-                return Response<bool>.Success("Redirection to registration page", true, StatusCodes.Status200OK);
+                return Response<bool>.Fail("This User is a registered already", StatusCodes.Status409Conflict);
             }
-            return Response<bool>.Fail("Email or token is not correct", StatusCodes.Status404NotFound);
-            }
+            return Response<bool>.Fail("Invalid email or token", StatusCodes.Status404NotFound);
+        }
 
         public async Task<Response<IEnumerable<ManagerRequestResponseDTo>>> GetAllManagerRequest()
         {
@@ -167,9 +176,9 @@ namespace hotel_booking_core.Services
                 .Success("All manager requests", mapResponse, StatusCodes.Status200OK); 
         }
 
-        private static async Task<string> GetEmailBody(string emailTempPath, string token)
+        private static async Task<string> GetEmailBody(string emailTempPath, string token, string email)  
         {
-            var link = $"http://hoteldotnetmvc.herokuapp.com/manager/registration/{token}";
+            var link = $"https://hoteldotnet.herokuapp.com/api/Manager/validate-email?{email}&token={token}";
             var temp = await File.ReadAllTextAsync(Path.Combine(Directory.GetCurrentDirectory(), emailTempPath));
             var emailBody = temp.Replace("**link**", link);
             return emailBody;

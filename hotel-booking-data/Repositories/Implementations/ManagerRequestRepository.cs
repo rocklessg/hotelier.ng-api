@@ -27,7 +27,7 @@ namespace hotel_booking_data.Repositories.Implementations
         public async Task<ManagerRequest> GetHotelManagerByEmailToken(string email, string token)
         {
             var check = await _dbSet.FirstOrDefaultAsync(x => x.Email == email);
-            var checkToken = check.Token == token;
+            var checkToken = check != null ? check.Token == token : false;
             return checkToken ? check : null;
         }
 
