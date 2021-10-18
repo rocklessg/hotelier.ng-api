@@ -48,6 +48,7 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<Hotel, UpdateHotelDto>().ReverseMap();
             CreateMap<Hotel, AddHotelDto>().ReverseMap();
             CreateMap<Hotel, AddHotelResponseDto>().ReverseMap();
+           // CreateMap<Hotel, >
 
 
             // Room Maps
@@ -81,7 +82,11 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.CreatedAt, y => y.MapFrom(u => u.AppUser.CreatedAt));
 
             //Review Maps
-            CreateMap<Review, ReviewToReturnDto>().ReverseMap();
+            CreateMap<Review, ReviewToReturnDto>()
+                .ForMember(x => x.FirstName, x => x.MapFrom(x => x.Customer.AppUser.FirstName))
+                .ForMember(x => x.LastName, x => x.MapFrom(x => x.Customer.AppUser.LastName))
+                .ForMember(x => x.Avatar, x => x.MapFrom(x => x.Customer.AppUser.Avatar));
+
             CreateMap<Review, AddReviewDto>().ReverseMap();
         }
     }

@@ -385,9 +385,11 @@ namespace hotel_booking_core.Services
                 return response;
             }
 
-            var hotel = _unitOfWork.Hotels.GetAllReviewsByHotelAsync(hotelId);
+            var reviews = _unitOfWork.Reviews.GetAllReviewsByHotelAsync(hotelId);
 
-            var pageResult = await hotel.PaginationAsync<Review, ReviewToReturnDto>(paging.PageSize, paging.PageNumber, _mapper);
+             //_mapper.Map<Review>(reviews);
+
+            var pageResult = await reviews.PaginationAsync<Review, ReviewToReturnDto>(paging.PageSize, paging.PageNumber, _mapper);
             _logger.Information("Get all reviews operation successful");
             response.Succeeded = true;
             response.Data = pageResult;
