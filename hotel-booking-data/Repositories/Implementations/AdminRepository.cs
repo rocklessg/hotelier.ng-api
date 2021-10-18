@@ -19,47 +19,35 @@ namespace hotel_booking_data.Repositories.Implementations
         {
             _context = context;
         }
-        public IQueryable<Booking> GetTransactionsByQuery(TransactionFilter filter)
+        
+        public IQueryable<Booking> GetAllTransactions(TransactionFilter filter)
         {
-            var transactions =  GetAllTransactions();
-            transactions = transactions.Where(transaction => transaction.Hotel.Name.ToLower().Contains(filter.SearchQuery.ToLower())
-            && transaction.CreatedAt.Year.ToString() == (filter.Year))
-            .OrderByDescending(booking => booking.CreatedAt);
-            return transactions;
-        }
-        public IQueryable<Booking> GetTransactionsFilterByDate(TransactionFilter filter)
-        {
-            var bookings =  GetAllTransactions();
-            bookings = bookings.Where(booking => booking.CreatedAt.Month.ToString() == (filter.Month)
-            && booking.CreatedAt.Year.ToString() == (filter.Year))
-            .OrderByDescending(booking => booking.CreatedAt);
-            return bookings;
-        }
-        public IQueryable<Booking> GetTransactionsFilterByDate( string year)
-        {
-            var bookings = GetAllTransactions();
-            bookings = bookings.Where(booking => booking.CreatedAt.Year.ToString() == (year))
-            .OrderByDescending(booking => booking.CreatedAt);
-            return bookings;
-        }
-        public IQueryable<Booking> GetTransactionsByHotelAndMonth(TransactionFilter filter)
-        {
-            var bookings = GetAllTransactions();
-            bookings = bookings.Where(booking => booking.Hotel.Name.Contains(filter.SearchQuery)
-            && booking.CreatedAt.Month.ToString() == (filter.Month)
-            && booking.CreatedAt.Year.ToString() == (filter.Year))
-            .OrderByDescending(booking => booking.CreatedAt);
+            var bookings = _context.Bookings.AsQueryable();
+     
+            if (filter.SearchQuery != null)
+            {
+                bookings = bookings.Where(booking => booking.Hotel.Name.ToLower().Contains(filter.SearchQuery.ToLower()));
+            }
+            if ( filter.Month != null)
+            {
+                bookings = bookings.Where(booking => booking.CreatedAt.Month.ToString() == (filter.Month));
+            }
+             if (filter.Year != null)
+            {
+                bookings = bookings.Where(booking => booking.CreatedAt.Year.ToString() == (filter.Year));              
+            }
+            bookings = bookings.Include(x => x.Payment)
+            .Include(x => x.Hotel)
+            .Include(x => x.Customer)
+            .Include(x => x.Customer.AppUser).OrderByDescending(booking => booking.CreatedAt);
+
             return bookings;
         }
 
-        public IQueryable<Booking> GetAllTransactions() 
+        public async Task<Manager> GetManagerById(string id)
         {
-            var transactions =   _context.Bookings
-            .Include(x => x.Payment)
-            .Include(x => x.Hotel)
-            .Include(x => x.Customer)
-            .Include(x => x.Customer.AppUser);
-            return transactions;
+            return await _context.Managers.FirstOrDefaultAsync(x => x.AppUserId == id);
         }
+
     }
 }

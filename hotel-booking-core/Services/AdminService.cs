@@ -22,33 +22,13 @@ namespace hotel_booking_core.Services
         }
 
 
+
         public async Task<Response<PageResult<IEnumerable<TransactionResponseDto>>>> GetAllTransactions(TransactionFilter filter)
         {
-            var transactions = _unitOfWork.Booking.GetAllTransactions();
+            var transactions = _unitOfWork.Booking.GetAllTransactions(filter);
             var response = new Response<PageResult<IEnumerable<TransactionResponseDto>>>();
 
-            if (filter.Month != null && filter.SearchQuery == null)
-            {
-                transactions = _unitOfWork.Booking.GetTransactionsFilterByDate(filter);         
-            }
-            else if (filter.Month == null && filter.SearchQuery == null)
-            {
-                transactions = _unitOfWork.Booking.GetTransactionsFilterByDate(filter.Year);
-            }
-            else if (filter.Month == null && filter.SearchQuery != null)
-            {
-                transactions = _unitOfWork.Booking.GetTransactionsByQuery(filter);
-            }
-            else if (filter.Month != null && filter.SearchQuery != null)
-            {
-                transactions = _unitOfWork.Booking.GetTransactionsByHotelAndMonth(filter);
-            }
-            else
-            {
-                transactions = _unitOfWork.Booking.GetAllTransactions();
-            };
             var item = await transactions.PaginationAsync<Booking, TransactionResponseDto>(filter.PageSize, filter.PageNumber, _mapper);
-
 
             response.StatusCode = (int)HttpStatusCode.OK;
             response.Succeeded = true;
@@ -56,5 +36,7 @@ namespace hotel_booking_core.Services
             response.Message = "All transactions retrieved successfully";
             return response;
         }
+
+        
     }
 }
