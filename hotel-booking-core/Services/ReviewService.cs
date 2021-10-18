@@ -77,6 +77,7 @@ namespace hotel_booking_core.Services
                 response.StatusCode = (int) HttpStatusCode.BadRequest;
             }
             var review =  _mapper.Map<Review>(model);
+            
             review.CustomerId = customerId;
             await _unitOfWork.Reviews.InsertAsync(review);
             await _unitOfWork.Save();
