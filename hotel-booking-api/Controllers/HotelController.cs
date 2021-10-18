@@ -42,7 +42,7 @@ namespace hotel_booking_api.Controllers
 
         [AllowAnonymous]
         [HttpGet("all-hotels")]
-        public async Task<IActionResult> GetAllHotels([FromQuery] PagingDto paging)
+        public async Task<IActionResult> GetAllHotelsAsync([FromQuery] PagingDto paging)
         {
             var response = await _hotelService.GetAllHotelsAsync(paging);
             return StatusCode(response.StatusCode, response);
@@ -50,15 +50,15 @@ namespace hotel_booking_api.Controllers
 
         [AllowAnonymous]
         [HttpGet("{hotelId}")]
-        public IActionResult GetHotelById(string hotelId)
+        public async Task<IActionResult> GetHotelByIdAsync(string hotelId)
         {
-            var response = _hotelService.GetHotelById(hotelId);
+            var response = await _hotelService.GetHotelByIdAsync(hotelId);
             return StatusCode(response.StatusCode, response);
         }
 
         [Authorize(Policy = "Manager")]
         [HttpPut("{hotelId}")]
-        public async Task<IActionResult> UpdateHotel(string hotelId, [FromBody] UpdateHotelDto update) 
+        public async Task<IActionResult> UpdateHotelAsync(string hotelId, [FromBody] UpdateHotelDto update)
         {
             var response = await _hotelService.UpdateHotelAsync(hotelId, update);
             return StatusCode(response.StatusCode, response);
