@@ -3,6 +3,10 @@ using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using hotel_booking_data.Repositories.Abstractions;
+using System.Collections.Generic;
+using System;
+using System.Linq.Expressions;
+using System.Linq;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
@@ -30,6 +34,11 @@ namespace hotel_booking_data.Repositories.Implementations
                 .Include(x => x.AppUser)
                 .Include(x => x.Bookings)
                 .FirstOrDefaultAsync(x => x.AppUserId == id);
+        }
+
+        public IQueryable<Customer> GetAllUsers()
+        {
+           return _customers.Include(x => x.AppUser);
         }
     }
 }

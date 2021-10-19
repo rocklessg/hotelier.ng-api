@@ -7,14 +7,15 @@ using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
-using hotel_booking_utilities;
+using hotel_booking_utilities.Pagination;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using static hotel_booking_utilities.Pagination.Paginator;
 
 namespace hotel_booking_core.Services
 {
@@ -22,19 +23,20 @@ namespace hotel_booking_core.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public HotelService(IUnitOfWork unitOfWork, IMapper mapper)
-
+        public HotelService(IUnitOfWork unitOfWork, IMapper mapper, ILogger logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+           _logger = logger;
         }
 
-        public async Task<Response<IEnumerable<HotelBasicDto>>> GetHotelsByRatingsAsync()
+        public async Task<Response<IEnumerable<HotelBasicDetailsDto>>> GetHotelsByRatingsAsync()
         {
-            var hotelList = await _unitOfWork.Hotels.GetHotelsByRatingAsync();
-            var hotelDto = _mapper.Map<IEnumerable<HotelBasicDto>>(hotelList);
-            var response = new Response<IEnumerable<HotelBasicDto>>(StatusCodes.Status200OK, true, "Top 5 hotels by ratings", hotelDto);
+            var hotelList = await _unitOfWork.Hotels.GetHotelsByRating().ToListAsync();
+            var hotelListDto = _mapper.Map<IEnumerable<HotelBasicDetailsDto>>(hotelList);
+            var response = new Response<IEnumerable<HotelBasicDetailsDto>>(StatusCodes.Status200OK, true, "hotels by ratings", hotelListDto);
             return response;
         }
 
@@ -46,60 +48,19 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public async Task<Response<IEnumerable<RoomInfoDto>>> GetTopDealsAsync()
+        public async Task<Response<IEnumerable<HotelBasicDetailsDto>>> GetTopDealsAsync()
         {
-            var roomList = await _unitOfWork.RoomType.GetTopDealsAsync();
-            var roomDto = _mapper.Map<IEnumerable<RoomInfoDto>>(roomList);
-            var response = new Response<IEnumerable<RoomInfoDto>>(StatusCodes.Status200OK, true, "Top 5 Deals", roomDto);
+            var hotelList = await _unitOfWork.Hotels.GetTopDeals().ToListAsync(); ;
+            var hotelListDto = _mapper.Map<IEnumerable<HotelBasicDetailsDto>>(hotelList);
+            var response = new Response<IEnumerable<HotelBasicDetailsDto>>(StatusCodes.Status200OK, true, "hotels top deals", hotelListDto);
             return response;
         }
 
-        public async Task<Response<List<GetHotelDto>>> GetAllHotelsAsync(Paginator paging)
+        public async Task<Response<PageResult<IEnumerable<GetAllHotelDto>>>> GetAllHotelsAsync(PagingDto paging)
         {
-            List<Hotel> hotelList = (await _unitOfWork.Hotels.GetAllHotelsAsync())
-                                    .Skip((paging.CurrentPage - 1) * paging.PageSize)
-                                    .Take(paging.PageSize).ToList();
-
-            var response = new Response<List<GetHotelDto>>();
-            List<GetHotelDto> resultList = new();
-
-            foreach (var hotel in hotelList)
-            {
-                int noOfRatings = hotel.Ratings.Count;
-                double sum = hotel.Ratings.Sum(s => s.Ratings);
-                double average = sum / noOfRatings;
-
-                GetHotelDto result = new()
-                {
-                    Id = hotel.Id,
-                    Name = hotel.Name,
-                    Description = hotel.Description,
-                    Email = hotel.Email,
-                    Phone = hotel.Phone,
-                    Address = hotel.Address,
-                    City = hotel.City,
-                    State = hotel.State,
-                    Rating = average,
-                    FeaturedImage = hotel.Galleries.FirstOrDefault(gallery => gallery.IsFeature == true).ImageUrl,
-                    Gallery = hotel.Galleries.Select(gallery => gallery.ImageUrl),
-                    RoomTypes = hotel.RoomTypes.Select(roomType =>
-
-                        // Map Room types to Get all hotels room type DTO
-                        new RoomTypeDto()
-                        {
-                            Id = roomType.Id,
-                            Name = roomType.Name,
-                            Description = roomType.Description,
-                            Price = roomType.Price,
-                            Discount = roomType.Discount,
-                            Thumbnail = roomType.Thumbnail
-                        })
-                };
-                resultList.Add(result);
-            }
-            response.StatusCode = (int)HttpStatusCode.OK;
-            response.Succeeded = true;
-            response.Data = resultList;
+            var hotelQueryable = _unitOfWork.Hotels.GetAllHotels();
+            var hotelList = await hotelQueryable.PaginationAsync<Hotel, GetAllHotelDto>(paging.PageSize,paging.PageNumber, _mapper);
+            var response = new Response<PageResult<IEnumerable<GetAllHotelDto>>>(StatusCodes.Status200OK, true, "List of all hotels", hotelList);
             return response;
         }
 
@@ -123,7 +84,7 @@ namespace hotel_booking_core.Services
             return Response<IEnumerable<RoomDTo>>.Fail("No room found for this particular roomtype", StatusCodes.Status404NotFound);
         }
 
-        public async Task<Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>> GetHotelRoomType(Paging paging, string hotelId)
+        public async Task<Response<PageResult<IEnumerable<RoomTypeByHotelDTo>>>> GetHotelRoomType(PagingDto paging, string hotelId)
         {
             var roomList = _unitOfWork.Rooms.GetRoomTypeByHotel(hotelId);
 
@@ -157,78 +118,37 @@ namespace hotel_booking_core.Services
                     Message = $"cummulated ratings for hotel with id {hotelId}",
                     Data = response
                 };
-
                 return result;
             }
             return Response<IEnumerable<HotelRatingsDTo>>.Fail("No ratings for this hotel", StatusCodes.Status404NotFound);
         }
 
-        public Response<GetHotelDto> GetHotelById(string id)
+        public async Task<Response<GetHotelDto>> GetHotelByIdAsync(string id)
         {
             var response = new Response<GetHotelDto>();
-            Hotel hotel = _unitOfWork.Hotels.GetHotelById(id);
+            Hotel hotel = await _unitOfWork.Hotels.GetHotelEntitiesById(id);
             if (hotel != null)
             {
-                // Get the average rating for the hotel
-                int numberOfRatings = hotel.Ratings.Count;
-                double sumOfRatings = hotel.Ratings.Sum(s => s.Ratings);
-                double average = sumOfRatings / numberOfRatings;
-
-                // Map hotel and it's child entities to Get all hotel response DTO
-                var result = new GetHotelDto()
-                {
-                    Id = hotel.Id,
-                    Name = hotel.Name,
-                    Description = hotel.Description,
-                    Email = hotel.Email,
-                    Phone = hotel.Phone,
-                    Address = hotel.Address,
-                    City = hotel.City,
-                    State = hotel.State,
-                    Rating = average,
-                    FeaturedImage = hotel.Galleries.FirstOrDefault(gallery => gallery.IsFeature).ImageUrl,
-                    Gallery = hotel.Galleries.Select(gallery => gallery.ImageUrl),
-
-                    // Map Room types to Get all hotels room type DTO
-                    RoomTypes = hotel.RoomTypes.Select(roomType =>
-                        new RoomTypeDto()
-                        {
-                            Id = roomType.Id,
-                            Name = roomType.Name,
-                            Description = roomType.Description,
-                            Price = roomType.Price,
-                            Discount = roomType.Discount,
-                            Thumbnail = roomType.Thumbnail
-                        }),
-
-                    // Map Reviews to Get all hotels review DTO
-                    Reviews = hotel.Reviews.Select(review =>
-                        new ReviewDto()
-                        {
-                            Text = review.Comment,
-                            CustomerImage = review.Customer.AppUser.Avatar,
-                            Date = review.CreatedAt.ToShortDateString()
-                        }).Take(5)
-                };
-                response.Data = result;
+                GetHotelDto hotelDto = _mapper.Map<GetHotelDto>(hotel);
+                
+                response.Data = hotelDto;
                 response.Succeeded = true;
+                response.Message = $"Details for Hotel with Id: {id}";
                 response.StatusCode = (int)HttpStatusCode.OK;
                 return response;
             }
             response.StatusCode = (int)HttpStatusCode.NotFound;
             response.Succeeded = false;
             response.Data = default;
-            response.Message = $"Hotel with Id = {id} not found";
+            response.Message = $"Hotel with Id: {id} not found";
             return response;
-
         }
-
 
         public async Task<Response<UpdateHotelDto>> UpdateHotelAsync(string hotelId, UpdateHotelDto model)
         {
             var response = new Response<UpdateHotelDto>();
             // Get the hotel to be updated using it's Id
-            Hotel hotel = _unitOfWork.Hotels.GetHotelById(hotelId);
+            Hotel hotel = await _unitOfWork.Hotels.GetHotelEntitiesById(hotelId);
             if (hotel != null)
             {
                 hotel.Name = model.Name;
@@ -282,7 +202,7 @@ namespace hotel_booking_core.Services
         {
             Room room = _mapper.Map<Room>(roomDto);
 
-            var checkHotelId = _unitOfWork.Hotels.GetHotelById(hotelId);
+            var checkHotelId = await _unitOfWork.Hotels.GetHotelEntitiesById(hotelId);
             if (checkHotelId == null)
                 return Response<AddRoomResponseDto>.Fail("Hotel Not Found");
 
@@ -298,6 +218,89 @@ namespace hotel_booking_core.Services
                 Data = roomResponse,
                 Message = $"Room with id {room.Id} added to Hotel with id {hotelId}"
             };
+            return response;
+        }
+
+        public async Task<Response<string>> DeleteHotelByIdAsync(string hotelId)
+        {
+            var hotel = await _unitOfWork.Hotels.GetHotelById(hotelId);
+            var response = new Response<string>();
+
+            if (hotel != null)
+            {
+                _unitOfWork.Hotels.DeleteAsync(hotel);
+                await _unitOfWork.Save();
+
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Message = $"Hotel with Id = {hotelId} has been deleted";
+                response.Data = default;
+                response.Succeeded = true;
+                return response;
+            }
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Message = $"Hotel with id = {hotelId} does not exist";
+            response.Succeeded = false;
+            return response;
+        }
+        public async Task<Response<PageResult<IEnumerable<HotelBasicDetailsDto>>>> GetHotelByLocation(string location, PagingDto paging)
+        {
+            _logger.Information($"Attempting to get hotel in {location}");
+            var hotels = _unitOfWork.Hotels.GetAllHotels()                
+                .Where(q => q.State.ToLower().Contains(location.ToLower()) || q.City.ToLower().Contains(location.ToLower()));
+
+            var response = new Response<PageResult<IEnumerable<HotelBasicDetailsDto>>>();
+
+            if (hotels != null)
+            {
+                _logger.Information("Search completed successfully");
+                var result = await hotels.PaginationAsync<Hotel, HotelBasicDetailsDto>
+                    (
+                        pageSize: paging.PageSize, 
+                        pageNumber: paging.PageNumber, 
+                        mapper: _mapper
+                    );
+
+                response.Data = result;
+                response.StatusCode = StatusCodes.Status200OK;
+                response.Succeeded = true;
+                return response;
+            }
+
+            _logger.Information("Search completed with no results");
+            response.Data = default;
+            response.StatusCode = StatusCodes.Status200OK;
+            response.Message = "On your request nothing has been found.";
+            response.Succeeded = false;
+            return response;
+        }
+
+
+        public async Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging, string hotelId)
+        {
+            _logger.Information($"Attemp to get all review by hotel id {hotelId}");
+            var response = new Response<PageResult<IEnumerable<ReviewToReturnDto>>>();
+            var hotelExistCheck = await _unitOfWork.Hotels.GetHotelById(hotelId);
+
+            if (hotelExistCheck == null)
+            {
+                _logger.Information("Get all reviews by hotelId failed");
+                response.Succeeded = false;
+                response.Data = null;
+                response.Message = "Hotel does not exist";
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return response;
+            }
+
+            var reviews = _unitOfWork.Reviews.GetAllReviewsByHotelAsync(hotelId);
+
+             //_mapper.Map<Review>(reviews);
+
+            var pageResult = await reviews.PaginationAsync<Review, ReviewToReturnDto>(paging.PageSize, paging.PageNumber, _mapper);
+            _logger.Information("Get all reviews operation successful");
+            response.Succeeded = true;
+            response.Data = pageResult;
+            response.Message = $"List of all reviews in hotel with id {hotelId}";
+            response.StatusCode = (int)HttpStatusCode.OK;
             return response;
         }
     }

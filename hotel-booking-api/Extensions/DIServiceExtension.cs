@@ -1,7 +1,5 @@
-
-﻿using FluentValidation;
+using FluentValidation;
 using hotel_booking_core.Interface;
-
 using hotel_booking_core.Interfaces;
 using hotel_booking_core.Services;
 using hotel_booking_data.Repositories.Abstractions;
@@ -12,6 +10,7 @@ using hotel_booking_dto.AppUserDto;
 using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.ReviewDtos;
 using hotel_booking_utilities;
 using hotel_booking_utilities.HttpClientService.Implementation;
 using hotel_booking_utilities.HttpClientService.Interface;
@@ -20,7 +19,7 @@ using hotel_booking_utilities.Validators.AppUserValidator;
 using hotel_booking_utilities.Validators.AuthenticationValidators;
 using hotel_booking_utilities.Validators.CustomerValidators;
 using hotel_booking_utilities.Validators.HotelValidators;
-
+using hotel_booking_utilities.Validators.ReviewValidators;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace hotel_booking_api.Extensions
@@ -34,14 +33,17 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddTransient<IMailService, MailService>();
+            services.AddTransient<IReviewService, ReviewService>();
 
 
 
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddTransient<IManagerService,ManagerService>();
 
             services.AddScoped<IAmenityService, AmenityService>();
             services.AddScoped<IHotelService, HotelService>();
-            
+            services.AddScoped<IReviewService, ReviewService>();
+
             services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
             
             services.AddScoped<IManagerRepository, ManagerRepository>();
@@ -68,6 +70,7 @@ namespace hotel_booking_api.Extensions
             services.AddTransient<IValidator<UpdateHotelDto>, UpdateHotelDtoValidator>();
             services.AddTransient<IValidator<UpdatePasswordDto>, UpdatePasswordDtoValidator>();
             services.AddTransient<IValidator<ResetPasswordDto>, ResetPasswordDtoValidator>();
+            services.AddTransient<IValidator<ReviewRequestDto>, ReviewRequestDtoValidator>();
 
             services.AddTransient<IValidator<UpdateAppUserDto>, UpdateAppUserDtoValidator>();
             services.AddTransient<IValidator<UpdateCustomerDto>, UpdateCustomerDtoValidator>();
@@ -75,3 +78,4 @@ namespace hotel_booking_api.Extensions
         }
     }
 }
+

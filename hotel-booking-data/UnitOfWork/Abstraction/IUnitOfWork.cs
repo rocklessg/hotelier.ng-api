@@ -1,6 +1,4 @@
 ﻿using hotel_booking_data.Repositories.Abstractions;
-using hotel_booking_data.Repositories.Implementations;
-using hotel_booking_models;
 using System;
 using System.Threading.Tasks;
 
@@ -17,7 +15,7 @@ namespace hotel_booking_data.UnitOfWork.Abstraction
         IWishListRepository WishLists { get; }
         IRoomTypeRepository RoomType { get; }
         IBookingRepository Booking {  get; }
-
+        IReviewRepository Reviews { get; }
         Task Save();
     }
 }

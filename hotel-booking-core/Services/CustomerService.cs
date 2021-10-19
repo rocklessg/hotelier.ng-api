@@ -10,6 +10,12 @@ using hotel_booking_models;
 using System.Transactions;
 using hotel_booking_models.Cloudinary;
 using hotel_booking_core.Interface;
+using System.Collections.Generic;
+using hotel_booking_utilities;
+using System.Linq;
+using hotel_booking_dto.Mapper;
+using hotel_booking_dto.commons;
+using hotel_booking_utilities.Pagination;
 
 namespace hotel_booking_core.Services
 {
@@ -19,13 +25,15 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IImageService _imageService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IMapper _mapper;
 
         public CustomerService(IUnitOfWork unitOfWork,
-            UserManager<AppUser> userManager, IImageService imageService)
+            UserManager<AppUser> userManager, IImageService imageService, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _imageService = imageService;
+            _mapper = mapper;
         }
 
         public async Task<Response<string>> UpdateCustomer(string customerId, UpdateCustomerDto updateCustomer)
@@ -104,5 +112,49 @@ namespace hotel_booking_core.Services
             return await _userManager.UpdateAsync(user);
         }
 
+        public async Task<Response<PageResult<IEnumerable<GetUsersResponseDto>>>> GetAllCustomersAsync(PagingDto pagenator)
+        {
+            var customers =  _unitOfWork.Customers.GetAllUsers();
+            var customersList = await customers.PaginationAsync<Customer, GetUsersResponseDto>(pagenator.PageSize,pagenator.PageNumber, _mapper);
+            var response = new Response<PageResult<IEnumerable<GetUsersResponseDto>>>();
+
+            if(customersList != null)
+            {
+                response.Data = customersList;
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+
+                return response;
+            }
+
+            response.StatusCode = (int)HttpStatusCode.NotFound;
+            response.Succeeded = false;
+            response.Message = "No customer exist at this time";
+
+            return response;
+        }
+
+        public async Task<Response<PageResult<IEnumerable<CustomerWishListDto>>>> GetCustomerWishList(string customerId, PagingDto paging)
+        {
+            var customer = await _userManager.FindByIdAsync(customerId);
+            var response = new Response<PageResult<IEnumerable<CustomerWishListDto>>>();
+
+            if (customer != null)
+            {
+                var wishList = _unitOfWork.WishLists.GetCustomerWishList(customerId);
+                var pageResult = await wishList.PaginationAsync<WishList, CustomerWishListDto>(paging.PageSize, paging.PageNumber, _mapper);
+
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Data = pageResult;
+                response.Message = $"are the Wishlists for the customer with Id {customerId}";
+                return response;
+            }
+
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = false;
+            response.Message = $"Customer with Id = { customerId} doesn't exist";
+            return response;
+        }
     }
 }
