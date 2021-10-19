@@ -37,7 +37,7 @@ namespace hotel_booking_core.Services
 
             try
             {
-                if (paymentService == "PayStack")
+                if (paymentService.ToLower() == "paystack")
                 {
                     TransactionInitializeRequest request = new()
                     {
@@ -47,7 +47,7 @@ namespace hotel_booking_core.Services
                         CallbackUrl = redirect_url
                     };
                     return _paystack.InitializePayment(request).Data.AuthorizationUrl;
-                } else if(paymentService == "Flutterwave")
+                } else if(paymentService.ToLower() == "flutterwave")
                 {
                     FlutterwaveRequestDTO request = new()
                     {

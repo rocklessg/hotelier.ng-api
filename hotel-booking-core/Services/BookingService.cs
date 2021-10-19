@@ -2,9 +2,12 @@
 using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
+using hotel_booking_dto.BookingDtos;
+using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
+using hotel_booking_utilities.Pagination;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -29,17 +32,18 @@ namespace hotel_booking_core.Services
             _configuration = configuration;
         }
 
-        public async Task<Response<IEnumerable<Booking>>> GetCustomerBookings(string userId, Paginator paginator)
+        public async Task<Response<PageResult<IEnumerable<GetBookingResponseDto>>>> GetCustomerBookings(string userId, PagingDto paging)
         {
-            Customer customer = await _unitOfWork.Customers.GetCustomerAsync(userId);
-            if (customer == null)
+            var customer = await _unitOfWork.Customers.GetCustomerAsync(userId);
+            if(customer == null)
             {
-                return Response<IEnumerable<Booking>>.Fail("No customer found");
+                return Response<PageResult<IEnumerable<GetBookingResponseDto>>>.Fail("Customer not found");
             }
-            var bookings = customer.Bookings.Skip((paginator.CurrentPage - 1) * paginator.PageSize).Take(paginator.PageSize).ToArray();
-            Response<IEnumerable<Booking>> response = new() 
+            var bookings = _unitOfWork.Booking.GetBookingsByCustomerId(userId);
+            var pageResult = await bookings.PaginationAsync<Booking, GetBookingResponseDto>(paging.PageSize, paging.PageNumber, _mapper);
+            Response<PageResult<IEnumerable<GetBookingResponseDto>>> response = new() 
             { 
-                Data = bookings, 
+                Data = pageResult, 
                 Message = "Customer Bookings Fetched", 
                 StatusCode = StatusCodes.Status200OK, 
                 Succeeded = true 
@@ -47,24 +51,12 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public async Task<Response<HotelBookingResponseDto>> Book(string hotelId, string userId, HotelBookingRequestDto bookingDto)
+        public async Task<Response<HotelBookingResponseDto>> Book(string userId, HotelBookingRequestDto bookingDto)
         {
-            Hotel hotel = _unitOfWork.Hotels.GetHotelById(hotelId);
-
-            if (hotel == null)
-            {
-                return Response<HotelBookingResponseDto>.Fail("Hotel not Found");
-            }
-
             var room = _unitOfWork.Rooms.GetRoomById(bookingDto.RoomId);
             if (room == null)
             {
                 return Response<HotelBookingResponseDto>.Fail("Room not found");
-            }
-
-            if (room.Roomtype.HotelId != hotelId)
-            {
-                return Response<HotelBookingResponseDto>.Fail("Room not found in selected Hotel");
             }
 
             if (room.IsBooked)
@@ -77,15 +69,11 @@ namespace hotel_booking_core.Services
             Booking booking = _mapper.Map<Booking>(bookingDto);
             booking.CustomerId = customer.AppUserId;
             booking.BookingReference = $"HBA-${DateTime.Today.Millisecond}";
-            booking.HotelId = hotelId;
-
-            room.IsBooked = true;
+            booking.HotelId = room.Roomtype.HotelId;
 
             await _unitOfWork.Booking.InsertAsync(booking);
-            _unitOfWork.Rooms.Update(room);
-            await _unitOfWork.Save();
-
-            decimal amount = room.Roomtype.Price;
+                            
+            decimal amount = room.Roomtype.Price - (room.Roomtype.Price * room.Roomtype.Discount);
 
             string transactionRef = $"{ReferenceGen.Generate()}";
 
@@ -101,6 +89,11 @@ namespace hotel_booking_core.Services
                     StatusCode = StatusCodes.Status201Created,
                     Succeeded = true
                 };
+
+                room.IsBooked = true;
+                _unitOfWork.Rooms.Update(room);
+                await _unitOfWork.Save();
+
                 return response;
             }
             catch (ArgumentException argEx)

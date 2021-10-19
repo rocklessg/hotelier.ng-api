@@ -66,25 +66,13 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpPost("{hotelId}/book-hotel")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Customer")]
-        public async Task<IActionResult> CreateBooking([FromRoute] string hotelId, [FromBody] HotelBookingRequestDto bookingDto)
-        {
-            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            var result = await _bookingService.Book(hotelId, userId, bookingDto);
-            return StatusCode(result.StatusCode, result);
-        }
-
         [HttpGet("{userId}/bookings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetCustomerBooking([FromRoute] string userId, [FromQuery] Paginator paginator)
+        [Authorize(Roles = "Manager, Customer")]
+        public async Task<IActionResult> GetCustomerBooking([FromRoute] string userId, [FromQuery] PagingDto paging)
         {
-            var result = await _bookingService.GetCustomerBookings(userId, paginator);
+            var result = await _bookingService.GetCustomerBookings(userId, paging);
             return StatusCode(result.StatusCode, result);
         }
 
