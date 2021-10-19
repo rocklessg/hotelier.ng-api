@@ -112,6 +112,11 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.Avatar, x => x.MapFrom(x => x.Customer.AppUser.Avatar));
 
             CreateMap<Review, AddReviewDto>().ReverseMap();
+
+            // IWshList Maps
+            CreateMap<WishList, CustomerWishListDto>()
+                .ForMember(x => x.HotelName, y => y.MapFrom(c => c.Hotel.Name))
+                .ForMember(x => x.ImageUrl, y => y.MapFrom(src => src.Hotel.Galleries.FirstOrDefault(opt => opt.IsFeature).ImageUrl));
         }
     }
 }
