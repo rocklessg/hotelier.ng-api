@@ -13,5 +13,6 @@ namespace hotel_booking_core.Interfaces
         Task<Response<string>> UpdateCustomer(string CustomerId, UpdateCustomerDto updateCustomer);
         Task<Response<UpdateUserImageDto>> UpdatePhoto(AddImageDto imageDto, string userId);
         Task<Response<PageResult<IEnumerable<GetUsersResponseDto>>>> GetAllCustomersAsync(PagingDto pagenator);
+        Task<Response<PageResult<IEnumerable<CustomerWishListDto>>>> GetCustomerWishList(string customerId, PagingDto paging);
     }
 }
