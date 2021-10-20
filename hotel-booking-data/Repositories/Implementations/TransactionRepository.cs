@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
-    public class AdminRepository : GenericRepository<AppUser>, IAdminRepository
+    public class TransactionRepository : GenericRepository<AppUser>, ITransactionRepository
     {
         private readonly HbaDbContext _context;
 
-        public AdminRepository(HbaDbContext context) : base(context)
+        public TransactionRepository(HbaDbContext context) : base(context)
         {
             _context = context;
         }

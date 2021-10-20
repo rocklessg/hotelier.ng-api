@@ -18,7 +18,7 @@ namespace hotel_booking_data.UnitOfWork.Implementation
         private IWishListRepository _wishLists;
         private IRoomTypeRepository _roomType;
         private IReviewRepository _review;
-        private IAdminRepository _booking;
+        private ITransactionRepository _booking;
 
 
         private readonly HbaDbContext _context;
@@ -28,7 +28,7 @@ namespace hotel_booking_data.UnitOfWork.Implementation
             _context = context;
         }
         public IAmenityRepository Amenities => _amenities ??= new AmenityRepository(_context);
-        public IAdminRepository Bookings => _booking ??= new AdminRepository(_context);
+        public ITransactionRepository Bookings => _booking ??= new TransactionRepository(_context);
 
 
         public ICustomerRepository Customers => _customers ??= new CustomerRepository(_context);
