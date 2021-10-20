@@ -16,12 +16,5 @@ namespace hotel_booking_core.Interfaces
         Task<Response<HotelStatisticDto>> GetHotelStatistics(string hotelId);
         
         Task<Response<HotelManagerStatisticsDto>> GetHotelManagerStatistics(string managerId);
-<<<<<<< HEAD
-=======
-        
-
-
-
->>>>>>> reviews
     }
 }

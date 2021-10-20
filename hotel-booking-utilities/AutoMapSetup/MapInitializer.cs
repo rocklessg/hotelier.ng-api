@@ -65,6 +65,19 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<Gallery, GalleryDto>().ReverseMap();
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
+
+            //TransactionResponse Mapper
+
+            //Transaction Maps
+            CreateMap<Booking, TransactionResponseDto>()
+                .ForMember(x => x.BookingId, y => y.MapFrom(s => s.Id))
+                 .ForMember(x => x.HotelName, y => y.MapFrom(s => s.Hotel.Name))
+                 .ForMember(x => x.PaymentStatus, y => y.MapFrom(s => s.Payment.Status))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.MethodOfPayment))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.CreatedAt))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.Amount))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Customer.AppUserId))
+                 .ForMember(x => x.CustomerName, y => y.MapFrom(s => s.Customer.AppUser.FirstName + " " + s.Customer.AppUser.LastName));
         }
 
     }

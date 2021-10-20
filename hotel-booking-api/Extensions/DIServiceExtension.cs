@@ -31,7 +31,7 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddTransient<IMailService, MailService>();
-
+            services.AddScoped<IAdminService, AdminService>();
 
 
             services.AddScoped<ICustomerService, CustomerService>();

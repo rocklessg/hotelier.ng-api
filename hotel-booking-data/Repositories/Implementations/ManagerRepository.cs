@@ -25,7 +25,8 @@ namespace hotel_booking_data.Repositories.Implementations
 
         public async Task<Manager> GetManagerAsync(string managerId)
         {
-            var manager = await _context.Managers.Include(m => m.Hotels)
+            var manager = await _context.Managers
+                .Include(m => m.Hotels)
                 .ThenInclude(h => h.Bookings)
                 .ThenInclude(b => b.Payment)
                 .Where(x => x.AppUserId == managerId).FirstOrDefaultAsync();

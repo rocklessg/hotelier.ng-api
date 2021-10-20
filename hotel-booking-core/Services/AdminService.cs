@@ -8,8 +8,11 @@ using AutoMapper;
 using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
+using hotel_booking_dto.commons;
 using hotel_booking_models;
 using hotel_booking_utilities;
+using hotel_booking_utilities.Pagination;
+using static hotel_booking_utilities.Pagination.Paginator;
 
 namespace hotel_booking_core.Services
 {
@@ -23,41 +26,58 @@ namespace hotel_booking_core.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Response<List<TransactionResponseDto>>> GetManagerTransactionsAsync(string managerId, /*string filter, string searchQuery, */Paginator paging)
+        public async Task<Response<PageResult<IEnumerable<TransactionResponseDto>>>> GetManagerTransactionsAsync(string managerId, Paging paging, TransactionFilter filter)
         {
-            var response = new Response<List<TransactionResponseDto>>();
-            List<TransactionResponseDto> transactionList = new();
-
             var manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
-            if(manager != null)
+            var response = new Response<PageResult<IEnumerable<TransactionResponseDto>>>();
+            IQueryable<Booking> managerBookings;
+
+            if (manager != null)
             {
-                var bookings = manager.Hotels.Select(h => h.Bookings)
-               .Skip((paging.CurrentPage - 1) * paging.PageSize)
-               .Take(paging.PageSize).ToList();
-                    foreach (Booking booking in bookings)
+                if (manager.Hotels != null)
+                {
+                    if (filter.Month != null && filter.SearchQuery == null)
                     {
-                        TransactionResponseDto transaction = new()
-                        {
-                            BookingId = booking.Id,
-                            BookingReference = booking.BookingReference,
-                            CheckIn = booking.CheckIn,
-                            CheckOut = booking.CheckOut,
-                            NoOfPeople = booking.NoOfPeople,
-                            ServiceName = booking.ServiceName,
-                            HotelId = booking.HotelId,
-                            HotelName = booking.Hotel.Name,
-                            CustomerId = booking.CustomerId,
-                            CustomeName = $"{booking.Customer.AppUser.FirstName} {booking.Customer.AppUser.LastName}",
-                            PaymentId = booking.Payment.BookingId,
-                            PaymentAmount = booking.Payment.Amount,
-                            PaymentDate = booking.Payment.CreatedAt
-                        };
-                        transactionList.Add(transaction);
+                        managerBookings = _unitOfWork.Booking.GetManagerBookingsFilterByDate(managerId, filter);                        
+                    }
+                    else if (filter.Month == null && filter.SearchQuery == null)
+                    {
+                        managerBookings = _unitOfWork.Booking.GetManagerBookingsFilterByDate(managerId, filter.Year);
+                    }
+                    else if (filter.Month == null && filter.SearchQuery != null)
+                    {
+                        managerBookings = _unitOfWork.Booking.GetManagerBookingsSearchByHotel(managerId, filter);
+                    }                   
+                    else if (filter.Month != null && filter.SearchQuery != null)
+                    {
+                        managerBookings = _unitOfWork.Booking.GetManagerBookingsByHotelAndMonth(managerId, filter);
+                    }
+                    else
+                    {
+                        managerBookings = _unitOfWork.Booking.GetManagerBookings(managerId);
                     };
-                    
-                response.Data = null;
-                response.Succeeded = true;
+
+                    var transactionList = await managerBookings.PaginationAsync<Booking, TransactionResponseDto>(paging.PageSize, paging.PageNumber, _mapper);
+                    var message = "";
+                    if (transactionList.PageItems.Any() == false)
+                    {
+                        message = $"No transaction found.";
+                    }
+                    else
+                    {
+                        message = $"Above are the transaction found.";
+                    }
+                    response.Message = message;
+                    response.StatusCode = (int)HttpStatusCode.OK;
+                    response.Succeeded = true;
+                    response.Data = transactionList;                    
+                    return response;
+
+                }
                 response.StatusCode = (int)HttpStatusCode.OK;
+                response.Message = $"Manager with id {managerId} has no transactions!";
+                response.Succeeded = true;
+                response.Data = default;
                 return response;
             }
             response.StatusCode = (int)HttpStatusCode.NotFound;
