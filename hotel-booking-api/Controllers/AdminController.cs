@@ -6,6 +6,7 @@ using hotel_booking_utilities.Pagination;
 using hotel_booking_dto.commons;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace hotel_booking_api.Controllers
 {
@@ -22,8 +23,8 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("transactions")]
-        [Authorize(Policy = "Admin")]
-        public async Task<IActionResult> GetAllTransactions([FromQuery] TransactionFilter filter)
+          [Authorize(Policy = "Admin")]
+        public async Task<ActionResult<Response<PageResult<IEnumerable<TransactionResponseDto>>>>> GetAllTransactions([FromQuery] TransactionFilter filter)
         {
             var response = await _adminService.GetAllTransactions(filter);
             return Ok(response);

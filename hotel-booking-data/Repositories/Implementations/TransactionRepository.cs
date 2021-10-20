@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
-    public class TransactionRepository : GenericRepository<AppUser>, ITransactionRepository
+    public class TransactionRepository : GenericRepository<Booking>, ITransactionRepository
     {
         private readonly HbaDbContext _context;
 
@@ -23,18 +23,18 @@ namespace hotel_booking_data.Repositories.Implementations
         public IQueryable<Booking> GetAllTransactions(TransactionFilter filter)
         {
             var bookings = _context.Bookings.AsQueryable();
-     
-            if (filter.SearchQuery != null)
+
+            if (!string.IsNullOrWhiteSpace(filter.SearchQuery))
             {
                 bookings = bookings.Where(booking => booking.Hotel.Name.ToLower().Contains(filter.SearchQuery.ToLower()));
             }
-            if ( filter.Month != null)
+            if (!string.IsNullOrWhiteSpace(filter.Month))
             {
                 bookings = bookings.Where(booking => booking.CreatedAt.Month.ToString() == (filter.Month));
             }
-             if (filter.Year != null)
+            if (!string.IsNullOrWhiteSpace(filter.Year))
             {
-                bookings = bookings.Where(booking => booking.CreatedAt.Year.ToString() == (filter.Year));              
+                bookings = bookings.Where(booking => booking.CreatedAt.Year.ToString() == (filter.Year));
             }
             bookings = bookings.Include(x => x.Payment)
             .Include(x => x.Hotel)

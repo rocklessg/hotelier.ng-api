@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Abstractions
 {
-    public interface ITransactionRepository : IGenericRepository<AppUser>
+    public interface ITransactionRepository : IGenericRepository<Booking>
     {
         IQueryable<Booking> GetAllTransactions(TransactionFilter filter);
        Task<Manager> GetManagerById(string id);

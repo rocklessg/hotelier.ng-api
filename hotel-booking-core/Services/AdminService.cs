@@ -26,15 +26,14 @@ namespace hotel_booking_core.Services
         public async Task<Response<PageResult<IEnumerable<TransactionResponseDto>>>> GetAllTransactions(TransactionFilter filter)
         {
             var transactions = _unitOfWork.Bookings.GetAllTransactions(filter);
-            var response = new Response<PageResult<IEnumerable<TransactionResponseDto>>>();
-
             var item = await transactions.PaginationAsync<Booking, TransactionResponseDto>(filter.PageSize, filter.PageNumber, _mapper);
-
-            response.StatusCode = (int)HttpStatusCode.OK;
-            response.Succeeded = true;
-            response.Data = item;
-            response.Message = "All transactions retrieved successfully";
-            return response;
+            return new Response<PageResult<IEnumerable<TransactionResponseDto>>>()
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Succeeded = true,
+                Data = item,
+                Message = "All transactions retrieved successfully"
+            };
         }
 
         

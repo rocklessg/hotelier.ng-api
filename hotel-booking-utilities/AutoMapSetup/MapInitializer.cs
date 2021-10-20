@@ -112,6 +112,14 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.Avatar, x => x.MapFrom(x => x.Customer.AppUser.Avatar));
 
             CreateMap<Review, AddReviewDto>().ReverseMap();
+
+            // Transaction Maps
+            CreateMap<Booking, TransactionResponseDto>()
+                .ForMember(x => x.BookingId, y => y.MapFrom(s => s.Id))
+                 .ForMember(x => x.HotelName, y => y.MapFrom(s => s.Hotel.Name))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.MethodOfPayment))
+                 .ForMember(x => x.CustomerName, y => y.MapFrom(s => s.Customer.AppUser.FirstName + " " + s.Customer.AppUser.LastName));
+
         }
     }
 }
