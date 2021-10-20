@@ -113,6 +113,11 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             CreateMap<Review, AddReviewDto>().ReverseMap();
 
+            // IWshList Maps
+            CreateMap<WishList, CustomerWishListDto>()
+                .ForMember(x => x.HotelName, y => y.MapFrom(c => c.Hotel.Name))
+                .ForMember(x => x.ImageUrl, y => y.MapFrom(src => src.Hotel.Galleries.FirstOrDefault(opt => opt.IsFeature).ImageUrl));
+
             // Transaction Maps
             CreateMap<Booking, TransactionResponseDto>()
                 .ForMember(x => x.BookingId, y => y.MapFrom(s => s.Id))
