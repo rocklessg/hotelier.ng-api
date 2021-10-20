@@ -1,3 +1,4 @@
+using System;
 using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
@@ -103,6 +104,29 @@ namespace hotel_booking_api.Controllers
 
             var result = await _authService.ForgotPassword(email);
             return StatusCode(result.StatusCode, result);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("refresh-token")]
+        public IActionResult RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            var response = _authService.RefreshToken(refreshToken);
+            setTokenCookie(response.ToString());
+            return Ok(response);
+        }
+
+
+        private void setTokenCookie(string token)
+        {
+            // append cookie with refresh token to the http response
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7)
+            };
+            Response.Cookies.Append("refreshToken", token, cookieOptions);
         }
     }
 }

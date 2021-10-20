@@ -152,6 +152,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Amenity", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -273,6 +274,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Booking", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<string>("BookingReference")
@@ -333,6 +335,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Gallery", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -360,6 +363,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Hotel", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<string>("Address")
@@ -461,6 +465,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Rating", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -487,9 +492,50 @@ namespace hotel_booking_data.Migrations
                     b.ToTable("Ratings");
                 });
 
+            modelBuilder.Entity("hotel_booking_models.RefreshToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ReasonRevoked")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReplacedByToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("Revoked")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("RevokedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("hotel_booking_models.Review", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<string>("Comment")
@@ -519,6 +565,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Room", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -546,6 +593,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.RoomType", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -735,6 +783,13 @@ namespace hotel_booking_data.Migrations
                     b.Navigation("Hotel");
                 });
 
+            modelBuilder.Entity("hotel_booking_models.RefreshToken", b =>
+                {
+                    b.HasOne("hotel_booking_models.AppUser", null)
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("AppUserId");
+                });
+
             modelBuilder.Entity("hotel_booking_models.Review", b =>
                 {
                     b.HasOne("hotel_booking_models.Customer", "Customer")
@@ -792,6 +847,8 @@ namespace hotel_booking_data.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Manager");
+
+                    b.Navigation("RefreshTokens");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Booking", b =>

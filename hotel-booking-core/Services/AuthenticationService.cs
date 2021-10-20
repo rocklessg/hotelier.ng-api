@@ -18,6 +18,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using Serilog;
+using hotel_booking_dto.RefereshTokenDto;
+using hotel_booking_utilities.TokenHelpers;
 
 namespace hotel_booking_core.Services
 {
@@ -29,9 +31,11 @@ namespace hotel_booking_core.Services
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
+        private readonly AppSettings _appSettings;
+        
 
         public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ILogger logger,
-            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
+            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator, AppSettings appSettings)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -39,6 +43,7 @@ namespace hotel_booking_core.Services
             _mailService = mailService;
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _appSettings = appSettings;
         }
 
         /// <summary>
@@ -140,11 +145,19 @@ namespace hotel_booking_core.Services
             }
 
             var user = await _userManager.FindByEmailAsync(model.Email);
+            var refreshToken = _tokenGenerator.GenerateRefreshToken();
+            user.RefreshTokens.Add(refreshToken);
             var result = new LoginResponseDto()
             {
                 Id = user.Id,
-                Token = await _tokenGenerator.GenerateToken(user)
+                Token = await _tokenGenerator.GenerateToken(user),
+                RefreshToken = refreshToken.Token
             };
+            
+            RemoveOldRefreshTokens(user);
+
+            await _userManager.UpdateAsync(user);
+
             response.StatusCode = (int)HttpStatusCode.OK;
             response.Message = "Login Successfully";
             response.Data = result;
@@ -350,5 +363,72 @@ namespace hotel_booking_core.Services
             var emailBody = newTemp.Replace("**User**", userName);
             return emailBody;
         }
+
+        public Task<string> RefreshToken(string token)
+        {
+            var user = _unitOfWork.Tokens.GetUserByRefreshToken(token);
+            var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
+
+            if (!refreshToken.IsExpired)
+            {
+                RevokeDescendantRefreshTokens(refreshToken, user, $"Attempted reuse of revoked ancestor token: {token}");
+                _userManager.UpdateAsync(user);
+            }
+
+            if (!refreshToken.IsActive)
+            {
+                throw new Exception("Invalid token");
+            }
+
+            var newRefreshToken = ReGenerateRefreshToken(refreshToken);
+            user.RefreshTokens.Add(newRefreshToken);
+
+            RemoveOldRefreshTokens(user);
+
+            _userManager.UpdateAsync(user);
+
+            var newToken = _tokenGenerator.GenerateToken(user);
+            return newToken;
+        }
+
+        private RefreshToken ReGenerateRefreshToken(RefreshToken refreshToken)
+        {
+            var newRefreshToken = _tokenGenerator.GenerateRefreshToken();
+            RevokeRefreshToken(refreshToken, "Replaced by new token", newRefreshToken.Token);
+            return newRefreshToken;
+        }
+
+        private void RemoveOldRefreshTokens(AppUser user)
+        {
+            // remove old inactive refresh tokens from user based on TTL in app settings
+            user.RefreshTokens.RemoveAll(x =>
+                !x.IsActive &&
+                x.Created.AddDays(_appSettings.RefreshTokenTTL) <= DateTime.UtcNow);
+        }
+
+
+        private void RevokeDescendantRefreshTokens(RefreshToken refreshToken, AppUser user,
+            string reason)
+        {
+            // recursively traverse the refresh token chain and ensure all descendants are revoked
+            if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
+            {
+                var childToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
+                if (childToken.IsActive)
+                    RevokeRefreshToken(childToken, reason);
+                else
+                    RevokeDescendantRefreshTokens(childToken, user, reason);
+            }
+        }
+
+        private void RevokeRefreshToken(RefreshToken token, string reason = null, string replacedByToken = null)
+        {
+            token.Revoked = DateTime.UtcNow;
+            token.ReasonRevoked = reason;
+            token.ReplacedByToken = replacedByToken;
+        }
+
+
+
     }
 }

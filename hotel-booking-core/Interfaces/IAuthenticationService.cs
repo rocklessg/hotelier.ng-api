@@ -1,6 +1,7 @@
 ﻿using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
 using System.Threading.Tasks;
+using hotel_booking_dto.RefereshTokenDto;
 
 namespace hotel_booking_core.Interfaces
 {
@@ -12,5 +13,6 @@ namespace hotel_booking_core.Interfaces
         Task<Response<string>> ForgotPassword(string email);
         Task<Response<string>> ResetPassword(ResetPasswordDto model);
         Task<Response<string>> UpdatePassword(UpdatePasswordDto model);
+        Task<string> RefreshToken(string token);
     }
 }

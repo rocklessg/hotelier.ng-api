@@ -45,6 +45,7 @@ namespace hotel_booking_api.Extensions
             
             services.AddScoped<IManagerRepository, ManagerRepository>();
             
+            
 
 
 

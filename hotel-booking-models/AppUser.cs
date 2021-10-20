@@ -1,5 +1,7 @@
 ﻿  using Microsoft.AspNetCore.Identity;
-using System;
+  using System;
+  using System.Collections.Generic;
+  using System.Text.Json.Serialization;
 
 namespace hotel_booking_models
 {
@@ -18,6 +20,7 @@ namespace hotel_booking_models
         public Manager Manager { get; set; }
         public Customer Customer { get; set; }
 
-
+        [JsonIgnore]
+        public List<RefreshToken> RefreshTokens { get; set; }
     }
 }
