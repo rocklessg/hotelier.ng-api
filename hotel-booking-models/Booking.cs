@@ -13,6 +13,9 @@ namespace hotel_booking_models
         public string ServiceName { get; set; }
         public Hotel Hotel { get; set; }
         public Customer Customer { get; set; }
+        public bool PaymentStatus {  get; set; }
+        public string RoomId {  get; set; }
+        public Room Room {  get; set; }
         public Payment Payment { get; set; }
     }
 }
