@@ -72,36 +72,33 @@ namespace hotel_booking_core.Services
             var getManager = await _unitOfWork.ManagerRequest.GetHotelManagerByEmail(managerRequest.Email);
             var getUser = await _unitOfWork.Managers.GetAppUserByEmail(managerRequest.Email);
 
-            if (getUser == null)
+            if (getUser == null || getManager == null)
             {
-                if (getManager == null)
-                {
-                    var addManager = _mapper.Map<ManagerRequest>(managerRequest);
-                    addManager.Token = Guid.NewGuid().ToString();
-                    await _unitOfWork.ManagerRequest.InsertAsync(addManager);
-                    await _unitOfWork.Save();
+                var addManager = _mapper.Map<ManagerRequest>(managerRequest);
+                addManager.Token = Guid.NewGuid().ToString();
+                await _unitOfWork.ManagerRequest.InsertAsync(addManager);
+                await _unitOfWork.Save();
 
-                    return new Response<string>
-                    {
-                        Message = "Thank you for your interest, you will get a response from us shortly",
-                        StatusCode = StatusCodes.Status200OK,
-                        Succeeded = true
-                    };
-                }
-                return Response<string>.Fail("Email already exist", StatusCodes.Status409Conflict);
+                return new Response<string>
+                {
+                    Message = "Thank you for your interest, you will get a response from us shortly",
+                    StatusCode = StatusCodes.Status200OK,
+                    Succeeded = true
+                };
             }
-            return Response<string>.Fail("This Email is a registered user", StatusCodes.Status409Conflict);
+            return Response<string>.Fail("Email already exist", StatusCodes.Status409Conflict);
         }
 
-        public async Task<Response<string>> SendManagerInvite(string email)
+        public async Task<bool> SendManagerInvite(string email)
         {
             using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 
             var check = await _unitOfWork.ManagerRequest.GetHotelManagerByEmail(email);
             var getUser = await _unitOfWork.Managers.GetAppUserByEmail(email);
-            if (getUser == null)
-            { 
-                if (check != null)
+
+            var result = false;
+            
+                if (getUser == null || check != null)
                 {
                     var newGuid = Guid.Parse(check.Token);
                     var mailBody = await GetEmailBody(emailTempPath: "StaticFiles/Html/ManagerInvite.html", token: Encode(newGuid), email);
@@ -113,36 +110,28 @@ namespace hotel_booking_core.Services
                         ToEmail = check.Email
                     };
 
-                    var result = await _mailService.SendEmailAsync(mailRequest);
+                    result = await _mailService.SendEmailAsync(mailRequest);
                     if (result)
                     {
                         check.ExpiresAt = DateTime.UtcNow.AddHours(24);
                         _unitOfWork.ManagerRequest.Update(check);
-                    await _unitOfWork.Save();
+                        await _unitOfWork.Save();
 
                         _logger.Information("Mail sent successfully");
-                        return new Response<string>
-                        {
-                            Data = check.Id,
-                            StatusCode = StatusCodes.Status200OK,
-                            Message = $"Message successfully sent",
-                            Succeeded = true
-                        };
                     }
                     _logger.Information("Mail service failed");
                     transaction.Dispose();
-                    return Response<string>.Fail("Mail service failed", StatusCodes.Status503ServiceUnavailable);
                 }
                 transaction.Complete();
                 _logger.Information("Invalid email address");
-                return Response<string>.Fail("Invalid email address", StatusCodes.Status404NotFound);
-            }
-            return Response<string>.Fail("This email is a registered user", StatusCodes.Status404NotFound);
+            return result;
+            
         }
 
         public async Task<Response<bool>> CheckTokenExpiring(string email, string token)
         {
-            var managerRequest = await _unitOfWork.ManagerRequest.GetHotelManagerByEmailToken(email, token);
+            var newGuid = Decode(token).ToString();
+            var managerRequest = await _unitOfWork.ManagerRequest.GetHotelManagerByEmailToken(email, newGuid);
             var getUser = await _unitOfWork.Managers.GetAppUserByEmail(email);
 
             if (managerRequest != null)
@@ -153,7 +142,7 @@ namespace hotel_booking_core.Services
                     if (expired)
                     {
                         var resendMail = await SendManagerInvite(email);
-                        if (resendMail.Succeeded)
+                        if (resendMail)
                         {
                             return Response<bool>.Fail("Link has expired, a new link has been sent", StatusCodes.Status408RequestTimeout);
                         }
@@ -176,7 +165,7 @@ namespace hotel_booking_core.Services
                 .Success("All manager requests", mapResponse, StatusCodes.Status200OK); 
         }
 
-        private static async Task<string> GetEmailBody(string emailTempPath, string token, string email)  
+        private static async Task<string> GetEmailBody(string emailTempPath, string token, string email)
         {
             var link = $"https://hoteldotnet.herokuapp.com/api/Manager/validate-email?{email}&token={token}";
             var temp = await File.ReadAllTextAsync(Path.Combine(Directory.GetCurrentDirectory(), emailTempPath));
@@ -184,18 +173,27 @@ namespace hotel_booking_core.Services
             return emailBody;
         }
 
-        public static string Encode(Guid guid)
+        private string Encode(Guid guid)
         {
             string encoded = Convert.ToBase64String(guid.ToByteArray());
-            encoded = encoded.Replace("/", "_").Replace("+", "-");
-            return encoded.Substring(0, 22);
+            encoded = encoded.Replace("/", "_").Replace("+", "-").Replace("=", "");
+            return encoded;
+        }
+
+        private Guid Decode(string value)
+        {
+            Guid buffer = default;
+            value = value.Replace("_", "/").Replace("-", "+") + "==";
+            try
+            {
+                buffer = new Guid(Convert.FromBase64String(value));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
-        public static Guid Decode(string value)
-        {
-            value = value.Replace("_", "/").Replace("-", "+");
-            var buffer = Convert.FromBase64String(value + "==");
-            return new Guid(buffer);
+            return buffer;
         }
     }
 }
