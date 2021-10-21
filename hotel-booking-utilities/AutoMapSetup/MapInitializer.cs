@@ -113,6 +113,12 @@ namespace hotel_booking_utilities.AutoMapSetup
             //Manager Maps
             CreateMap<Manager, ManagerDto>().ReverseMap();
 
+            CreateMap<AppUser, ManagerDto>()
+                .ForMember(manager => manager.BusinessEmail, u => u.MapFrom(user => user.Email))
+                .ForMember(manager => manager.BusinessEmail, u => u.MapFrom(user => user.UserName))
+                .ForMember(manager => manager.BusinessPhone, u => u.MapFrom(user => user.PhoneNumber))
+                .ReverseMap();
+
             CreateMap<Manager, ManagerResponseDto>()
                 .ForMember(d => d.FirstName, o => o.MapFrom(u => u.AppUser.FirstName))
                 .ForMember(d => d.LastName, o => o.MapFrom(u => u.AppUser.LastName))

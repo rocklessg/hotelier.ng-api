@@ -34,19 +34,8 @@ namespace hotel_booking_core.Services
             var checkManager = await _unitOfWork.Managers.CheckManagerAsync(managerDto.BusinessEmail);
             if (checkManager == null)
             {
-                var appUser = new AppUser
-                {
-
-                    FirstName = managerDto.FirstName,
-                    LastName = managerDto.LastName,
-                    Gender = managerDto.Gender,
-                    Age = managerDto.Age,
-                    Email = managerDto.BusinessEmail,
-                    UserName = managerDto.FirstName + managerDto.LastName
-
-                };
-
-
+               
+                var appUser = _mapper.Map<AppUser>(managerDto);
                 var manager = _mapper.Map<Manager>(managerDto);
                 var result = await _userManager.CreateAsync(appUser, managerDto.Password);
                 manager.AppUserId = appUser.Id;
@@ -66,9 +55,9 @@ namespace hotel_booking_core.Services
                     };
                     return response;
                 }
-                return Response<ManagerResponseDto>.Fail("Registration Failed", StatusCodes.Status404NotFound);
+                return Response<ManagerResponseDto>.Fail("Registration Failed", StatusCodes.Status400BadRequest);
             }
-            return Response<ManagerResponseDto>.Fail("User already exist. Please register a new manager", StatusCodes.Status404NotFound);
+            return Response<ManagerResponseDto>.Fail("User already exist. Please register a new manager", StatusCodes.Status400BadRequest);
         }
 
         public async Task<Response<IEnumerable<HotelBasicDto>>> GetAllHotelsAsync(string managerId)
