@@ -3,7 +3,6 @@ using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-
 namespace hotel_booking_data.Repositories.Implementations
 {
     public class BookingRepository : GenericRepository<Booking>, IBookingRepository

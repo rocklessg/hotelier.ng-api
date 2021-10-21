@@ -1,21 +1,16 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
+using hotel_booking_dto.commons;
 using hotel_booking_dto.CustomerDtos;
-using hotel_booking_dto.HotelDtos;
+using hotel_booking_models;
 using hotel_booking_models.Cloudinary;
-using hotel_booking_utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using hotel_booking_core.Interfaces;
-using System.Threading.Tasks;
-using System.Security.Claims;
-using hotel_booking_dto.CustomerDtos;
-using Serilog;
-using hotel_booking_utilities;
-using hotel_booking_dto.commons;
-using hotel_booking_models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
 {
@@ -69,7 +64,7 @@ namespace hotel_booking_api.Controllers
         [HttpGet("{userId}/bookings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Manager, Customer")]
+        [Authorize(Policy = Policies.ManagerAndCustomer)]
         public async Task<IActionResult> GetCustomerBooking([FromRoute] string userId, [FromQuery] PagingDto paging)
         {
             var result = await _bookingService.GetCustomerBookings(userId, paging);
@@ -100,5 +95,5 @@ namespace hotel_booking_api.Controllers
             _logger.Information($"Retrieved the paginated wishlist for the customer with ID {customerId}");
             return StatusCode(result.StatusCode, result);
         }
-}
+    }
 }

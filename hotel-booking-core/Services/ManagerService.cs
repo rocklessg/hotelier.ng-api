@@ -28,6 +28,7 @@ namespace hotel_booking_core.Services
             var response = new Response<IEnumerable<HotelBasicDto>>(StatusCodes.Status200OK, true, "hotels for manager", hotelListDto);
             return response;
         }
+
         public async Task<Response<string>> SoftDeleteManagerAsync(string managerId)
         {
             Manager manager = await _unitOfWork.Managers.GetManagerAsync(managerId);

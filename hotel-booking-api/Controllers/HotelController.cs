@@ -198,7 +198,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Policy = Policies.Customer)]
         public async Task<IActionResult> CreateBooking([FromBody] HotelBookingRequestDto bookingDto)
         {
             string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
