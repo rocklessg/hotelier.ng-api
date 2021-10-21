@@ -2,7 +2,6 @@
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_dto;
 using hotel_booking_models;
-using hotel_booking_utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Collections.Generic;

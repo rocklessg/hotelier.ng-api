@@ -18,7 +18,8 @@ namespace hotel_booking_data.Repositories.Implementations
 
         public IQueryable<Booking> GetManagerBookings(string managerId)
         {
-            var bookings = _context.Bookings.Where(x => x.Hotel.ManagerId == managerId)
+            var bookings = _context.Bookings
+                .Where(x => x.Hotel.ManagerId == managerId)
                 .Include(b => b.Payment)
                 .Include(b => b.Customer)
                 .Include(b => b.Hotel)

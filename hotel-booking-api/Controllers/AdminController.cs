@@ -26,7 +26,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Policy = Policies.AdminAndManager)]
         public async Task<IActionResult> GetHotelManagerTransactions([FromRoute] string managerId, [FromQuery] TransactionFilter filter)
         {
             _logger.LogInformation($"Retrieveing Getting Hotel Manager Transaction for {managerId}");

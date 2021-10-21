@@ -24,7 +24,6 @@ namespace hotel_booking_dto
         public string HotelId { get; set; }
         public string HotelName { get; set; }
         public string CustomerName { get; set; }
-        public Decimal PaymentAmount { get; set; }
         public DateTime PaymentDate { get; set; }     
         
         public DateTime CreatedAt { get; set; }

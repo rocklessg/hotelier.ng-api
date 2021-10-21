@@ -24,7 +24,7 @@ namespace hotel_booking_core.Services
         }
         public async Task<Response<PageResult<IEnumerable<TransactionResponseDto>>>> GetManagerTransactionsAsync(string managerId, TransactionFilter filter)
         {
-            var manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
+            var manager = await _unitOfWork.Managers.GetManagerByHotelsAsync(managerId);
             var response = new Response<PageResult<IEnumerable<TransactionResponseDto>>>();
             IQueryable<Booking> managerBookings;
 

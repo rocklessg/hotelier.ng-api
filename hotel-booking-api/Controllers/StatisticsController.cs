@@ -1,17 +1,9 @@
 ﻿using hotel_booking_core.Interfaces;
-using hotel_booking_dto;
-<<<<<<< HEAD
-using hotel_booking_models;
-using hotel_booking_utilities;
-=======
->>>>>>> reviews
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 //using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using System;
 using ILogger = Serilog.ILogger;
 
 namespace hotel_booking_api.Controllers
@@ -23,7 +15,8 @@ namespace hotel_booking_api.Controllers
         private readonly IHotelStatisticsService _hotelStatisticsService;
         private readonly ILogger _logger;
         public StatisticsController(IHotelStatisticsService hotelStatisticsService, ILogger logger)
-        {    _hotelStatisticsService = hotelStatisticsService;
+        {
+            _hotelStatisticsService = hotelStatisticsService;
             _logger = logger;
         }
 
@@ -54,10 +47,6 @@ namespace hotel_booking_api.Controllers
 
             _logger.Information($"Gotten Hotel Manager Statistics for {managerId}");
             return StatusCode(result.StatusCode, result);
-<<<<<<< HEAD
-        }        
-=======
         }
->>>>>>> reviews
     }
 }
