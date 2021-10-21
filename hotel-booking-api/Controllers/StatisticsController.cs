@@ -1,4 +1,5 @@
 ﻿using hotel_booking_core.Interfaces;
+using hotel_booking_dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -51,8 +52,5 @@ namespace hotel_booking_api.Controllers
             _logger.Information($"Gotten Hotel Manager Statistics for {managerId}");
             return StatusCode(result.StatusCode, result);
         }
-        
-        
-       
     }
 }
