@@ -1,6 +1,8 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
+using hotel_booking_dto.PaymentDtos;
 using hotel_booking_models;
+using hotel_booking_utilities.Exceptions;
 using hotel_booking_utilities.PaymentGatewaySettings;
 using PayStack.Net;
 using System;
@@ -60,11 +62,15 @@ namespace hotel_booking_core.Services
                     var response = await _flutterwave.InitializePayment(request);
                     return response.Data.Link;
                 }
-                throw new ArgumentException("Invalid Payment Service");
+                throw new PaymentException("Invalid Payment Service");
             }
-            catch (ArgumentException argEx)
+            catch (PaymentException)
             {
-                throw argEx;
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }
