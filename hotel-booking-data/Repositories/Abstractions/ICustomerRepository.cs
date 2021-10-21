@@ -11,5 +11,6 @@ namespace hotel_booking_data.Repositories.Abstractions
     {
         Customer GetCustomer(string id);
         IQueryable<Customer> GetAllUsers();
+        Task<IQueryable<Customer>> GetCustomerHotelsAsync(string customerId);
     }
 }

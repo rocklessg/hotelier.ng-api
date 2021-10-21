@@ -1,4 +1,4 @@
-﻿using hotel_booking_dto;
+﻿ using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_models.Cloudinary;
@@ -14,5 +14,6 @@ namespace hotel_booking_core.Interfaces
         Task<Response<UpdateUserImageDto>> UpdatePhoto(AddImageDto imageDto, string userId);
         Task<Response<PageResult<IEnumerable<GetUsersResponseDto>>>> GetAllCustomersAsync(PagingDto pagenator);
         Task<Response<PageResult<IEnumerable<CustomerWishListDto>>>> GetCustomerWishList(string customerId, PagingDto paging);
+        Task<Response<IEnumerable<CustomerHotelsResponseDto>>> GetCustomerHotelsIdAsync(string customerId);
     }
 }

@@ -32,6 +32,12 @@ namespace hotel_booking_data.Repositories.Implementations
         {
            return _customers.Include(x => x.AppUser);
         }
+
+        public Task<IQueryable<Customer>> GetCustomerHotelsAsync(string customerId)
+        {
+            var customerHotels = _customers.Where(x => x.AppUserId == customerId).Include(x => x.WishLists);
+            return (Task<IQueryable<Customer>>)customerHotels;
+        }
     }
 }
 

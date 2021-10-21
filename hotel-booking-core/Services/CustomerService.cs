@@ -156,5 +156,34 @@ namespace hotel_booking_core.Services
             response.Message = $"Customer with Id = { customerId} doesn't exist";
             return response;
         }
+
+        public async Task<Response<IEnumerable<CustomerHotelsResponseDto>>> GetCustomerHotelsIdAsync(string customerId)
+        {
+            var response = new Response<IEnumerable<CustomerHotelsResponseDto>>();
+            var hotel = _unitOfWork.Hotels.GetHotelById(customerId);
+            if (hotel is null)
+            {
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Message = "Hotel does not exist";
+                response.Succeeded = false;
+                return response;
+            }
+
+            var customerHotels = await _unitOfWork.Customers.GetCustomerHotelsAsync(customerId);
+
+            var customerWishList = customerHotels;
+            var wishedHotels = new List<CustomerHotelsResponseDto>();
+            foreach (var wishHotel in customerWishList)
+            {
+                wishedHotels.Add(_mapper.Map<CustomerHotelsResponseDto>(wishHotel));
+            }
+
+            response.StatusCode = (int)HttpStatusCode.OK;
+            response.Succeeded = true;
+            response.Data = wishedHotels;
+            response.Message = $"Your wish list hotel with ID {hotel.Id}";
+            return response;
+
+        }
     }
 }
