@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Abstractions
 {
-    public interface IWishListRepository : IGenericRepository<WishList>
+    public interface IBookingRepository : IGenericRepository<Booking>
     {
-        IQueryable<WishList> GetCustomerWishList(string customerId);
+        
     }
 }

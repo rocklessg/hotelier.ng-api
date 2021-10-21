@@ -29,11 +29,21 @@ namespace hotel_booking_data.Repositories.Implementations
             return await _reviews.Where(x =>x.HotelId == hotelId).FirstOrDefaultAsync();
         }
 
+       
         public Review GetUserReview(string reviewId)
         {
             var custonerReview = _context.Reviews.SingleOrDefault(x => x.Id == reviewId);
 
             return custonerReview;
         }
-}
+
+        public IQueryable<Review> GetAllReviewsByHotelAsync(string hotelId)
+        {
+            var query = _context.Reviews.AsNoTracking().Where(h => h.HotelId == hotelId)
+                .Include(h => h.Hotel)
+                .Include(h => h.Customer.AppUser)
+                .OrderBy(r => r.CreatedAt);
+            return query;
+        }
+    }
 }

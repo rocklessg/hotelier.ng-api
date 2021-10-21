@@ -107,8 +107,25 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.CreatedAt, y => y.MapFrom(u => u.AppUser.CreatedAt));
 
             //Review Maps
-            CreateMap<Review, ReviewToReturnDto>().ReverseMap();
+            CreateMap<Review, ReviewToReturnDto>()
+                .ForMember(x => x.FirstName, x => x.MapFrom(x => x.Customer.AppUser.FirstName))
+                .ForMember(x => x.LastName, x => x.MapFrom(x => x.Customer.AppUser.LastName))
+                .ForMember(x => x.Avatar, x => x.MapFrom(x => x.Customer.AppUser.Avatar));
+
             CreateMap<Review, AddReviewDto>().ReverseMap();
+
+            // IWshList Maps
+            CreateMap<WishList, CustomerWishListDto>()
+                .ForMember(x => x.HotelName, y => y.MapFrom(c => c.Hotel.Name))
+                .ForMember(x => x.ImageUrl, y => y.MapFrom(src => src.Hotel.Galleries.FirstOrDefault(opt => opt.IsFeature).ImageUrl));
+
+            // Transaction Maps
+            CreateMap<Booking, TransactionResponseDto>()
+                .ForMember(x => x.BookingId, y => y.MapFrom(s => s.Id))
+                 .ForMember(x => x.HotelName, y => y.MapFrom(s => s.Hotel.Name))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.MethodOfPayment))
+                 .ForMember(x => x.CustomerName, y => y.MapFrom(s => s.Customer.AppUser.FirstName + " " + s.Customer.AppUser.LastName));
+
 
             //Manager Maps
             CreateMap<Manager, ManagerDto>().ReverseMap();

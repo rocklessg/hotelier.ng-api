@@ -11,5 +11,6 @@ namespace hotel_booking_data.Repositories.Abstractions
     {
         Review GetUserReview(string hotelId);
         Task<Review> CheckReviewByCustomerAsync(string HotelId);
+        IQueryable<Review> GetAllReviewsByHotelAsync(string hotelId);
     }
 }

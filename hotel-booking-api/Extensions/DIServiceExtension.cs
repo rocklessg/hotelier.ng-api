@@ -31,6 +31,7 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<IImageService, ImageService>();
             services.AddTransient<IMailService, MailService>();
             services.AddTransient<IReviewService, ReviewService>();
+            services.AddScoped<IAdminService, AdminService>();
 
 
 
@@ -46,7 +47,11 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
             
             services.AddScoped<IManagerRepository, ManagerRepository>();
+<<<<<<< HEAD
             services.AddScoped<IManagerService, ManagerService>();
+=======
+            services.AddScoped<ITransactionRepository, TransactionRepository>();            
+>>>>>>> 566677155d1138dc6a044b18ee307f533c60158b
 
 
 
