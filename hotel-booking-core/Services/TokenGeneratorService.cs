@@ -10,7 +10,6 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using hotel_booking_utilities.TokenHelpers;
 
 namespace hotel_booking_utilities
 {
@@ -18,13 +17,10 @@ namespace hotel_booking_utilities
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<AppUser> _userManager;
-        private readonly AppSettings _appSettings;
-
-        public TokenGeneratorService(IConfiguration configuration, UserManager<AppUser> userManager, AppSettings appSettings)
+        public TokenGeneratorService(IConfiguration configuration, UserManager<AppUser> userManager)
         {
             _configuration = configuration;
             _userManager = userManager;
-            _appSettings = appSettings;
         }
 
         /// <summary>
@@ -59,23 +55,19 @@ namespace hotel_booking_utilities
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public RefreshToken GenerateRefreshToken()
+        public Guid GenerateRefreshToken()
         {
-            // generate token that is valid for 7 days
-            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-            var randomBytes = new byte[64];
-            rngCryptoServiceProvider.GetBytes(randomBytes);
-            var refreshToken = new RefreshToken
-            {
-                Token = Convert.ToBase64String(randomBytes),
-                Expires = DateTime.UtcNow.AddDays(7),
-                Created = DateTime.UtcNow
-                
-            };
+            /*var randomNumber = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);*/
+            Guid g = Guid.NewGuid();
 
-            return refreshToken;
+            return g;
         }
 
-       
+
+        
+
     }
 }

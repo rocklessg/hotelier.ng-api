@@ -17,9 +17,10 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using hotel_booking_data.Repositories.Abstractions;
 using Serilog;
 using hotel_booking_dto.RefereshTokenDto;
-using hotel_booking_utilities.TokenHelpers;
+using hotel_booking_dto.TokenDto;
 
 namespace hotel_booking_core.Services
 {
@@ -31,11 +32,11 @@ namespace hotel_booking_core.Services
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
-        private readonly AppSettings _appSettings;
+        private readonly ITokenRepository _tokenRepository;
         
 
         public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ILogger logger,
-            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator, AppSettings appSettings)
+            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator, ITokenRepository tokenRepository)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -43,7 +44,8 @@ namespace hotel_booking_core.Services
             _mailService = mailService;
             _unitOfWork = unitOfWork;
             _logger = logger;
-            _appSettings = appSettings;
+            _tokenRepository = tokenRepository;
+
         }
 
         /// <summary>
@@ -146,16 +148,15 @@ namespace hotel_booking_core.Services
 
             var user = await _userManager.FindByEmailAsync(model.Email);
             var refreshToken = _tokenGenerator.GenerateRefreshToken();
-            user.RefreshTokens.Add(refreshToken);
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7); //sets refresh token for 7 days
             var result = new LoginResponseDto()
             {
                 Id = user.Id,
                 Token = await _tokenGenerator.GenerateToken(user),
-                RefreshToken = refreshToken.Token
+                RefreshToken = refreshToken
             };
             
-            RemoveOldRefreshTokens(user);
-
             await _userManager.UpdateAsync(user);
 
             response.StatusCode = (int)HttpStatusCode.OK;
@@ -364,70 +365,37 @@ namespace hotel_booking_core.Services
             return emailBody;
         }
 
-        public Task<string> RefreshToken(string token)
+        public async Task<Response<RefreshTokenToReturnDto>> RefreshToken(RefreshTokenRequestDto token)
         {
-            var user = _unitOfWork.Tokens.GetUserByRefreshToken(token);
-            var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
+            var response = new Response<RefreshTokenToReturnDto>();
+            var refreshToken = token.RefreshToken;
+            var userId = token.UserId;
 
-            if (!refreshToken.IsExpired)
+            var user = await _tokenRepository.GetUserByRefreshToken(refreshToken, userId);
+
+            if (user.RefreshToken != refreshToken|| user.RefreshTokenExpiryTime <= DateTime.Now)
             {
-                RevokeDescendantRefreshTokens(refreshToken, user, $"Attempted reuse of revoked ancestor token: {token}");
-                _userManager.UpdateAsync(user);
+                response.Data = null;
+                response.Message = "Invalid request";
+                response.StatusCode = (int) HttpStatusCode.BadRequest;
+                response.Succeeded = false;
+                return response;
             }
 
-            if (!refreshToken.IsActive)
+            var result = new RefreshTokenToReturnDto
             {
-                throw new Exception("Invalid token");
-            }
+                NewJwtAccessToken = await _tokenGenerator.GenerateToken(user),
+                NewRefreshToken = _tokenGenerator.GenerateRefreshToken()
+            };
+            user.RefreshToken = result.NewRefreshToken;
+            await _userManager.UpdateAsync(user);
 
-            var newRefreshToken = ReGenerateRefreshToken(refreshToken);
-            user.RefreshTokens.Add(newRefreshToken);
-
-            RemoveOldRefreshTokens(user);
-
-            _userManager.UpdateAsync(user);
-
-            var newToken = _tokenGenerator.GenerateToken(user);
-            return newToken;
+            response.Data = result;
+            response.Message = "Token Successfully refreshed";
+            response.StatusCode = (int)HttpStatusCode.OK;
+            response.Succeeded = true;
+            return response;
         }
-
-        private RefreshToken ReGenerateRefreshToken(RefreshToken refreshToken)
-        {
-            var newRefreshToken = _tokenGenerator.GenerateRefreshToken();
-            RevokeRefreshToken(refreshToken, "Replaced by new token", newRefreshToken.Token);
-            return newRefreshToken;
-        }
-
-        private void RemoveOldRefreshTokens(AppUser user)
-        {
-            // remove old inactive refresh tokens from user based on TTL in app settings
-            user.RefreshTokens.RemoveAll(x =>
-                !x.IsActive &&
-                x.Created.AddDays(_appSettings.RefreshTokenTTL) <= DateTime.UtcNow);
-        }
-
-
-        private void RevokeDescendantRefreshTokens(RefreshToken refreshToken, AppUser user,
-            string reason)
-        {
-            // recursively traverse the refresh token chain and ensure all descendants are revoked
-            if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
-            {
-                var childToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
-                if (childToken.IsActive)
-                    RevokeRefreshToken(childToken, reason);
-                else
-                    RevokeDescendantRefreshTokens(childToken, user, reason);
-            }
-        }
-
-        private void RevokeRefreshToken(RefreshToken token, string reason = null, string replacedByToken = null)
-        {
-            token.Revoked = DateTime.UtcNow;
-            token.ReasonRevoked = reason;
-            token.ReplacedByToken = replacedByToken;
-        }
-
 
 
     }

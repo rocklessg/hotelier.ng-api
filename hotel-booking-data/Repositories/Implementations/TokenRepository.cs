@@ -6,23 +6,26 @@ using System.Threading.Tasks;
 using hotel_booking_data.Contexts;
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_models;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
-    public class TokenRepository : GenericRepository<RefreshToken>, ITokenRepository
+    public class TokenRepository : ITokenRepository
     {
         private readonly HbaDbContext _context;
-        private readonly DbSet<RefreshToken> _tokens;
-        public TokenRepository(HbaDbContext context) : base(context)
+        public TokenRepository(HbaDbContext context)
         {
             _context = context;
-            _tokens = _context.Set<RefreshToken>();
         }
 
-        public AppUser GetUserByRefreshToken(string token)
+        
+        public async Task<AppUser> GetUserByRefreshToken(Guid token, string userId)
         {
-            var user = _context.Users.SingleOrDefault(u => u.RefreshTokens.Any(x => x.Token == token));
+            //Check for user Id
+
+            var user =  await _context.Users.SingleOrDefaultAsync(u => u.RefreshToken == token && u.Id == userId);
+            
             if (user == null)
             {
                 throw new Exception("Invalid token");

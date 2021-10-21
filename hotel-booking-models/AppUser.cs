@@ -19,8 +19,7 @@ namespace hotel_booking_models
         public DateTime UpdatedAt { get; set; }
         public Manager Manager { get; set; }
         public Customer Customer { get; set; }
-
-        [JsonIgnore]
-        public List<RefreshToken> RefreshTokens { get; set; }
+        public Guid RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

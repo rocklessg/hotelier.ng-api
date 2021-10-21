@@ -10,8 +10,8 @@ using hotel_booking_data.Contexts;
 namespace hotel_booking_data.Migrations
 {
     [DbContext(typeof(HbaDbContext))]
-    [Migration("20211019222113_newMigration")]
-    partial class newMigration
+    [Migration("20211021122330_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -247,6 +247,12 @@ namespace hotel_booking_data.Migrations
 
                     b.Property<string>("PublicId")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("RefreshToken")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -492,46 +498,6 @@ namespace hotel_booking_data.Migrations
                     b.HasIndex("HotelId");
 
                     b.ToTable("Ratings");
-                });
-
-            modelBuilder.Entity("hotel_booking_models.RefreshToken", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text");
-
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("CreatedByIp")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("ReasonRevoked")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ReplacedByToken")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("Revoked")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("RevokedByIp")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Review", b =>
@@ -785,13 +751,6 @@ namespace hotel_booking_data.Migrations
                     b.Navigation("Hotel");
                 });
 
-            modelBuilder.Entity("hotel_booking_models.RefreshToken", b =>
-                {
-                    b.HasOne("hotel_booking_models.AppUser", null)
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("AppUserId");
-                });
-
             modelBuilder.Entity("hotel_booking_models.Review", b =>
                 {
                     b.HasOne("hotel_booking_models.Customer", "Customer")
@@ -849,8 +808,6 @@ namespace hotel_booking_data.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Manager");
-
-                    b.Navigation("RefreshTokens");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Booking", b =>

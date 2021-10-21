@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
-using hotel_booking_utilities.TokenHelpers;
 
 namespace hotel_booking_api.Extensions
 {
@@ -33,13 +32,6 @@ namespace hotel_booking_api.Extensions
             };
          
             services.AddSingleton(tokenValidationParameters);
-
-            var appSettings = new AppSettings()
-            {
-                Secret = configuration["AppSettings:Secret"],
-                RefreshTokenTTL = Convert.ToInt32(configuration["AppSettings:RefreshTokenTTL"])
-            };
-            services.AddSingleton(appSettings);
 
             services.AddAuthentication(options =>
             {

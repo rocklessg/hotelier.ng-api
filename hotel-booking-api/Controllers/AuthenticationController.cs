@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using hotel_booking_dto.TokenDto;
 using ILogger = Serilog.ILogger;
 
 namespace hotel_booking_api.Controllers
@@ -93,7 +94,7 @@ namespace hotel_booking_api.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         [Route("forgot-password")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -109,24 +110,18 @@ namespace hotel_booking_api.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("refresh-token")]
-        public IActionResult RefreshToken()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<Response<RefreshTokenToReturnDto>>> RefreshToken([FromQuery] RefreshTokenRequestDto model)
         {
-            var refreshToken = Request.Cookies["refreshToken"];
-            var response = _authService.RefreshToken(refreshToken);
-            setTokenCookie(response.ToString());
-            return Ok(response);
+          
+            var result = await _authService.RefreshToken(model);
+           
+            return StatusCode(result.StatusCode, result);
         }
 
 
-        private void setTokenCookie(string token)
-        {
-            // append cookie with refresh token to the http response
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
-            };
-            Response.Cookies.Append("refreshToken", token, cookieOptions);
-        }
+       
     }
 }

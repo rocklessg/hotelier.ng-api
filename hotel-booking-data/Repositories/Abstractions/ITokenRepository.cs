@@ -8,8 +8,8 @@ using hotel_booking_models;
 
 namespace hotel_booking_data.Repositories.Abstractions
 {
-    public interface ITokenRepository : IGenericRepository<RefreshToken>
+    public interface ITokenRepository
     {
-        AppUser GetUserByRefreshToken(string token);
+        Task<AppUser> GetUserByRefreshToken(Guid token, string userId);
     }
 }

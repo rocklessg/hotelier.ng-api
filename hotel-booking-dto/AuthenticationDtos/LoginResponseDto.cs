@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace hotel_booking_dto.AuthenticationDtos
 {
@@ -6,7 +7,6 @@ namespace hotel_booking_dto.AuthenticationDtos
     {
         public string Id { get; set; }
         public string Token { get; set; }
-        [JsonIgnore]
-        public string RefreshToken { get; set; }
+        public Guid RefreshToken { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using hotel_booking_models;
+﻿using System;
+using hotel_booking_models;
 using System.Threading.Tasks;
 
 namespace hotel_booking_utilities
@@ -6,6 +7,6 @@ namespace hotel_booking_utilities
     public interface ITokenGeneratorService
     {
         Task<string> GenerateToken(AppUser user);
-        RefreshToken GenerateRefreshToken();
+        Guid GenerateRefreshToken();
     }
 }
