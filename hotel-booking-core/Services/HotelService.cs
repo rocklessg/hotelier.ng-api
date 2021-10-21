@@ -24,7 +24,6 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
-       
 
         public HotelService(IUnitOfWork unitOfWork, IMapper mapper, ILogger logger)
         {
@@ -304,6 +303,5 @@ namespace hotel_booking_core.Services
             response.StatusCode = (int)HttpStatusCode.OK;
             return response;
         }
-
     }
 }
