@@ -3,7 +3,11 @@ using hotel_booking_core.Interface;
 using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
+using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.ManagerDtos;
 using hotel_booking_models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using hotel_booking_models.Mail;
 using Microsoft.AspNetCore.Http;
 using Serilog;
@@ -22,15 +26,58 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMailService _mailService;
         private readonly ILogger _logger;
+        private readonly UserManager<AppUser> _userManager;
 
         public ManagerService(IMapper mapper, IUnitOfWork unitOfWork, 
             IMailService mailService, ILogger logger)
+        public ManagerService(IMapper mapper, IUnitOfWork unitOfWork, UserManager<AppUser> userManager)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+        }
+
+        public async Task<Response<ManagerResponseDto>> AddManagerAsync(ManagerDto managerDto)
+        {
+            var checkManager = await _unitOfWork.Managers.CheckManagerAsync(managerDto.BusinessEmail);
+            if (checkManager == null)
+            {
+               
+                var appUser = _mapper.Map<AppUser>(managerDto);
+                var manager = _mapper.Map<Manager>(managerDto);
+                var result = await _userManager.CreateAsync(appUser, managerDto.Password);
+                manager.AppUserId = appUser.Id;
+
+                await _unitOfWork.Managers.InsertAsync(manager);
+                await _unitOfWork.Save();
+                if (result.Succeeded)
+                {
+                    var managerResponse = _mapper.Map<ManagerResponseDto>(manager);
+
+                    var response = new Response<ManagerResponseDto>()
+                    {
+                        StatusCode = StatusCodes.Status200OK,
+                        Succeeded = true,
+                        Data = managerResponse,
+                        Message = $"{manager.CompanyName} hotel with ID: {manager.AppUserId}: registered successfully"
+                    };
+                    return response;
+                }
+                return Response<ManagerResponseDto>.Fail("Registration Failed", StatusCodes.Status400BadRequest);
+            }
+            return Response<ManagerResponseDto>.Fail("User already exist. Please register a new manager", StatusCodes.Status400BadRequest);
+        }
             _mailService = mailService;
             _logger = logger;
 
+        }
+
+        public async Task<Response<IEnumerable<HotelBasicDto>>> GetAllHotelsAsync(string managerId)
+        {
+            var hotelList = await _unitOfWork.Managers.GetAllHotelsForManagerAsync(managerId);
+            var hotelListDto = _mapper.Map<IEnumerable<HotelBasicDto>>(hotelList);
+            var response = new Response<IEnumerable<HotelBasicDto>>(StatusCodes.Status200OK, true, "hotels for manager", hotelListDto);
+            return response;
         }
 
         public async Task<Response<string>> SoftDeleteManagerAsync(string managerId)

@@ -1,4 +1,5 @@
 ﻿using hotel_booking_core.Interfaces;
+using hotel_booking_dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

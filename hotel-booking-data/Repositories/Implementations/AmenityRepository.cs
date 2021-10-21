@@ -3,6 +3,7 @@ using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_dto.AmenityDtos;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace hotel_booking_data.Repositories.Implementations
         public AmenityRepository(HbaDbContext context) : base(context)
         {
             _context = context;
+            
         }
 
         public Amenity GetAmenityById(string id)

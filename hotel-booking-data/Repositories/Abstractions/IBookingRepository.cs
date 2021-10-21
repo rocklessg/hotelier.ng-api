@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Abstractions
 {
-    public interface IAmenityRepository : IGenericRepository<Amenity>
+    public interface IBookingRepository : IGenericRepository<Booking>
     {
-        Amenity GetAmenityById(string id);
-        Task<List<Amenity>> GetAmenityByHotelIdAsync(string hotelId);
-
+        
     }
 }

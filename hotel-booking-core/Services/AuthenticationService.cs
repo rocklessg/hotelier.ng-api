@@ -56,7 +56,8 @@ namespace hotel_booking_core.Services
                 response.StatusCode = (int)HttpStatusCode.NotFound;
                 return response;
             }
-            var result = await _userManager.ConfirmEmailAsync(user, confirmEmailDto.Token);
+            var decodedToken = TokenConverter.DecodeToken(confirmEmailDto.Token);
+            var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
             if (result.Succeeded)
             {
                 response.StatusCode = (int)HttpStatusCode.OK;
@@ -91,10 +92,9 @@ namespace hotel_booking_core.Services
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var encodedToken = Encoding.UTF8.GetBytes(token);
-            var actualToken = WebEncoders.Base64UrlEncode(encodedToken);
+            var encodedToken = TokenConverter.EncodeToken(token);
 
-            var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "reset-password", actualToken);
+            var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "reset-password", encodedToken);
 
             var mailRequest = new MailRequest()
             {
@@ -168,7 +168,8 @@ namespace hotel_booking_core.Services
                 {
                     await _userManager.AddToRoleAsync(user, UserRoles.Customer);
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ConfirmEmail.html", linkName: "confirm-email", token);
+                    var encodedToken = TokenConverter.EncodeToken(token);
+                    var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ConfirmEmail.html", linkName: "confirm-email", encodedToken);
                     var mailRequest = new MailRequest()
                     {
                         Subject = "Confirm Your Registration",
@@ -237,17 +238,16 @@ namespace hotel_booking_core.Services
                 return response;
             }
 
-            var decodedToken = WebEncoders.Base64UrlDecode(model.Token); //Decode incoming token
-            string actualToken = Encoding.UTF8.GetString(decodedToken); //Set the token to an encoded string
+            var decodedToken = TokenConverter.DecodeToken(model.Token); //Decode incoming token
 
             var purpose = UserManager<AppUser>.ResetPasswordTokenPurpose;
             var tokenProvider = _userManager.Options.Tokens.PasswordResetTokenProvider;
 
-            var token = await _userManager.VerifyUserTokenAsync(user, tokenProvider, purpose, actualToken);
+            var token = await _userManager.VerifyUserTokenAsync(user, tokenProvider, purpose, decodedToken);
             if (token)
             {
                 _mapper.Map<AppUser>(model);
-                var result = await _userManager.ResetPasswordAsync(user, actualToken, model.NewPassword);
+                var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.NewPassword);
                 response.Succeeded = false;
                 response.Data = null;
                 response.Message = GetErrors(result);

@@ -9,5 +9,6 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IWishListRepository : IGenericRepository<WishList>
     {
+        IQueryable<WishList> GetCustomerWishList(string customerId);
     }
 }
