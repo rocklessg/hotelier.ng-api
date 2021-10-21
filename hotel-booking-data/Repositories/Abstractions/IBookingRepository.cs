@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using hotel_booking_dto;
 using hotel_booking_models;
-using hotel_booking_utilities;
+using System.Linq;
 
 namespace hotel_booking_data.Repositories.Abstractions
 {
@@ -15,6 +10,7 @@ namespace hotel_booking_data.Repositories.Abstractions
         IQueryable<Booking> GetManagerBookingsSearchByHotel(string managerId, TransactionFilter filter);
         IQueryable<Booking> GetManagerBookingsFilterByDate(string managerId, TransactionFilter filter);
         IQueryable<Booking> GetManagerBookingsFilterByDate(string managerId, string year);
-        IQueryable<Booking> GetManagerBookingsByHotelAndMonth(string managerId, TransactionFilter filter);      
+        IQueryable<Booking> GetManagerBookingsByHotelAndMonth(string managerId, TransactionFilter filter);    
+        IQueryable<Booking> GetBookingsByCustomerId(string customerId);
     }
 }

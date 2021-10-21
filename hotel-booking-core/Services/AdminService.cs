@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using hotel_booking_core.Interfaces;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_models;
-using hotel_booking_utilities;
 using hotel_booking_utilities.Pagination;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using static hotel_booking_utilities.Pagination.Paginator;
 
 namespace hotel_booking_core.Services
@@ -25,8 +22,7 @@ namespace hotel_booking_core.Services
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
-
-        public async Task<Response<PageResult<IEnumerable<TransactionResponseDto>>>> GetManagerTransactionsAsync(string managerId, Paging paging, TransactionFilter filter)
+        public async Task<Response<PageResult<IEnumerable<TransactionResponseDto>>>> GetManagerTransactionsAsync(string managerId, TransactionFilter filter)
         {
             var manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
             var response = new Response<PageResult<IEnumerable<TransactionResponseDto>>>();
@@ -57,7 +53,7 @@ namespace hotel_booking_core.Services
                         managerBookings = _unitOfWork.Booking.GetManagerBookings(managerId);
                     };
 
-                    var transactionList = await managerBookings.PaginationAsync<Booking, TransactionResponseDto>(paging.PageSize, paging.PageNumber, _mapper);
+                    var transactionList = await managerBookings.PaginationAsync<Booking, TransactionResponseDto>(filter.PageSize, filter.PageNumber, _mapper);
                     var message = "";
                     if (transactionList.PageItems.Any() == false)
                     {
@@ -85,6 +81,18 @@ namespace hotel_booking_core.Services
             response.Data = default;
             response.Message = $"Manager with Id = {managerId} not found";
             return response;
+        }
+        public async Task<Response<PageResult<IEnumerable<TransactionResponseDto>>>> GetAllTransactions(TransactionFilter filter)
+        {
+            var transactions = _unitOfWork.Transactions.GetAllTransactions(filter);
+            var item = await transactions.PaginationAsync<Booking, TransactionResponseDto>(filter.PageSize, filter.PageNumber, _mapper);
+            return new Response<PageResult<IEnumerable<TransactionResponseDto>>>()
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Succeeded = true,
+                Data = item,
+                Message = "All transactions retrieved successfully"
+            };
         }
     }
 }

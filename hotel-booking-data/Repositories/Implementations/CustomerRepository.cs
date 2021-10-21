@@ -28,6 +28,14 @@ namespace hotel_booking_data.Repositories.Implementations
             return customer;
         }
 
+        public async Task<Customer> GetCustomerAsync(string id)
+        {
+            return await _customers
+                .Include(x => x.AppUser)
+                .Include(x => x.Bookings)
+                .FirstOrDefaultAsync(x => x.AppUserId == id);
+        }
+
         public IQueryable<Customer> GetAllUsers()
         {
            return _customers.Include(x => x.AppUser);

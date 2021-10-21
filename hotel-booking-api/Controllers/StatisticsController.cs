@@ -1,7 +1,10 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
+<<<<<<< HEAD
 using hotel_booking_models;
 using hotel_booking_utilities;
+=======
+>>>>>>> reviews
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -51,6 +54,10 @@ namespace hotel_booking_api.Controllers
 
             _logger.Information($"Gotten Hotel Manager Statistics for {managerId}");
             return StatusCode(result.StatusCode, result);
+<<<<<<< HEAD
         }        
+=======
+        }
+>>>>>>> reviews
     }
 }
