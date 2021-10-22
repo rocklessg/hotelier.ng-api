@@ -28,7 +28,7 @@ namespace hotel_booking_data.Repositories.Implementations
             
             if (user == null)
             {
-                throw new Exception("Invalid token");
+                throw new ArgumentException($"User with Id {userId} does not exist");
             }
 
             return user;
