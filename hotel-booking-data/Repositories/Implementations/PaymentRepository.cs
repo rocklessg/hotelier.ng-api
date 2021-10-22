@@ -1,6 +1,7 @@
 ﻿using hotel_booking_data.Contexts;
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,16 @@ namespace hotel_booking_data.Repositories.Implementations
         {
             _context = context;
         }
+
+        public IQueryable<Payment> GetHotelTransactions(string hotelId)
+        {
+            var query = _context.Payments
+                .Include(payment => payment.Booking)
+                .ThenInclude(x => x.Hotel)
+                .Where(x => x.Booking.HotelId == hotelId);
+            return query;
+        }
+
+        
     }
 }

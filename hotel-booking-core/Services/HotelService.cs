@@ -24,13 +24,13 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
-       
+
 
         public HotelService(IUnitOfWork unitOfWork, IMapper mapper, ILogger logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-           _logger = logger;
+            _logger = logger;
         }
 
         public async Task<Response<IEnumerable<HotelBasicDetailsDto>>> GetHotelsByRatingsAsync()
@@ -60,7 +60,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<PageResult<IEnumerable<GetAllHotelDto>>>> GetAllHotelsAsync(PagingDto paging)
         {
             var hotelQueryable = _unitOfWork.Hotels.GetAllHotels();
-            var hotelList = await hotelQueryable.PaginationAsync<Hotel, GetAllHotelDto>(paging.PageSize,paging.PageNumber, _mapper);
+            var hotelList = await hotelQueryable.PaginationAsync<Hotel, GetAllHotelDto>(paging.PageSize, paging.PageNumber, _mapper);
             var response = new Response<PageResult<IEnumerable<GetAllHotelDto>>>(StatusCodes.Status200OK, true, "List of all hotels", hotelList);
             return response;
         }
@@ -131,7 +131,7 @@ namespace hotel_booking_core.Services
             if (hotel != null)
             {
                 GetHotelDto hotelDto = _mapper.Map<GetHotelDto>(hotel);
-                
+
                 response.Data = hotelDto;
                 response.Succeeded = true;
                 response.Message = $"Details for Hotel with Id: {id}";
@@ -246,7 +246,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<PageResult<IEnumerable<HotelBasicDetailsDto>>>> GetHotelByLocation(string location, PagingDto paging)
         {
             _logger.Information($"Attempting to get hotel in {location}");
-            var hotels = _unitOfWork.Hotels.GetAllHotels()                
+            var hotels = _unitOfWork.Hotels.GetAllHotels()
                 .Where(q => q.State.ToLower().Contains(location.ToLower()) || q.City.ToLower().Contains(location.ToLower()));
 
             var response = new Response<PageResult<IEnumerable<HotelBasicDetailsDto>>>();
@@ -256,8 +256,8 @@ namespace hotel_booking_core.Services
                 _logger.Information("Search completed successfully");
                 var result = await hotels.PaginationAsync<Hotel, HotelBasicDetailsDto>
                     (
-                        pageSize: paging.PageSize, 
-                        pageNumber: paging.PageNumber, 
+                        pageSize: paging.PageSize,
+                        pageNumber: paging.PageNumber,
                         mapper: _mapper
                     );
 
@@ -294,7 +294,7 @@ namespace hotel_booking_core.Services
 
             var reviews = _unitOfWork.Reviews.GetAllReviewsByHotelAsync(hotelId);
 
-             //_mapper.Map<Review>(reviews);
+            //_mapper.Map<Review>(reviews);
 
             var pageResult = await reviews.PaginationAsync<Review, ReviewToReturnDto>(paging.PageSize, paging.PageNumber, _mapper);
             _logger.Information("Get all reviews operation successful");
@@ -305,5 +305,19 @@ namespace hotel_booking_core.Services
             return response;
         }
 
+        public async Task<Response<PageResult<IEnumerable<PaymentDto>>>> GetHotelTransaction(string hotelId, PagingDto paging)
+        {
+            var hotel = await _unitOfWork.Hotels.GetHotelById(hotelId);
+            if (hotel != null)
+            {
+                var transactionsQueryable = _unitOfWork.Hotels.GetHotelTransactions(hotelId);
+                var pageResult = await transactionsQueryable.PaginationAsync<Payment, PaymentDto>(paging.PageSize, paging.PageNumber, _mapper);
+                return new Response<PageResult<IEnumerable<PaymentDto>>>(StatusCodes.Status200OK, true, "hotel transactions", pageResult);
+            }
+            return Response<PageResult<IEnumerable<PaymentDto>>>.Fail("Hotel Not Found");
+
+        }
+
     }
+
 }

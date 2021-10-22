@@ -85,5 +85,14 @@ namespace hotel_booking_data.Repositories.Implementations
                 .OrderBy(r => r.CreatedAt);
             return query;
         }
+
+        public IQueryable<Payment> GetHotelTransactions(string hotelId)
+        {
+            var query = _context.Payments
+                .Include(payment => payment.Booking)
+                .ThenInclude(x => x.Hotel)
+                .Where(x => x.Booking.HotelId == hotelId);
+            return query;
+        }
     }
 }
