@@ -48,6 +48,14 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [Authorize(Policy = "Admin")]
+        [HttpGet("total-hotels-per-location")]
+        public async Task<IActionResult> GetTotalHotelsPerLocation()
+        {
+            var response = await _hotelService.GetNumberOfHotelsPerLocation();
+            return StatusCode(response.StatusCode, response);
+        }
+
         [AllowAnonymous]
         [HttpGet("{hotelId}")]
         public async Task<IActionResult> GetHotelByIdAsync(string hotelId)

@@ -275,6 +275,31 @@ namespace hotel_booking_core.Services
             return response;
         }
 
+        public async Task<Response<Dictionary<string, int>>> GetNumberOfHotelsPerLocation()
+        {
+            _logger.Information($"Attempting to get all hotels");
+            var hotels = await _unitOfWork.Hotels.GetAll().ToListAsync();
+            var result = new Dictionary<string, int>();
+
+            foreach(var hotel in hotels)
+            {
+                if (!result.ContainsKey(hotel.State))
+                {
+                    result.Add(hotel.State, 1);
+                }
+                result[hotel.State] += 1; 
+            }
+
+            var response = new Response<Dictionary<string, int>>();
+
+            _logger.Information("Search completed successfully");
+
+            response.Data = result;
+            response.StatusCode = StatusCodes.Status200OK;
+            response.Succeeded = true;
+            return response;
+        }
+
 
         public async Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging, string hotelId)
         {
