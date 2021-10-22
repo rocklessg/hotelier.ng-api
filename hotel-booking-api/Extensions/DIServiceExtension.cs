@@ -48,8 +48,8 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
             
             services.AddScoped<IManagerRepository, ManagerRepository>();
-            services.AddScoped<ITransactionRepository, TransactionRepository>();            
-
+            services.AddScoped<ITokenRepository, TokenRepository>();
+            
 
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IPaymentService, PaymentService>();
