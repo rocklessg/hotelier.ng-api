@@ -24,8 +24,6 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
-
-
         public HotelService(IUnitOfWork unitOfWork, IMapper mapper, ILogger logger)
         {
             _unitOfWork = unitOfWork;
@@ -317,7 +315,6 @@ namespace hotel_booking_core.Services
             return Response<PageResult<IEnumerable<PaymentDto>>>.Fail("Hotel Not Found");
 
         }
-
     }
 
 }

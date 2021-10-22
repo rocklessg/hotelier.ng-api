@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 
@@ -22,20 +23,23 @@ namespace hotel_booking_api.Controllers
         private readonly IHotelService _hotelService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IHotelStatisticsService _hotelStatisticsService;
-
+        private readonly IBookingService _bookingService;
         private readonly ILogger _logger;
 
 
         public HotelController(ILogger logger,
             IHotelService hotelService,
             UserManager<AppUser> userManager,
-            IHotelStatisticsService hotelStatisticsService
+            IHotelStatisticsService hotelStatisticsService,
+            IBookingService bookingService
+
             )
 
         {
             _hotelService = hotelService;
             _userManager = userManager;
             _hotelStatisticsService = hotelStatisticsService;
+            _bookingService = bookingService;
 
             _logger = logger;
         }
@@ -195,10 +199,24 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetHotelTransactions(string hotelId, [FromQuery]PagingDto paging)
+        public async Task<IActionResult> GetHotelTransactions(string hotelId, [FromQuery] PagingDto paging)
         {
             var response = await _hotelService.GetHotelTransaction(hotelId, paging);
             return StatusCode(response.StatusCode, response);
+        }
+
+
+        [HttpPost("book-hotel")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> CreateBooking([FromBody] HotelBookingRequestDto bookingDto)
+        {
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _bookingService.Book(userId, bookingDto);
+            return StatusCode(result.StatusCode, result);
         }
     }
 }

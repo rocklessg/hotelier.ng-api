@@ -12,5 +12,6 @@ namespace hotel_booking_data.Repositories.Abstractions
         Task<List<Room>> GetAllAsync(Expression<Func<Room, bool>> expression = null, Func<IQueryable<Room>, IOrderedQueryable<Room>> orderby = null, List<string> Includes = null);
         IQueryable<RoomType> GetRoomTypeByHotel(string hotelId);
         Task<ICollection<Room>> GetHotelRoom(string hotelId, string roomTypeId);
+        Room GetRoomById(string roomId);
     }
 }
