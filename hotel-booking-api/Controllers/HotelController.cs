@@ -205,5 +205,14 @@ namespace hotel_booking_api.Controllers
             var result = await _bookingService.Book(userId, bookingDto);
             return StatusCode(result.StatusCode, result);
         }
+
+        [HttpGet("{hotelId}/top-customers")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize(Policy = Policies.Manager)]
+        public async Task<IActionResult> TopCustomers([FromRoute] string hotelId)
+        {
+            var result = await _hotelService.TopHotelCustomers(hotelId);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }
