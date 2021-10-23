@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interfaces;
+using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
@@ -301,6 +303,39 @@ namespace hotel_booking_core.Services
             response.Data = pageResult;
             response.Message = $"List of all reviews in hotel with id {hotelId}";
             response.StatusCode = (int)HttpStatusCode.OK;
+            return response;
+        }
+
+        public async Task<Response<string>> RateHotel(string hotelId, string customerId, AddRatingDto ratingDto)
+        {
+            _logger.Information($"Attempt to rate hotel by customer id {customerId}");
+            var rating = _mapper.Map<Rating>(ratingDto);
+            rating.HotelId = hotelId;
+            rating.CustomerId = customerId;
+
+            var confirmHotel = await _unitOfWork.Hotels.GetHotelById(rating.HotelId);
+            if (confirmHotel == null)
+            {
+                _logger.Information($"Rating hotel failed, hotel with id {hotelId} does not exist");
+                return Response<string>.Fail($"Hotel with hotel id {rating.HotelId} not exist.");
+            }
+
+            var prevRating = await _unitOfWork.Rating.GetRatingsByHotel(hotelId, customerId);
+            if(prevRating != null)
+            {
+                prevRating.Ratings = ratingDto.Ratings;
+                prevRating.UpdatedAt = DateTime.UtcNow;
+                _unitOfWork.Rating.Update(prevRating);
+                await _unitOfWork.Save();
+                return Response<string>.Success("Rating updated successfully", prevRating.HotelId);
+            }
+
+            await _unitOfWork.Rating.InsertAsync(rating);
+            await _unitOfWork.Save();
+
+            _logger.Information("Rating hotel successful");
+            var response = Response<string>.Success($"Rating added successfully", rating.HotelId);
+            
             return response;
         }
     }

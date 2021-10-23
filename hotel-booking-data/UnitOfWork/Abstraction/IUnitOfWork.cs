@@ -17,6 +17,7 @@ namespace hotel_booking_data.UnitOfWork.Abstraction
         IBookingRepository Booking {  get; }
         IReviewRepository Reviews { get; }
         ITransactionRepository Transactions { get; }
+        IRatingRepository Rating { get; }
         Task Save();
     }
 }

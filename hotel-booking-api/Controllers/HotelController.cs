@@ -2,6 +2,7 @@
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.RatingDtos;
 using hotel_booking_models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -203,6 +204,20 @@ namespace hotel_booking_api.Controllers
         {
             string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _bookingService.Book(userId, bookingDto);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        [Route("{hotelId}/add-ratings")]
+        [Authorize(Policy = Policies.Customer)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RateHotel(string hotelId, [FromBody] AddRatingDto rating)
+        {
+            AppUser user = await _userManager.GetUserAsync(User);
+
+            Response<string> result = await _hotelService.RateHotel(hotelId, user.Id, rating);
             return StatusCode(result.StatusCode, result);
         }
     }
