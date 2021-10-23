@@ -39,10 +39,11 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<ManagerResponseDto>> AddManagerAsync(ManagerDto managerDto)
         {
-            var validateResponse = await CheckTokenExpiring(email: managerDto.BusinessEmail, token: managerDto.Token);
-            if (!validateResponse.Succeeded)
+            var getPotentialManager = await _unitOfWork.ManagerRequest.GetHotelManagerByEmailToken(email: managerDto.BusinessEmail, token: managerDto.Token);
+            var expired = getPotentialManager.ExpiresAt < DateTime.Now.AddMinutes(-5);
+            if (expired)
             {
-                return Response<ManagerResponseDto>.Fail(errorMessage: validateResponse.Message, statusCode: validateResponse.StatusCode);
+                return Response<ManagerResponseDto>.Fail("Link has expired", StatusCodes.Status405MethodNotAllowed);
             }
             var appUser = _mapper.Map<AppUser>(managerDto);
             var manager = _mapper.Map<Manager>(managerDto);

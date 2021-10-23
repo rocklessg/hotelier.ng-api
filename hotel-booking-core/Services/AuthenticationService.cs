@@ -1,26 +1,23 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interface;
 using hotel_booking_core.Interfaces;
+using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
+using hotel_booking_dto.TokenDto;
 using hotel_booking_models;
 using hotel_booking_models.Mail;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.WebUtilities;
 using Serilog;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
-using hotel_booking_data.Repositories.Abstractions;
-using Serilog;
-using hotel_booking_dto.RefereshTokenDto;
-using hotel_booking_dto.TokenDto;
 
 namespace hotel_booking_core.Services
 {
