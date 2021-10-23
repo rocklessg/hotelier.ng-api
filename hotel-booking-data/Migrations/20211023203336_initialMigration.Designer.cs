@@ -10,8 +10,8 @@ using hotel_booking_data.Contexts;
 namespace hotel_booking_data.Migrations
 {
     [DbContext(typeof(HbaDbContext))]
-    [Migration("20211012084203_ManagerRequest")]
-    partial class ManagerRequest
+    [Migration("20211023203336_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -248,6 +248,12 @@ namespace hotel_booking_data.Migrations
                     b.Property<string>("PublicId")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("RefreshToken")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -300,6 +306,12 @@ namespace hotel_booking_data.Migrations
                     b.Property<int>("NoOfPeople")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("PaymentStatus")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("RoomId")
+                        .HasColumnType("text");
+
                     b.Property<string>("ServiceName")
                         .HasColumnType("text");
 
@@ -311,6 +323,8 @@ namespace hotel_booking_data.Migrations
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("HotelId");
+
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Bookings");
                 });
@@ -442,11 +456,17 @@ namespace hotel_booking_data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
+                    b.Property<bool>("ConfirmationFlag")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("HotelName")
                         .HasColumnType("text");
@@ -700,9 +720,15 @@ namespace hotel_booking_data.Migrations
                         .WithMany("Bookings")
                         .HasForeignKey("HotelId");
 
+                    b.HasOne("hotel_booking_models.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId");
+
                     b.Navigation("Customer");
 
                     b.Navigation("Hotel");
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Customer", b =>
