@@ -3,8 +3,10 @@ using hotel_booking_dto;
 using hotel_booking_dto.AmenityDtos;
 using hotel_booking_dto.AppUserDto;
 using hotel_booking_dto.AuthenticationDtos;
+using hotel_booking_dto.BookingDtos;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.ManagerDtos;
 using hotel_booking_dto.RoomDtos;
@@ -31,6 +33,21 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<Amenity, AddAmenityResponseDto>().ReverseMap();
             CreateMap<Amenity, AmenityDto>().ReverseMap();
 
+            // Booking Maps
+            CreateMap<Booking, HotelBookingRequestDto>().ReverseMap();
+            CreateMap<Booking, HotelBookingResponseDto>()
+                .ForMember(x => x.Price, y => y.MapFrom(src => src.Room.Roomtype.Price - (src.Room.Roomtype.Price * src.Room.Roomtype.Discount)))
+                .ForMember(x => x.RoomType, y => y.MapFrom(src => src.Room.Roomtype.Name))
+                .ForMember(x => x.RoomNo, y => y.MapFrom(src => src.Room.RoomNo))
+                .ForMember(x => x.PaymentReference, y => y.MapFrom(src => src.Payment.TransactionReference))
+                .ForMember(x => x.PaymentStatus, y => y.MapFrom(src => src.Payment.Status))
+                .ForMember(x => x.Hotel, y => y.MapFrom(src => src.Room.Roomtype.Hotel.Name))
+                .ForMember(x => x.Price, y => y.MapFrom(src => src.Room.Roomtype.Price));
+            CreateMap<Booking, GetBookingResponseDto>()
+                .ForMember(x => x.RoomType, y => y.MapFrom(src => src.Room.Roomtype.Name))
+                .ForMember(x => x.Hotel, y => y.MapFrom(src => src.Hotel.Name))
+                .ForMember(x => x.RoomNumber, y => y.MapFrom(src => src.Room.RoomNo))
+                .ForMember(x => x.Price, y => y.MapFrom(src => src.Room.Roomtype.Price));
 
             // Hotel Maps
             CreateMap<Hotel, HotelBasicDetailsDto>()
@@ -68,7 +85,7 @@ namespace hotel_booking_utilities.AutoMapSetup
             // Room Maps
             CreateMap<Room, AddRoomDto>().ReverseMap();
             CreateMap<Room, AddRoomResponseDto>().ReverseMap();
-            CreateMap<Room, RoomDTo>();
+            CreateMap<Room, RoomDTo>().ReverseMap();
 
             // RoomType Maps
             CreateMap<RoomType, RoomInfoDto>().ReverseMap();
@@ -78,6 +95,7 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             // Rating Maps
             CreateMap<Rating, HotelRatingsDTo>();
+            CreateMap<Rating, AddRatingDto>().ReverseMap();
 
             // Gallery Maps
             CreateMap<Gallery, GalleryDto>().ReverseMap();

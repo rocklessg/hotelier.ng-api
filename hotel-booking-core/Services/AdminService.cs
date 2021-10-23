@@ -25,7 +25,7 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<PageResult<IEnumerable<TransactionResponseDto>>>> GetAllTransactions(TransactionFilter filter)
         {
-            var transactions = _unitOfWork.Bookings.GetAllTransactions(filter);
+            var transactions = _unitOfWork.Transactions.GetAllTransactions(filter);
             var item = await transactions.PaginationAsync<Booking, TransactionResponseDto>(filter.PageSize, filter.PageNumber, _mapper);
             return new Response<PageResult<IEnumerable<TransactionResponseDto>>>()
             {

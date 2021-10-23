@@ -17,6 +17,10 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using hotel_booking_data.Repositories.Abstractions;
+using Serilog;
+using hotel_booking_dto.RefereshTokenDto;
+using hotel_booking_dto.TokenDto;
 
 namespace hotel_booking_core.Services
 {
@@ -28,9 +32,11 @@ namespace hotel_booking_core.Services
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
+        private readonly ITokenRepository _tokenRepository;
+        
 
         public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ILogger logger,
-            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
+            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator, ITokenRepository tokenRepository)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -38,6 +44,8 @@ namespace hotel_booking_core.Services
             _mailService = mailService;
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _tokenRepository = tokenRepository;
+
         }
 
         /// <summary>
@@ -139,11 +147,18 @@ namespace hotel_booking_core.Services
             }
 
             var user = await _userManager.FindByEmailAsync(model.Email);
+            var refreshToken = _tokenGenerator.GenerateRefreshToken();
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7); //sets refresh token for 7 days
             var result = new LoginResponseDto()
             {
                 Id = user.Id,
-                Token = await _tokenGenerator.GenerateToken(user)
+                Token = await _tokenGenerator.GenerateToken(user),
+                RefreshToken = refreshToken
             };
+            
+            await _userManager.UpdateAsync(user);
+
             response.StatusCode = (int)HttpStatusCode.OK;
             response.Message = "Login Successfully";
             response.Data = result;
@@ -349,5 +364,39 @@ namespace hotel_booking_core.Services
             var emailBody = newTemp.Replace("**User**", userName);
             return emailBody;
         }
+
+        public async Task<Response<RefreshTokenToReturnDto>> RefreshToken(RefreshTokenRequestDto token)
+        {
+            var response = new Response<RefreshTokenToReturnDto>();
+            var refreshToken = token.RefreshToken;
+            var userId = token.UserId;
+
+            var user = await _tokenRepository.GetUserByRefreshToken(refreshToken, userId);
+
+            if (user.RefreshToken != refreshToken|| user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                response.Data = null;
+                response.Message = "Invalid request";
+                response.StatusCode = (int) HttpStatusCode.BadRequest;
+                response.Succeeded = false;
+                return response;
+            }
+
+            var result = new RefreshTokenToReturnDto
+            {
+                NewJwtAccessToken = await _tokenGenerator.GenerateToken(user),
+                NewRefreshToken = _tokenGenerator.GenerateRefreshToken()
+            };
+            user.RefreshToken = result.NewRefreshToken;
+            await _userManager.UpdateAsync(user);
+
+            response.Data = result;
+            response.Message = "Token Successfully refreshed";
+            response.StatusCode = (int)HttpStatusCode.OK;
+            response.Succeeded = true;
+            return response;
+        }
+
+
     }
 }

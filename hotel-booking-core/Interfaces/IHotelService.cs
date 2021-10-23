@@ -1,6 +1,7 @@
 ﻿using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_utilities.Pagination;
@@ -43,6 +44,6 @@ namespace hotel_booking_core.Interfaces
         Task<Response<PageResult<IEnumerable<GetAllHotelDto>>>> GetAllHotelsAsync(PagingDto paging);
         Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging,
             string hotelId);
-       
+        Task<Response<string>> RateHotel(string hotelId, string customerId, AddRatingDto ratingDto);
     }
 }

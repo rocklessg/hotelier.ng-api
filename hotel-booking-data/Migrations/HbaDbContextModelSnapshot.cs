@@ -246,6 +246,12 @@ namespace hotel_booking_data.Migrations
                     b.Property<string>("PublicId")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("RefreshToken")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 

@@ -63,6 +63,8 @@ namespace hotel_booking_data.Contexts
                 .HasOne(bc => bc.Hotel)
                 .WithMany(c => c.WishLists)
                 .HasForeignKey(bc => bc.HotelId);
+          
+                
         }
     }
 }
