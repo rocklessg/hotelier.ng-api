@@ -130,6 +130,7 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.Avatar, x => x.MapFrom(x => x.Customer.AppUser.Avatar));
 
             CreateMap<Review, AddReviewDto>().ReverseMap();
+            CreateMap<Review, AddReviewToReturnDto>().ReverseMap();
 
             // IWshList Maps
             CreateMap<WishList, CustomerWishListDto>()
