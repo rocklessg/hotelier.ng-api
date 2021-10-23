@@ -8,6 +8,6 @@ namespace hotel_booking_data.Repositories.Abstractions
     public interface ITransactionRepository : IGenericRepository<Booking>
     {
         IQueryable<Booking> GetAllTransactions(TransactionFilter filter);
-       Task<Manager> GetManagerById(string id);
+        Task<Manager> GetManagerById(string id);
     }
 }
