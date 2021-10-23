@@ -315,28 +315,33 @@ namespace hotel_booking_core.Services
             var confirmHotel = _unitOfWork.Hotels.GetHotelById(rating.HotelId);
             if (confirmHotel == null)
             {
-                _logger.Information("Rating hotel failed");
-                return new Response<string>
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Succeeded = false,
-                    Data = rating.HotelId,
-                    Message = $"Hotel with hotel id {rating.HotelId} not exist."
-                };
+                _logger.Information($"Rating hotel failed, hotel with id {hotelId} does not exist");
+                return Response<string>.Fail($"Hotel with hotel id {rating.HotelId} not exist.");
+            }
+
+            if(ConfirmPreviousRating(hotelId, customerId))
+            {
+                rating.UpdatedAt = DateTime.UtcNow;
+                _unitOfWork.Rating.Update(rating);
+                await _unitOfWork.Save();
+                return Response<string>.Success("Rating updated successfully", rating.HotelId);
             }
 
             await _unitOfWork.Rating.InsertAsync(rating);
             await _unitOfWork.Save();
 
             _logger.Information("Rating hotel successful");
-            var response = new Response<string>
-            {
-                StatusCode = StatusCodes.Status200OK,
-                Succeeded = true,
-                Data = rating.HotelId,
-                Message = "Rating added successfully"
-            };
+            var response = Response<string>.Success($"Rating added successfully", rating.HotelId);
+            
             return response;
+        }
+
+        public bool ConfirmPreviousRating(string hotelId, string customerId)
+        {
+            var hotel = _unitOfWork.Hotels.GetAllRatingsByHotel(hotelId, customerId);
+            if (hotel != null)
+                return true;
+            return false;
         }
     }
 }
