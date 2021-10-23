@@ -335,7 +335,7 @@ namespace hotel_booking_core.Services
             var hotel = await _unitOfWork.Hotels.GetHotelById(hotelId);
             if (hotel != null)
             {
-                var transactionsQueryable = _unitOfWork.Hotels.GetHotelTransactions(hotelId);
+                var transactionsQueryable = _unitOfWork.Payments.GetHotelTransactions(hotelId);
                 var pageResult = await transactionsQueryable.PaginationAsync<Payment, TransactionsDto>(paging.PageSize, paging.PageNumber, _mapper);
                 return new Response<PageResult<IEnumerable<TransactionsDto>>>(StatusCodes.Status200OK, true, "hotel transactions", pageResult);
             }
