@@ -1,4 +1,5 @@
 ﻿using hotel_booking_dto;
+using hotel_booking_utilities.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Serilog;
@@ -34,6 +35,11 @@ namespace hotel_booking_api.Middleware
                 var responseModel = Response<string>.Fail(error.Message);
                 switch (error)
                 {
+                    case PaymentException e:
+                        _logger.Error(e, e.StackTrace, e.Source, e.ToString());
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        responseModel.Message = e.Message;
+                        break;
                     case UnauthorizedAccessException e:
                         _logger.Error(e, e.StackTrace, e.Source, e.ToString());
                         response.StatusCode = (int)HttpStatusCode.Unauthorized;

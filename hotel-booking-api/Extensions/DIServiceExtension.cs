@@ -12,6 +12,9 @@ using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_utilities;
+using hotel_booking_utilities.HttpClientService.Implementation;
+using hotel_booking_utilities.HttpClientService.Interface;
+using hotel_booking_utilities.PaymentGatewaySettings;
 using hotel_booking_utilities.Validators.AppUserValidator;
 using hotel_booking_utilities.Validators.AuthenticationValidators;
 using hotel_booking_utilities.Validators.CustomerValidators;
@@ -31,6 +34,7 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<IImageService, ImageService>();
             services.AddTransient<IMailService, MailService>();
             services.AddTransient<IReviewService, ReviewService>();
+            services.AddScoped<IAdminService, AdminService>();
 
 
 
@@ -44,8 +48,16 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
             
             services.AddScoped<IManagerRepository, ManagerRepository>();
+            services.AddScoped<ITokenRepository, TokenRepository>();
             
 
+            services.AddScoped<IBookingService, BookingService>();
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<PaystackPaymentHandler>();
+            services.AddScoped<FlutterwavePaymentHandler>();
+
+
+            services.AddScoped<IHttpClientService, HttpClientService>();
 
 
             // Add Repository Injections Here
@@ -64,6 +76,7 @@ namespace hotel_booking_api.Extensions
 
             services.AddTransient<IValidator<UpdateAppUserDto>, UpdateAppUserDtoValidator>();
             services.AddTransient<IValidator<UpdateCustomerDto>, UpdateCustomerDtoValidator>();
+            services.AddTransient<IValidator<HotelBookingRequestDto>, HotelBookingRequestDtoValidator>();
         }
     }
 }

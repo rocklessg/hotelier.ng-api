@@ -10,8 +10,8 @@ using hotel_booking_data.Contexts;
 namespace hotel_booking_data.Migrations
 {
     [DbContext(typeof(HbaDbContext))]
-    [Migration("20211003125441_NewMigration")]
-    partial class NewMigration
+    [Migration("20211021122330_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -154,6 +154,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Amenity", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -247,6 +248,12 @@ namespace hotel_booking_data.Migrations
                     b.Property<string>("PublicId")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("RefreshToken")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -275,6 +282,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Booking", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<string>("BookingReference")
@@ -332,9 +340,38 @@ namespace hotel_booking_data.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("hotel_booking_models.Gallery", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("HotelId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsFeature")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelId");
+
+                    b.ToTable("Galleries");
+                });
+
             modelBuilder.Entity("hotel_booking_models.Hotel", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<string>("Address")
@@ -436,6 +473,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Rating", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -465,6 +503,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Review", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<string>("Comment")
@@ -494,6 +533,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.Room", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -521,6 +561,7 @@ namespace hotel_booking_data.Migrations
             modelBuilder.Entity("hotel_booking_models.RoomType", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -540,6 +581,9 @@ namespace hotel_booking_data.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
+
+                    b.Property<string>("Thumbnail")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -650,6 +694,15 @@ namespace hotel_booking_data.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("hotel_booking_models.Gallery", b =>
+                {
+                    b.HasOne("hotel_booking_models.Hotel", "Hotel")
+                        .WithMany("Galleries")
+                        .HasForeignKey("HotelId");
+
+                    b.Navigation("Hotel");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Hotel", b =>
@@ -778,6 +831,8 @@ namespace hotel_booking_data.Migrations
                     b.Navigation("Amenities");
 
                     b.Navigation("Bookings");
+
+                    b.Navigation("Galleries");
 
                     b.Navigation("Ratings");
 
