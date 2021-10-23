@@ -29,6 +29,38 @@ namespace hotel_booking_core.Services
             return response;
         }
 
+        public async Task<Response<string>> ActivateManager(string managerId)
+        {
+            Manager manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
+            var response = new Response<string>();
+            if (manager != null)
+            {
+                if (manager.AppUser.IsActive == false)
+                {
+                    manager.AppUser.IsActive = true;
+                    _unitOfWork.Managers.Update(manager);
+                    await _unitOfWork.Save();
+
+                    response.Message = $"Manager activated successfully";
+                    response.StatusCode = (int)HttpStatusCode.NoContent;
+                    response.Succeeded = true;
+                    return response;
+                }
+
+                response.Message = $"Manager is already active.";
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Succeeded = false;
+
+                return response;
+            }
+            response.Message = $"User is not a manager.";
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Succeeded = false;
+
+            return response;
+
+        }
+
         public async Task<Response<string>> SoftDeleteManagerAsync(string managerId)
         {
             Manager manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
