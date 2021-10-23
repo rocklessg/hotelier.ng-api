@@ -7,6 +7,7 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IHotelRepository : IGenericRepository<Hotel>
     {
+        IQueryable<Hotel> GetAll();
         IQueryable<Hotel> GetAllHotels();
         Task<Hotel> GetHotelEntitiesById(string id);
         Task<List<Rating>> HotelRatings(string hotelId);
