@@ -7,6 +7,7 @@ using hotel_booking_utilities.Pagination;
 using System.Net;
 using hotel_booking_models;
 using System.Threading.Tasks;
+using hotel_booking_dto.commons;
 
 namespace hotel_booking_core.Services
 {
@@ -35,7 +36,5 @@ namespace hotel_booking_core.Services
                 Message = "All transactions retrieved successfully"
             };
         }
-
-        
     }
 }
