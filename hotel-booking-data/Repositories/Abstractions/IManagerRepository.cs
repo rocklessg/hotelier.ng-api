@@ -11,7 +11,6 @@ namespace hotel_booking_data.Repositories.Abstractions
         Task<Manager> GetManagerAsync(string managerId);
         Task<IEnumerable<Hotel>> GetAllHotelsForManagerAsync(string managerId);
         Task<bool> AddManagerAsync(Manager manager);
-        Task<Manager> CheckManagerAsync(string email);
         Task<Manager> GetAppUserByEmail(string email);
     }
 }

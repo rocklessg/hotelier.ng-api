@@ -56,14 +56,6 @@ namespace hotel_booking_data.Repositories.Implementations
             return true;
         }
 
-        public async Task<Manager> CheckManagerAsync(string email)
-        {
-            var manager = await _context.Managers
-                .Include(x => x.AppUser)
-                .Where(x => x.AppUser.Email == email).FirstOrDefaultAsync();
-            return manager;
-        }
-
         public async Task<Manager> GetAppUserByEmail(string email)
         {
             var checkDatabase = await _context.Managers

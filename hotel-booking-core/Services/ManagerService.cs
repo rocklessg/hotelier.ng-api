@@ -9,7 +9,6 @@ using hotel_booking_models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using hotel_booking_models.Mail;
-using Microsoft.AspNetCore.Http;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -29,47 +28,42 @@ namespace hotel_booking_core.Services
         private readonly UserManager<AppUser> _userManager;
 
         public ManagerService(IMapper mapper, IUnitOfWork unitOfWork, 
-            IMailService mailService, ILogger logger)
-        public ManagerService(IMapper mapper, IUnitOfWork unitOfWork, UserManager<AppUser> userManager)
+            IMailService mailService, ILogger logger, UserManager<AppUser> userManager)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
+            _mailService = mailService;
+            _logger = logger;
         }
 
         public async Task<Response<ManagerResponseDto>> AddManagerAsync(ManagerDto managerDto)
         {
-            var checkManager = await _unitOfWork.Managers.CheckManagerAsync(managerDto.BusinessEmail);
-            if (checkManager == null)
+            var validateResponse = await CheckTokenExpiring(email: managerDto.BusinessEmail, token: managerDto.Token);
+            if (!validateResponse.Succeeded)
             {
-               
-                var appUser = _mapper.Map<AppUser>(managerDto);
-                var manager = _mapper.Map<Manager>(managerDto);
-                var result = await _userManager.CreateAsync(appUser, managerDto.Password);
-                manager.AppUserId = appUser.Id;
-
-                await _unitOfWork.Managers.InsertAsync(manager);
-                await _unitOfWork.Save();
-                if (result.Succeeded)
-                {
-                    var managerResponse = _mapper.Map<ManagerResponseDto>(manager);
-
-                    var response = new Response<ManagerResponseDto>()
-                    {
-                        StatusCode = StatusCodes.Status200OK,
-                        Succeeded = true,
-                        Data = managerResponse,
-                        Message = $"{manager.CompanyName} hotel with ID: {manager.AppUserId}: registered successfully"
-                    };
-                    return response;
-                }
-                return Response<ManagerResponseDto>.Fail("Registration Failed", StatusCodes.Status400BadRequest);
+                return Response<ManagerResponseDto>.Fail(errorMessage: validateResponse.Message, statusCode: validateResponse.StatusCode);
             }
-            return Response<ManagerResponseDto>.Fail("User already exist. Please register a new manager", StatusCodes.Status400BadRequest);
-        }
-            _mailService = mailService;
-            _logger = logger;
+            var appUser = _mapper.Map<AppUser>(managerDto);
+            var manager = _mapper.Map<Manager>(managerDto);
+            manager.AppUserId = appUser.Id;
+            appUser.Manager = manager;
+            var result = await _userManager.CreateAsync(appUser, managerDto.Password);
+                
+            if (result.Succeeded)
+            {
+                var managerResponse = _mapper.Map<ManagerResponseDto>(manager);
 
+                var response = new Response<ManagerResponseDto>()
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Succeeded = true,
+                    Data = managerResponse,
+                    Message = $"{manager.CompanyName} hotel with ID: {manager.AppUserId}: registered successfully"
+                };
+                return response;
+            }
+            return Response<ManagerResponseDto>.Fail("Registration Failed", StatusCodes.Status400BadRequest);
         }
 
         public async Task<Response<IEnumerable<HotelBasicDto>>> GetAllHotelsAsync(string managerId)
@@ -119,7 +113,7 @@ namespace hotel_booking_core.Services
             var getManager = await _unitOfWork.ManagerRequest.GetHotelManagerByEmail(managerRequest.Email);
             var getUser = await _unitOfWork.Managers.GetAppUserByEmail(managerRequest.Email);
 
-            if (getUser == null || getManager == null)
+            if (getUser == null && getManager == null)
             {
                 var addManager = _mapper.Map<ManagerRequest>(managerRequest);
                 addManager.Token = Guid.NewGuid().ToString();
@@ -145,7 +139,7 @@ namespace hotel_booking_core.Services
 
             var result = false;
             
-                if (getUser == null || check != null)
+                if (getUser == null && check != null)
                 {
                     var newGuid = Guid.Parse(check.Token);
                     var mailBody = await GetEmailBody(emailTempPath: "StaticFiles/Html/ManagerInvite.html", token: Encode(newGuid), email);
@@ -165,11 +159,14 @@ namespace hotel_booking_core.Services
                         await _unitOfWork.Save();
 
                         _logger.Information("Mail sent successfully");
+                        transaction.Complete();
+                        return result;
                     }
                     _logger.Information("Mail service failed");
                     transaction.Dispose();
+                    return result;
                 }
-                transaction.Complete();
+                transaction.Dispose();
                 _logger.Information("Invalid email address");
             return result;
             
@@ -177,8 +174,8 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<bool>> CheckTokenExpiring(string email, string token)
         {
-            var newGuid = Decode(token).ToString();
-            var managerRequest = await _unitOfWork.ManagerRequest.GetHotelManagerByEmailToken(email, newGuid);
+            token = Decode(token).ToString();
+            var managerRequest = await _unitOfWork.ManagerRequest.GetHotelManagerByEmailToken(email, token);
             var getUser = await _unitOfWork.Managers.GetAppUserByEmail(email);
 
             if (managerRequest != null)
@@ -197,7 +194,7 @@ namespace hotel_booking_core.Services
                     }
                     return Response<bool>.Success("Redirecting to registration page", true, StatusCodes.Status200OK);
                 }
-                return Response<bool>.Fail("This User is a registered already", StatusCodes.Status409Conflict);
+                return Response<bool>.Fail("This User has been registered already", StatusCodes.Status409Conflict);
             }
             return Response<bool>.Fail("Invalid email or token", StatusCodes.Status404NotFound);
         }
@@ -214,7 +211,7 @@ namespace hotel_booking_core.Services
 
         private static async Task<string> GetEmailBody(string emailTempPath, string token, string email)
         {
-            var link = $"https://hoteldotnet.herokuapp.com/api/Manager/validate-email?{email}&token={token}";
+            var link = $"https://hoteldotnet.herokuapp.com/Manager/validate-email?{email}&token={token}";
             var temp = await File.ReadAllTextAsync(Path.Combine(Directory.GetCurrentDirectory(), emailTempPath));
             var emailBody = temp.Replace("**link**", link);
             return emailBody;

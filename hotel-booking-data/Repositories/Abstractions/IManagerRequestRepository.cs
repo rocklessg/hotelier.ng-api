@@ -1,4 +1,5 @@
-﻿using hotel_booking_models;
+﻿using hotel_booking_dto.ManagerDtos;
+using hotel_booking_models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

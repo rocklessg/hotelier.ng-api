@@ -38,11 +38,10 @@ namespace hotel_booking_api.Extensions
 
 
             services.AddScoped<ICustomerService, CustomerService>();
-            services.AddTransient<IManagerService,ManagerService>();
 
             services.AddScoped<IAmenityService, AmenityService>();
             services.AddScoped<IHotelService, HotelService>();
-            services.AddScoped<IManagerService, ManagerService>();
+            services.AddTransient<IManagerService, ManagerService>();
 
             services.AddScoped<IReviewService, ReviewService>();
 
@@ -51,11 +50,7 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
             
             services.AddScoped<IManagerRepository, ManagerRepository>();
-<<<<<<< HEAD
-            services.AddScoped<IManagerService, ManagerService>();
-=======
-            services.AddScoped<ITransactionRepository, TransactionRepository>();            
->>>>>>> 566677155d1138dc6a044b18ee307f533c60158b
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 
 
@@ -64,6 +59,7 @@ namespace hotel_booking_api.Extensions
             // Add Model Services Injection Here
 
             services.AddScoped<IAmenityRepository, AmenityRepository>();
+
             // Add Fluent Validator Injections Here
             services.AddTransient<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
             services.AddTransient<IValidator<LoginDto>, LoginDtoValidator>();

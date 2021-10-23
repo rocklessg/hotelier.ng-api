@@ -1,6 +1,8 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
+using hotel_booking_dto.ManagerDtos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System.Threading.Tasks;
@@ -19,6 +21,20 @@ namespace hotel_booking_api.Controllers
         {
             _managerService = managerService;
             _logger = logger;
+        }
+
+
+        [HttpPost]
+        [Route("AddManager")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddManager([FromBody] ManagerDto managerDto)
+        {
+            var result = await _managerService.AddManagerAsync(managerDto);
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpPost]

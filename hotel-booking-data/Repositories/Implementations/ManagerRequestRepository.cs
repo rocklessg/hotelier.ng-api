@@ -1,5 +1,6 @@
 ﻿using hotel_booking_data.Contexts;
 using hotel_booking_data.Repositories.Abstractions;
+using hotel_booking_dto.ManagerDtos;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace hotel_booking_data.Repositories.Implementations
         public async Task<ManagerRequest> GetHotelManagerByEmailToken(string email, string token)
         {
             var check = await _dbSet.FirstOrDefaultAsync(x => x.Email == email);
-            var checkToken = check != null ? check.Token == token : false;
+            var checkToken = check != null && check.Token == token;
             return checkToken ? check : null;
         }
 
