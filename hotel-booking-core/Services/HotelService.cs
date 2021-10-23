@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interfaces;
+using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
@@ -312,19 +313,21 @@ namespace hotel_booking_core.Services
             rating.HotelId = hotelId;
             rating.CustomerId = customerId;
 
-            var confirmHotel = _unitOfWork.Hotels.GetHotelById(rating.HotelId);
+            var confirmHotel = await _unitOfWork.Hotels.GetHotelById(rating.HotelId);
             if (confirmHotel == null)
             {
                 _logger.Information($"Rating hotel failed, hotel with id {hotelId} does not exist");
                 return Response<string>.Fail($"Hotel with hotel id {rating.HotelId} not exist.");
             }
 
-            if(ConfirmPreviousRating(hotelId, customerId))
+            var prevRating = await _unitOfWork.Rating.GetRatingsByHotel(hotelId, customerId);
+            if(prevRating != null)
             {
-                rating.UpdatedAt = DateTime.UtcNow;
-                _unitOfWork.Rating.Update(rating);
+                prevRating.Ratings = ratingDto.Ratings;
+                prevRating.UpdatedAt = DateTime.UtcNow;
+                _unitOfWork.Rating.Update(prevRating);
                 await _unitOfWork.Save();
-                return Response<string>.Success("Rating updated successfully", rating.HotelId);
+                return Response<string>.Success("Rating updated successfully", prevRating.HotelId);
             }
 
             await _unitOfWork.Rating.InsertAsync(rating);
@@ -334,14 +337,6 @@ namespace hotel_booking_core.Services
             var response = Response<string>.Success($"Rating added successfully", rating.HotelId);
             
             return response;
-        }
-
-        public bool ConfirmPreviousRating(string hotelId, string customerId)
-        {
-            var hotel = _unitOfWork.Hotels.GetAllRatingsByHotel(hotelId, customerId);
-            if (hotel != null)
-                return true;
-            return false;
         }
     }
 }

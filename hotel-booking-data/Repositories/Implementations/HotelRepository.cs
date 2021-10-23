@@ -86,12 +86,6 @@ namespace hotel_booking_data.Repositories.Implementations
             return query;
         }
 
-        public IQueryable<Rating> GetAllRatingsByHotel(string hotelId, string customerId)
-        {
-            var query = _context.Ratings.AsNoTracking()
-                .Where(h => h.HotelId == hotelId && h.CustomerId == customerId)
-                .Include(h => h.Hotel);
-            return query;
-        }
+        
     }
 }

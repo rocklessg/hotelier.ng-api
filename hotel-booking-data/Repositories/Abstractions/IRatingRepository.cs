@@ -9,6 +9,6 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IRatingRepository : IGenericRepository<Rating>
     {
-
+        Task<Rating> GetRatingsByHotel(string hotelId, string customerId);
     }
 }

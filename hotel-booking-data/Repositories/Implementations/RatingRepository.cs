@@ -19,5 +19,10 @@ namespace hotel_booking_data.Repositories.Implementations
             _context = context;
             _dbSet = _context.Set<Rating>();
         }
+
+        public async Task<Rating> GetRatingsByHotel(string hotelId, string customerId)
+        {
+            return await _context.Ratings.FirstOrDefaultAsync(x => x.HotelId == hotelId && x.CustomerId == customerId);
+        }
     }
 }

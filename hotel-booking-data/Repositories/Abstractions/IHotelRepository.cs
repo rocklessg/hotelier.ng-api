@@ -15,6 +15,5 @@ namespace hotel_booking_data.Repositories.Abstractions
         IQueryable<Hotel> GetHotelsByRating();
         IQueryable<Hotel> GetTopDeals();
         IQueryable<Review> GetAllReviewsByHotelAsync(string HotelId);
-        IQueryable<Rating> GetAllRatingsByHotel(string hotelId, string customerId);
     }
 }
