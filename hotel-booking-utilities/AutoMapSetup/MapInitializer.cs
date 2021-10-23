@@ -80,7 +80,7 @@ namespace hotel_booking_utilities.AutoMapSetup
                .ForMember(hotel => hotel.Rating, opt => opt.MapFrom(src => src.Ratings.Count == 0 ? 0 : (double)src.Ratings.Sum(customer => customer.Ratings) / ((double)src.Ratings.Count)))
                .ForMember(hotel => hotel.Gallery, opt => opt.MapFrom(src => src.Galleries.Select(gallery => gallery.ImageUrl).ToList()));
 
-            CreateMap<Payment, PaymentDto>().ReverseMap();
+            CreateMap<Payment, TransactionsDto>().ReverseMap();
              
 
             // Room Maps

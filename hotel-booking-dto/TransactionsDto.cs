@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_dto
 {
-    public class PaymentDto
+    public class TransactionsDto
     {
         public string BookingId { get; set; }
         public string TransactionReference { get; set; }

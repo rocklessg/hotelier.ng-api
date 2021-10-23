@@ -44,6 +44,6 @@ namespace hotel_booking_core.Interfaces
         Task<Response<PageResult<IEnumerable<GetAllHotelDto>>>> GetAllHotelsAsync(PagingDto paging);
         Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging,
             string hotelId);
-        Task<Response<PageResult<IEnumerable<PaymentDto>>>> GetHotelTransaction(string hotelId, PagingDto paging);
+        Task<Response<PageResult<IEnumerable<TransactionsDto>>>> GetHotelTransaction(string hotelId, PagingDto paging);
     }
 }

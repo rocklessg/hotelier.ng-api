@@ -303,16 +303,16 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public async Task<Response<PageResult<IEnumerable<PaymentDto>>>> GetHotelTransaction(string hotelId, PagingDto paging)
+        public async Task<Response<PageResult<IEnumerable<TransactionsDto>>>> GetHotelTransaction(string hotelId, PagingDto paging)
         {
             var hotel = await _unitOfWork.Hotels.GetHotelById(hotelId);
             if (hotel != null)
             {
                 var transactionsQueryable = _unitOfWork.Hotels.GetHotelTransactions(hotelId);
-                var pageResult = await transactionsQueryable.PaginationAsync<Payment, PaymentDto>(paging.PageSize, paging.PageNumber, _mapper);
-                return new Response<PageResult<IEnumerable<PaymentDto>>>(StatusCodes.Status200OK, true, "hotel transactions", pageResult);
+                var pageResult = await transactionsQueryable.PaginationAsync<Payment, TransactionsDto>(paging.PageSize, paging.PageNumber, _mapper);
+                return new Response<PageResult<IEnumerable<TransactionsDto>>>(StatusCodes.Status200OK, true, "hotel transactions", pageResult);
             }
-            return Response<PageResult<IEnumerable<PaymentDto>>>.Fail("Hotel Not Found");
+            return Response<PageResult<IEnumerable<TransactionsDto>>>.Fail("Hotel Not Found");
 
         }
     }
