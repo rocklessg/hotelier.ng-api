@@ -4,6 +4,7 @@ using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
@@ -301,6 +302,40 @@ namespace hotel_booking_core.Services
             response.Data = pageResult;
             response.Message = $"List of all reviews in hotel with id {hotelId}";
             response.StatusCode = (int)HttpStatusCode.OK;
+            return response;
+        }
+
+        public async Task<Response<string>> RateHotel(string hotelId, string customerId, AddRatingDto ratingDto)
+        {
+            _logger.Information($"Attempt to rate hotel by customer id {customerId}");
+            var rating = _mapper.Map<Rating>(ratingDto);
+            rating.HotelId = hotelId;
+            rating.CustomerId = customerId;
+
+            var confirmHotel = _unitOfWork.Hotels.GetHotelById(rating.HotelId);
+            if (confirmHotel == null)
+            {
+                _logger.Information("Rating hotel failed");
+                return new Response<string>
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Succeeded = false,
+                    Data = rating.HotelId,
+                    Message = $"Hotel with hotel id {rating.HotelId} not exist."
+                };
+            }
+
+            await _unitOfWork.Rating.InsertAsync(rating);
+            await _unitOfWork.Save();
+
+            _logger.Information("Rating hotel successful");
+            var response = new Response<string>
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Succeeded = true,
+                Data = rating.HotelId,
+                Message = "Rating added successfully"
+            };
             return response;
         }
     }
