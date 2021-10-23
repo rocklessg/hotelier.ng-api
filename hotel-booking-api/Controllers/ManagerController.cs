@@ -1,4 +1,6 @@
 ﻿using hotel_booking_core.Interfaces;
+using hotel_booking_dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -19,6 +21,14 @@ namespace hotel_booking_api.Controllers
         {
             var response = await _managerService.SoftDeleteManagerAsync(managerId);
             return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpPatch("{managerId}/activate")]
+        [Authorize(Policy = "Admin")]
+        public async Task<ActionResult<Response<string>>> ActivateManager(string managerId)
+        {
+            var response = await _managerService.ActivateManager(managerId);
+            return Ok(response);
         }
 
         [HttpGet]
