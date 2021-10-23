@@ -96,10 +96,11 @@ namespace hotel_booking_api
             app.UseHttpsRedirection();
 
             app.UseMiddleware<ExceptionMiddleware>();
-
+            
+            app.UseAuthentication();
             app.UseRouting();
 
-            app.UseAuthentication();
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

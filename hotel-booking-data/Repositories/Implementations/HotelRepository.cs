@@ -90,5 +90,7 @@ namespace hotel_booking_data.Repositories.Implementations
                 .OrderBy(r => r.CreatedAt);
             return query;
         }
+
+        
     }
 }
