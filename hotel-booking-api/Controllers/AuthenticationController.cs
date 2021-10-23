@@ -1,3 +1,4 @@
+using System;
 using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using hotel_booking_dto.TokenDto;
 using ILogger = Serilog.ILogger;
 
 namespace hotel_booking_api.Controllers
@@ -92,7 +94,7 @@ namespace hotel_booking_api.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         [Route("forgot-password")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -104,5 +106,22 @@ namespace hotel_booking_api.Controllers
             var result = await _authService.ForgotPassword(email);
             return StatusCode(result.StatusCode, result);
         }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("refresh-token")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<Response<RefreshTokenToReturnDto>>> RefreshToken([FromQuery] RefreshTokenRequestDto model)
+        {
+          
+            var result = await _authService.RefreshToken(model);
+           
+            return StatusCode(result.StatusCode, result);
+        }
+
+
+       
     }
 }

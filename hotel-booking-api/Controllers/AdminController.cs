@@ -23,12 +23,14 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("transactions")]
-          [Authorize(Policy = "Admin")]
+         [Authorize(Policy = "Admin")]
         public async Task<ActionResult<Response<PageResult<IEnumerable<TransactionResponseDto>>>>> GetAllTransactions([FromQuery] TransactionFilter filter)
         {
             var response = await _adminService.GetAllTransactions(filter);
             return Ok(response);
         }
+
+
 
     }
 }

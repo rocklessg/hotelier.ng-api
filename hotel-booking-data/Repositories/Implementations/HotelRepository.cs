@@ -46,6 +46,11 @@ namespace hotel_booking_data.Repositories.Implementations
             return hotelList;
         }
 
+        public IQueryable<Hotel> GetAll()
+        {
+            return _dbSet.AsNoTracking();
+        }
+
         public async Task<Hotel> GetHotelEntitiesById(string hotelId)
         {
             var hotel = _dbSet.AsNoTracking()
@@ -85,5 +90,7 @@ namespace hotel_booking_data.Repositories.Implementations
                 .OrderBy(r => r.CreatedAt);
             return query;
         }
+
+        
     }
 }

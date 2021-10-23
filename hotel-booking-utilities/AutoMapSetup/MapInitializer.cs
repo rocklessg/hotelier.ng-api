@@ -6,6 +6,7 @@ using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_dto.BookingDtos;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
@@ -100,6 +101,7 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             // Rating Maps
             CreateMap<Rating, HotelRatingsDTo>();
+            CreateMap<Rating, AddRatingDto>().ReverseMap();
 
             // Gallery Maps
             CreateMap<Gallery, GalleryDto>().ReverseMap();
@@ -135,6 +137,7 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.Avatar, x => x.MapFrom(x => x.Customer.AppUser.Avatar));
 
             CreateMap<Review, AddReviewDto>().ReverseMap();
+            CreateMap<Review, AddReviewToReturnDto>().ReverseMap();
 
             // IWshList Maps
             CreateMap<WishList, CustomerWishListDto>()

@@ -5,7 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +17,6 @@ namespace hotel_booking_utilities
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<AppUser> _userManager;
-
         public TokenGeneratorService(IConfiguration configuration, UserManager<AppUser> userManager)
         {
             _configuration = configuration;
@@ -53,5 +54,20 @@ namespace hotel_booking_utilities
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public Guid GenerateRefreshToken()
+        {
+            /*var randomNumber = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);*/
+            Guid g = Guid.NewGuid();
+
+            return g;
+        }
+
+
+        
+
     }
 }

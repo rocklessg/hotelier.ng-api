@@ -43,7 +43,7 @@ namespace hotel_booking_data.Seeder
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 };
-
+                user.EmailConfirmed = true;
                 await userManager.CreateAsync(user, "Password@123");
                 await userManager.AddToRoleAsync(user, "Admin");
 
@@ -52,6 +52,7 @@ namespace hotel_booking_data.Seeder
                 var hbaUsers = JsonConvert.DeserializeObject<List<AppUser>>(path);
                 for (int i = 0; i < hbaUsers.Count; i++)
                 {
+                    hbaUsers[i].EmailConfirmed = true;
                     await userManager.CreateAsync(hbaUsers[i], "Password@123");
                     if (i < 5)
                     {
