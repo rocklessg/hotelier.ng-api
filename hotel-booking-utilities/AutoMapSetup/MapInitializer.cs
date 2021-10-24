@@ -8,6 +8,7 @@ using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
+using hotel_booking_dto.ManagerDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using System.Linq;
@@ -105,7 +106,7 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             // Gallery Maps
             CreateMap<Gallery, GalleryDto>().ReverseMap();
-           
+
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
 
@@ -151,6 +152,32 @@ namespace hotel_booking_utilities.AutoMapSetup
                  .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.MethodOfPayment))
                  .ForMember(x => x.CustomerName, y => y.MapFrom(s => s.Customer.AppUser.FirstName + " " + s.Customer.AppUser.LastName));
 
+
+            //Manager Maps
+            CreateMap<Manager, ManagerDto>().ReverseMap();
+
+            CreateMap<AppUser, ManagerDto>()
+                .ForMember(manager => manager.BusinessEmail, u => u.MapFrom(user => user.Email))
+                .ForMember(manager => manager.BusinessEmail, u => u.MapFrom(user => user.UserName))
+                .ForMember(manager => manager.BusinessPhone, u => u.MapFrom(user => user.PhoneNumber))
+                .ReverseMap();
+
+            CreateMap<Manager, ManagerResponseDto>()
+                .ForMember(d => d.FirstName, o => o.MapFrom(u => u.AppUser.FirstName))
+                .ForMember(d => d.LastName, o => o.MapFrom(u => u.AppUser.LastName))
+                .ForMember(d => d.Gender, o => o.MapFrom(u => u.AppUser.Gender))
+                .ForMember(d => d.Age, o => o.MapFrom(u => u.AppUser.Age))
+                .ReverseMap();
+
+
+            //AppUser Maps
+            CreateMap<AppUser, ManagerResponseDto>().ReverseMap();
+
+            //Manager Request Map
+
+            CreateMap<ManagerRequest, ManagerRequestDto>().ReverseMap();
+            CreateMap<ManagerRequest, ManagerRequestResponseDTo>()
+                .ForMember(x => x.Confirmed, y => y.MapFrom(src => src.ConfirmationFlag ? "Confirmed" : "Notconfirmed"));
         }
     }
 }

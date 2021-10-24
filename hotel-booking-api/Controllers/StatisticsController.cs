@@ -3,9 +3,8 @@ using hotel_booking_dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Extensions.Logging;
+using Serilog;
 using System.Threading.Tasks;
-using ILogger = Serilog.ILogger;
 
 
 namespace hotel_booking_api.Controllers
@@ -18,7 +17,8 @@ namespace hotel_booking_api.Controllers
         private readonly ILogger _logger;
 
 
-        public StatisticsController(IHotelStatisticsService hotelStatisticsService, ILogger logger)
+        public StatisticsController(IHotelStatisticsService hotelStatisticsService, 
+            ILogger logger)
         {
             _hotelStatisticsService = hotelStatisticsService;
             _logger = logger;
