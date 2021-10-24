@@ -9,5 +9,6 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IPaymentRepository : IGenericRepository<Payment>
     {
+        IQueryable<Payment> GetHotelTransactions(string hotelId);
     }
 }
