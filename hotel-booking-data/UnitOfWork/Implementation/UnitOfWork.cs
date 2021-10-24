@@ -46,7 +46,6 @@ namespace hotel_booking_data.UnitOfWork.Implementation
         public IWishListRepository WishLists => _wishLists ??= new WishListRepository(_context);
 
     public IRoomTypeRepository RoomType => _roomType ??= new RoomTypeRepository(_context);
-    public IBookingRepository Booking => _booking ??= new BookingRepository(_context);
     public IReviewRepository Reviews => _review ??= new ReviewRepository(_context);
     public IRatingRepository Rating => _rating ??= new RatingRepository(_context);
 
