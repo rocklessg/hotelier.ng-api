@@ -8,6 +8,7 @@ using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
+using hotel_booking_dto.ManagerDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using System.Linq;
@@ -47,6 +48,13 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.Hotel, y => y.MapFrom(src => src.Hotel.Name))
                 .ForMember(x => x.RoomNumber, y => y.MapFrom(src => src.Room.RoomNo))
                 .ForMember(x => x.Price, y => y.MapFrom(src => src.Room.Roomtype.Price));
+            CreateMap<Customer, TopCustomerDto>()
+                .ForMember(x => x.FirstName, y => y.MapFrom(src => src.AppUser.FirstName))
+                .ForMember(x => x.LastName, y => y.MapFrom(src => src.AppUser.LastName))
+                .ForMember(x => x.Email, y => y.MapFrom(src => src.AppUser.Email))
+                .ForMember(x => x.Avatar, y => y.MapFrom(src => src.AppUser.Avatar))
+                .ForMember(x => x.Gender, y => y.MapFrom(src => src.AppUser.Gender))
+                .ForMember(x => x.Age, y => y.MapFrom(src => src.AppUser.Age));
 
             // Hotel Maps
             CreateMap<Hotel, HotelBasicDetailsDto>()
@@ -81,6 +89,9 @@ namespace hotel_booking_utilities.AutoMapSetup
                .ForMember(hotel => hotel.Rating, opt => opt.MapFrom(src => src.Ratings.Count == 0 ? 0 : (double)src.Ratings.Sum(customer => customer.Ratings) / ((double)src.Ratings.Count)))
                .ForMember(hotel => hotel.Gallery, opt => opt.MapFrom(src => src.Galleries.Select(gallery => gallery.ImageUrl).ToList()));
 
+            CreateMap<Payment, TransactionsDto>().ReverseMap();
+             
+
             // Room Maps
             CreateMap<Room, AddRoomDto>().ReverseMap();
             CreateMap<Room, AddRoomResponseDto>().ReverseMap();
@@ -98,7 +109,7 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             // Gallery Maps
             CreateMap<Gallery, GalleryDto>().ReverseMap();
-           
+
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
 
@@ -144,6 +155,32 @@ namespace hotel_booking_utilities.AutoMapSetup
                  .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.MethodOfPayment))
                  .ForMember(x => x.CustomerName, y => y.MapFrom(s => s.Customer.AppUser.FirstName + " " + s.Customer.AppUser.LastName));
 
+
+            //Manager Maps
+            CreateMap<Manager, ManagerDto>().ReverseMap();
+
+            CreateMap<AppUser, ManagerDto>()
+                .ForMember(manager => manager.BusinessEmail, u => u.MapFrom(user => user.Email))
+                .ForMember(manager => manager.BusinessEmail, u => u.MapFrom(user => user.UserName))
+                .ForMember(manager => manager.BusinessPhone, u => u.MapFrom(user => user.PhoneNumber))
+                .ReverseMap();
+
+            CreateMap<Manager, ManagerResponseDto>()
+                .ForMember(d => d.FirstName, o => o.MapFrom(u => u.AppUser.FirstName))
+                .ForMember(d => d.LastName, o => o.MapFrom(u => u.AppUser.LastName))
+                .ForMember(d => d.Gender, o => o.MapFrom(u => u.AppUser.Gender))
+                .ForMember(d => d.Age, o => o.MapFrom(u => u.AppUser.Age))
+                .ReverseMap();
+
+
+            //AppUser Maps
+            CreateMap<AppUser, ManagerResponseDto>().ReverseMap();
+
+            //Manager Request Map
+
+            CreateMap<ManagerRequest, ManagerRequestDto>().ReverseMap();
+            CreateMap<ManagerRequest, ManagerRequestResponseDTo>()
+                .ForMember(x => x.Confirmed, y => y.MapFrom(src => src.ConfirmationFlag ? "Confirmed" : "Notconfirmed"));
         }
     }
 }

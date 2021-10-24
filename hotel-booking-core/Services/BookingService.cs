@@ -5,6 +5,7 @@ using hotel_booking_dto;
 using hotel_booking_dto.BookingDtos;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.CustomerDtos;
 using hotel_booking_models;
 using hotel_booking_utilities;
 using hotel_booking_utilities.Pagination;

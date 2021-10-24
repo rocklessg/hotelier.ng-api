@@ -18,7 +18,6 @@ namespace hotel_booking_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class HotelController : ControllerBase
     {
 
@@ -216,6 +215,15 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
+        [HttpGet("{hotelId}/top-customers")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize(Policy = Policies.Manager)]
+        public async Task<IActionResult> TopCustomers([FromRoute] string hotelId)
+        {
+            var result = await _hotelService.TopHotelCustomers(hotelId);
+            return StatusCode(result.StatusCode, result);
+        }
+
         [HttpPost]
         [Route("{hotelId}/add-ratings")]
         [Authorize(Policy = Policies.Customer)]
@@ -237,5 +245,17 @@ namespace hotel_booking_api.Controllers
             var response = await _bookingService.VerifyBooking(bookingDto);
             return StatusCode(response.StatusCode, response);
         }
+        
+        [HttpGet]
+        [Route("{hotelId}/transactions")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetHotelTransactions(string hotelId, [FromQuery] PagingDto paging)
+        {
+            var response = await _hotelService.GetHotelTransaction(hotelId, paging);
+            return StatusCode(response.StatusCode, response);
+        }
+
     }
 }

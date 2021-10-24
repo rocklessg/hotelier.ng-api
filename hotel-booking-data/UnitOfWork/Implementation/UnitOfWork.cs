@@ -22,11 +22,13 @@ namespace hotel_booking_data.UnitOfWork.Implementation
     private ITransactionRepository _transaction;
     private IRatingRepository _rating;
     private readonly HbaDbContext _context;
+    private IManagerRequestRepository _managerRequest;
 
     public UnitOfWork(HbaDbContext context)
     {
       _context = context;
     }
+
     public IAmenityRepository Amenities => _amenities ??= new AmenityRepository(_context);
     public ITransactionRepository Transactions => _transaction ??= new TransactionRepository(_context);
 
@@ -44,9 +46,11 @@ namespace hotel_booking_data.UnitOfWork.Implementation
 
     public IWishListRepository WishLists => _wishLists ??= new WishListRepository(_context);
 
-    public IRoomTypeRepository RoomType => _roomType ??= new RoomTypeRepository(_context);
-    public IBookingRepository Booking => _booking ??= new BookingRepository(_context);
     public IReviewRepository Reviews => _review ??= new ReviewRepository(_context);
+    public IRoomTypeRepository RoomType => _roomType ??= new RoomTypeRepository(_context);
+    public IManagerRequestRepository ManagerRequest => _managerRequest ??= new ManagerRequestRepository(_context);
+
+    public IBookingRepository Booking => _booking ??= new BookingRepository(_context);
     public IRatingRepository Rating => _rating ??= new RatingRepository(_context);
 
 
