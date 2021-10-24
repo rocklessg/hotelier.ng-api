@@ -343,7 +343,7 @@ namespace hotel_booking_core.Services
        Amount = x.Select(x => x.Payment.Amount).Sum(),
        Customer = x.Select(x => x.Customer).First()
      }).Select(x => x.Customer).Take(5).ToList();
-      var pageResult = _mapper.Map<IEnumerable<Customer>, IEnumerable<TopCustomerDto>>(customers).Take(5);
+      var pageResult = _mapper.Map<IEnumerable<Customer>, IEnumerable<TopCustomerDto>>(customers);
       Response<IEnumerable<TopCustomerDto>> response = new()
       {
         Data = pageResult,
