@@ -23,12 +23,13 @@ namespace hotel_booking_data.Repositories.Implementations
 
         public IQueryable<Payment> GetHotelTransactions(string hotelId)
         {
-            var query = _dbSet.AsNoTracking();
-            query = query.Include(payment => payment.Booking).ThenInclude(booking => booking.Hotel);
-            query = query.Where(payment => payment.Booking.HotelId == hotelId);
+            var query = _dbSet.AsNoTracking()
+                .Include(payment => payment.Booking)
+                .ThenInclude(x => x.Hotel)
+                .Where(x => x.Booking.HotelId == hotelId);
             return query;
         }
 
-        
+
     }
 }
