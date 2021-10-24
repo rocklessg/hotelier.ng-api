@@ -34,6 +34,7 @@ namespace hotel_booking_api.Controllers
             var response = await _adminService.GetAllTransactions(filter);
             return Ok(response);
         }
+
     }
 }
 

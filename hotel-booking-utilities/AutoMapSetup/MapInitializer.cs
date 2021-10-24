@@ -48,6 +48,13 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.Hotel, y => y.MapFrom(src => src.Hotel.Name))
                 .ForMember(x => x.RoomNumber, y => y.MapFrom(src => src.Room.RoomNo))
                 .ForMember(x => x.Price, y => y.MapFrom(src => src.Room.Roomtype.Price));
+            CreateMap<Customer, TopCustomerDto>()
+                .ForMember(x => x.FirstName, y => y.MapFrom(src => src.AppUser.FirstName))
+                .ForMember(x => x.LastName, y => y.MapFrom(src => src.AppUser.LastName))
+                .ForMember(x => x.Email, y => y.MapFrom(src => src.AppUser.Email))
+                .ForMember(x => x.Avatar, y => y.MapFrom(src => src.AppUser.Avatar))
+                .ForMember(x => x.Gender, y => y.MapFrom(src => src.AppUser.Gender))
+                .ForMember(x => x.Age, y => y.MapFrom(src => src.AppUser.Age));
 
             // Hotel Maps
             CreateMap<Hotel, HotelBasicDetailsDto>()
@@ -131,6 +138,7 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.Avatar, x => x.MapFrom(x => x.Customer.AppUser.Avatar));
 
             CreateMap<Review, AddReviewDto>().ReverseMap();
+            CreateMap<Review, AddReviewToReturnDto>().ReverseMap();
 
             // IWshList Maps
             CreateMap<WishList, CustomerWishListDto>()
