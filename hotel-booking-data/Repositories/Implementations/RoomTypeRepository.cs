@@ -42,5 +42,7 @@ namespace hotel_booking_data.Repositories.Implementations
             var rooms = await _context.RoomTypes.Where(x => x.HotelId == hotelId).ToListAsync();
             return rooms;
         }
+
+        
     }
 }

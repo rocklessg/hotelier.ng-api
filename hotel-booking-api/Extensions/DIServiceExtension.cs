@@ -10,6 +10,7 @@ using hotel_booking_dto.AppUserDto;
 using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_utilities;
 using hotel_booking_utilities.HttpClientService.Implementation;
@@ -49,8 +50,8 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
             
             services.AddScoped<IManagerRepository, ManagerRepository>();
-            services.AddScoped<ITransactionRepository, TransactionRepository>();            
-
+            services.AddScoped<ITokenRepository, TokenRepository>();
+            
 
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IPaymentService, PaymentService>();
@@ -78,6 +79,7 @@ namespace hotel_booking_api.Extensions
             services.AddTransient<IValidator<UpdateAppUserDto>, UpdateAppUserDtoValidator>();
             services.AddTransient<IValidator<UpdateCustomerDto>, UpdateCustomerDtoValidator>();
             services.AddTransient<IValidator<HotelBookingRequestDto>, HotelBookingRequestDtoValidator>();
+            services.AddTransient<IValidator<AddRatingDto>, AddRatingDtoValidator>();
         }
     }
 }

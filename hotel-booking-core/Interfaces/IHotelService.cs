@@ -1,10 +1,13 @@
 ﻿using hotel_booking_dto;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
+using hotel_booking_models;
 using hotel_booking_utilities.Pagination;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace hotel_booking_core.Interfaces
@@ -40,9 +43,10 @@ namespace hotel_booking_core.Interfaces
         /// <param name="paginator"></param>
         /// <returns>Returns an IEnumerable of hotels within the input location. Returns an empty array is search doesn't match any location in records</returns>
         Task<Response<PageResult<IEnumerable<HotelBasicDetailsDto>>>> GetHotelByLocation(string location, PagingDto paging);
+        Task<Response<Dictionary<string, int>>> GetNumberOfHotelsPerLocation();
         Task<Response<PageResult<IEnumerable<GetAllHotelDto>>>> GetAllHotelsAsync(PagingDto paging);
         Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging,
             string hotelId);
-       
+        Task<Response<string>> RateHotel(string hotelId, string customerId, AddRatingDto ratingDto);
     }
 }

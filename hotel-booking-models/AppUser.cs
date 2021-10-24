@@ -1,5 +1,7 @@
 ﻿  using Microsoft.AspNetCore.Identity;
-using System;
+  using System;
+  using System.Collections.Generic;
+  using System.Text.Json.Serialization;
 
 namespace hotel_booking_models
 {
@@ -17,7 +19,7 @@ namespace hotel_booking_models
         public DateTime UpdatedAt { get; set; }
         public Manager Manager { get; set; }
         public Customer Customer { get; set; }
-
-
+        public Guid RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }
