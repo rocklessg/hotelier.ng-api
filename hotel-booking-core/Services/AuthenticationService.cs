@@ -1,23 +1,23 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interface;
 using hotel_booking_core.Interfaces;
+using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
+using hotel_booking_dto.TokenDto;
 using hotel_booking_models;
 using hotel_booking_models.Mail;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.WebUtilities;
+using Serilog;
 using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
-using Serilog;
 
 namespace hotel_booking_core.Services
 {
@@ -29,9 +29,11 @@ namespace hotel_booking_core.Services
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
+        private readonly ITokenRepository _tokenRepository;
+        
 
         public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ILogger logger,
-            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
+            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator, ITokenRepository tokenRepository)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -39,6 +41,8 @@ namespace hotel_booking_core.Services
             _mailService = mailService;
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _tokenRepository = tokenRepository;
+
         }
 
         /// <summary>
@@ -57,7 +61,8 @@ namespace hotel_booking_core.Services
                 response.StatusCode = (int)HttpStatusCode.NotFound;
                 return response;
             }
-            var result = await _userManager.ConfirmEmailAsync(user, confirmEmailDto.Token);
+            var decodedToken = TokenConverter.DecodeToken(confirmEmailDto.Token);
+            var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
             if (result.Succeeded)
             {
                 response.StatusCode = (int)HttpStatusCode.OK;
@@ -92,10 +97,9 @@ namespace hotel_booking_core.Services
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var encodedToken = Encoding.UTF8.GetBytes(token);
-            var actualToken = WebEncoders.Base64UrlEncode(encodedToken);
+            var encodedToken = TokenConverter.EncodeToken(token);
 
-            var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "reset-password", actualToken);
+            var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "reset-password", encodedToken);
 
             var mailRequest = new MailRequest()
             {
@@ -140,11 +144,18 @@ namespace hotel_booking_core.Services
             }
 
             var user = await _userManager.FindByEmailAsync(model.Email);
+            var refreshToken = _tokenGenerator.GenerateRefreshToken();
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7); //sets refresh token for 7 days
             var result = new LoginResponseDto()
             {
                 Id = user.Id,
-                Token = await _tokenGenerator.GenerateToken(user)
+                Token = await _tokenGenerator.GenerateToken(user),
+                RefreshToken = refreshToken
             };
+            
+            await _userManager.UpdateAsync(user);
+
             response.StatusCode = (int)HttpStatusCode.OK;
             response.Message = "Login Successfully";
             response.Data = result;
@@ -169,7 +180,8 @@ namespace hotel_booking_core.Services
                 {
                     await _userManager.AddToRoleAsync(user, UserRoles.Customer);
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ConfirmEmail.html", linkName: "confirm-email", token);
+                    var encodedToken = TokenConverter.EncodeToken(token);
+                    var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ConfirmEmail.html", linkName: "confirm-email", encodedToken);
                     var mailRequest = new MailRequest()
                     {
                         Subject = "Confirm Your Registration",
@@ -238,17 +250,16 @@ namespace hotel_booking_core.Services
                 return response;
             }
 
-            var decodedToken = WebEncoders.Base64UrlDecode(model.Token); //Decode incoming token
-            string actualToken = Encoding.UTF8.GetString(decodedToken); //Set the token to an encoded string
+            var decodedToken = TokenConverter.DecodeToken(model.Token); //Decode incoming token
 
             var purpose = UserManager<AppUser>.ResetPasswordTokenPurpose;
             var tokenProvider = _userManager.Options.Tokens.PasswordResetTokenProvider;
 
-            var token = await _userManager.VerifyUserTokenAsync(user, tokenProvider, purpose, actualToken);
+            var token = await _userManager.VerifyUserTokenAsync(user, tokenProvider, purpose, decodedToken);
             if (token)
             {
                 _mapper.Map<AppUser>(model);
-                var result = await _userManager.ResetPasswordAsync(user, actualToken, model.NewPassword);
+                var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.NewPassword);
                 response.Succeeded = false;
                 response.Data = null;
                 response.Message = GetErrors(result);
@@ -350,5 +361,39 @@ namespace hotel_booking_core.Services
             var emailBody = newTemp.Replace("**User**", userName);
             return emailBody;
         }
+
+        public async Task<Response<RefreshTokenToReturnDto>> RefreshToken(RefreshTokenRequestDto token)
+        {
+            var response = new Response<RefreshTokenToReturnDto>();
+            var refreshToken = token.RefreshToken;
+            var userId = token.UserId;
+
+            var user = await _tokenRepository.GetUserByRefreshToken(refreshToken, userId);
+
+            if (user.RefreshToken != refreshToken|| user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                response.Data = null;
+                response.Message = "Invalid request";
+                response.StatusCode = (int) HttpStatusCode.BadRequest;
+                response.Succeeded = false;
+                return response;
+            }
+
+            var result = new RefreshTokenToReturnDto
+            {
+                NewJwtAccessToken = await _tokenGenerator.GenerateToken(user),
+                NewRefreshToken = _tokenGenerator.GenerateRefreshToken()
+            };
+            user.RefreshToken = result.NewRefreshToken;
+            await _userManager.UpdateAsync(user);
+
+            response.Data = result;
+            response.Message = "Token Successfully refreshed";
+            response.StatusCode = (int)HttpStatusCode.OK;
+            response.Succeeded = true;
+            return response;
+        }
+
+
     }
 }

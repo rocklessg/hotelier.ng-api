@@ -31,30 +31,22 @@ namespace hotel_booking_core.Services
             _logger.Information($"Attempt to update a review by {customerId}");
             var response = new Response<string>();
             var review = _unitOfWork.Reviews.GetUserReview(reviewId);
-
-
-            if (review != null)
-            {
-                if (review.CustomerId == customerId)
-                {
-                    review.Comment = model.Comment;
-                    _unitOfWork.Reviews.Update(review);
-                    _unitOfWork.Save();
-                    _logger.Information("Updated review successfully");
-                    
-
-                    response.Succeeded = true;
-                    response.StatusCode = (int)HttpStatusCode.Created;
-                    response.Message = $"Comment updated successfully";
-
-                    return response;
-                }
                 
-                response.StatusCode = (int)HttpStatusCode.Forbidden;
-                response.Message = $"You are not authorized to access this resource";
+            if (review.CustomerId == customerId)
+            {
+                review.Comment = model.Comment;
+                _unitOfWork.Reviews.Update(review);
+                _unitOfWork.Save();
+                _logger.Information("Updated review successfully");
+                
+
+                response.Succeeded = true;
+                response.StatusCode = (int)HttpStatusCode.Created;
+                response.Message = $"Comment updated successfully";
 
                 return response;
             }
+
             _logger.Information("Review update failed");
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Message = $"Review with the Id {reviewId} does not exist";
@@ -62,26 +54,30 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public async Task<Response<ReviewToReturnDto>> AddReviewAsync(AddReviewDto model, string customerId)
+        public async Task<Response<AddReviewToReturnDto>> AddReviewAsync(AddReviewDto model, string customerId)
         {
             _logger.Information($"An attempt to add a review by customer{customerId}");
-            var response = new Response<ReviewToReturnDto>();
-           
-            
-            var checkHotel = await  _unitOfWork.Reviews.CheckReviewByCustomerAsync(model.HotelId);
+            var response = new Response<AddReviewToReturnDto>();
+
+
+            var checkHotel = await _unitOfWork.Reviews.CheckHotelExistence(model.HotelId);
             if (checkHotel == null)
             {
                 _logger.Information("Add review operation not successful");
                 response.Succeeded = false;
                 response.Message = "Hotel does not exist";
-                response.StatusCode = (int) HttpStatusCode.BadRequest;
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
-            var review =  _mapper.Map<Review>(model);
+
+            //var previousReview = await _unitOfWork.Reviews.g
+            var review = _mapper.Map<Review>(model);
+
             review.CustomerId = customerId;
+            
             await _unitOfWork.Reviews.InsertAsync(review);
             await _unitOfWork.Save();
-           
-            var reviewToReturn = _mapper.Map<ReviewToReturnDto>(review);
+
+            var reviewToReturn = _mapper.Map<AddReviewToReturnDto>(review);
             _logger.Information("Added review successfully");
 
             //response
@@ -91,6 +87,18 @@ namespace hotel_booking_core.Services
             response.StatusCode = (int)HttpStatusCode.OK;
 
             return response;
+
+
+
+            /*var prevRating = await _unitOfWork.Rating.GetRatingsByHotel(hotelId, customerId);
+            if (prevRating != null)
+            {
+                prevRating.Ratings = ratingDto.Ratings;
+                prevRating.UpdatedAt = DateTime.UtcNow;
+                _unitOfWork.Rating.Update(prevRating);
+                await _unitOfWork.Save();
+                return Response<string>.Success("Rating updated successfully", prevRating.HotelId);*/
+            
         }
  
        

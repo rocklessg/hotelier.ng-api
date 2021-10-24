@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace hotel_booking_dto.HotelDtos
 {
     /// <summary>
-    /// Model to be contained in Data field of Get all hotels response
+    /// Model to be contained in Data field of Get an hotel response
     /// </summary>
     public class GetHotelDto
     {
@@ -18,6 +18,7 @@ namespace hotel_booking_dto.HotelDtos
         public string City { get; set; }
         public string State { get; set; }
         public double Rating { get; set; }
+        public int NumberOfReviews { get; set; }
         public string FeaturedImage { get; set; }
         public IEnumerable<string> Gallery { get; set; }
         public IEnumerable<RoomTypeDto> RoomTypes { get; set; }

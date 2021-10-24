@@ -2,7 +2,7 @@
 
 namespace hotel_booking_dto.HotelDtos
 {
-    public class HotelAndroidDto
+    public class HotelBasicDetailsDto
     {
         [Display(Name = "ManagerId")]
         public string Id { get; set; }
@@ -11,5 +11,8 @@ namespace hotel_booking_dto.HotelDtos
         public string Thumbnail { get; set; }
         public double PercentageRating { get; set; }
         public decimal Price { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
     }
 }
