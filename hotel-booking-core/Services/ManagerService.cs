@@ -163,7 +163,7 @@ namespace hotel_booking_core.Services
             return Response<string>.Fail("Email already exist", StatusCodes.Status409Conflict);
         }
 
-        public async Task<bool> SendManagerInvite(string email)
+        public async Task<Response<bool>> SendManagerInvite(string email)
         {
             using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 
@@ -193,15 +193,15 @@ namespace hotel_booking_core.Services
 
                         _logger.Information("Mail sent successfully");
                         transaction.Complete();
-                        return result;
+                        return Response<bool>.Success("Mail sent successfully", true, StatusCodes.Status200OK);
                     }
                     _logger.Information("Mail service failed");
                     transaction.Dispose();
-                    return result;
+                    return Response<bool>.Fail("Mail service failed", StatusCodes.Status400BadRequest);
                 }
                 transaction.Dispose();
                 _logger.Information("Invalid email address");
-            return result;
+            return Response<bool>.Fail("Invalid email address", StatusCodes.Status409Conflict);
             
         }
 
@@ -219,7 +219,7 @@ namespace hotel_booking_core.Services
                     if (expired)
                     {
                         var resendMail = await SendManagerInvite(email);
-                        if (resendMail)
+                        if (resendMail.Succeeded)
                         {
                             return Response<bool>.Fail("Link has expired, a new link has been sent", StatusCodes.Status408RequestTimeout);
                         }
