@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_data.UnitOfWork.Implementation
 {
-  public class UnitOfWork : IUnitOfWork
-  {
-    private IAmenityRepository _amenities;
-    private ICustomerRepository _customers;
-    private IHotelRepository _hotels;
-    private IManagerRepository _managers;
-    private IPaymentRepository _payments;
-    private IRoomRepository _rooms;
-    private IWishListRepository _wishLists;
-    private IRoomTypeRepository _roomType;
-    private IBookingRepository _booking;
-    private IReviewRepository _review;
-    private ITransactionRepository _transaction;
-    private IRatingRepository _rating;
-    private readonly HbaDbContext _context;
+    public class UnitOfWork : IUnitOfWork
+    {
+        private IAmenityRepository _amenities;
+        private ICustomerRepository _customers;
+        private IHotelRepository _hotels;
+        private IManagerRepository _managers;
+        private IPaymentRepository _payments;
+        private IRoomRepository _rooms;
+        private IWishListRepository _wishLists;
+        private IRoomTypeRepository _roomType;
+        private IBookingRepository _booking;
+        private IReviewRepository _review;
+        private ITransactionRepository _transaction;
+        private IRatingRepository _rating;
+        private readonly HbaDbContext _context;
 
         public UnitOfWork(HbaDbContext context)
         {
@@ -45,9 +45,9 @@ namespace hotel_booking_data.UnitOfWork.Implementation
 
         public IWishListRepository WishLists => _wishLists ??= new WishListRepository(_context);
 
-    public IRoomTypeRepository RoomType => _roomType ??= new RoomTypeRepository(_context);
-    public IReviewRepository Reviews => _review ??= new ReviewRepository(_context);
-    public IRatingRepository Rating => _rating ??= new RatingRepository(_context);
+        public IRoomTypeRepository RoomType => _roomType ??= new RoomTypeRepository(_context);
+        public IReviewRepository Reviews => _review ??= new ReviewRepository(_context);
+        public IRatingRepository Rating => _rating ??= new RatingRepository(_context);
 
 
         public async Task Save()
