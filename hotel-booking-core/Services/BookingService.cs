@@ -102,5 +102,35 @@ namespace hotel_booking_core.Services
             _logger.Information($"Room with Id {bookingDto.RoomId} booked successfully");
             return response;
         }
+
+        public async Task<Response<string>> VerifyBooking(VerifyBookingDto bookingDto)
+        {
+            var payment = await _unitOfWork.Payments.GetPaymentByReference(bookingDto.TransactionReference);
+            if (payment == null)
+            {
+                return Response<string>.Fail("Payment not found");
+            }
+
+            var paymentVerified = await _paymentService.VerifyTransaction(payment.TransactionReference, payment.MethodOfPayment, bookingDto.TransactionId);
+            if (paymentVerified)
+            {
+                payment.Status = "Successful";
+                _unitOfWork.Payments.Update(payment);
+                await _unitOfWork.Save();
+                return new Response<string>()
+                {
+                    Message = "Booking Verified",
+                    StatusCode = StatusCodes.Status200OK,
+                    Succeeded = true,
+                    Data = "Booking Verified"
+                };
+            }
+            payment.Status = "Failed";
+            payment.Booking.Room.IsBooked = false;
+            _unitOfWork.Rooms.Update(payment.Booking.Room);
+            _unitOfWork.Payments.Update(payment);
+            await _unitOfWork.Save();
+            return Response<string>.Fail("Booking not Verified", StatusCodes.Status402PaymentRequired);
+        }
     }
 }

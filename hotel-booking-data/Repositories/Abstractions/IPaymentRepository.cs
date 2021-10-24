@@ -9,5 +9,6 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IPaymentRepository : IGenericRepository<Payment>
     {
+        Task<Payment> GetPaymentByReference(string transactionReference);
     }
 }

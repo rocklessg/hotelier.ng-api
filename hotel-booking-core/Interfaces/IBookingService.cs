@@ -12,5 +12,6 @@ namespace hotel_booking_core.Interfaces
     {
         Task<Response<PageResult<IEnumerable<GetBookingResponseDto>>>> GetCustomerBookings(string userId, PagingDto paging);
         Task<Response<HotelBookingResponseDto>> Book(string userId, HotelBookingRequestDto bookingDto);
+        Task<Response<string>> VerifyBooking(VerifyBookingDto bookingDto);
     }
 }

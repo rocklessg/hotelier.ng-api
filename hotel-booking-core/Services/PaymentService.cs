@@ -73,5 +73,23 @@ namespace hotel_booking_core.Services
                 throw;
             }
         }
+
+        public async Task<bool> VerifyTransaction(string transactionRef, string paymentMethod, string transactionId = null)
+        {
+            if(paymentMethod.ToLower() == "paystack")
+            {
+                return _paystack.VerifyTransaction(transactionRef).Status;
+            }
+            else if (paymentMethod.ToLower() == "flutterwave")
+            {
+                var response = await _flutterwave.VerifyTransaction(transactionId);
+                if(response.Data.Status == "successful")
+                {
+                    return true;
+                }
+                throw new PaymentException(response.Message);
+            }
+            throw new ArgumentException("Invalid Payment Method");
+        }
     }
 }
