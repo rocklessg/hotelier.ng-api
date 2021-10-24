@@ -4,6 +4,7 @@ using hotel_booking_dto;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace hotel_booking_data.Repositories.Implementations
@@ -77,6 +78,18 @@ namespace hotel_booking_data.Repositories.Implementations
                 .Include(b => b.Room)
                 .ThenInclude(r => r.Roomtype)
                 .OrderBy(b => b.CreatedAt);
+            return query;
+        }
+
+        public IQueryable<Booking> GetBookingsByHotelId(string hotelId)
+        {
+            var query = _context.Bookings.AsNoTracking()
+                .Where(b => b.HotelId == hotelId)
+                .Where(b => b.PaymentStatus == true)
+                .Include(b => b.Customer)
+                .ThenInclude(c => c.AppUser)
+                .Include(b => b.Payment)
+                .OrderByDescending(b => b.Payment.Amount);
             return query;
         }
     }
