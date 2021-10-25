@@ -103,7 +103,7 @@ namespace hotel_booking_core.Services
             var review = _mapper.Map<Review>(model);
 
             review.CustomerId = customerId;
-            
+
             await _unitOfWork.Reviews.InsertAsync(review);
             await _unitOfWork.Save();
 
@@ -117,20 +117,6 @@ namespace hotel_booking_core.Services
             response.StatusCode = (int)HttpStatusCode.OK;
 
             return response;
-
-
-
-            /*var prevRating = await _unitOfWork.Rating.GetRatingsByHotel(hotelId, customerId);
-            if (prevRating != null)
-            {
-                prevRating.Ratings = ratingDto.Ratings;
-                prevRating.UpdatedAt = DateTime.UtcNow;
-                _unitOfWork.Rating.Update(prevRating);
-                await _unitOfWork.Save();
-                return Response<string>.Success("Rating updated successfully", prevRating.HotelId);*/
-            
-        }
- 
-       
+        }     
     }
 }
