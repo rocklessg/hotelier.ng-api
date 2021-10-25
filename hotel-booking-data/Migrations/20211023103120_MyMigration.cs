@@ -2,7 +2,7 @@
 
 namespace hotel_booking_data.Migrations
 {
-    public partial class PaymentStatusAdded : Migration
+    public partial class MyMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

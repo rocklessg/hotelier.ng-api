@@ -23,7 +23,7 @@ namespace hotel_booking_data.Repositories.Implementations
         }
 
 
-        public async Task<Review> CheckReviewByCustomerAsync( string hotelId)
+        public async Task<Review> CheckHotelExistence(string hotelId)
         {
 
             return await _reviews.Where(x =>x.HotelId == hotelId).FirstOrDefaultAsync();
@@ -37,6 +37,7 @@ namespace hotel_booking_data.Repositories.Implementations
             return custonerReview;
         }
 
+       
         public IQueryable<Review> GetAllReviewsByHotelAsync(string hotelId)
         {
             var query = _context.Reviews.AsNoTracking().Where(h => h.HotelId == hotelId)
@@ -45,5 +46,7 @@ namespace hotel_booking_data.Repositories.Implementations
                 .OrderBy(r => r.CreatedAt);
             return query;
         }
+
+        
     }
 }

@@ -10,8 +10,8 @@ using hotel_booking_data.Contexts;
 namespace hotel_booking_data.Migrations
 {
     [DbContext(typeof(HbaDbContext))]
-    [Migration("20211021122330_initialMigration")]
-    partial class initialMigration
+    [Migration("20211023103120_MyMigration")]
+    partial class MyMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -306,6 +306,12 @@ namespace hotel_booking_data.Migrations
                     b.Property<int>("NoOfPeople")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("PaymentStatus")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("RoomId")
+                        .HasColumnType("text");
+
                     b.Property<string>("ServiceName")
                         .HasColumnType("text");
 
@@ -317,6 +323,8 @@ namespace hotel_booking_data.Migrations
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("HotelId");
+
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Bookings");
                 });
@@ -680,9 +688,15 @@ namespace hotel_booking_data.Migrations
                         .WithMany("Bookings")
                         .HasForeignKey("HotelId");
 
+                    b.HasOne("hotel_booking_models.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId");
+
                     b.Navigation("Customer");
 
                     b.Navigation("Hotel");
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("hotel_booking_models.Customer", b =>
