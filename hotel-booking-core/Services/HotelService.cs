@@ -289,7 +289,10 @@ namespace hotel_booking_core.Services
         {
           result.Add(hotel.State, 1);
         }
-        result[hotel.State] += 1;
+        else
+        {
+            result[hotel.State] += 1;
+        }
       }
 
       var response = new Response<Dictionary<string, int>>();
