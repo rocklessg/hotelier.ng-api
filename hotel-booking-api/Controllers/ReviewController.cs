@@ -1,4 +1,5 @@
 ﻿using hotel_booking_core.Interfaces;
+using hotel_booking_dto;
 using hotel_booking_dto.ReviewDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -42,6 +43,15 @@ namespace hotel_booking_api.Controllers
             var customerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = await _reviewService.AddReviewAsync(model, customerId);
             return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpDelete]
+        public ActionResult<Response<string>> DeleteReviews(string reviewId)
+        {
+            var customerId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var response = _reviewService.DeleteUserReview(customerId, reviewId);
+            return Ok(response);
+
         }
     }
 }

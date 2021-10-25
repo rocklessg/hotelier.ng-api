@@ -26,6 +26,36 @@ namespace hotel_booking_core.Services
 
         }
 
+        public Response<string> DeleteUserReview(string customerId, string reviewId)
+        {
+            var review = _unitOfWork.Reviews.GetUserReview(reviewId);
+            var response = new Response<string>();
+
+            if (review != null)
+            {
+                if (review.CustomerId == customerId)
+                {
+                    _unitOfWork.Reviews.DeleteAsync(review);
+                    _unitOfWork.Save();
+                    response.Succeeded = true;
+                    response.StatusCode = (int)HttpStatusCode.Created;
+                    response.Message = $"Review deleted successfully";
+
+                    return response;
+
+                }
+                response.StatusCode = (int)HttpStatusCode.Forbidden;
+                response.Message = $"You are not authorized to delete this review";
+
+                return response;
+            }
+
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Message = $"Review does not exist";
+
+            return response;
+        }
+
         public Response<string> UpdateUserReview(string customerId, string reviewId, ReviewRequestDto model)
         {
             _logger.Information($"Attempt to update a review by {customerId}");
