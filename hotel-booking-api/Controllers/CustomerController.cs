@@ -61,12 +61,13 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpGet("{userId}/bookings")]
+        [HttpGet("bookings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(Policy = Policies.ManagerAndCustomer)]
-        public async Task<IActionResult> GetCustomerBooking([FromRoute] string userId, [FromQuery] PagingDto paging)
+        public async Task<IActionResult> GetCustomerBooking([FromQuery] PagingDto paging)
         {
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _bookingService.GetCustomerBookings(userId, paging);
             return StatusCode(result.StatusCode, result);
         }
@@ -75,7 +76,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //[Authorize(Roles = "")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllCustomersAsync([FromQuery] PagingDto pagenator)
         {
             var result = await _customerService.GetAllCustomersAsync(pagenator);
