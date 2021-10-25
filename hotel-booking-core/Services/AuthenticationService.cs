@@ -341,14 +341,7 @@ namespace hotel_booking_core.Services
             return result.Errors.Aggregate(string.Empty, (current, err) => current + err.Description + "\n");
         }
 
-        /// <summary>
-        /// Generates and encapsulates the link to be sent to the user in a html template.
-        /// </summary>
-        /// <param name="user"></param>
-        /// <param name="emailTempPath"></param>
-        /// <param name="linkName"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
+        
         private static async Task<string> GetEmailBody(AppUser user, string emailTempPath, string linkName, string token)
         {
             TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
