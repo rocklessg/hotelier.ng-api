@@ -143,7 +143,7 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<string>> AddManagerRequest(ManagerRequestDto managerRequest)
         {
-            var getManager = await _unitOfWork.ManagerRequest.GetHotelManagerByEmail(managerRequest.Email);
+            var getManager = await _unitOfWork.ManagerRequest.GetHotelManagerRequestByEmail(managerRequest.Email);
             var getUser = await _unitOfWork.Managers.GetAppUserByEmail(managerRequest.Email);
 
             if (getUser == null && getManager == null)
@@ -167,7 +167,7 @@ namespace hotel_booking_core.Services
         {
             using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 
-            var check = await _unitOfWork.ManagerRequest.GetHotelManagerByEmail(email);
+            var check = await _unitOfWork.ManagerRequest.GetHotelManagerRequestByEmail(email);
             var getUser = await _unitOfWork.Managers.GetAppUserByEmail(email);
 
             var result = false;
