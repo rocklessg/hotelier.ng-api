@@ -106,10 +106,18 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<string>> VerifyBooking(VerifyBookingDto bookingDto)
         {
+            _logger.Information($"Attempt to verify booking {bookingDto.TransactionReference}");
             var payment = await _unitOfWork.Payments.GetPaymentByReference(bookingDto.TransactionReference);
             if (payment == null)
             {
+                _logger.Error($"Payment not found with payment reference {bookingDto.TransactionReference}");
                 return Response<string>.Fail("Payment not found");
+            }
+            
+            if (payment.Status == "Successful")
+            {
+                _logger.Error($"Payment with payment reference {bookingDto.TransactionReference} has already been verified");
+                return Response<string>.Fail("Payment verified already", StatusCodes.Status422UnprocessableEntity);
             }
 
             var paymentVerified = await _paymentService.VerifyTransaction(payment.TransactionReference, payment.MethodOfPayment, bookingDto.TransactionId);
@@ -118,6 +126,7 @@ namespace hotel_booking_core.Services
                 payment.Status = "Successful";
                 _unitOfWork.Payments.Update(payment);
                 await _unitOfWork.Save();
+                _logger.Information($"Payment with payment reference {bookingDto.TransactionReference} verified");
                 return new Response<string>()
                 {
                     Message = "Booking Verified",
@@ -131,6 +140,7 @@ namespace hotel_booking_core.Services
             _unitOfWork.Rooms.Update(payment.Booking.Room);
             _unitOfWork.Payments.Update(payment);
             await _unitOfWork.Save();
+            _logger.Error($"Payment with payment reference {bookingDto.TransactionReference} not verified");
             return Response<string>.Fail("Booking not Verified", StatusCodes.Status402PaymentRequired);
         }
     }

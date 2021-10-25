@@ -1,5 +1,4 @@
-﻿using hotel_booking_utilities.Exceptions;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using PayStack.Net;
 using System;
 
@@ -19,7 +18,7 @@ namespace hotel_booking_utilities.PaymentGatewaySettings
         }
         public TransactionInitializeResponse InitializePayment(TransactionInitializeRequest request)
         {
-            
+
             var response = PayStack.Transactions.Initialize(request);
             if (response.Status)
             {
@@ -31,11 +30,7 @@ namespace hotel_booking_utilities.PaymentGatewaySettings
         public TransactionVerifyResponse VerifyTransaction(string transactionRef)
         {
             var response = PayStack.Transactions.Verify(transactionRef);
-            if (response.Status)
-            {
-                return response;
-            }
-            throw new PaymentException(response.Message);
+            return response;
         }
     }
 }

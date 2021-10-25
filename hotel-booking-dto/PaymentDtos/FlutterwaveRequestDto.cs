@@ -10,24 +10,33 @@ namespace hotel_booking_dto.PaymentDtos
 {
     public class FlutterwaveRequestDTO
     {
+        [JsonProperty("currency")]
+        public string Currency { get; set; } = "NGN";
+        [JsonProperty("amount")]
         [Required]
-        public decimal amount { get; set; }
+        public decimal Amount { get; set; }
+        [JsonProperty("tx_ref")]
         [Required]
-        public string tx_ref { get; set; }
+        public string TransactionReference { get; set; }
+        [JsonProperty("redirect_url")]
         [Required]
-        public string redirect_url { get; set; }
+        public string RedirectUrl { get; set; }
+        [JsonProperty("payment_options")]
         [Required]
-        public List<string> payment_options { get; set; }
+        public List<string> PaymentOptions { get; set; }
+        [JsonProperty("customer")]
         [Required]
-        public FlutterwaveCustomerDTO customer { get; set; }
+        public FlutterwaveCustomerDTO Customer { get; set; }
     }
 
     public class FlutterwaveCustomerDTO
     {
         [Required]
-        public string email { get; set; }
+        [JsonProperty("email")]
+        public string Email { get; set; }
         [Required]
-        public string name { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
     }
 
     public class FlutterwaveResponseDTO<T> where T : class

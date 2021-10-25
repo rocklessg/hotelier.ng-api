@@ -40,7 +40,7 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.RoomType, y => y.MapFrom(src => src.Room.Roomtype.Name))
                 .ForMember(x => x.RoomNo, y => y.MapFrom(src => src.Room.RoomNo))
                 .ForMember(x => x.PaymentReference, y => y.MapFrom(src => src.Payment.TransactionReference))
-                .ForMember(x => x.PaymentStatus, y => y.MapFrom(src => src.Payment.Status))
+                .ForMember(x => x.PaymentStatus, y => y.MapFrom(src => src.PaymentStatus))
                 .ForMember(x => x.Hotel, y => y.MapFrom(src => src.Room.Roomtype.Hotel.Name))
                 .ForMember(x => x.Price, y => y.MapFrom(src => src.Room.Roomtype.Price));
             CreateMap<Booking, GetBookingResponseDto>()

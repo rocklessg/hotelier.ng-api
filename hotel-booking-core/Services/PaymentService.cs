@@ -32,6 +32,7 @@ namespace hotel_booking_core.Services
                 Amount = amount,
                 MethodOfPayment = paymentService,
                 TransactionReference = transactionRef,
+                Status = "Pending"
             };
 
             await _unitOfWork.Payments.InsertAsync(payment);
@@ -53,11 +54,11 @@ namespace hotel_booking_core.Services
                 {
                     FlutterwaveRequestDTO request = new()
                     {
-                        amount = amount,
-                        tx_ref = transactionRef,
-                        redirect_url = redirect_url,
-                        payment_options = new List<string>() { "card", "mobilemoney", "ussd"},
-                        customer = new() { email = customer.AppUser.Email, name = $"{customer.AppUser.FirstName} {customer.AppUser.LastName}"}
+                        Amount = amount,
+                        TransactionReference = transactionRef,
+                        RedirectUrl = redirect_url,
+                        PaymentOptions = new List<string>() { "card", "mobilemoney", "ussd"},
+                        Customer = new() { Email = customer.AppUser.Email, Name = $"{customer.AppUser.FirstName} {customer.AppUser.LastName}"}
                     };
                     var response = await _flutterwave.InitializePayment(request);
                     return response.Data.Link;
@@ -78,7 +79,11 @@ namespace hotel_booking_core.Services
         {
             if(paymentMethod.ToLower() == "paystack")
             {
-                return _paystack.VerifyTransaction(transactionRef).Status;
+                if(_paystack.VerifyTransaction(transactionRef).Data.Status == "success")
+                {
+                    return true;
+                }
+                return false;
             }
             else if (paymentMethod.ToLower() == "flutterwave")
             {
@@ -87,7 +92,7 @@ namespace hotel_booking_core.Services
                 {
                     return true;
                 }
-                throw new PaymentException(response.Message);
+                return false;
             }
             throw new ArgumentException("Invalid Payment Method");
         }

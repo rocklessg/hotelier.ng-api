@@ -1,6 +1,7 @@
 ﻿using hotel_booking_dto.PaymentDtos;
 using hotel_booking_utilities.HttpClientService.Interface;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Threading.Tasks;
 
 namespace hotel_booking_utilities.PaymentGatewaySettings
@@ -29,12 +30,24 @@ namespace hotel_booking_utilities.PaymentGatewaySettings
 
         public async Task<FlutterwaveResponseDTO<FlutterwaveVerifyResponseDataDTO>> VerifyTransaction(string transactionId)
         {
-            var response = await _httpClientService.GetRequestAsync<FlutterwaveResponseDTO<FlutterwaveVerifyResponseDataDTO>>(
+            try
+            {
+                var response = await _httpClientService.GetRequestAsync<FlutterwaveResponseDTO<FlutterwaveVerifyResponseDataDTO>>(
                 baseUrl: "https://api.flutterwave.com",
                 requestUrl: $"v3/transactions/{transactionId}/verify",
                 token: _configuration["Payment:FlutterwaveKey"]
                 );
-            return response;
+                return response;
+            }
+            catch (ArgumentException argEx)
+            {
+                return new FlutterwaveResponseDTO<FlutterwaveVerifyResponseDataDTO>()
+                {
+                    Status = "Failed",
+                    Message = argEx.Message,
+                    Data = new FlutterwaveVerifyResponseDataDTO() { Status = "Failed" }
+                };
+            }
         }
     }
 }
