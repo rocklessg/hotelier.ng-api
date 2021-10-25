@@ -51,7 +51,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Customer, Admin")]
+        [Authorize(Roles = Policies.AdminAndCustomer)]
         public async Task<IActionResult> UpdateImage([FromForm] AddImageDto imageDto)
         {
             string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
@@ -76,7 +76,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = Policies.Admin)]
         public async Task<IActionResult> GetAllCustomersAsync([FromQuery] PagingDto pagenator)
         {
             var result = await _customerService.GetAllCustomersAsync(pagenator);
@@ -87,7 +87,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = Policies.Customer)]
         public async Task<IActionResult> GetCustomerWishList([FromQuery] PagingDto paging)
         {
             string customerId = _userManager.GetUserId(User);
