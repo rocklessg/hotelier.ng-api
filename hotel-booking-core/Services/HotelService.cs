@@ -255,18 +255,18 @@ namespace hotel_booking_core.Services
             response.Succeeded = false;
             return response;
         }
-        public async Task<Response<PageResult<IEnumerable<HotelBasicDetailsDto>>>> GetHotelByLocation(string location, PagingDto paging)
+        public async Task<Response<PageResult<IEnumerable<GetAllHotelDto>>>> GetHotelByLocation(string location, PagingDto paging)
         {
             _logger.Information($"Attempting to get hotel in {location}");
             var hotels = _unitOfWork.Hotels.GetAllHotels()
                 .Where(q => q.State.ToLower().Contains(location.ToLower()) || q.City.ToLower().Contains(location.ToLower()));
 
-            var response = new Response<PageResult<IEnumerable<HotelBasicDetailsDto>>>();
+            var response = new Response<PageResult<IEnumerable<GetAllHotelDto>>>();
 
             if (hotels != null)
             {
                 _logger.Information("Search completed successfully");
-                var result = await hotels.PaginationAsync<Hotel, HotelBasicDetailsDto>
+                var result = await hotels.PaginationAsync<Hotel, GetAllHotelDto>
                     (
                         pageSize: paging.PageSize,
                         pageNumber: paging.PageNumber,
