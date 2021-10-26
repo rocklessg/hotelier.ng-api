@@ -19,7 +19,7 @@ namespace hotel_booking_data.Repositories.Implementations
         {
             var bookings = _context.Bookings
                 .Where(x => x.Hotel.ManagerId == managerId)
-                .Where(x => filter.Month < 1 || x.CreatedAt.Month == (filter.Month))
+                .Where(x => filter.Month == 0 || x.CreatedAt.Month == (filter.Month))
                 .Where(x => x.CreatedAt.Year == (filter.Year))
                 .Where(x => string.IsNullOrEmpty(filter.SearchQuery) || x.Hotel.Name.ToLower().Contains(filter.SearchQuery.ToLower())
             || x.ServiceName.ToLower().Contains(filter.SearchQuery.ToLower())
