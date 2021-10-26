@@ -293,14 +293,17 @@ namespace hotel_booking_core.Services
             var hotels = await _unitOfWork.Hotels.GetAll().ToListAsync();
             var result = new Dictionary<string, int>();
 
-            foreach (var hotel in hotels)
-            {
-                if (!result.ContainsKey(hotel.State))
-                {
-                    result.Add(hotel.State, 1);
-                }
-                result[hotel.State] += 1;
-            }
+      foreach (var hotel in hotels)
+      {
+        if (!result.ContainsKey(hotel.State))
+        {
+          result.Add(hotel.State, 1);
+        }
+        else
+        {
+            result[hotel.State] += 1;
+        }
+      }
 
             var response = new Response<Dictionary<string, int>>();
 
