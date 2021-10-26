@@ -12,6 +12,13 @@ namespace hotel_booking_dto.ManagerDtos
     {
         public string CompanyName { get; set; }
         public string BusinessEmail { get; set; }
+        public string HotelName { get; set; }
+        public string HotelDescription { get; set; }
+        public string HotelEmail { get; set; }
+        public string HotelPhone { get; set; }
+        public string HotelAddress { get; set; }
+        public string HotelCity { get; set; }
+        public string HotelState { get; set; }
         public string BusinessPhone { get; set; }
         public string CompanyAddress { get; set; }
         public string State { get; set; }
