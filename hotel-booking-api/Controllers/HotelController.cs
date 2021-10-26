@@ -24,6 +24,7 @@ namespace hotel_booking_api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IHotelStatisticsService _hotelStatisticsService;
         private readonly IBookingService _bookingService;
+        private readonly IWishListService _wishListService;
         private readonly ILogger _logger;
 
 
@@ -31,7 +32,8 @@ namespace hotel_booking_api.Controllers
             IHotelService hotelService,
             UserManager<AppUser> userManager,
             IHotelStatisticsService hotelStatisticsService,
-            IBookingService bookingService
+            IBookingService bookingService,
+            IWishListService wishListService
             )
 
         {
@@ -39,6 +41,7 @@ namespace hotel_booking_api.Controllers
             _userManager = userManager;
             _hotelStatisticsService = hotelStatisticsService;
             _bookingService = bookingService;
+            _wishListService = wishListService;
             _logger = logger;
         }
 
@@ -248,5 +251,26 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [HttpPost("{hotelId}/add-wishlist")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> AddWishlist([FromRoute] string hotelId)
+        {
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _wishListService.AddWishList(hotelId, userId);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpDelete("{hotelId}/remove-wishlist")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> RemoveWishListItem([FromRoute] string hotelId)
+        {
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _wishListService.RemoveWishListItem(hotelId, userId);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

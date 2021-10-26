@@ -24,5 +24,12 @@ namespace hotel_booking_data.Repositories.Implementations
             return customerWishlist;
 
         }
+
+        public WishList CheckWishList(string customerId, string hotelId)
+        {
+            return _dbSet.Where(w => w.CustomerId == customerId)
+                .Where(w => w.HotelId == hotelId)
+                .FirstOrDefault();
+        }
     }
 }

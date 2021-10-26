@@ -1,14 +1,11 @@
 ﻿using hotel_booking_models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IWishListRepository : IGenericRepository<WishList>
     {
         IQueryable<WishList> GetCustomerWishList(string customerId);
+        WishList CheckWishList(string customerId, string hotelId);
     }
 }
