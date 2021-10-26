@@ -165,6 +165,16 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(manager => manager.BusinessPhone, u => u.MapFrom(user => user.PhoneNumber))
                 .ReverseMap();
 
+            CreateMap<Hotel, ManagerDto>()
+                .ForMember(hotel => hotel.HotelAddress, u => u.MapFrom(hotel => hotel.Address))
+                .ForMember(hotel => hotel.HotelCity, u => u.MapFrom(hotel => hotel.City))
+                .ForMember(hotel => hotel.HotelDescription, u => u.MapFrom(hotel => hotel.Description))
+                .ForMember(hotel => hotel.HotelEmail, u => u.MapFrom(hotel => hotel.Email))
+                .ForMember(hotel => hotel.HotelName, u => u.MapFrom(hotel => hotel.Name))
+                .ForMember(hotel => hotel.HotelPhone, u => u.MapFrom(hotel => hotel.Phone))
+                .ForMember(hotel => hotel.HotelState, u => u.MapFrom(hotel => hotel.State))
+                .ReverseMap();
+
             CreateMap<Manager, ManagerResponseDto>()
                 .ForMember(d => d.FirstName, o => o.MapFrom(u => u.AppUser.FirstName))
                 .ForMember(d => d.LastName, o => o.MapFrom(u => u.AppUser.LastName))

@@ -26,7 +26,6 @@ namespace hotel_booking_api.Controllers
 
         [HttpPost]
         [Route("AddManager")]
-        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -48,7 +47,7 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("send-invite")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = Policies.Admin)]
         public async Task<IActionResult> SendManagerInvite(string email)
         {
             var sendInvite = await _managerService.SendManagerInvite(email);
@@ -81,7 +80,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpPatch("{managerId}/activate")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = Policies.Admin)]
         public async Task<ActionResult<Response<string>>> ActivateManager(string managerId)
         {
             var response = await _managerService.ActivateManager(managerId);

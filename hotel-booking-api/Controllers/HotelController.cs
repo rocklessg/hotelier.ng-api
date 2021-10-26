@@ -53,7 +53,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = Policies.Admin)]
         [HttpGet("total-hotels-per-location")]
         public async Task<IActionResult> GetTotalHotelsPerLocation()
         {
@@ -69,7 +69,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        [Authorize(Policy = "Manager")]
+        [Authorize(Policy = Policies.Manager)]
         [HttpPut("{hotelId}")]
         public async Task<IActionResult> UpdateHotelAsync(string hotelId, [FromBody] UpdateHotelDto update)
         {
@@ -136,7 +136,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -150,7 +150,7 @@ namespace hotel_booking_api.Controllers
 
 
         [HttpGet("{hotelId}/statistics")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -164,7 +164,7 @@ namespace hotel_booking_api.Controllers
 
         [HttpPost]
         [Route("{hotelId}/rooms")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -178,7 +178,7 @@ namespace hotel_booking_api.Controllers
 
         [HttpDelete]
         [Route("{hotelId}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
