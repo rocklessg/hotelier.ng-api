@@ -32,13 +32,6 @@ namespace hotel_booking_data.Repositories.Implementations
              return await _context.Managers.Include(x => x.AppUser).FirstOrDefaultAsync(x => x.AppUserId == managerId);
          }
 
-        public async Task<Manager> GetManagerByHotelsAsync(string managerId)
-        {
-            return await _context.Managers.Include(x => x.AppUser)
-                .Include(x=>x.Hotels)
-                .FirstOrDefaultAsync(x => x.AppUserId == managerId);
-        }
-
         public async Task<IEnumerable<Hotel>> GetAllHotelsForManagerAsync(string managerId)
         {
             var query = await _dbSet.AsNoTracking()

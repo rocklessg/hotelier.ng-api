@@ -27,15 +27,12 @@ namespace hotel_booking_data.Repositories.Implementations
             {
                 bookings = bookings.Where(booking => booking.Hotel.Name.ToLower().Contains(filter.SearchQuery.ToLower()));
             }
-            if (!string.IsNullOrWhiteSpace(filter.Month))
+            if (filter.Month > 1)
             {
-                bookings = bookings.Where(booking => booking.CreatedAt.Month.ToString() == (filter.Month));
+                bookings = bookings.Where(booking => booking.CreatedAt.Month == (filter.Month));
             }
-            if (!string.IsNullOrWhiteSpace(filter.Year))
-            {
-                bookings = bookings.Where(booking => booking.CreatedAt.Year.ToString() == (filter.Year));
-            }
-            bookings = bookings.Include(x => x.Payment)
+            bookings = bookings.Where(booking => booking.CreatedAt.Year == (filter.Year))
+            .Include(x => x.Payment)
             .Include(x => x.Hotel)
             .Include(x => x.Customer)
             .Include(x => x.Customer.AppUser).OrderByDescending(booking => booking.CreatedAt);

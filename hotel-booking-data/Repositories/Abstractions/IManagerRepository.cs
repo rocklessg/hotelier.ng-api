@@ -8,7 +8,6 @@ namespace hotel_booking_data.Repositories.Abstractions
     {
         Task<Manager> GetManagerStatistics(string managerId);
         Task<Manager> GetManagerAsync(string managerId);
-        Task<Manager> GetManagerByHotelsAsync(string managerId);
         Task<IEnumerable<Hotel>> GetAllHotelsForManagerAsync(string managerId);
     }
 }

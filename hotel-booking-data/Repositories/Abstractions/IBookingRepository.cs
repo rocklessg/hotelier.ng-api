@@ -7,11 +7,7 @@ namespace hotel_booking_data.Repositories.Abstractions
 {
     public interface IBookingRepository : IGenericRepository<Booking>
     {
-        IQueryable<Booking> GetManagerBookings(string managerId);
-        IQueryable<Booking> GetManagerBookingsSearchByHotel(string managerId, TransactionFilter filter);
-        IQueryable<Booking> GetManagerBookingsFilterByDate(string managerId, TransactionFilter filter);
-        IQueryable<Booking> GetManagerBookingsFilterByDate(string managerId, string year);
-        IQueryable<Booking> GetManagerBookingsByHotelAndMonth(string managerId, TransactionFilter filter);    
+        IQueryable<Booking> GetManagerBookings(string managerId, TransactionFilter filter);
         IQueryable<Booking> GetBookingsByCustomerId(string customerId);
         IQueryable<Booking> GetBookingsByHotelId(string hotelId);
     }

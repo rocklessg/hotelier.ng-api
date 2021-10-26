@@ -3,8 +3,6 @@ using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_dto;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace hotel_booking_data.Repositories.Implementations
@@ -17,56 +15,23 @@ namespace hotel_booking_data.Repositories.Implementations
             _context = context;
         }
 
-        public IQueryable<Booking> GetManagerBookings(string managerId)
+        public IQueryable<Booking> GetManagerBookings(string managerId, TransactionFilter filter)
         {
             var bookings = _context.Bookings
                 .Where(x => x.Hotel.ManagerId == managerId)
+                .Where(x => filter.Month < 1 || x.CreatedAt.Month == (filter.Month))
+                .Where(x => x.CreatedAt.Year == (filter.Year))
+                .Where(x => string.IsNullOrEmpty(filter.SearchQuery) || x.Hotel.Name.ToLower().Contains(filter.SearchQuery.ToLower())
+            || x.ServiceName.ToLower().Contains(filter.SearchQuery.ToLower())
+            || x.Payment.Status.ToLower().Contains(filter.SearchQuery.ToLower())
+            || x.Payment.TransactionReference.ToLower().Contains(filter.SearchQuery.ToLower())
+            || x.Payment.MethodOfPayment.ToLower().Contains(filter.SearchQuery.ToLower())
+            || x.Payment.Amount.ToString().Contains(filter.SearchQuery)
+            || x.Hotel.State.ToLower().Contains(filter.SearchQuery.ToLower()))
                 .Include(b => b.Payment)
                 .Include(b => b.Customer)
                 .Include(b => b.Hotel)
                 .OrderByDescending(booking => booking.CreatedAt);
-            return bookings;
-        }
-        public IQueryable<Booking> GetManagerBookingsSearchByHotel(string managerId, TransactionFilter filter)
-        {
-            var bookings = GetManagerBookings(managerId);
-            bookings = bookings.Where(booking => booking.Hotel.Name.Contains(filter.SearchQuery)
-            || booking.Hotel.Id.Contains(filter.SearchQuery)
-            || booking.BookingReference.Contains(filter.SearchQuery)
-            || booking.ServiceName.Contains(filter.SearchQuery)
-            || booking.Payment.MethodOfPayment.Contains(filter.SearchQuery)
-            || booking.Payment.Status.Contains(filter.SearchQuery)
-            || booking.Payment.TransactionReference.Contains(filter.SearchQuery)
-            || booking.Hotel.City.Contains(filter.SearchQuery)
-            || booking.Hotel.Description.Contains(filter.SearchQuery)
-            || booking.Hotel.State.Contains(filter.SearchQuery)
-            || booking.Hotel.Phone.Contains(filter.SearchQuery)
-            || booking.Hotel.Email.Contains(filter.SearchQuery)
-            ).OrderByDescending(booking => booking.CreatedAt);
-            return bookings;
-        }
-        public IQueryable<Booking> GetManagerBookingsFilterByDate(string managerId, TransactionFilter filter)
-        {
-            var bookings = GetManagerBookings(managerId);
-            bookings = bookings.Where(booking => booking.CreatedAt.Month.ToString() == (filter.Month)
-            && booking.CreatedAt.Year.ToString() == (filter.Year))
-            .OrderByDescending(booking => booking.CreatedAt);
-            return bookings;
-        }
-        public IQueryable<Booking> GetManagerBookingsFilterByDate(string managerId, string year)
-        {
-            var bookings = GetManagerBookings(managerId);
-            bookings = bookings.Where(booking => booking.CreatedAt.Year.ToString() == (year))
-            .OrderByDescending(booking => booking.CreatedAt);
-            return bookings;
-        }
-        public IQueryable<Booking> GetManagerBookingsByHotelAndMonth(string managerId, TransactionFilter filter)
-        {
-            var bookings = GetManagerBookings(managerId);
-            bookings = bookings.Where(booking => booking.HotelId == (filter.SearchQuery)
-            && booking.CreatedAt.Month.ToString() == (filter.Month)
-            && booking.CreatedAt.Year.ToString() == (filter.Year))
-            .OrderByDescending(booking => booking.CreatedAt);
             return bookings;
         }
         public IQueryable<Booking> GetBookingsByCustomerId(string customerId)
@@ -80,7 +45,6 @@ namespace hotel_booking_data.Repositories.Implementations
                 .OrderBy(b => b.CreatedAt);
             return query;
         }
-
         public IQueryable<Booking> GetBookingsByHotelId(string hotelId)
         {
             var query = _context.Bookings.AsNoTracking()
