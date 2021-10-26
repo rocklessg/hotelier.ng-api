@@ -10,8 +10,10 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]")]
+
     public class AdminController : ControllerBase
     {
         private readonly IAdminService _adminService;
@@ -46,7 +48,7 @@ namespace hotel_booking_api.Controllers
             return Ok(response);
         }
 
-
-
     }
 }
+
+

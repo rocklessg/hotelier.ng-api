@@ -6,6 +6,7 @@ using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.Repositories.Implementations;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_data.UnitOfWork.Implementation;
+using hotel_booking_dto;
 using hotel_booking_dto.AppUserDto;
 using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_dto.CustomerDtos;
@@ -21,6 +22,7 @@ using hotel_booking_utilities.Validators.AuthenticationValidators;
 using hotel_booking_utilities.Validators.CustomerValidators;
 using hotel_booking_utilities.Validators.HotelValidators;
 using hotel_booking_utilities.Validators.ReviewValidators;
+using hotel_booking_utilities.Validators.ManagerValidators;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace hotel_booking_api.Extensions
@@ -41,15 +43,19 @@ namespace hotel_booking_api.Extensions
 
 
             services.AddScoped<ICustomerService, CustomerService>();
-            services.AddTransient<IManagerService,ManagerService>();
 
             services.AddScoped<IAmenityService, AmenityService>();
             services.AddScoped<IHotelService, HotelService>();
+            services.AddTransient<IManagerService, ManagerService>();
+
             services.AddScoped<IReviewService, ReviewService>();
+
+           
 
             services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
             
             services.AddScoped<IManagerRepository, ManagerRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<ITokenRepository, TokenRepository>();
             
 
@@ -67,9 +73,12 @@ namespace hotel_booking_api.Extensions
             // Add Model Services Injection Here
 
             services.AddScoped<IAmenityRepository, AmenityRepository>();
+
             // Add Fluent Validator Injections Here
             services.AddTransient<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
             services.AddTransient<IValidator<LoginDto>, LoginDtoValidator>();
+
+            services.AddTransient<IValidator<ManagerRequestDto>, ManagerRequestValidator>();
 
             services.AddTransient<IValidator<UpdateHotelDto>, UpdateHotelDtoValidator>();
             services.AddTransient<IValidator<UpdatePasswordDto>, UpdatePasswordDtoValidator>();

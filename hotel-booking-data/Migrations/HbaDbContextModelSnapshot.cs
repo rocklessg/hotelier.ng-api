@@ -448,6 +448,38 @@ namespace hotel_booking_data.Migrations
                     b.ToTable("Managers");
                 });
 
+            modelBuilder.Entity("hotel_booking_models.ManagerRequest", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("ConfirmationFlag")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("HotelName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ManagerRequests");
+                });
+
             modelBuilder.Entity("hotel_booking_models.Payment", b =>
                 {
                     b.Property<string>("BookingId")

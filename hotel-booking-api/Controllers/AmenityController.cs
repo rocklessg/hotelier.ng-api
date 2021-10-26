@@ -36,7 +36,7 @@ namespace hotel_booking_api.Controllers
         }
 
 
-        [HttpPut("{AmenityId}")]
+        [HttpPut("{amenityId}")]
         [Authorize(Roles = "Manager")]
 
         public ActionResult<Response<UpdateAmenityDto>> UpdateAmenity(string amenityId, [FromBody] UpdateAmenityDto update)
