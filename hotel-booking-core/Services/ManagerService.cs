@@ -47,8 +47,11 @@ namespace hotel_booking_core.Services
             }
             var appUser = _mapper.Map<AppUser>(managerDto);
             var manager = _mapper.Map<Manager>(managerDto);
+            var hotel = _mapper.Map<Hotel>(managerDto);
             manager.AppUserId = appUser.Id;
+            hotel.ManagerId = manager.AppUserId;
             appUser.Manager = manager;
+            manager.Hotels = new List<Hotel>() { hotel };
             var result = await _userManager.CreateAsync(appUser, managerDto.Password);
                 
             if (result.Succeeded)

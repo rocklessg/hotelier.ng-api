@@ -26,7 +26,6 @@ namespace hotel_booking_api.Controllers
 
         [HttpPost]
         [Route("AddManager")]
-        [Authorize(Policy = Policies.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
