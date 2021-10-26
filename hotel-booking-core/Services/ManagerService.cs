@@ -16,6 +16,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Transactions;
+using hotel_booking_dto.Manager;
 
 namespace hotel_booking_core.Services
 {
@@ -105,6 +106,67 @@ namespace hotel_booking_core.Services
 
             return response;
 
+        }
+        public async Task<Response<string>> UpdateManager(string managerId, UpdateManagerDto updateManager)
+        {
+            var response = new Response<string>();
+
+            var manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
+
+            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                if (manager != null)
+                {
+                    // Update user details in AspNetAppUser table
+                    var user = await _userManager.FindByIdAsync(managerId);
+
+                    var userUpdateResult = await UpdateUser(user, updateManager);
+
+                    if (userUpdateResult.Succeeded)
+                    {
+                        manager.CompanyName = updateManager.CompanyName;
+                        manager.CompanyAddress = updateManager.CompanyAddress;
+                        manager.BusinessEmail = updateManager.BusinessEmail;
+                        manager.State = updateManager.State;
+                        manager.AccountName = updateManager.AccountName;
+                        manager.AccountNumber = updateManager.AccountNumber;
+
+
+                        _unitOfWork.Managers.Update(manager);
+                        await _unitOfWork.Save();
+
+                        response.Message = "Update Successful";
+                        response.StatusCode = (int)HttpStatusCode.OK;
+                        response.Succeeded = true;
+                        response.Data = managerId;
+                        transaction.Complete();
+                        return response;
+                    }
+
+                    transaction.Dispose();
+                    response.Message = "Something went wrong, when updating the AppUser table. Please try again later";
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    response.Succeeded = false;
+                    return response;
+                }
+
+                response.Message = "Manager Not Found";
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Succeeded = false;
+                transaction.Complete();
+                return response;
+            }
+
+
+        }
+        private async Task<IdentityResult> UpdateUser(AppUser user, UpdateManagerDto model)
+        {
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.PhoneNumber = model.PhoneNumber;
+            user.Age = model.Age;
+
+            return await _userManager.UpdateAsync(user);
         }
 
         public async Task<Response<string>> SoftDeleteManagerAsync(string managerId)

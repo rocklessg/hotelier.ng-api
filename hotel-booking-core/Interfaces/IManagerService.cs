@@ -1,5 +1,6 @@
 ﻿using hotel_booking_dto;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.Manager;
 using hotel_booking_dto.ManagerDtos;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,9 @@ namespace hotel_booking_core.Interfaces
         Task<Response<string>> AddManagerRequest(ManagerRequestDto managerRequest);
         Task<Response<bool>> SendManagerInvite(string email);
         Task<Response<IEnumerable<ManagerRequestResponseDTo>>> GetAllManagerRequest();
-
         Task<Response<bool>> CheckTokenExpiring(string email, string token);
         Task<Response<ManagerResponseDto>> AddManagerAsync(ManagerDto manager);
-        
+        Task<Response<string>> UpdateManager(string managerId, UpdateManagerDto updateManager);
+
     }
 }
