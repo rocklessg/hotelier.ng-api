@@ -255,10 +255,10 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(Policy = Policies.Customer)]
-        public async Task<IActionResult> AddWishlist([FromRoute] string hotelId)
+        public async Task<IActionResult> AddToWishlist([FromRoute] string hotelId)
         {
             string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            var result = await _wishListService.AddWishList(hotelId, userId);
+            var result = await _wishListService.AddToWishList(hotelId, userId);
             return StatusCode(result.StatusCode, result);
         }
 
@@ -266,10 +266,10 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(Policy = Policies.Customer)]
-        public async Task<IActionResult> RemoveWishListItem([FromRoute] string hotelId)
+        public async Task<IActionResult> RemoveFromWishList([FromRoute] string hotelId)
         {
             string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            var result = await _wishListService.RemoveWishListItem(hotelId, userId);
+            var result = await _wishListService.RemoveFromWishList(hotelId, userId);
             return StatusCode(result.StatusCode, result);
         }
     }

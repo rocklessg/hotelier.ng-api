@@ -22,7 +22,7 @@ namespace hotel_booking_core.Services
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
-        public async Task<Response<string>> AddWishList(string hotelId, string customerId)
+        public async Task<Response<string>> AddToWishList(string hotelId, string customerId)
         {
             _logger.Information("Initiating AddWishList");
             var hotel = await _unitOfWork.Hotels.GetHotelById(hotelId);
@@ -68,7 +68,7 @@ namespace hotel_booking_core.Services
             return Response<string>.Fail("Wishlist empty");
         }
 
-        public async Task<Response<string>> RemoveWishListItem(string hotelId, string customerId)
+        public async Task<Response<string>> RemoveFromWishList(string hotelId, string customerId)
         {
             _logger.Information("Getting customer wishlist by customer Id and hotel Id");
             var wishlist = _unitOfWork.WishLists.CheckWishList(customerId, hotelId);
