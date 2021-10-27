@@ -2,6 +2,7 @@
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto.PaymentDtos;
 using hotel_booking_models;
+using hotel_booking_utilities;
 using hotel_booking_utilities.Exceptions;
 using hotel_booking_utilities.PaymentGatewaySettings;
 using PayStack.Net;
@@ -40,7 +41,7 @@ namespace hotel_booking_core.Services
 
             try
             {
-                if (paymentService.ToLower() == "paystack")
+                if (paymentService.ToLower() == Payments.Paystack)
                 {
                     TransactionInitializeRequest request = new()
                     {
@@ -50,7 +51,7 @@ namespace hotel_booking_core.Services
                         CallbackUrl = redirect_url
                     };
                     return _paystack.InitializePayment(request).Data.AuthorizationUrl;
-                } else if(paymentService.ToLower() == "flutterwave")
+                } else if(paymentService.ToLower() == Payments.Flutterwave)
                 {
                     FlutterwaveRequestDTO request = new()
                     {
@@ -77,24 +78,24 @@ namespace hotel_booking_core.Services
 
         public async Task<bool> VerifyTransaction(string transactionRef, string paymentMethod, string transactionId = null)
         {
-            if(paymentMethod.ToLower() == "paystack")
+            if(paymentMethod.ToLower() == Payments.Paystack)
             {
-                if(_paystack.VerifyTransaction(transactionRef).Data.Status == "success")
+                if(_paystack.VerifyTransaction(transactionRef).Data.Status == Payments.Success)
                 {
                     return true;
                 }
                 return false;
             }
-            else if (paymentMethod.ToLower() == "flutterwave")
+            else if (paymentMethod.ToLower() == Payments.Flutterwave)
             {
                 var response = await _flutterwave.VerifyTransaction(transactionId);
-                if(response.Data.Status == "successful")
+                if(response.Data.Status == Payments.Successful)
                 {
                     return true;
                 }
                 return false;
             }
-            throw new ArgumentException("Invalid Payment Method");
+            throw new PaymentException("Invalid Payment Method");
         }
     }
 }

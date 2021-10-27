@@ -114,7 +114,7 @@ namespace hotel_booking_core.Services
                 return Response<string>.Fail("Payment not found");
             }
             
-            if (payment.Status == "Successful")
+            if (payment.Status == PaymentStatus.Successful)
             {
                 _logger.Error($"Payment with payment reference {bookingDto.TransactionReference} has already been verified");
                 return Response<string>.Fail("Payment verified already", StatusCodes.Status422UnprocessableEntity);
@@ -123,7 +123,7 @@ namespace hotel_booking_core.Services
             var paymentVerified = await _paymentService.VerifyTransaction(payment.TransactionReference, payment.MethodOfPayment, bookingDto.TransactionId);
             if (paymentVerified)
             {
-                payment.Status = "Successful";
+                payment.Status = PaymentStatus.Successful;
                 _unitOfWork.Payments.Update(payment);
                 await _unitOfWork.Save();
                 _logger.Information($"Payment with payment reference {bookingDto.TransactionReference} verified");
@@ -135,7 +135,7 @@ namespace hotel_booking_core.Services
                     Data = "Booking Verified"
                 };
             }
-            payment.Status = "Failed";
+            payment.Status = PaymentStatus.Failed;
             payment.Booking.Room.IsBooked = false;
             _unitOfWork.Rooms.Update(payment.Booking.Room);
             _unitOfWork.Payments.Update(payment);

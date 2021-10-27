@@ -39,14 +39,9 @@ namespace hotel_booking_utilities.PaymentGatewaySettings
                 );
                 return response;
             }
-            catch (ArgumentException argEx)
+            catch (ArgumentException)
             {
-                return new FlutterwaveResponseDTO<FlutterwaveVerifyResponseDataDTO>()
-                {
-                    Status = "Failed",
-                    Message = argEx.Message,
-                    Data = new FlutterwaveVerifyResponseDataDTO() { Status = "Failed" }
-                };
+                throw;
             }
         }
     }
