@@ -24,6 +24,7 @@ using hotel_booking_utilities.Validators.HotelValidators;
 using hotel_booking_utilities.Validators.ReviewValidators;
 using hotel_booking_utilities.Validators.ManagerValidators;
 using Microsoft.Extensions.DependencyInjection;
+using hotel_booking_utilities.Validators.AdminValidators;
 
 namespace hotel_booking_api.Extensions
 {
@@ -36,6 +37,7 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddTransient<IMailService, MailService>();
+            services.AddScoped<IAdminService, AdminService>();
             services.AddTransient<IReviewService, ReviewService>();
             services.AddScoped<IAdminService, AdminService>();
 
@@ -88,6 +90,7 @@ namespace hotel_booking_api.Extensions
             services.AddTransient<IValidator<UpdateCustomerDto>, UpdateCustomerDtoValidator>();
             services.AddTransient<IValidator<HotelBookingRequestDto>, HotelBookingRequestDtoValidator>();
             services.AddTransient<IValidator<AddRatingDto>, AddRatingDtoValidator>();
+            services.AddTransient<IValidator<TransactionFilter>, TransactionFilterValidator>();
         }
     }
 }
