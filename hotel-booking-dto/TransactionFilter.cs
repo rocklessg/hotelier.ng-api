@@ -1,5 +1,4 @@
-﻿using DataAnnotationsExtensions;
-using hotel_booking_dto.commons;
+﻿using hotel_booking_dto.commons;
 using System;
 namespace hotel_booking_dto
 {
