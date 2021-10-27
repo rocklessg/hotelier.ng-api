@@ -63,6 +63,16 @@ namespace hotel_booking_data.Repositories.Implementations
 
             return checkDatabase;
         }
+
+        public IQueryable<Manager> GetHotelManagersAsync()
+        {
+            var managers = _context.Managers
+                .Include(x => x.AppUser)
+                .Include(x => x.Hotels)
+                .ThenInclude(x => x.Bookings)
+                .ThenInclude(x => x.Payment);
+            return managers;
+        }
     }
     
 }
