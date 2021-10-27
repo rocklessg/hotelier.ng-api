@@ -1,5 +1,6 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
+using hotel_booking_dto.BookingDtos;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.RatingDtos;
@@ -240,6 +241,14 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
+        [HttpPost("verify-booking")]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> VerifyBooking([FromBody] VerifyBookingDto bookingDto)
+        {
+            var response = await _bookingService.VerifyBooking(bookingDto);
+            return StatusCode(response.StatusCode, response);
+        }
+        
         [HttpGet]
         [Route("{hotelId}/transactions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
