@@ -112,6 +112,19 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
+            CreateMap<Customer, CustomerDetailsToReturnDto>()
+                .ForMember(x => x.FirstName, y => y.MapFrom(u => u.AppUser.FirstName))
+                .ForMember(x => x.LastName, y => y.MapFrom(u => u.AppUser.LastName))
+                .ForMember(x => x.Age, y => y.MapFrom(u => u.AppUser.Age))
+                .ForMember(x => x.Id, y => y.MapFrom(u => u.AppUser.Id))
+                .ForMember(x => x.Email, y => y.MapFrom(u => u.AppUser.Email))
+                .ForMember(x => x.PhoneNumber, y => y.MapFrom(u => u.AppUser.PhoneNumber))
+                .ForMember(x => x.UserName, y => y.MapFrom(u => u.AppUser.UserName))
+                .ForMember(x => x.Age, y => y.MapFrom(u => u.AppUser.Age))
+                .ForMember(x => x.CreditCard, y => y.MapFrom(u => u.CreditCard))
+                .ForMember(x => x.Address, y => y.MapFrom(u => u.Address))
+                .ForMember(x => x.State, y => y.MapFrom(u => u.State))
+                .ForMember(x => x.Avatar, y => y.MapFrom(u => u.AppUser.Avatar));
 
 
             //TransactionResponse Mapper

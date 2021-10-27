@@ -109,5 +109,17 @@ namespace hotel_booking_api.Controllers
             var result = await _wishListService.ClearWishList(userId);
             return StatusCode(result.StatusCode, result);
         }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> GetCustomerDetailsAsync()
+        {
+            var customerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _customerService.GetCustomerDetails(customerId);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

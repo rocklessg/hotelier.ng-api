@@ -1,21 +1,19 @@
-﻿using System.Threading.Tasks;
-using hotel_booking_data.UnitOfWork.Abstraction;
-using hotel_booking_core.Interfaces;
-using hotel_booking_dto.CustomerDtos;
-using hotel_booking_dto;
-using AutoMapper;
-using System.Net;
-using Microsoft.AspNetCore.Identity;
-using hotel_booking_models;
-using System.Transactions;
-using hotel_booking_models.Cloudinary;
+﻿using AutoMapper;
 using hotel_booking_core.Interface;
-using System.Collections.Generic;
-using hotel_booking_utilities;
-using System.Linq;
-using hotel_booking_dto.Mapper;
+using hotel_booking_core.Interfaces;
+using hotel_booking_data.UnitOfWork.Abstraction;
+using hotel_booking_dto;
 using hotel_booking_dto.commons;
+using hotel_booking_dto.CustomerDtos;
+using hotel_booking_models;
+using hotel_booking_models.Cloudinary;
 using hotel_booking_utilities.Pagination;
+using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
+using System.Transactions;
+using Serilog;
 
 namespace hotel_booking_core.Services
 {
@@ -26,14 +24,16 @@ namespace hotel_booking_core.Services
         private readonly IImageService _imageService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
         public CustomerService(IUnitOfWork unitOfWork,
-            UserManager<AppUser> userManager, IImageService imageService, IMapper mapper)
+            UserManager<AppUser> userManager, IImageService imageService, IMapper mapper, ILogger logger)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _imageService = imageService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<Response<string>> UpdateCustomer(string customerId, UpdateCustomerDto updateCustomer)
@@ -155,6 +155,33 @@ namespace hotel_booking_core.Services
             response.Succeeded = false;
             response.Message = $"Customer with Id = { customerId} doesn't exist";
             return response;
+        }
+
+        public async Task<Response<CustomerDetailsToReturnDto>> GetCustomerDetails(string userId)
+        {
+            _logger.Information("Attempt to get a user detail");
+            var response = new Response<CustomerDetailsToReturnDto>();
+            var user = await _unitOfWork.Customers.GetCustomerDetails(userId);
+
+            if (user == null)
+            {
+                _logger.Error("User not found");
+                response.Succeeded = false;
+                response.Data = null;
+                response.Message = "User not found";
+                response.StatusCode = (int)HttpStatusCode.NotFound;
+                return response;
+            }
+            _logger.Information("Get-Customer-Details successful");
+            var result = _mapper.Map<CustomerDetailsToReturnDto>(user);
+            response.Succeeded = true;
+            response.Data = result;
+            response.Message = "User found";
+            response.StatusCode = (int)HttpStatusCode.OK;
+
+            return response;
+
+
         }
     }
 }
