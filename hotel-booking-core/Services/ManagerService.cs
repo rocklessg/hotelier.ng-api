@@ -121,12 +121,15 @@ namespace hotel_booking_core.Services
                 if (manager != null)
                 {
                     // Update user details in AspNetAppUser table
+                    _logger.Information($"Attempting to update app user with Id {managerId}  in the user table");
                     var user = await _userManager.FindByIdAsync(managerId);
 
                     var userUpdateResult = await UpdateUser(user, updateManager);
 
                     if (userUpdateResult.Succeeded)
                     {
+                       
+                        _logger.Information($"Attempting to update manager with Id {managerId}  in the manager table");
                         manager.CompanyName = updateManager.CompanyName;
                         manager.CompanyAddress = updateManager.CompanyAddress;
                         manager.BusinessEmail = updateManager.BusinessEmail;
@@ -138,6 +141,7 @@ namespace hotel_booking_core.Services
                         _unitOfWork.Managers.Update(manager);
                         await _unitOfWork.Save();
 
+                        _logger.Information($" manager with Id {managerId} updated in the manager table");
                         response.Message = "Update Successful";
                         response.StatusCode = (int)HttpStatusCode.OK;
                         response.Succeeded = true;
@@ -147,12 +151,13 @@ namespace hotel_booking_core.Services
                     }
 
                     transaction.Dispose();
-                    response.Message = "Something went wrong, when updating the AppUser table. Please try again later";
-                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    _logger.Information($"Unable to update manager with Id {managerId} in the manager table");
+                    response.Message = "Unable to update app user table";
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     response.Succeeded = false;
                     return response;
                 }
-
+                _logger.Information($"Manager with Id  {managerId} not found the app user table");
                 response.Message = "Manager Not Found";
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
                 response.Succeeded = false;
@@ -164,6 +169,7 @@ namespace hotel_booking_core.Services
         }
         private async Task<IdentityResult> UpdateUser(AppUser user, UpdateManagerDto model)
         {
+           
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.PhoneNumber = model.PhoneNumber;
