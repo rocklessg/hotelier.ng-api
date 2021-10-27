@@ -35,6 +35,7 @@ namespace hotel_booking_utilities
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim("FirstName", user.FirstName),
+                new Claim("LastName", user.LastName),
                 new Claim("Avatar", user.Avatar)
             };
 
