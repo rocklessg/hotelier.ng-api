@@ -1,4 +1,5 @@
-﻿using System;
+﻿using hotel_booking_models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,5 +26,6 @@ namespace hotel_booking_dto
         public string CustomerName { get; set; }
         public DateTime PaymentDate { get; set; }     
         
+        public DateTime CreatedAt { get; set; }
     }
 }

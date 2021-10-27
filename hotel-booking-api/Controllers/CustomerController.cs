@@ -20,12 +20,14 @@ namespace hotel_booking_api.Controllers
     {
         private readonly ICustomerService _customerService;
         private readonly IBookingService _bookingService;
+        private readonly IWishListService _wishListService;
         private readonly ILogger _logger;
         private readonly UserManager<AppUser> _userManager;
-        public CustomerController(ICustomerService customerService, ILogger logger, UserManager<AppUser> userManager, IBookingService bookingService)
+        public CustomerController(ICustomerService customerService, ILogger logger, UserManager<AppUser> userManager, IBookingService bookingService, IWishListService wishListService)
         {
             _customerService = customerService;
             _bookingService = bookingService;
+            _wishListService = wishListService;
             _logger = logger;
             _userManager = userManager;
         }
@@ -94,6 +96,17 @@ namespace hotel_booking_api.Controllers
             _logger.Information($"Retrieving the paginated wishlist for the customer with ID {customerId}");
             var result = await _customerService.GetCustomerWishList(customerId, paging);
             _logger.Information($"Retrieved the paginated wishlist for the customer with ID {customerId}");
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpDelete("clear-wishlist")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> ClearWishList()
+        {
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _wishListService.ClearWishList(userId);
             return StatusCode(result.StatusCode, result);
         }
     }
