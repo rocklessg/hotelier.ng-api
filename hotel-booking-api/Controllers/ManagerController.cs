@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
@@ -26,7 +27,6 @@ namespace hotel_booking_api.Controllers
 
         [HttpPost]
         [Route("AddManager")]
-        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -37,18 +37,35 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
+
+        [HttpPut("UpdateManager")]
+        [Authorize(Policies.Manager)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        public async Task<ActionResult<Response<string>>> UpdateManager([FromBody] UpdateManagerDto model)
+        {
+           
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            _logger.Information($"Update Attempt for user with id = {userId}");
+            var result = await _managerService.UpdateManager(userId, model);
+            return StatusCode(result.StatusCode, result);
+        }
+
         [HttpPost]
         [Route("request")]
         public async Task<IActionResult> AddHotelManagerRequest([FromBody]ManagerRequestDto managerRequestDto)
         {
             var newManagerRequest = await _managerService.AddManagerRequest(managerRequestDto);
             _logger.Information($"Request to join is successfully added to the database");
-            return Ok(newManagerRequest);
+            return StatusCode(newManagerRequest.StatusCode, newManagerRequest);
         }
 
         [HttpGet]
         [Route("send-invite")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = Policies.Admin)]
         public async Task<IActionResult> SendManagerInvite(string email)
         {
             var sendInvite = await _managerService.SendManagerInvite(email);
@@ -81,7 +98,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpPatch("{managerId}/activate")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = Policies.Admin)]
         public async Task<ActionResult<Response<string>>> ActivateManager(string managerId)
         {
             var response = await _managerService.ActivateManager(managerId);

@@ -13,6 +13,7 @@ namespace hotel_booking_api
                 configure.AddPolicy(Policies.Customer, Policies.CustomerPolicy());
                 configure.AddPolicy(Policies.AdminAndManager, Policies.AdminAndHotelManagerPolicy());
                 configure.AddPolicy(Policies.ManagerAndCustomer, Policies.HotelManagerAndCustomerPolicy());
+                configure.AddPolicy(Policies.AdminAndCustomer, Policies.AdminAndCustomerPolicy());
             });
         }
     }

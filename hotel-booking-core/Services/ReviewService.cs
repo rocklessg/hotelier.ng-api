@@ -26,6 +26,39 @@ namespace hotel_booking_core.Services
 
         }
 
+        public Response<string> DeleteUserReview(string customerId, string reviewId)
+        {
+            _logger.Information("Getting review by id");
+            var review = _unitOfWork.Reviews.GetUserReview(reviewId);
+            var response = new Response<string>();
+
+            if (review != null)
+            {
+                if (review.CustomerId == customerId)
+                {
+                    _unitOfWork.Reviews.DeleteAsync(review);
+                    _unitOfWork.Save();
+                    response.Succeeded = true;
+                    response.StatusCode = (int)HttpStatusCode.OK;
+                    response.Message = $"Review deleted successfully";
+                    _logger.Information("Review deleted successfully");
+
+                    return response;
+
+                }
+                _logger.Information("User is attempting to delete a review that does not belong to him/her");
+                response.StatusCode = (int)HttpStatusCode.Forbidden;
+                response.Message = $"You are not authorized to delete this review";
+
+                return response;
+            }
+            _logger.Information("Review does not exist");
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Message = $"Review does not exist";
+
+            return response;
+        }
+
         public Response<string> UpdateUserReview(string customerId, string reviewId, ReviewRequestDto model)
         {
             _logger.Information($"Attempt to update a review by {customerId}");
@@ -73,7 +106,7 @@ namespace hotel_booking_core.Services
             var review = _mapper.Map<Review>(model);
 
             review.CustomerId = customerId;
-            
+
             await _unitOfWork.Reviews.InsertAsync(review);
             await _unitOfWork.Save();
 
@@ -87,20 +120,6 @@ namespace hotel_booking_core.Services
             response.StatusCode = (int)HttpStatusCode.OK;
 
             return response;
-
-
-
-            /*var prevRating = await _unitOfWork.Rating.GetRatingsByHotel(hotelId, customerId);
-            if (prevRating != null)
-            {
-                prevRating.Ratings = ratingDto.Ratings;
-                prevRating.UpdatedAt = DateTime.UtcNow;
-                _unitOfWork.Rating.Update(prevRating);
-                await _unitOfWork.Save();
-                return Response<string>.Success("Rating updated successfully", prevRating.HotelId);*/
-            
-        }
- 
-       
+        }     
     }
 }

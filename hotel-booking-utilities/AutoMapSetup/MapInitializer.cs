@@ -112,6 +112,34 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
+            CreateMap<Customer, CustomerDetailsToReturnDto>()
+                .ForMember(x => x.FirstName, y => y.MapFrom(u => u.AppUser.FirstName))
+                .ForMember(x => x.LastName, y => y.MapFrom(u => u.AppUser.LastName))
+                .ForMember(x => x.Age, y => y.MapFrom(u => u.AppUser.Age))
+                .ForMember(x => x.Id, y => y.MapFrom(u => u.AppUser.Id))
+                .ForMember(x => x.Email, y => y.MapFrom(u => u.AppUser.Email))
+                .ForMember(x => x.PhoneNumber, y => y.MapFrom(u => u.AppUser.PhoneNumber))
+                .ForMember(x => x.UserName, y => y.MapFrom(u => u.AppUser.UserName))
+                .ForMember(x => x.Age, y => y.MapFrom(u => u.AppUser.Age))
+                .ForMember(x => x.CreditCard, y => y.MapFrom(u => u.CreditCard))
+                .ForMember(x => x.Address, y => y.MapFrom(u => u.Address))
+                .ForMember(x => x.State, y => y.MapFrom(u => u.State))
+                .ForMember(x => x.Avatar, y => y.MapFrom(u => u.AppUser.Avatar));
+
+
+            //TransactionResponse Mapper
+
+            //Transaction Maps
+            CreateMap<Booking, TransactionResponseDto>()
+                .ForMember(x => x.BookingId, y => y.MapFrom(s => s.Id))
+                 .ForMember(x => x.HotelName, y => y.MapFrom(s => s.Hotel.Name))
+                 .ForMember(x => x.PaymentStatus, y => y.MapFrom(s => s.Payment.Status))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.MethodOfPayment))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.CreatedAt))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.Amount))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Customer.AppUserId))
+                 .ForMember(x => x.CustomerName, y => y.MapFrom(s => s.Customer.AppUser.FirstName + " " + s.Customer.AppUser.LastName));
+        
 
             // aminity
             CreateMap<Amenity, AmenityDto>();
@@ -163,6 +191,16 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(manager => manager.BusinessEmail, u => u.MapFrom(user => user.Email))
                 .ForMember(manager => manager.BusinessEmail, u => u.MapFrom(user => user.UserName))
                 .ForMember(manager => manager.BusinessPhone, u => u.MapFrom(user => user.PhoneNumber))
+                .ReverseMap();
+
+            CreateMap<Hotel, ManagerDto>()
+                .ForMember(hotel => hotel.HotelAddress, u => u.MapFrom(hotel => hotel.Address))
+                .ForMember(hotel => hotel.HotelCity, u => u.MapFrom(hotel => hotel.City))
+                .ForMember(hotel => hotel.HotelDescription, u => u.MapFrom(hotel => hotel.Description))
+                .ForMember(hotel => hotel.HotelEmail, u => u.MapFrom(hotel => hotel.Email))
+                .ForMember(hotel => hotel.HotelName, u => u.MapFrom(hotel => hotel.Name))
+                .ForMember(hotel => hotel.HotelPhone, u => u.MapFrom(hotel => hotel.Phone))
+                .ForMember(hotel => hotel.HotelState, u => u.MapFrom(hotel => hotel.State))
                 .ReverseMap();
 
             CreateMap<Manager, ManagerResponseDto>()

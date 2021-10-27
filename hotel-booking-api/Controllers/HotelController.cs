@@ -25,6 +25,7 @@ namespace hotel_booking_api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IHotelStatisticsService _hotelStatisticsService;
         private readonly IBookingService _bookingService;
+        private readonly IWishListService _wishListService;
         private readonly ILogger _logger;
 
 
@@ -32,7 +33,8 @@ namespace hotel_booking_api.Controllers
             IHotelService hotelService,
             UserManager<AppUser> userManager,
             IHotelStatisticsService hotelStatisticsService,
-            IBookingService bookingService
+            IBookingService bookingService,
+            IWishListService wishListService
             )
 
         {
@@ -40,6 +42,7 @@ namespace hotel_booking_api.Controllers
             _userManager = userManager;
             _hotelStatisticsService = hotelStatisticsService;
             _bookingService = bookingService;
+            _wishListService = wishListService;
             _logger = logger;
         }
 
@@ -51,7 +54,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = Policies.Admin)]
         [HttpGet("total-hotels-per-location")]
         public async Task<IActionResult> GetTotalHotelsPerLocation()
         {
@@ -67,7 +70,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        [Authorize(Policy = "Manager")]
+        [Authorize(Policy = Policies.Manager)]
         [HttpPut("{hotelId}")]
         public async Task<IActionResult> UpdateHotelAsync(string hotelId, [FromBody] UpdateHotelDto update)
         {
@@ -134,7 +137,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -148,7 +151,7 @@ namespace hotel_booking_api.Controllers
 
 
         [HttpGet("{hotelId}/statistics")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -162,7 +165,7 @@ namespace hotel_booking_api.Controllers
 
         [HttpPost]
         [Route("{hotelId}/rooms")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -176,7 +179,7 @@ namespace hotel_booking_api.Controllers
 
         [HttpDelete]
         [Route("{hotelId}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -257,5 +260,26 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [HttpPost("{hotelId}/add-wishlist")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> AddToWishlist([FromRoute] string hotelId)
+        {
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _wishListService.AddToWishList(hotelId, userId);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpDelete("{hotelId}/remove-wishlist")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> RemoveFromWishList([FromRoute] string hotelId)
+        {
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _wishListService.RemoveFromWishList(hotelId, userId);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }
