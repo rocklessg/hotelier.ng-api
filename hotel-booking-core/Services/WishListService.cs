@@ -33,7 +33,7 @@ namespace hotel_booking_core.Services
             }
 
             _logger.Information("Checking if Hotel already exists in WishList");
-            var wishlist = _unitOfWork.WishLists.CheckWishList(customerId, hotelId);
+            var wishlist = await _unitOfWork.WishLists.CheckWishListAsync(customerId, hotelId);
 
             if(wishlist == null)
             {
@@ -71,7 +71,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<string>> RemoveFromWishList(string hotelId, string customerId)
         {
             _logger.Information("Getting customer wishlist by customer Id and hotel Id");
-            var wishlist = _unitOfWork.WishLists.CheckWishList(customerId, hotelId);
+            var wishlist = await _unitOfWork.WishLists.CheckWishListAsync(customerId, hotelId);
             if(wishlist != null)
             {
                 _logger.Information("Initiating remove hotel from customer wishlist");
