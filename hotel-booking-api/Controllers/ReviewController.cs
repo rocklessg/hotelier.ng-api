@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Serilog;
+
 
 namespace hotel_booking_api.Controllers
 {
@@ -14,10 +16,13 @@ namespace hotel_booking_api.Controllers
 
     public class ReviewController : ControllerBase
     {
+        private readonly ILogger _logger;
         private readonly IReviewService _reviewService;
-        public ReviewController(IReviewService reviewService)
+        public ReviewController(IReviewService reviewService, ILogger logger)
         {
             _reviewService = reviewService;
+            _logger = logger;
+
         }
 
         [HttpPatch("reviewId")]
@@ -48,8 +53,12 @@ namespace hotel_booking_api.Controllers
         [HttpDelete]
         public ActionResult<Response<string>> DeleteReviews(string reviewId)
         {
+            _logger.Information($"About deleting review with ID {reviewId}");
+
             var customerId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var response = _reviewService.DeleteUserReview(customerId, reviewId);
+            _logger.Information($"Succesfully deleted review with ID {reviewId}");
+
             return Ok(response);
 
         }

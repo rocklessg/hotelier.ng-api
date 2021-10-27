@@ -55,7 +55,7 @@ namespace hotel_booking_api.Controllers
         public async Task<IActionResult> UpdateImage([FromForm] AddImageDto imageDto)
         {
             string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-
+            
             _logger.Information($"Update Image Attempt for user with id = {userId}");
             var result = await _customerService.UpdatePhoto(imageDto, userId);
             return StatusCode(result.StatusCode, result);

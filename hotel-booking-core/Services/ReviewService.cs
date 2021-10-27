@@ -28,6 +28,7 @@ namespace hotel_booking_core.Services
 
         public Response<string> DeleteUserReview(string customerId, string reviewId)
         {
+            _logger.Information("Getting review by id");
             var review = _unitOfWork.Reviews.GetUserReview(reviewId);
             var response = new Response<string>();
 
@@ -38,18 +39,20 @@ namespace hotel_booking_core.Services
                     _unitOfWork.Reviews.DeleteAsync(review);
                     _unitOfWork.Save();
                     response.Succeeded = true;
-                    response.StatusCode = (int)HttpStatusCode.Created;
+                    response.StatusCode = (int)HttpStatusCode.OK;
                     response.Message = $"Review deleted successfully";
+                    _logger.Information("Review deleted successfully");
 
                     return response;
 
                 }
+                _logger.Information("User is attempting to delete a review that does not belong to him/her");
                 response.StatusCode = (int)HttpStatusCode.Forbidden;
                 response.Message = $"You are not authorized to delete this review";
 
                 return response;
             }
-
+            _logger.Information("Review does not exist");
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             response.Message = $"Review does not exist";
 
