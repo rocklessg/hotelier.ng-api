@@ -33,7 +33,9 @@ namespace hotel_booking_utilities
             var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("FirstName", user.FirstName),
+                new Claim("Avatar", user.Avatar)
             };
 
             //Gets the roles of the logged in user and adds it to Claims
