@@ -20,12 +20,14 @@ namespace hotel_booking_api.Controllers
     {
         private readonly ICustomerService _customerService;
         private readonly IBookingService _bookingService;
+        private readonly IWishListService _wishListService;
         private readonly ILogger _logger;
         private readonly UserManager<AppUser> _userManager;
-        public CustomerController(ICustomerService customerService, ILogger logger, UserManager<AppUser> userManager, IBookingService bookingService)
+        public CustomerController(ICustomerService customerService, ILogger logger, UserManager<AppUser> userManager, IBookingService bookingService, IWishListService wishListService)
         {
             _customerService = customerService;
             _bookingService = bookingService;
+            _wishListService = wishListService;
             _logger = logger;
             _userManager = userManager;
         }
@@ -36,7 +38,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        [Authorize(Roles = "Customer")]
+        [Authorize(Policy = Policies.Customer)]
         public async Task<ActionResult<Response<string>>> Update([FromBody] UpdateCustomerDto model)
         {
             var userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
@@ -51,7 +53,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Customer, Admin")]
+        [Authorize(Policy = Policies.AdminAndCustomer)]
         public async Task<IActionResult> UpdateImage([FromForm] AddImageDto imageDto)
         {
             string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
@@ -61,12 +63,13 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpGet("{userId}/bookings")]
+        [HttpGet("bookings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(Policy = Policies.ManagerAndCustomer)]
-        public async Task<IActionResult> GetCustomerBooking([FromRoute] string userId, [FromQuery] PagingDto paging)
+        public async Task<IActionResult> GetCustomerBooking([FromQuery] PagingDto paging)
         {
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _bookingService.GetCustomerBookings(userId, paging);
             return StatusCode(result.StatusCode, result);
         }
@@ -75,7 +78,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //[Authorize(Roles = "")]
+        [Authorize(Policy = Policies.Admin)]
         public async Task<IActionResult> GetAllCustomersAsync([FromQuery] PagingDto pagenator)
         {
             var result = await _customerService.GetAllCustomersAsync(pagenator);
@@ -86,13 +89,24 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Policy = Policies.Customer)]
         public async Task<IActionResult> GetCustomerWishList([FromQuery] PagingDto paging)
         {
             string customerId = _userManager.GetUserId(User);
             _logger.Information($"Retrieving the paginated wishlist for the customer with ID {customerId}");
             var result = await _customerService.GetCustomerWishList(customerId, paging);
             _logger.Information($"Retrieved the paginated wishlist for the customer with ID {customerId}");
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpDelete("clear-wishlist")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> ClearWishList()
+        {
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _wishListService.ClearWishList(userId);
             return StatusCode(result.StatusCode, result);
         }
     }

@@ -29,6 +29,11 @@ namespace hotel_booking_data.Repositories.Implementations
             _dbSet.Remove(entity);
         }
 
+        public void DeleteRange(IEnumerable<T> entities)
+        {
+            _dbSet.RemoveRange(entities);
+        }
+
         public async Task InsertAsync(T entity)
         {
             await _dbSet.AddAsync(entity);

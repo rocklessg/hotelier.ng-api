@@ -113,6 +113,21 @@ namespace hotel_booking_utilities.AutoMapSetup
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
 
+
+            //TransactionResponse Mapper
+
+            //Transaction Maps
+            CreateMap<Booking, TransactionResponseDto>()
+                .ForMember(x => x.BookingId, y => y.MapFrom(s => s.Id))
+                 .ForMember(x => x.HotelName, y => y.MapFrom(s => s.Hotel.Name))
+                 .ForMember(x => x.PaymentStatus, y => y.MapFrom(s => s.Payment.Status))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.MethodOfPayment))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.CreatedAt))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.Amount))
+                 .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Customer.AppUserId))
+                 .ForMember(x => x.CustomerName, y => y.MapFrom(s => s.Customer.AppUser.FirstName + " " + s.Customer.AppUser.LastName));
+        
+
             // aminity
             CreateMap<Amenity, AmenityDto>();
 
@@ -163,6 +178,16 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(manager => manager.BusinessEmail, u => u.MapFrom(user => user.Email))
                 .ForMember(manager => manager.BusinessEmail, u => u.MapFrom(user => user.UserName))
                 .ForMember(manager => manager.BusinessPhone, u => u.MapFrom(user => user.PhoneNumber))
+                .ReverseMap();
+
+            CreateMap<Hotel, ManagerDto>()
+                .ForMember(hotel => hotel.HotelAddress, u => u.MapFrom(hotel => hotel.Address))
+                .ForMember(hotel => hotel.HotelCity, u => u.MapFrom(hotel => hotel.City))
+                .ForMember(hotel => hotel.HotelDescription, u => u.MapFrom(hotel => hotel.Description))
+                .ForMember(hotel => hotel.HotelEmail, u => u.MapFrom(hotel => hotel.Email))
+                .ForMember(hotel => hotel.HotelName, u => u.MapFrom(hotel => hotel.Name))
+                .ForMember(hotel => hotel.HotelPhone, u => u.MapFrom(hotel => hotel.Phone))
+                .ForMember(hotel => hotel.HotelState, u => u.MapFrom(hotel => hotel.State))
                 .ReverseMap();
 
             CreateMap<Manager, ManagerResponseDto>()
