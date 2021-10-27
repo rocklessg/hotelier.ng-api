@@ -16,7 +16,6 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Transactions;
-using hotel_booking_dto.Manager;
 
 namespace hotel_booking_core.Services
 {

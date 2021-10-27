@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hotel_booking_dto.Manager
+namespace hotel_booking_dto.ManagerDtos
 {
     public class UpdateManagerDto
     {

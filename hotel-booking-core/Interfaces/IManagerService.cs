@@ -1,6 +1,6 @@
 ﻿using hotel_booking_dto;
 using hotel_booking_dto.HotelDtos;
-using hotel_booking_dto.Manager;
+
 using hotel_booking_dto.ManagerDtos;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
-using hotel_booking_dto.Manager;
+
+using hotel_booking_dto.ManagerDtos;
 using hotel_booking_utilities.ValidatorSettings;
 using System;
 using System.Collections.Generic;
