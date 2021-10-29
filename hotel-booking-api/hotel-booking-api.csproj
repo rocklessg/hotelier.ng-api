@@ -66,6 +66,9 @@
     <None Update="StaticFiles\Html\ForgotPassword.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="StaticFiles\Html\ManagerInvite.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

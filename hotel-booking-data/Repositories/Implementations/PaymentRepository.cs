@@ -21,6 +21,14 @@ namespace hotel_booking_data.Repositories.Implementations
             _dbSet = _context.Set<Payment>();
         }
 
+        public async Task<Payment> GetPaymentByReference(string transactionReference)
+        {
+            return await _context.Payments
+                .Where(p => p.TransactionReference == transactionReference)
+                .Include(p => p.Booking)
+                .ThenInclude(b => b.Room)
+                .FirstOrDefaultAsync();
+        }
         public IQueryable<Payment> GetHotelTransactions(string hotelId)
         {
             var query = _dbSet.AsNoTracking()
