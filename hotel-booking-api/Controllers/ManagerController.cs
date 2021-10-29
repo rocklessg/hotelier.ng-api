@@ -122,6 +122,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [HttpGet]
         [Route("HotelManagers")]
         [Authorize(Policy = Policies.Admin)]
         public async Task<IActionResult> GetAllHotelManagers([FromQuery]PagingDto paging)
