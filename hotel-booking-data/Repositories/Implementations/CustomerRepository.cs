@@ -63,6 +63,12 @@ namespace hotel_booking_data.Repositories.Implementations
             }
             return list.OrderByDescending(c => c.Bookings.Sum(x => x.Payment.Amount));
         }
+        public async Task<Customer> GetCustomerDetails(string id)
+        {
+            return await _customers.Where(c => c.AppUserId == id)
+                .Include(c => c.AppUser)
+                .FirstOrDefaultAsync();
+        }
     }
 }
 

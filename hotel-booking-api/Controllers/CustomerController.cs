@@ -57,7 +57,7 @@ namespace hotel_booking_api.Controllers
         public async Task<IActionResult> UpdateImage([FromForm] AddImageDto imageDto)
         {
             string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-
+            
             _logger.Information($"Update Image Attempt for user with id = {userId}");
             var result = await _customerService.UpdatePhoto(imageDto, userId);
             return StatusCode(result.StatusCode, result);
@@ -107,6 +107,40 @@ namespace hotel_booking_api.Controllers
         {
             string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _wishListService.ClearWishList(userId);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost("{hotelId}/add-wishlist")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> AddToWishlist([FromRoute] string hotelId)
+        {
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _wishListService.AddToWishList(hotelId, userId);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpDelete("{hotelId}/remove-wishlist")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> RemoveFromWishList([FromRoute] string hotelId)
+        {
+            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _wishListService.RemoveFromWishList(hotelId, userId);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> GetCustomerDetailsAsync()
+        {
+            var customerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _customerService.GetCustomerDetails(customerId);
             return StatusCode(result.StatusCode, result);
         }
     }

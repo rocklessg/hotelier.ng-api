@@ -17,6 +17,8 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Transactions;
 using hotel_booking_dto.CustomerDtos;
+using hotel_booking_utilities.Pagination;
+using hotel_booking_dto.commons;
 
 namespace hotel_booking_core.Services
 {
@@ -109,6 +111,81 @@ namespace hotel_booking_core.Services
 
             return response;
 
+        }
+
+        public async Task<Response<PageResult<IEnumerable<HotelManagersDto>>>> GetAllHotelManagersAsync(PagingDto paging)
+        {
+            var hotelManagers = _unitOfWork.Managers.GetHotelManagersAsync();
+            var item = await hotelManagers.PaginationAsync<Manager, HotelManagersDto>(paging.PageSize, paging.PageNumber, _mapper);
+            return Response<PageResult<IEnumerable<HotelManagersDto>>>.Success("Success", item); ;
+        }
+
+        public async Task<Response<string>> UpdateManager(string managerId, UpdateManagerDto updateManager)
+        {
+            var response = new Response<string>();
+
+            var manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
+
+            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                if (manager != null)
+                {
+                    // Update user details in AspNetAppUser table
+                    _logger.Information($"Attempting to update app user with Id {managerId}  in the user table");
+                    var user = await _userManager.FindByIdAsync(managerId);
+
+                    var userUpdateResult = await UpdateUser(user, updateManager);
+
+                    if (userUpdateResult.Succeeded)
+                    {
+                       
+                        _logger.Information($"Attempting to update manager with Id {managerId}  in the manager table");
+                        manager.CompanyName = updateManager.CompanyName;
+                        manager.CompanyAddress = updateManager.CompanyAddress;
+                        manager.BusinessEmail = updateManager.BusinessEmail;
+                        manager.State = updateManager.State;
+                        manager.AccountName = updateManager.AccountName;
+                        manager.AccountNumber = updateManager.AccountNumber;
+
+
+                        _unitOfWork.Managers.Update(manager);
+                        await _unitOfWork.Save();
+
+                        _logger.Information($" manager with Id {managerId} updated in the manager table");
+                        response.Message = "Update Successful";
+                        response.StatusCode = (int)HttpStatusCode.OK;
+                        response.Succeeded = true;
+                        response.Data = managerId;
+                        transaction.Complete();
+                        return response;
+                    }
+
+                    transaction.Dispose();
+                    _logger.Information($"Unable to update manager with Id {managerId} in the manager table");
+                    response.Message = "Unable to update app user table";
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    response.Succeeded = false;
+                    return response;
+                }
+                _logger.Information($"Manager with Id  {managerId} not found the app user table");
+                response.Message = "Manager Not Found";
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Succeeded = false;
+                transaction.Complete();
+                return response;
+            }
+
+
+        }
+        private async Task<IdentityResult> UpdateUser(AppUser user, UpdateManagerDto model)
+        {
+           
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.PhoneNumber = model.PhoneNumber;
+            user.Age = model.Age;
+
+            return await _userManager.UpdateAsync(user);
         }
 
         public async Task<Response<string>> SoftDeleteManagerAsync(string managerId)

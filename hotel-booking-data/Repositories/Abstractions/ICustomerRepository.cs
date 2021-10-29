@@ -13,5 +13,6 @@ namespace hotel_booking_data.Repositories.Abstractions
         Task<Customer> GetCustomerAsync(string id);
         IQueryable<Customer> GetAllUsers();
         Task<IEnumerable<Customer>> GetTopCustomerForManagerAsync(string managerId);
+        Task<Customer> GetCustomerDetails(string id);
     }
 }

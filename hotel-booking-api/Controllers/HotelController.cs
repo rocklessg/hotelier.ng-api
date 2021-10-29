@@ -1,5 +1,6 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
+using hotel_booking_dto.BookingDtos;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.RatingDtos;
@@ -24,7 +25,6 @@ namespace hotel_booking_api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IHotelStatisticsService _hotelStatisticsService;
         private readonly IBookingService _bookingService;
-        private readonly IWishListService _wishListService;
         private readonly ILogger _logger;
 
 
@@ -32,8 +32,7 @@ namespace hotel_booking_api.Controllers
             IHotelService hotelService,
             UserManager<AppUser> userManager,
             IHotelStatisticsService hotelStatisticsService,
-            IBookingService bookingService,
-            IWishListService wishListService
+            IBookingService bookingService
             )
 
         {
@@ -41,7 +40,6 @@ namespace hotel_booking_api.Controllers
             _userManager = userManager;
             _hotelStatisticsService = hotelStatisticsService;
             _bookingService = bookingService;
-            _wishListService = wishListService;
             _logger = logger;
         }
 
@@ -240,6 +238,14 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
+        [HttpPost("verify-booking")]
+        [Authorize(Policy = Policies.Customer)]
+        public async Task<IActionResult> VerifyBooking([FromBody] VerifyBookingDto bookingDto)
+        {
+            var response = await _bookingService.VerifyBooking(bookingDto);
+            return StatusCode(response.StatusCode, response);
+        }
+        
         [HttpGet]
         [Route("{hotelId}/transactions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -249,28 +255,6 @@ namespace hotel_booking_api.Controllers
         {
             var response = await _hotelService.GetHotelTransaction(hotelId, paging);
             return StatusCode(response.StatusCode, response);
-        }
-
-        [HttpPost("{hotelId}/add-wishlist")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Policy = Policies.Customer)]
-        public async Task<IActionResult> AddToWishlist([FromRoute] string hotelId)
-        {
-            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            var result = await _wishListService.AddToWishList(hotelId, userId);
-            return StatusCode(result.StatusCode, result);
-        }
-
-        [HttpDelete("{hotelId}/remove-wishlist")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Policy = Policies.Customer)]
-        public async Task<IActionResult> RemoveFromWishList([FromRoute] string hotelId)
-        {
-            string userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            var result = await _wishListService.RemoveFromWishList(hotelId, userId);
-            return StatusCode(result.StatusCode, result);
         }
     }
 }

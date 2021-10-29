@@ -1,10 +1,12 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
+using hotel_booking_dto.commons;
 using hotel_booking_dto.ManagerDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace hotel_booking_api.Controllers
@@ -36,13 +38,30 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
+
+        [HttpPut("UpdateManager")]
+        [Authorize(Policies.Manager)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        public async Task<ActionResult<Response<string>>> UpdateManager([FromBody] UpdateManagerDto model)
+        {
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            _logger.Information($"Update Attempt for user with id = {userId}");
+            var result = await _managerService.UpdateManager(userId, model);
+            return StatusCode(result.StatusCode, result);
+        }
+
         [HttpPost]
         [Route("request")]
-        public async Task<IActionResult> AddHotelManagerRequest([FromBody]ManagerRequestDto managerRequestDto)
+        public async Task<IActionResult> AddHotelManagerRequest([FromBody] ManagerRequestDto managerRequestDto)
         {
             var newManagerRequest = await _managerService.AddManagerRequest(managerRequestDto);
             _logger.Information($"Request to join is successfully added to the database");
-            return Ok(newManagerRequest);
+            return StatusCode(newManagerRequest.StatusCode, newManagerRequest);
         }
 
         [HttpGet]
@@ -66,11 +85,11 @@ namespace hotel_booking_api.Controllers
         [HttpGet]
         [Route("getall-request")]
         public async Task<IActionResult> GetAllRequests()
-        
+
         {
             var getAll = await _managerService.GetAllManagerRequest();
             return Ok(getAll);
-           
+
         }
         [HttpPatch("{managerId}/deactivate")]
         public async Task<ActionResult> SoftDeleteAsync(string managerId)
@@ -100,6 +119,14 @@ namespace hotel_booking_api.Controllers
         public async Task<IActionResult> GetTopCustomers(string managerId)
         {
             var response = await _managerService.GetManagerTopCustomers(managerId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Route("HotelManagers")]
+        [Authorize(Policy = Policies.Admin)]
+        public async Task<IActionResult> GetAllHotelManagers([FromQuery]PagingDto paging)
+        {
+            var response =  await _managerService.GetAllHotelManagersAsync(paging);
             return StatusCode(response.StatusCode, response);
         }
     }
