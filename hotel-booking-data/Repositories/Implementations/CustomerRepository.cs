@@ -1,12 +1,10 @@
 ﻿using hotel_booking_data.Contexts;
+using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using hotel_booking_data.Repositories.Abstractions;
 using System.Collections.Generic;
-using System;
-using System.Linq.Expressions;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
@@ -38,7 +36,32 @@ namespace hotel_booking_data.Repositories.Implementations
 
         public IQueryable<Customer> GetAllUsers()
         {
-           return _customers.Include(x => x.AppUser);
+            return _customers.Include(x => x.AppUser);
+        }
+
+        public async Task<IEnumerable<Customer>> GetTopCustomerForManagerAsync(string managerId)
+        {
+            var query = _customers.AsNoTracking()
+                            .Include(c => c.AppUser)
+                            .Include(c => c.Bookings).ThenInclude(bk => bk.Hotel)
+                            .Include(c => c.Bookings).ThenInclude(bk => bk.Payment)
+                            .Where(c => c.Bookings.Where(bk => bk.Hotel.ManagerId == managerId).Count() > 0);
+            if (query.Count() == 0)
+            {
+                return null;
+            }
+            var topMoneySpenders = await query.OrderByDescending(c => c.Bookings.Where(x => x.Hotel.ManagerId == managerId && x.PaymentStatus == true)
+                                              .Sum(bk => bk.Payment.Amount)).Take(3).ToListAsync();
+            var topFrequentUsers = await query.OrderByDescending(c => c.Bookings.Where(x => x.Hotel.ManagerId == managerId && x.PaymentStatus == true).Count()).ToListAsync();
+            var list = new List<Customer>(topMoneySpenders);
+            for(int i = 0; i < topFrequentUsers.Count; i++)
+            {
+                if(list.Count( x => x.AppUserId == topFrequentUsers[i].AppUserId) == 0)
+                {
+                    list.Add(topFrequentUsers[i]);
+                }
+            }
+            return list.OrderByDescending(c => c.Bookings.Sum(x => x.Payment.Amount));
         }
     }
 }
