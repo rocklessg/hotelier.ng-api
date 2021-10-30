@@ -2,6 +2,6 @@
 {
     public class ValidateUserRoleDto
     {
-        public string Role { get; set; }
+        public string[] Roles { get; set; }
     }
 }

@@ -387,9 +387,8 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public async Task<bool> ValidateUserRole(string userId, string rolesString)
+        public async Task<bool> ValidateUserRole(string userId, string[] roles)
         {
-            var roles = rolesString.Split(", ");
             var user = await _userManager.FindByIdAsync(userId);
             var userRoles = await _userManager.GetRolesAsync(user);
             bool result = false;

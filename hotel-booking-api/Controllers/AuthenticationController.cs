@@ -127,7 +127,7 @@ namespace hotel_booking_api.Controllers
         public async Task<IActionResult> ValidateUserRole([FromBody] ValidateUserRoleDto userRoleDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = await _authService.ValidateUserRole(userId, userRoleDto.Role);
+            var result = await _authService.ValidateUserRole(userId, userRoleDto.Roles);
             if (result)
             {
                 return Ok();
