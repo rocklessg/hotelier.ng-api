@@ -129,7 +129,6 @@ namespace hotel_booking_api.Controllers
             _logger.Information("User Role validation attempt");
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = await _authService.ValidateUserRole(userId, userRoleDto.Roles);
-            _logger.Information("User Role validated");
             return result ? Ok() : BadRequest();
         }
     }

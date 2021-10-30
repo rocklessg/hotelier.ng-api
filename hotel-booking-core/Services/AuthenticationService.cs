@@ -400,6 +400,7 @@ namespace hotel_booking_core.Services
                     break;
                 }
             }
+            _logger.Information($"User with ID {userId} was {(result ? "Validated" : "Not validated")}");
             return result;
         }
     }
