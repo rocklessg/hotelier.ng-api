@@ -399,7 +399,6 @@ namespace hotel_booking_core.Services
                     result = true;
                     break;
                 }
-                result = false;
             }
             return result;
         }
