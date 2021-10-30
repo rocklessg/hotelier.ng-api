@@ -12,5 +12,6 @@ namespace hotel_booking_data.Repositories.Abstractions
         IQueryable<RoomType> GetRoomByPrice(decimal minPrice, decimal maxPrice);
         Task<List<RoomType>> GetRoomTypesInEachHotel(string hotelId);
         IQueryable<RoomType> GetTopDeals();
+        Task<RoomType> CheckForRoomTypeAsync(string roomTypeId);
     }
 }
