@@ -1,6 +1,7 @@
 ﻿using hotel_booking_data.Contexts;
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_models;
+using hotel_booking_utilities.Comparer;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,27 +43,22 @@ namespace hotel_booking_data.Repositories.Implementations
         public async Task<IEnumerable<Customer>> GetTopCustomerForManagerAsync(string managerId)
         {
             var query = _customers.AsNoTracking()
-                            .Include(c => c.AppUser)
                             .Include(c => c.Bookings).ThenInclude(bk => bk.Hotel)
                             .Include(c => c.Bookings).ThenInclude(bk => bk.Payment)
                             .Where(c => c.Bookings.Where(bk => bk.Hotel.ManagerId == managerId).Count() > 0);
-            if (query.Count() == 0)
-            {
-                return null;
-            }
+
+            if (query.Count() == 0) return null;
+
             var topMoneySpenders = await query.OrderByDescending(c => c.Bookings.Where(x => x.Hotel.ManagerId == managerId && x.PaymentStatus == true)
                                               .Sum(bk => bk.Payment.Amount)).Take(3).ToListAsync();
+
             var topFrequentUsers = await query.OrderByDescending(c => c.Bookings.Where(x => x.Hotel.ManagerId == managerId && x.PaymentStatus == true).Count()).ToListAsync();
-            var list = new List<Customer>(topMoneySpenders);
-            for(int i = 0; i < topFrequentUsers.Count; i++)
-            {
-                if(list.Count( x => x.AppUserId == topFrequentUsers[i].AppUserId) == 0)
-                {
-                    list.Add(topFrequentUsers[i]);
-                }
-            }
-            return list.OrderByDescending(c => c.Bookings.Sum(x => x.Payment.Amount));
-        }
+
+            topMoneySpenders.InsertRange(3, topFrequentUsers);
+
+            return topMoneySpenders.Distinct(new CustomerHotelIdComparer()).Take(5);
+        }//end GetTopCustomerForManagerAsync
+
         public async Task<Customer> GetCustomerDetails(string id)
         {
             return await _customers.Where(c => c.AppUserId == id)
