@@ -43,18 +43,17 @@ namespace hotel_booking_data.Repositories.Implementations
         public async Task<IEnumerable<Customer>> GetTopCustomerForManagerAsync(string managerId)
         {
             var query = _customers.AsNoTracking()
-                            .Include(c => c.Bookings).ThenInclude(bk => bk.Hotel)
-                            .Include(c => c.Bookings).ThenInclude(bk => bk.Payment)
-                            .Where(c => c.Bookings.Where(bk => bk.Hotel.ManagerId == managerId).Count() > 0);
+                        .Where(c => c.Bookings.Where(bk => bk.Hotel.ManagerId == managerId).Count() > 0)
+                        .Include(c => c.Bookings.Where(x => x.Hotel.ManagerId == managerId && x.PaymentStatus == true)).ThenInclude(bk => bk.Hotel)
+                        .Include(c => c.Bookings.Where(x => x.Hotel.ManagerId == managerId && x.PaymentStatus == true)).ThenInclude(bk => bk.Payment);
 
             if (query.Count() == 0) return null;
 
-            var topMoneySpenders = await query.OrderByDescending(c => c.Bookings.Where(x => x.Hotel.ManagerId == managerId && x.PaymentStatus == true)
-                                              .Sum(bk => bk.Payment.Amount)).Take(3).ToListAsync();
+            var topMoneySpenders = await query.OrderByDescending(c => c.Bookings.Sum(bk => bk.Payment.Amount)).Take(3).ToListAsync();
 
-            var topFrequentUsers = await query.OrderByDescending(c => c.Bookings.Where(x => x.Hotel.ManagerId == managerId && x.PaymentStatus == true).Count()).ToListAsync();
+            var topFrequentUsers = await query.OrderByDescending(c => c.Bookings.Count).Take(5).ToListAsync();
 
-            topMoneySpenders.InsertRange(3, topFrequentUsers);
+            topMoneySpenders.AddRange(topFrequentUsers);
 
             return topMoneySpenders.Distinct(new CustomerHotelIdComparer()).Take(5);
         }//end GetTopCustomerForManagerAsync
