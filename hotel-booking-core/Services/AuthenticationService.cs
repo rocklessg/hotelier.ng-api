@@ -387,6 +387,21 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-
+        public async Task<bool> ValidateUserRole(string userId, string[] roles)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var userRoles = await _userManager.GetRolesAsync(user);
+            bool result = false;
+            foreach (var role in userRoles)
+            {
+                if (roles.Contains(role))
+                {
+                    result = true;
+                    break;
+                }
+            }
+            _logger.Information($"User with ID {userId} was {(result ? "Validated" : "Not validated")}");
+            return result;
+        }
     }
 }

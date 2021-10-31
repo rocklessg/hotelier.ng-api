@@ -203,23 +203,38 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<AddRoomResponseDto>> AddHotelRoom(string hotelId, AddRoomDto roomDto)
         {
-            Room room = _mapper.Map<Room>(roomDto);
-
+ 
+            var response = new Response<AddRoomResponseDto>();
             var checkHotelId = await _unitOfWork.Hotels.GetHotelEntitiesById(hotelId);
             if (checkHotelId == null)
-                return Response<AddRoomResponseDto>.Fail("Hotel Not Found");
+            {
+                response.Succeeded = false;
+                response.Data = null;
+                response.Message = "Hotel Not Found";
+                response.StatusCode = (int) HttpStatusCode.NotFound;
+                return response;
+            }
 
+            var checkRoomType = await _unitOfWork.RoomType.CheckForRoomTypeAsync(roomDto.RoomTypeId);
+
+            if (checkRoomType == null)
+            {
+                response.Succeeded = false;
+                response.Data = null;
+                response.Message = "Roomtype not on the list";
+                response.StatusCode = (int)HttpStatusCode.NotFound;
+                return response;
+            }
+            var room = _mapper.Map<Room>(roomDto);
             await _unitOfWork.Rooms.InsertAsync(room);
             await _unitOfWork.Save();
             var roomResponse = _mapper.Map<AddRoomResponseDto>(room);
 
-            var response = new Response<AddRoomResponseDto>()
-            {
-                StatusCode = StatusCodes.Status200OK,
-                Succeeded = true,
-                Data = roomResponse,
-                Message = $"Room with id {room.Id} added to Hotel with id {hotelId}"
-            };
+
+            response.Succeeded = true;
+            response.Data = roomResponse;
+            response.Message = $"Room with id {room.Id} added to Hotel with id {hotelId}";
+            response.StatusCode = (int) HttpStatusCode.OK;
             return response;
         }
 
