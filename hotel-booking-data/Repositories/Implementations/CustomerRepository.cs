@@ -44,6 +44,7 @@ namespace hotel_booking_data.Repositories.Implementations
         {
             var query = _customers.AsNoTracking()
                         .Where(c => c.Bookings.Where(bk => bk.Hotel.ManagerId == managerId).Count() > 0)
+                        .Include(c => c.AppUser)
                         .Include(c => c.Bookings.Where(x => x.Hotel.ManagerId == managerId && x.PaymentStatus == true)).ThenInclude(bk => bk.Hotel)
                         .Include(c => c.Bookings.Where(x => x.Hotel.ManagerId == managerId && x.PaymentStatus == true)).ThenInclude(bk => bk.Payment);
 
