@@ -213,7 +213,16 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             //AppUser Maps
             CreateMap<AppUser, ManagerResponseDto>().ReverseMap();
-
+            CreateMap<Customer, TopManagerCustomers>()
+                .ForMember(d => d.FirstName, o => o.MapFrom(u => u.AppUser.FirstName))
+                .ForMember(d => d.LastName, o => o.MapFrom(u => u.AppUser.LastName))
+                .ForMember(d => d.Gender, o => o.MapFrom(u => u.AppUser.Gender))
+                .ForMember(d => d.Email, o => o.MapFrom(u => u.AppUser.Email))
+                .ForMember(d => d.Avatar, o => o.MapFrom(u => u.AppUser.Avatar))
+                .ForMember(d => d.CustomerId, o => o.MapFrom(u => u.AppUserId))
+                .ForMember(d => d.NumberOfBookedTimes, o => o.MapFrom(u => u.Bookings.Count))
+                .ForMember(d => d.TotalAmountSpent, o => o.MapFrom(u => u.Bookings.Sum(bk => bk.Payment.Amount)))
+                .ReverseMap();
             //Manager Request Map
 
             CreateMap<ManagerRequest, ManagerRequestDto>().ReverseMap();

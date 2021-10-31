@@ -16,6 +16,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Transactions;
+using hotel_booking_dto.CustomerDtos;
 using hotel_booking_utilities.Pagination;
 using hotel_booking_dto.commons;
 
@@ -351,6 +352,14 @@ namespace hotel_booking_core.Services
             }
 
             return buffer;
+        }
+
+        public async Task<Response<IEnumerable<TopManagerCustomers>>> GetManagerTopCustomers(string managerId)
+        {
+            var result = await _unitOfWork.Customers.GetTopCustomerForManagerAsync(managerId);
+            var dtos = _mapper.Map<IEnumerable<TopManagerCustomers>>(result);
+            var response = new Response<IEnumerable<TopManagerCustomers>>(StatusCodes.Status200OK,true,"Top Customers for Manager", dtos);
+            return response;
         }
     }
 }

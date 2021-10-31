@@ -115,6 +115,14 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet]
+        [Route("{managerId}/top-customers")]
+        public async Task<IActionResult> GetTopCustomers(string managerId)
+        {
+            var response = await _managerService.GetManagerTopCustomers(managerId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpGet]
         [Route("HotelManagers")]
         [Authorize(Policy = Policies.Admin)]
         public async Task<IActionResult> GetAllHotelManagers([FromQuery]PagingDto paging)
