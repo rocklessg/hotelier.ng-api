@@ -40,7 +40,7 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.RoomType, y => y.MapFrom(src => src.Room.Roomtype.Name))
                 .ForMember(x => x.RoomNo, y => y.MapFrom(src => src.Room.RoomNo))
                 .ForMember(x => x.PaymentReference, y => y.MapFrom(src => src.Payment.TransactionReference))
-                .ForMember(x => x.PaymentStatus, y => y.MapFrom(src => src.Payment.Status))
+                .ForMember(x => x.PaymentStatus, y => y.MapFrom(src => src.PaymentStatus))
                 .ForMember(x => x.Hotel, y => y.MapFrom(src => src.Room.Roomtype.Hotel.Name))
                 .ForMember(x => x.Price, y => y.MapFrom(src => src.Room.Roomtype.Price));
             CreateMap<Booking, GetBookingResponseDto>()
@@ -112,6 +112,19 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
+            CreateMap<Customer, CustomerDetailsToReturnDto>()
+                .ForMember(x => x.FirstName, y => y.MapFrom(u => u.AppUser.FirstName))
+                .ForMember(x => x.LastName, y => y.MapFrom(u => u.AppUser.LastName))
+                .ForMember(x => x.Age, y => y.MapFrom(u => u.AppUser.Age))
+                .ForMember(x => x.Id, y => y.MapFrom(u => u.AppUser.Id))
+                .ForMember(x => x.Email, y => y.MapFrom(u => u.AppUser.Email))
+                .ForMember(x => x.PhoneNumber, y => y.MapFrom(u => u.AppUser.PhoneNumber))
+                .ForMember(x => x.UserName, y => y.MapFrom(u => u.AppUser.UserName))
+                .ForMember(x => x.Age, y => y.MapFrom(u => u.AppUser.Age))
+                .ForMember(x => x.CreditCard, y => y.MapFrom(u => u.CreditCard))
+                .ForMember(x => x.Address, y => y.MapFrom(u => u.Address))
+                .ForMember(x => x.State, y => y.MapFrom(u => u.State))
+                .ForMember(x => x.Avatar, y => y.MapFrom(u => u.AppUser.Avatar));
 
 
             //TransactionResponse Mapper
@@ -200,12 +213,43 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             //AppUser Maps
             CreateMap<AppUser, ManagerResponseDto>().ReverseMap();
-
+            CreateMap<Customer, TopManagerCustomers>()
+                .ForMember(d => d.FirstName, o => o.MapFrom(u => u.AppUser.FirstName))
+                .ForMember(d => d.LastName, o => o.MapFrom(u => u.AppUser.LastName))
+                .ForMember(d => d.Gender, o => o.MapFrom(u => u.AppUser.Gender))
+                .ForMember(d => d.Email, o => o.MapFrom(u => u.AppUser.Email))
+                .ForMember(d => d.Avatar, o => o.MapFrom(u => u.AppUser.Avatar))
+                .ForMember(d => d.CustomerId, o => o.MapFrom(u => u.AppUserId))
+                .ForMember(d => d.NumberOfBookedTimes, o => o.MapFrom(u => u.Bookings.Count))
+                .ForMember(d => d.TotalAmountSpent, o => o.MapFrom(u => u.Bookings.Sum(bk => bk.Payment.Amount)))
+                .ReverseMap();
             //Manager Request Map
 
             CreateMap<ManagerRequest, ManagerRequestDto>().ReverseMap();
             CreateMap<ManagerRequest, ManagerRequestResponseDTo>()
                 .ForMember(x => x.Confirmed, y => y.MapFrom(src => src.ConfirmationFlag ? "Confirmed" : "Notconfirmed"));
+
+
+            CreateMap<Manager, HotelManagersDto>()
+                .ForMember(x => x.ManagerId, y => y.MapFrom(z => z.AppUser.Id))
+                .ForMember(x => x.Age, y => y.MapFrom(z => z.AppUser.Age))
+                .ForMember(x => x.AccountName, y => y.MapFrom(z => z.AccountName))
+                .ForMember(x => x.AccountNumber, y => y.MapFrom(z => z.AccountNumber))
+                .ForMember(x => x.Avatar, y => y.MapFrom(z => z.AppUser.Avatar))
+                .ForMember(x => x.BusinessEmail, y => y.MapFrom(z => z.BusinessEmail))
+                .ForMember(x => x.BusinessPhone, y => y.MapFrom(z => z.BusinessPhone))
+                .ForMember(x => x.CompanyAddress, y => y.MapFrom(z => z.CompanyAddress))
+                .ForMember(x => x.CompanyName, y => y.MapFrom(z => z.CompanyName))
+                .ForMember(x => x.CreatedAt, y => y.MapFrom(z => z.AppUser.CreatedAt))
+                .ForMember(x => x.UpdatedAt, y => y.MapFrom(z => z.AppUser.UpdatedAt))
+                .ForMember(x => x.FirstName, y => y.MapFrom(z => z.AppUser.FirstName))
+                .ForMember(x => x.LastName, y => y.MapFrom(z => z.AppUser.LastName))
+                .ForMember(x => x.State, y => y.MapFrom(z => z.State))
+                .ForMember(x => x.IsActive, y => y.MapFrom(z => z.AppUser.IsActive))
+                .ForMember(x => x.Gender, y => y.MapFrom(z => z.AppUser.Gender))
+                .ForMember(x => x.TotalHotels, y => y.MapFrom(z => z.Hotels.Count))
+                .ForMember(x => x.TotalAmount,
+                y => y.MapFrom(x => x.Hotels.Select(x => x.Bookings.Select(x => x.Payment.Amount).Sum()).Sum()));
         }
     }
 }

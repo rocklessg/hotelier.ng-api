@@ -1,5 +1,6 @@
 ﻿using hotel_booking_core.Interfaces;
 using hotel_booking_dto;
+using hotel_booking_dto.commons;
 using hotel_booking_dto.ManagerDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -46,7 +47,7 @@ namespace hotel_booking_api.Controllers
 
         public async Task<ActionResult<Response<string>>> UpdateManager([FromBody] UpdateManagerDto model)
         {
-           
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             _logger.Information($"Update Attempt for user with id = {userId}");
@@ -56,7 +57,7 @@ namespace hotel_booking_api.Controllers
 
         [HttpPost]
         [Route("request")]
-        public async Task<IActionResult> AddHotelManagerRequest([FromBody]ManagerRequestDto managerRequestDto)
+        public async Task<IActionResult> AddHotelManagerRequest([FromBody] ManagerRequestDto managerRequestDto)
         {
             var newManagerRequest = await _managerService.AddManagerRequest(managerRequestDto);
             _logger.Information($"Request to join is successfully added to the database");
@@ -84,11 +85,11 @@ namespace hotel_booking_api.Controllers
         [HttpGet]
         [Route("getall-request")]
         public async Task<IActionResult> GetAllRequests()
-        
+
         {
             var getAll = await _managerService.GetAllManagerRequest();
             return Ok(getAll);
-           
+
         }
         [HttpPatch("{managerId}/deactivate")]
         public async Task<ActionResult> SoftDeleteAsync(string managerId)
@@ -110,6 +111,23 @@ namespace hotel_booking_api.Controllers
         public async Task<IActionResult> GetAllHotels(string managerId)
         {
             var response = await _managerService.GetAllHotelsAsync(managerId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpGet]
+        [Route("{managerId}/top-customers")]
+        public async Task<IActionResult> GetTopCustomers(string managerId)
+        {
+            var response = await _managerService.GetManagerTopCustomers(managerId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpGet]
+        [Route("HotelManagers")]
+        [Authorize(Policy = Policies.Admin)]
+        public async Task<IActionResult> GetAllHotelManagers([FromQuery]PagingDto paging)
+        {
+            var response =  await _managerService.GetAllHotelManagersAsync(paging);
             return StatusCode(response.StatusCode, response);
         }
     }

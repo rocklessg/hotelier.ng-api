@@ -16,6 +16,9 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Transactions;
+using hotel_booking_dto.CustomerDtos;
+using hotel_booking_utilities.Pagination;
+using hotel_booking_dto.commons;
 
 namespace hotel_booking_core.Services
 {
@@ -109,6 +112,14 @@ namespace hotel_booking_core.Services
             return response;
 
         }
+
+        public async Task<Response<PageResult<IEnumerable<HotelManagersDto>>>> GetAllHotelManagersAsync(PagingDto paging)
+        {
+            var hotelManagers = _unitOfWork.Managers.GetHotelManagersAsync();
+            var item = await hotelManagers.PaginationAsync<Manager, HotelManagersDto>(paging.PageSize, paging.PageNumber, _mapper);
+            return Response<PageResult<IEnumerable<HotelManagersDto>>>.Success("Success", item); ;
+        }
+
         public async Task<Response<string>> UpdateManager(string managerId, UpdateManagerDto updateManager)
         {
             var response = new Response<string>();
@@ -341,6 +352,14 @@ namespace hotel_booking_core.Services
             }
 
             return buffer;
+        }
+
+        public async Task<Response<IEnumerable<TopManagerCustomers>>> GetManagerTopCustomers(string managerId)
+        {
+            var result = await _unitOfWork.Customers.GetTopCustomerForManagerAsync(managerId);
+            var dtos = _mapper.Map<IEnumerable<TopManagerCustomers>>(result);
+            var response = new Response<IEnumerable<TopManagerCustomers>>(StatusCodes.Status200OK,true,"Top Customers for Manager", dtos);
+            return response;
         }
     }
 }

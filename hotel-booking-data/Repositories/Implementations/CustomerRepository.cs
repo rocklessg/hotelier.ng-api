@@ -1,12 +1,11 @@
 ﻿using hotel_booking_data.Contexts;
-using hotel_booking_models;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using hotel_booking_data.Repositories.Abstractions;
+using hotel_booking_models;
+using hotel_booking_utilities.Comparer;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System;
-using System.Linq.Expressions;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
@@ -38,7 +37,33 @@ namespace hotel_booking_data.Repositories.Implementations
 
         public IQueryable<Customer> GetAllUsers()
         {
-           return _customers.Include(x => x.AppUser);
+            return _customers.Include(x => x.AppUser);
+        }
+
+        public async Task<IEnumerable<Customer>> GetTopCustomerForManagerAsync(string managerId)
+        {
+            var query = _customers.AsNoTracking()
+                        .Where(c => c.Bookings.Where(bk => bk.Hotel.ManagerId == managerId).Count() > 0)
+                        .Include(c => c.AppUser)
+                        .Include(c => c.Bookings.Where(x => x.Hotel.ManagerId == managerId && x.PaymentStatus == true)).ThenInclude(bk => bk.Hotel)
+                        .Include(c => c.Bookings.Where(x => x.Hotel.ManagerId == managerId && x.PaymentStatus == true)).ThenInclude(bk => bk.Payment);
+
+            if (query.Count() == 0) return null;
+
+            var topMoneySpenders = await query.OrderByDescending(c => c.Bookings.Sum(bk => bk.Payment.Amount)).Take(3).ToListAsync();
+
+            var topFrequentUsers = await query.OrderByDescending(c => c.Bookings.Count).Take(5).ToListAsync();
+
+            topMoneySpenders.AddRange(topFrequentUsers);
+
+            return topMoneySpenders.Distinct(new CustomerHotelIdComparer()).Take(5);
+        }//end GetTopCustomerForManagerAsync
+
+        public async Task<Customer> GetCustomerDetails(string id)
+        {
+            return await _customers.Where(c => c.AppUserId == id)
+                .Include(c => c.AppUser)
+                .FirstOrDefaultAsync();
         }
     }
 }
