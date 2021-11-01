@@ -7,6 +7,7 @@ using hotel_booking_utilities.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using hotel_booking_dto.BookingDtos;
 
 namespace hotel_booking_core.Interfaces
 {
@@ -23,6 +24,7 @@ namespace hotel_booking_core.Interfaces
         Task<Response<IEnumerable<TopManagerCustomers>>> GetManagerTopCustomers(string managerId);
         Task<Response<string>> UpdateManager(string managerId, UpdateManagerDto updateManager);
         Task<Response<PageResult<IEnumerable<HotelManagersDto>>>> GetAllHotelManagersAsync(PagingDto paging);
+        Task<Response<PageResult<IEnumerable<BookingResponseDto>>>> GetManagerBookings(string managerId, int pageSize, int pageNumber);
 
     }
 }
