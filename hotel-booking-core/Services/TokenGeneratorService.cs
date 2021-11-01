@@ -54,7 +54,7 @@ namespace hotel_booking_utilities
             (audience: _configuration["JwtSettings:Audience"],
              issuer: _configuration["JwtSettings:Issuer"],
              claims: authClaims,
-             expires: DateTime.Now.AddMinutes(30),
+             expires: DateTime.Now.AddHours(2),
              signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256));
 
             return new JwtSecurityTokenHandler().WriteToken(token);
