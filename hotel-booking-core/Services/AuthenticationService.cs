@@ -10,14 +10,20 @@ using hotel_booking_models;
 using hotel_booking_models.Mail;
 using hotel_booking_utilities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using hotel_booking_utilities.EmailBodyHelper;
+using Microsoft.AspNetCore.WebUtilities;
+using Org.BouncyCastle.Asn1.Ocsp;
+using PayStack.Net;
 
 namespace hotel_booking_core.Services
 {
@@ -30,10 +36,14 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
         private readonly ITokenRepository _tokenRepository;
-        
+        private readonly IEmailBodyBuilder _emailBodyBuilder;
+
+
+       
+
 
         public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ILogger logger,
-            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator, ITokenRepository tokenRepository)
+            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator, ITokenRepository tokenRepository, IEmailBodyBuilder emailBodyBuilder)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -42,6 +52,7 @@ namespace hotel_booking_core.Services
             _unitOfWork = unitOfWork;
             _logger = logger;
             _tokenRepository = tokenRepository;
+            _emailBodyBuilder = emailBodyBuilder;
 
         }
 
@@ -99,7 +110,8 @@ namespace hotel_booking_core.Services
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = TokenConverter.EncodeToken(token);
 
-            var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "reset-password", encodedToken);
+            var mailBody = await _emailBodyBuilder.GetEmailBody(user, emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "ResetPassword", encodedToken, controllerName: "Authentication");
+
 
             var mailRequest = new MailRequest()
             {
@@ -122,8 +134,9 @@ namespace hotel_booking_core.Services
             response.Message = "Something went wrong. Please try again.";
             response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
             return response;
-        }       
-      
+        }
+
+
         /// <summary>
         /// Logs in a user
         /// </summary>
@@ -132,11 +145,12 @@ namespace hotel_booking_core.Services
         public async Task<Response<LoginResponseDto>> Login(LoginDto model)
         {
             var response = new Response<LoginResponseDto>();
-
+            _logger.Information("Login Attempt");
             var validityResult = await ValidateUser(model);
 
             if (!validityResult.Succeeded)
             {
+                _logger.Error("Login operation failed");
                 response.Message = validityResult.Message;
                 response.StatusCode = validityResult.StatusCode;
                 response.Succeeded = false;
@@ -156,6 +170,7 @@ namespace hotel_booking_core.Services
             
             await _userManager.UpdateAsync(user);
 
+            _logger.Information("User successfully logged in");
             response.StatusCode = (int)HttpStatusCode.OK;
             response.Message = "Login Successfully";
             response.Data = result;
@@ -181,7 +196,7 @@ namespace hotel_booking_core.Services
                     await _userManager.AddToRoleAsync(user, UserRoles.Customer);
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var encodedToken = TokenConverter.EncodeToken(token);
-                    var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ConfirmEmail.html", linkName: "confirm-email", encodedToken);
+                    var mailBody = await _emailBodyBuilder.GetEmailBody(user, emailTempPath: "StaticFiles/Html/ConfirmEmail.html", linkName: "ConfirmEmail", encodedToken, controllerName: "Authentication");
                     var mailRequest = new MailRequest()
                     {
                         Subject = "Confirm Your Registration",
@@ -230,6 +245,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<string>> ResetPassword(ResetPasswordDto model)
         {
             var response = new Response<string>();
+            _logger.Information("Reset password attempt");
             var user = await _userManager.FindByEmailAsync(model.Email);
             
             if (user == null)
@@ -342,18 +358,7 @@ namespace hotel_booking_core.Services
         }
 
         
-        private static async Task<string> GetEmailBody(AppUser user, string emailTempPath, string linkName, string token)
-        {
-            TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
-            var userName = textInfo.ToTitleCase(user.FirstName);
-
-
-            var link = $"http://www.example.com/{linkName}/{token}/{user.Email}";
-            var temp = await File.ReadAllTextAsync(Path.Combine(Directory.GetCurrentDirectory(), emailTempPath));
-            var newTemp =  temp.Replace("**link**", link);
-            var emailBody = newTemp.Replace("**User**", userName);
-            return emailBody;
-        }
+      
 
         public async Task<Response<RefreshTokenToReturnDto>> RefreshToken(RefreshTokenRequestDto token)
         {

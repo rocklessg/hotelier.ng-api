@@ -19,6 +19,7 @@ using System.Transactions;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_utilities.Pagination;
 using hotel_booking_dto.commons;
+using hotel_booking_utilities.EmailBodyHelper;
 
 namespace hotel_booking_core.Services
 {
@@ -29,15 +30,17 @@ namespace hotel_booking_core.Services
         private readonly IMailService _mailService;
         private readonly ILogger _logger;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IEmailBodyBuilder _emailBodyBuilder;
 
         public ManagerService(IMapper mapper, IUnitOfWork unitOfWork, 
-            IMailService mailService, ILogger logger, UserManager<AppUser> userManager)
+            IMailService mailService, ILogger logger, UserManager<AppUser> userManager, IEmailBodyBuilder emailBodyBuilder)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _mailService = mailService;
             _logger = logger;
+            _emailBodyBuilder = emailBodyBuilder;
         }
 
         public async Task<Response<ManagerResponseDto>> AddManagerAsync(ManagerDto managerDto)
@@ -256,7 +259,9 @@ namespace hotel_booking_core.Services
                 if (getUser == null && check != null)
                 {
                     var newGuid = Guid.Parse(check.Token);
-                    var mailBody = await GetEmailBody(emailTempPath: "StaticFiles/Html/ManagerInvite.html", token: Encode(newGuid), email);
+                    var mailBody = await _emailBodyBuilder.GetEmailBody(linkName: "SendManagerInvite",
+                        emailTempPath: "StaticFiles/Html/ManagerInvite.html", token: Encode(newGuid), email,
+                        controllerName: "Manager");
 
                     var mailRequest = new MailRequest()
                     {
@@ -323,13 +328,8 @@ namespace hotel_booking_core.Services
                 .Success("All manager requests", mapResponse, StatusCodes.Status200OK); 
         }
 
-        private static async Task<string> GetEmailBody(string emailTempPath, string token, string email)
-        {
-            var link = $"https://hoteldotnet.herokuapp.com/Manager/validate-email?{email}&token={token}";
-            var temp = await File.ReadAllTextAsync(Path.Combine(Directory.GetCurrentDirectory(), emailTempPath));
-            var emailBody = temp.Replace("**link**", link);
-            return emailBody;
-        }
+
+       
 
         private string Encode(Guid guid)
         {
