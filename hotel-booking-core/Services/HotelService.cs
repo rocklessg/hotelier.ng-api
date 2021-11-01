@@ -58,7 +58,7 @@ namespace hotel_booking_core.Services
                     return response;
                 }
                 response.Succeeded = false;
-                response.Message = $"RoomType already exists";
+                response.Message = $"A room type already exists with the given name";
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return response;
             }
