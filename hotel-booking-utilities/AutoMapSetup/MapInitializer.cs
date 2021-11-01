@@ -48,6 +48,9 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.Hotel, y => y.MapFrom(src => src.Hotel.Name))
                 .ForMember(x => x.RoomNumber, y => y.MapFrom(src => src.Room.RoomNo))
                 .ForMember(x => x.Price, y => y.MapFrom(src => src.Room.Roomtype.Price));
+            CreateMap<Booking, BookingResponseDto>()
+                .ForMember(x => x.Hotel, y => y.MapFrom(src => src.Hotel.Name))
+                .ForMember(x => x.CustomerName, y => y.MapFrom(src => $"{src.Customer.AppUser.FirstName} {src.Customer.AppUser.LastName}"));
             CreateMap<Customer, TopCustomerDto>()
                 .ForMember(x => x.FirstName, y => y.MapFrom(src => src.AppUser.FirstName))
                 .ForMember(x => x.LastName, y => y.MapFrom(src => src.AppUser.LastName))
