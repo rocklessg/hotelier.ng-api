@@ -17,7 +17,7 @@ namespace hotel_booking_utilities.AutoMapSetup
 {
     public class MapInitializer : Profile
     {
-        public MapInitializer()
+        public MapInitializer ()
         {
             // Authentication Maps
             CreateMap<AppUser, RegisterUserDto>().ReverseMap();
@@ -69,7 +69,7 @@ namespace hotel_booking_utilities.AutoMapSetup
 
             CreateMap<UpdateHotelDto, Hotel>().ReverseMap();
 
-            CreateMap<Hotel, HotelBasicDto>() 
+            CreateMap<Hotel, HotelBasicDto>()
                 .ForMember(x => x.FeaturedImage, y => y.MapFrom(src => src.Galleries.FirstOrDefault(opt => opt.IsFeature).ImageUrl))
                 .ForMember(x => x.Rating, y => y.MapFrom(src => src.Ratings.Count == 0 ? 5 : (double)src.Ratings.Sum(r => r.Ratings) / ((double)src.Ratings.Count)))
                 .ForMember(x => x.NumberOfReviews, y => y.MapFrom(src => src.Reviews.Count));
@@ -90,7 +90,7 @@ namespace hotel_booking_utilities.AutoMapSetup
                .ForMember(hotel => hotel.Gallery, opt => opt.MapFrom(src => src.Galleries.Select(gallery => gallery.ImageUrl).ToList()));
 
             CreateMap<Payment, TransactionsDto>().ReverseMap();
-             
+
 
             // Room Maps
             CreateMap<Room, AddRoomDto>().ReverseMap();
@@ -101,6 +101,7 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<RoomType, RoomInfoDto>().ReverseMap();
             CreateMap<RoomType, RoomTypeByHotelDTo>();
             CreateMap<RoomType, RoomTypeDto>();
+            CreateMap<RoomType, RoomTypeRequestDto>().ReverseMap();
 
 
             // Rating Maps
@@ -139,7 +140,7 @@ namespace hotel_booking_utilities.AutoMapSetup
                  .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Payment.Amount))
                  .ForMember(x => x.PaymentMethod, y => y.MapFrom(s => s.Customer.AppUserId))
                  .ForMember(x => x.CustomerName, y => y.MapFrom(s => s.Customer.AppUser.FirstName + " " + s.Customer.AppUser.LastName));
-        
+
 
             // aminity
             CreateMap<Amenity, AmenityDto>();
@@ -149,7 +150,7 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(review => review.CustomerImage, opt => opt.MapFrom(review => review.Customer.AppUser.Avatar))
                 .ForMember(review => review.Text, opt => opt.MapFrom(review => review.Comment))
                 .ForMember(review => review.Date, opt => opt.MapFrom(review => review.CreatedAt.ToShortDateString()));
-        
+
             CreateMap<Customer, GetUsersResponseDto>()
                 .ForMember(x => x.FirstName, y => y.MapFrom(u => u.AppUser.FirstName))
                 .ForMember(x => x.LastName, y => y.MapFrom(u => u.AppUser.LastName))
