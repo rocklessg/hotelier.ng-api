@@ -69,6 +69,14 @@ namespace hotel_booking_core.Services
 
         }
 
+        public async Task<Response<IEnumerable<HotelCustomersDto>>> GetCustomersByHotelId (string hotelId)
+        {
+            var bookings = await _unitOfWork.Hotels.GetCustomersByHotelId(hotelId);
+            var customers = _mapper.Map<IEnumerable<HotelCustomersDto>>(bookings);
+            return new Response<IEnumerable<HotelCustomersDto>>(StatusCodes.Status200OK, true, "Customers of this hotel are as follows", customers);
+
+        }
+
         public async Task<Response<IEnumerable<HotelBasicDetailsDto>>> GetHotelsByRatingsAsync ()
         {
             var hotelList = await _unitOfWork.Hotels.GetHotelsByRating().ToListAsync();

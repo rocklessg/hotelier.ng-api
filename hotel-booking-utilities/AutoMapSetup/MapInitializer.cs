@@ -61,6 +61,16 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.Thumbnail, y => y.MapFrom(src => src.Galleries.FirstOrDefault(opt => opt.IsFeature).ImageUrl))
                 .ForMember(x => x.PercentageRating, y => y.MapFrom(src => src.Ratings.Count == 0 ? 100 : (double)src.Ratings.Sum(r => r.Ratings) * 100 / ((double)src.Ratings.Count * 5)))
                 .ForMember(x => x.Price, y => y.MapFrom(src => src.RoomTypes.OrderBy(rt => rt.Price).FirstOrDefault().Price));
+            CreateMap<Booking, HotelCustomersDto>()
+                .ForMember(x => x.FirstName, y => y.MapFrom(src => src.Customer.AppUser.FirstName))
+                .ForMember(x => x.LastName, y => y.MapFrom(src => src.Customer.AppUser.LastName))
+                .ForMember(x => x.Gender, y => y.MapFrom(src => src.Customer.AppUser.Gender))
+                .ForMember(x => x.PhoneNumber, y => y.MapFrom(src => src.Customer.AppUser.PhoneNumber))
+                .ForMember(x => x.State, y => y.MapFrom(src => src.Customer.State))
+                .ForMember(x => x.Age, y => y.MapFrom(src => src.Customer.AppUser.Age))
+                .ForMember(x => x.Email, y => y.MapFrom(src => src.Customer.AppUser.Email));
+
+
 
 
             CreateMap<RoomType, RoomInfoDto>()

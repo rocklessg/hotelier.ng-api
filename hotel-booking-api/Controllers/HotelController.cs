@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -75,6 +76,13 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [HttpGet]
+        [Route("{hotelId}/customers")]
+        public async Task<IActionResult> GetCustomersByHotelId (string hotelId)
+        {
+            var response = await _hotelService.GetCustomersByHotelId(hotelId);
+            return Ok(response);
+        }
 
         [HttpGet]
         [Route("top-hotels")]

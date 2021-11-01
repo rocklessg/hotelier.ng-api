@@ -80,6 +80,11 @@ namespace hotel_booking_data.Repositories.Implementations
             return check == null;
         }
 
+        public async Task<List<Booking>> GetCustomersByHotelId (string hotelId)
+        {
+            return await _context.Bookings.Where(x => x.HotelId == hotelId).Include(x => x.Customer).ThenInclude(x => x.AppUser).ToListAsync();
+        }
+
         public Hotel GetHotelByIdForAddAmenity (string id)
         {
             return _context.Hotels.FirstOrDefault(x => x.Id == id);
