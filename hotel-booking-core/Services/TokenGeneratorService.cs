@@ -49,7 +49,7 @@ namespace hotel_booking_utilities
             (audience: _configuration["JwtSettings:Audience"],
              issuer: _configuration["JwtSettings:Issuer"],
              claims: authClaims,
-             expires: DateTime.Now.AddMinutes(10),
+             expires: DateTime.Now.AddMinutes(30),
              signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256));
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -57,13 +57,7 @@ namespace hotel_booking_utilities
 
         public Guid GenerateRefreshToken()
         {
-            /*var randomNumber = new byte[32];
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);*/
-            Guid g = Guid.NewGuid();
-
-            return g;
+            return Guid.NewGuid();
         }
 
 
