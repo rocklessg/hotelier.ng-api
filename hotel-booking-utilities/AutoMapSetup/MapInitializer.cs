@@ -48,6 +48,9 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.Hotel, y => y.MapFrom(src => src.Hotel.Name))
                 .ForMember(x => x.RoomNumber, y => y.MapFrom(src => src.Room.RoomNo))
                 .ForMember(x => x.Price, y => y.MapFrom(src => src.Room.Roomtype.Price));
+            CreateMap<Booking, BookingResponseDto>()
+                .ForMember(x => x.Hotel, y => y.MapFrom(src => src.Hotel.Name))
+                .ForMember(x => x.CustomerName, y => y.MapFrom(src => $"{src.Customer.AppUser.FirstName} {src.Customer.AppUser.LastName}"));
             CreateMap<Customer, TopCustomerDto>()
                 .ForMember(x => x.FirstName, y => y.MapFrom(src => src.AppUser.FirstName))
                 .ForMember(x => x.LastName, y => y.MapFrom(src => src.AppUser.LastName))
@@ -249,7 +252,13 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.Gender, y => y.MapFrom(z => z.AppUser.Gender))
                 .ForMember(x => x.TotalHotels, y => y.MapFrom(z => z.Hotels.Count))
                 .ForMember(x => x.TotalAmount,
-                y => y.MapFrom(x => x.Hotels.Select(x => x.Bookings.Select(x => x.Payment.Amount).Sum()).Sum()));
+                    y => y.MapFrom(x => x.Hotels.Select(x => x.Bookings.Select(x => x.Payment.Amount).Sum()).Sum()))
+                .ForMember(x => x.HotelNames, y => y.MapFrom(z => z.Hotels.Select(q => q.Name)))
+                .ForMember(x => x.HotelLocations, y => y.MapFrom(z => z.Hotels.Select(q => q.Address)))
+                .ForMember(x => x.ManagerEmail, y => y.MapFrom(z => z.AppUser.Email))
+                .ForMember(x => x.ManagerPhone, y => y.MapFrom(z => z.AppUser.PhoneNumber))
+                ;
+
         }
     }
 }

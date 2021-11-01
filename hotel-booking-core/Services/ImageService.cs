@@ -33,7 +33,7 @@ namespace hotel_booking_core.Services
 
             foreach (var item in listOfImageExtensions)
             {
-                if (image.FileName.EndsWith(item))
+                if ((image.FileName.ToLower().EndsWith(item)))
                 {
                     pictureFormat = true;
                     break;
