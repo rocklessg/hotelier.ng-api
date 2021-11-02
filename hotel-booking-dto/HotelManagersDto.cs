@@ -29,7 +29,9 @@ namespace hotel_booking_dto
         public int TotalHotels { get; set; }
         public decimal TotalAmount { get; set; }
         public ICollection<string> HotelNames { get; set; }
-        public ICollection<string> HotelLocations { get; set; }
+        public ICollection<string> HotelStreet { get; set; }
+        public ICollection<string> HotelCity{ get; set; }
+        public ICollection<string> HotelState { get; set; }
         public string Avatar { get; set; }
     }
 }

@@ -265,7 +265,9 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.TotalAmount,
                     y => y.MapFrom(x => x.Hotels.Select(x => x.Bookings.Select(x => x.Payment.Amount).Sum()).Sum()))
                 .ForMember(x => x.HotelNames, y => y.MapFrom(z => z.Hotels.Select(q => q.Name)))
-                .ForMember(x => x.HotelLocations, y => y.MapFrom(z => z.Hotels.Select(q => q.Address)))
+                .ForMember(x => x.HotelStreet, y => y.MapFrom(z => z.Hotels.Select(q => q.Address)))
+                .ForMember(x => x.HotelCity, y => y.MapFrom(z => z.Hotels.Select(q => q.City)))
+                .ForMember(x => x.HotelState, y => y.MapFrom(z => z.Hotels.Select(q => q.State)))
                 .ForMember(x => x.ManagerEmail, y => y.MapFrom(z => z.AppUser.Email))
                 .ForMember(x => x.ManagerPhone, y => y.MapFrom(z => z.AppUser.PhoneNumber))
                 ;
