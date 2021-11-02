@@ -250,8 +250,7 @@ namespace hotel_booking_utilities.AutoMapSetup
             //Manager Request Map
 
             CreateMap<ManagerRequest, ManagerRequestDto>().ReverseMap();
-            CreateMap<ManagerRequest, ManagerRequestResponseDTo>()
-                .ForMember(x => x.Confirmed, y => y.MapFrom(src => src.ConfirmationFlag ? "Confirmed" : "Notconfirmed"));
+            CreateMap<ManagerRequest, ManagerRequestResponseDTo>();
 
 
             CreateMap<Manager, HotelManagersDto>()

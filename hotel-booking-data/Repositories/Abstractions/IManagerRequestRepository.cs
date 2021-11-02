@@ -1,6 +1,7 @@
 ﻿using hotel_booking_dto.ManagerDtos;
 using hotel_booking_models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Abstractions
@@ -9,6 +10,6 @@ namespace hotel_booking_data.Repositories.Abstractions
     {
         Task<ManagerRequest> GetHotelManagerRequestByEmail(string email);
         Task<ManagerRequest> GetHotelManagerByEmailToken(string email, string token);
-        Task<IEnumerable<ManagerRequest>> GetManagerRequest();
+        IQueryable<ManagerRequest> GetManagerRequest();
     }
 }

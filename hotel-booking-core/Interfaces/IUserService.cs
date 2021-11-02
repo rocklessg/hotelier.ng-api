@@ -17,7 +17,7 @@ namespace hotel_booking_core.Interfaces
     {
 
         Task<Response<string>> UpdateAppUser(string appUserId, UpdateAppUserDto updateAppUser);
-        Task<Response<UpdateUserImageDto>> UpdateUserPhoto(AddImageDto imageDto, string userId);
+        Task<Response<UpdateImageDto>> UpdateUserPhoto(AddImageDto imageDto, string userId);
     }
 }
 
