@@ -73,6 +73,12 @@ namespace hotel_booking_data.Repositories.Implementations
             return ratings;
         }
 
+        public async Task<RoomType> GetHotelRoomTypeById(string roomTypeId)
+        {
+            var hotelRoomTypes = await _context.RoomTypes.FirstOrDefaultAsync(x => x.Id == roomTypeId);
+            return hotelRoomTypes;
+        }
+
         public bool GetHotelWithRoomTypes (string hotelId, RoomTypeRequestDto model)
         {
             var hotelRoomTypes = _context.RoomTypes.Where(x => x.HotelId == hotelId).ToList();
@@ -93,7 +99,9 @@ namespace hotel_booking_data.Repositories.Implementations
 
         public async Task<Hotel> GetHotelById (string hotelId)
         {
-            var hotel = await _context.Hotels.Where(x => x.Id == hotelId).FirstOrDefaultAsync();
+            var hotel = await _context.Hotels
+                .Include(x => x.Galleries)
+                .Where(x => x.Id == hotelId).FirstOrDefaultAsync();
             return hotel;
         }
 

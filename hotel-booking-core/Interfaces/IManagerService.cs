@@ -18,7 +18,7 @@ namespace hotel_booking_core.Interfaces
         Task<Response<string>> SoftDeleteManagerAsync(string managerId);
         Task<Response<string>> AddManagerRequest(ManagerRequestDto managerRequest);
         Task<Response<bool>> SendManagerInvite(string email);
-        Task<Response<IEnumerable<ManagerRequestResponseDTo>>> GetAllManagerRequest();
+        Task<Response<PageResult<IEnumerable<ManagerRequestResponseDTo>>>> GetAllManagerRequest(PagingDto paging);
         Task<Response<bool>> CheckTokenExpiring(string email, string token);
         Task<Response<ManagerResponseDto>> AddManagerAsync(ManagerDto manager);
         Task<Response<IEnumerable<TopManagerCustomers>>> GetManagerTopCustomers(string managerId);

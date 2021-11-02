@@ -5,6 +5,7 @@ using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.RatingDtos;
 using hotel_booking_models;
+using hotel_booking_models.Cloudinary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -271,6 +272,26 @@ namespace hotel_booking_api.Controllers
         {
             var response = await _hotelService.GetHotelTransaction(hotelId, paging);
             return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpPost]
+        [Route("hotel-image")]
+        [Authorize(Policy = Policies.Manager)]
+        public async Task<IActionResult> UploadHotelImage([FromForm]AddImageDto imageDto, string hotelId)
+        {
+            _logger.Information($"Update Image Attempt for hotel with id = {hotelId}");
+            var result = await _hotelService.UpdateHotelImage(imageDto, hotelId);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("roomType-image")]
+        [Authorize(Policy = Policies.Manager)]
+        public async Task<IActionResult> UploadRoomTypeImage([FromForm] AddImageDto imageDto, string roomTypeId)
+        {
+            _logger.Information($"Update Image Attempt for hotel with id = {roomTypeId}");
+            var result = await _hotelService.UpdateRoomTypeImage(imageDto, roomTypeId);
+            return Ok(result);
         }
 
         [HttpGet]

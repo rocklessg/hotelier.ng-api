@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-using hotel_booking_data.Contexts;
+﻿using hotel_booking_data.Contexts;
 using hotel_booking_data.Repositories.Abstractions;
-using hotel_booking_dto;
-using hotel_booking_dto.ManagerDtos;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 
