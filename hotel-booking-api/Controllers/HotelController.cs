@@ -274,7 +274,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet]
-        [Route("roomTypedetails")]
+        [Route("roomTypedetails/{roomTypeId}")]
         [Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
