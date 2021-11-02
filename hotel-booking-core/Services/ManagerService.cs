@@ -269,7 +269,7 @@ namespace hotel_booking_core.Services
                     result = await _mailService.SendEmailAsync(mailRequest);
                     if (result)
                     {
-                    check.ConfirmationFlag = true;
+                        check.ConfirmationFlag = true;
                         check.ExpiresAt = DateTime.UtcNow.AddHours(24);
                         _unitOfWork.ManagerRequest.Update(check);
                         await _unitOfWork.Save();
