@@ -8,6 +8,7 @@ namespace hotel_booking_dto.RoomDtos
 {
     public class RoomTypeDetailsDto
     {
+        public string Name { get; set; }
         public string HotelName { get; set; }
         public string HotelAddress { get; set; }
         public string Thumbnail { get; set; }
