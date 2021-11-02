@@ -192,7 +192,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<string>> SoftDeleteManagerAsync(string managerId)
         {
             Manager manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
-            Response<string> response = new();
+           var response = new Response<string>();
 
             if (manager != null)
             {
