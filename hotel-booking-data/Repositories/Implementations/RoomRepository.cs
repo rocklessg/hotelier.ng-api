@@ -52,8 +52,8 @@ namespace hotel_booking_data.Repositories.Implementations
             return await _context.Rooms.Include(x => x.Roomtype)
                 .ThenInclude(x => x.Hotel).FirstOrDefaultAsync(x => x.Id == roomId);
         }
-        
 
+        
 
     }
 }

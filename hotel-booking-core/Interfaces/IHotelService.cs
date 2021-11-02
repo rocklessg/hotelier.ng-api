@@ -44,15 +44,26 @@ namespace hotel_booking_core.Interfaces
         /// <param name="paginator"></param>
         /// <returns>Returns an IEnumerable of hotels within the input location. Returns an empty array is search doesn't match any location in records</returns>
         Task<Response<PageResult<IEnumerable<GetAllHotelDto>>>> GetHotelByLocation(string location, PagingDto paging);
+        
         Task<Response<Dictionary<string, int>>> GetNumberOfHotelsPerLocation();
+       
         Task<Response<PageResult<IEnumerable<GetAllHotelDto>>>> GetAllHotelsAsync(PagingDto paging);
+        
         Task<Response<PageResult<IEnumerable<ReviewToReturnDto>>>> GetAllReviewsByHotelAsync(PagingDto paging,
             string hotelId);
 
         Task<Response<IEnumerable<TopCustomerDto>>> TopHotelCustomers(string hotelId);
 
         Task<Response<string>> RateHotel(string hotelId, string customerId, AddRatingDto ratingDto);
+       
         Task<Response<PageResult<IEnumerable<TransactionsDto>>>> GetHotelTransaction(string hotelId, PagingDto paging);
+
         Task<Response<Room>> DeleteHotelRoomByIdAsync(string roomId);
+
+        Task<Response<string>> AddRoomTypeToHotel (string hotelId, RoomTypeRequestDto model);
+        
+        Task<Response<IEnumerable<HotelCustomersDto>>> GetCustomersByHotelId (string hotelId);
+       
+        Task<Response<RoomTypeDetailsDto>> GetRoomTypeDetails(string roomTypeId);
     }
 }

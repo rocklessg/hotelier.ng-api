@@ -56,5 +56,16 @@ namespace hotel_booking_data.Repositories.Implementations
                 .OrderByDescending(b => b.Payment.Amount);
             return query;
         }
+
+        public IQueryable<Booking> GetBookingsByManagerId(string managerId)
+        {
+            var query = _context.Bookings.AsNoTracking()
+                .Where(b => b.Hotel.ManagerId == managerId)
+                .Include(b => b.Customer)
+                .ThenInclude(c => c.AppUser)
+                .Include(b => b.Hotel)
+                .OrderByDescending(b => b.CreatedAt);
+            return query;
+        }
     }
 }

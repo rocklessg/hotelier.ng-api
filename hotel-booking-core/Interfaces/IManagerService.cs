@@ -1,12 +1,13 @@
 ﻿using hotel_booking_dto;
+using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
-
 using hotel_booking_dto.ManagerDtos;
 using hotel_booking_utilities.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using hotel_booking_dto.BookingDtos;
 
 namespace hotel_booking_core.Interfaces
 {
@@ -20,8 +21,10 @@ namespace hotel_booking_core.Interfaces
         Task<Response<IEnumerable<ManagerRequestResponseDTo>>> GetAllManagerRequest();
         Task<Response<bool>> CheckTokenExpiring(string email, string token);
         Task<Response<ManagerResponseDto>> AddManagerAsync(ManagerDto manager);
+        Task<Response<IEnumerable<TopManagerCustomers>>> GetManagerTopCustomers(string managerId);
         Task<Response<string>> UpdateManager(string managerId, UpdateManagerDto updateManager);
         Task<Response<PageResult<IEnumerable<HotelManagersDto>>>> GetAllHotelManagersAsync(PagingDto paging);
+        Task<Response<PageResult<IEnumerable<BookingResponseDto>>>> GetManagerBookings(string managerId, int pageSize, int pageNumber);
 
     }
 }

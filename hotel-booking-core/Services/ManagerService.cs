@@ -16,6 +16,8 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Transactions;
+using hotel_booking_dto.CustomerDtos;
+using hotel_booking_dto.BookingDtos;
 using hotel_booking_utilities.Pagination;
 using hotel_booking_dto.commons;
 
@@ -190,7 +192,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<string>> SoftDeleteManagerAsync(string managerId)
         {
             Manager manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
-            Response<string> response = new();
+           var response = new Response<string>();
 
             if (manager != null)
             {
@@ -351,6 +353,26 @@ namespace hotel_booking_core.Services
             }
 
             return buffer;
+        }
+
+        public async Task<Response<IEnumerable<TopManagerCustomers>>> GetManagerTopCustomers(string managerId)
+        {
+            var result = await _unitOfWork.Customers.GetTopCustomerForManagerAsync(managerId);
+            var dtos = _mapper.Map<IEnumerable<TopManagerCustomers>>(result);
+            var response = new Response<IEnumerable<TopManagerCustomers>>(StatusCodes.Status200OK,true,"Top Customers for Manager", dtos);
+            return response;
+        }
+
+        public async Task<Response<PageResult<IEnumerable<BookingResponseDto>>>> GetManagerBookings(string managerId, int pageSize, int pageNumber)
+        {
+            var manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
+            if(manager == null)
+            {
+                return Response<PageResult<IEnumerable<BookingResponseDto>>>.Fail("Manager not found");
+            }
+            var result = _unitOfWork.Booking.GetBookingsByManagerId(managerId);
+            var response = await result.PaginationAsync<Booking, BookingResponseDto>(pageSize, pageNumber, _mapper);
+            return Response<PageResult<IEnumerable<BookingResponseDto>>>.Success("Bookings Fetched", response, StatusCodes.Status200OK);
         }
     }
 }
