@@ -58,5 +58,6 @@ namespace hotel_booking_core.Interfaces
         Task<Response<IEnumerable<HotelCustomersDto>>> GetCustomersByHotelId (string hotelId);
         Task<Response<UpdateImageDto>> UpdateHotelImage(AddImageDto imageDto, string hotelId);
         Task<Response<UpdateImageDto>> UpdateRoomTypeImage(AddImageDto imageDto, string roomTypeId);
+        Task<Response<RoomTypeDetailsDto>> GetRoomTypeDetails(string roomTypeId);
     }
 }

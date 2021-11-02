@@ -13,5 +13,6 @@ namespace hotel_booking_data.Repositories.Abstractions
         Task<List<RoomType>> GetRoomTypesInEachHotel(string hotelId);
         IQueryable<RoomType> GetTopDeals();
         Task<RoomType> CheckForRoomTypeAsync(string roomTypeId);
+        Task<RoomType> GetRoomTypeDetails(string roomTypeId);
     }
 }

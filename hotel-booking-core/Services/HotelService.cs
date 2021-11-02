@@ -496,5 +496,34 @@ namespace hotel_booking_core.Services
 
             return response;
         }
+
+        public async Task<Response<RoomTypeDetailsDto>> GetRoomTypeDetails(string roomTypeId)
+        {
+            var response = new Response<RoomTypeDetailsDto>();
+            if (roomTypeId == null)
+            {
+                response.Succeeded = false;
+                response.Data = null;
+                response.Message = "Invalid input";
+                response.StatusCode = (int) HttpStatusCode.BadRequest;
+                return response;
+            }
+            var roomType = await _unitOfWork.RoomType.GetRoomTypeDetails(roomTypeId);
+            if (roomType == null)
+            {
+                response.Succeeded = false;
+                response.Data = null;
+                response.Message = "Not found";
+                response.StatusCode = (int)HttpStatusCode.NotFound;
+                return response;
+            }
+            var result = _mapper.Map<RoomTypeDetailsDto>(roomType);
+            response.Succeeded = true;
+            response.Data = result;
+            response.Message = $"Room type details fetch successfully";
+            response.StatusCode = (int)HttpStatusCode.OK;
+
+            return response;
+        }
     }
 }
