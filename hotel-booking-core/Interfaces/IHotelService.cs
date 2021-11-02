@@ -53,5 +53,7 @@ namespace hotel_booking_core.Interfaces
 
         Task<Response<string>> RateHotel(string hotelId, string customerId, AddRatingDto ratingDto);
         Task<Response<PageResult<IEnumerable<TransactionsDto>>>> GetHotelTransaction(string hotelId, PagingDto paging);
+        Task<Response<string>> AddRoomTypeToHotel (string hotelId, RoomTypeRequestDto model);
+        Task<Response<IEnumerable<HotelCustomersDto>>> GetCustomersByHotelId (string hotelId);
     }
 }
