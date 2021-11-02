@@ -272,5 +272,17 @@ namespace hotel_booking_api.Controllers
             var response = await _hotelService.GetHotelTransaction(hotelId, paging);
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpGet]
+        [Route("roomTypedetails")]
+        [Authorize(Policy = Policies.Manager)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetRoomTypeDetails(string roomTypeId)
+        {
+            var result = await _hotelService.GetRoomTypeDetails(roomTypeId);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

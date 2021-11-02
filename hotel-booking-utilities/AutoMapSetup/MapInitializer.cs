@@ -109,12 +109,22 @@ namespace hotel_booking_utilities.AutoMapSetup
             CreateMap<Room, AddRoomDto>().ReverseMap();
             CreateMap<Room, AddRoomResponseDto>().ReverseMap();
             CreateMap<Room, RoomDTo>().ReverseMap();
+            
 
             // RoomType Maps
             CreateMap<RoomType, RoomInfoDto>().ReverseMap();
             CreateMap<RoomType, RoomTypeByHotelDTo>();
             CreateMap<RoomType, RoomTypeDto>();
             CreateMap<RoomType, RoomTypeRequestDto>().ReverseMap();
+            CreateMap<RoomType, RoomTypeDetailsDto>()
+                .ForMember(x => x.HotelName, y => y.MapFrom(u => u.Hotel.Name))
+                .ForMember(x => x.DateCreated, y => y.MapFrom(u => u.CreatedAt))
+                .ForMember(x => x.HotelAddress, y => y.MapFrom(u => u.Hotel.Address))
+                .ForMember(x => x.PricePerNight, x => x.MapFrom(u => u.Price))
+                .ForMember(x => x.Thumbnail, x => x.MapFrom(u => u.Thumbnail));
+
+
+
 
 
             // Rating Maps
