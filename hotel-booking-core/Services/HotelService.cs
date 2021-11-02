@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using hotel_booking_core.Interface;
 using hotel_booking_core.Interfaces;
 using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.UnitOfWork.Abstraction;
@@ -10,6 +11,7 @@ using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
+using hotel_booking_models.Cloudinary;
 using hotel_booking_utilities.Pagination;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -27,12 +29,50 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
+        private readonly IImageService _imageService;
 
-        public HotelService (IUnitOfWork unitOfWork, IMapper mapper, ILogger logger)
+        public HotelService (IUnitOfWork unitOfWork, IMapper mapper, ILogger logger,
+            IImageService imageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
+            _imageService = imageService;
+        }
+
+        public async Task<Response<UpdateImageDto>> UpdateHotelImage(AddImageDto imageDto, string hotelId)
+        {
+            var hotel = await _unitOfWork.Hotels.GetHotelById(hotelId);
+
+            if (hotel != null)
+            {
+                var upload = await _imageService.UploadAsync(imageDto.Image);
+                string url = upload.Url.ToString();
+                var getHotelGallery = hotel.Galleries.FirstOrDefault();
+                getHotelGallery.ImageUrl = url;
+                _unitOfWork.Hotels.Update(hotel);
+                await _unitOfWork.Save();
+
+                return Response<UpdateImageDto>.Success("image upload successful", new UpdateImageDto { Url = url });
+            }
+            return Response<UpdateImageDto>.Fail("hotel not found");
+        }
+
+        public async Task<Response<UpdateImageDto>> UpdateRoomTypeImage(AddImageDto imageDto, string roomTypeId)
+        {
+            var roomType = await _unitOfWork.Hotels.GetHotelRoomTypeById(roomTypeId);
+
+            if (roomType != null)
+            {
+                var upload = await _imageService.UploadAsync(imageDto.Image);
+                string url = upload.Url.ToString();
+                roomType.Thumbnail = url;
+                _unitOfWork.RoomType.Update(roomType);
+                await _unitOfWork.Save();
+
+                return Response<UpdateImageDto>.Success("image upload successful", new UpdateImageDto { Url = url });
+            }
+            return Response<UpdateImageDto>.Fail("roomType not found");
         }
 
         public async Task<Response<string>> AddRoomTypeToHotel (string hotelId, RoomTypeRequestDto model)

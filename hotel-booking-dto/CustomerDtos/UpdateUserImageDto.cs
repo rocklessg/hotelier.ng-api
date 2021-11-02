@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace hotel_booking_dto.CustomerDtos
 {
-    public class UpdateUserImageDto
+    public class UpdateImageDto
     {
         public string Url { get; set; }
     }
