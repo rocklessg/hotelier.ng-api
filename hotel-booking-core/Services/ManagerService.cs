@@ -315,13 +315,13 @@ namespace hotel_booking_core.Services
             return Response<bool>.Fail("Invalid email or token", StatusCodes.Status404NotFound);
         }
 
-        public async Task<Response<IEnumerable<ManagerRequestResponseDTo>>> GetAllManagerRequest()
+        public async Task<Response<PageResult<IEnumerable<ManagerRequestResponseDTo>>>> GetAllManagerRequest(PagingDto paging)
         {
-            var getAllManagersRequest = await _unitOfWork.ManagerRequest.GetManagerRequest();
+            var getAllManagersRequest = _unitOfWork.ManagerRequest.GetManagerRequest();
             
-            var mapResponse = _mapper.Map<List<ManagerRequestResponseDTo>>(getAllManagersRequest);
+            var mapResponse = await getAllManagersRequest.PaginationAsync<ManagerRequest, ManagerRequestResponseDTo>(paging.PageSize, paging.PageNumber, _mapper);
 
-            return Response<IEnumerable<ManagerRequestResponseDTo>>
+            return Response<PageResult<IEnumerable<ManagerRequestResponseDTo>>>
                 .Success("All manager requests", mapResponse, StatusCodes.Status200OK); 
         }
 
