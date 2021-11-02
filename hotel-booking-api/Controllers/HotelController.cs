@@ -181,7 +181,6 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
         public async Task<IActionResult> DeleteHotelAsync(string hotelId)
         {
             var result = await _hotelService.DeleteHotelByIdAsync(hotelId);
@@ -256,5 +255,19 @@ namespace hotel_booking_api.Controllers
             var response = await _hotelService.GetHotelTransaction(hotelId, paging);
             return StatusCode(response.StatusCode, response);
         }
+
+
+        [HttpDelete]
+        [Route("{roomId}/rooms")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteRoomByIdAsync(string roomId)
+        {
+            var response = await _hotelService.DeleteHotelRoomByIdAsync(roomId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        
     }
 }
