@@ -60,7 +60,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<HotelBookingResponseDto>> Book(string userId, HotelBookingRequestDto bookingDto)
         {
             _logger.Information($"Attempt to book hotel for customer with Id {userId}");
-            var room = _unitOfWork.Rooms.GetRoomById(bookingDto.RoomId);
+            var room =await  _unitOfWork.Rooms.GetRoomByIdAsync(bookingDto.RoomId);
             if (room == null)
             {
                 _logger.Error($"Room with Id {bookingDto.RoomId} not found");

@@ -338,7 +338,7 @@ namespace hotel_booking_core.Services
 
             if (hotel != null)
             {
-                _unitOfWork.Hotels.DeleteAsync(hotel);
+                _unitOfWork.Hotels.Delete(hotel);
                 await _unitOfWork.Save();
 
                 response.StatusCode = (int)HttpStatusCode.OK;
@@ -495,6 +495,21 @@ namespace hotel_booking_core.Services
             var response = Response<string>.Success($"Rating added successfully", rating.HotelId);
 
             return response;
+        }
+
+
+        public async Task<Response<Room>> DeleteHotelRoomByIdAsync(string roomId)
+        {
+            var room = await _unitOfWork.Rooms.GetRoomByIdAsync(roomId);
+
+            if (room != null)
+            {
+                _unitOfWork.Rooms.Delete(room);
+                await _unitOfWork.Save();
+                return new Response<Room>(StatusCodes.Status204NoContent, true, $"Room With the Id:{roomId} deleted sucessfully", null);
+            }
+
+            return new Response<Room>(StatusCodes.Status404NotFound, false, $"No Room With the Id:{roomId} not found", null);
         }
 
         public async Task<Response<RoomTypeDetailsDto>> GetRoomTypeDetails(string roomTypeId)

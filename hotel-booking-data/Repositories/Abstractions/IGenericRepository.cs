@@ -13,7 +13,7 @@ namespace hotel_booking_data.Repositories.Abstractions
     {
         Task InsertAsync(T entity);
         void Update(T entity);
-        void DeleteAsync(T entity);
+        void Delete(T entity);
 
         void DeleteRange(IEnumerable<T> entities);
     }
