@@ -92,6 +92,7 @@ namespace hotel_booking_api.Extensions
             services.AddTransient<IValidator<AddRatingDto>, AddRatingDtoValidator>();
             services.AddTransient<IValidator<TransactionFilter>, TransactionFilterValidator>();
             services.AddTransient<IValidator<RoomTypeRequestDto>, RoomTypeRequestDtoValidator>();
+            services.AddTransient<IValidator<ChangePasswordDto>, ChangePasswordValidator>();
         }
     }
 }
