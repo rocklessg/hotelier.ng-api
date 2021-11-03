@@ -79,10 +79,15 @@ namespace hotel_booking_core.Services
             booking.CustomerId = customer.AppUserId;
             booking.BookingReference = $"HBA-{ReferenceGen.GetInitials(room.Roomtype.Hotel.Name)}-{ReferenceGen.Generate()}";
             booking.HotelId = room.Roomtype.HotelId;
+            booking.ServiceName = "Room";
 
             await _unitOfWork.Booking.InsertAsync(booking);
 
-            decimal amount = room.Roomtype.Price - (room.Roomtype.Price * room.Roomtype.Discount);
+            var timeSpan = bookingDto.CheckOut - bookingDto.CheckIn;
+
+            var numberOfNights = timeSpan.TotalDays;
+
+            decimal amount = (room.Roomtype.Price - (room.Roomtype.Price * room.Roomtype.Discount)) * (decimal)numberOfNights;
 
             string transactionRef = $"{ReferenceGen.Generate()}";
 
