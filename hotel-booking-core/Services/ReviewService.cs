@@ -36,7 +36,7 @@ namespace hotel_booking_core.Services
             {
                 if (review.CustomerId == customerId)
                 {
-                    _unitOfWork.Reviews.DeleteAsync(review);
+                    _unitOfWork.Reviews.Delete(review);
                     _unitOfWork.Save();
                     response.Succeeded = true;
                     response.StatusCode = (int)HttpStatusCode.OK;

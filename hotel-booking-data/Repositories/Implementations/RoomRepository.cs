@@ -47,14 +47,13 @@ namespace hotel_booking_data.Repositories.Implementations
             return getRoom;
         }
 
-        public Room GetRoomById(string roomId)
+        public async Task<Room> GetRoomByIdAsync(string roomId)
         {
-            return _context.Rooms.Include(x => x.Roomtype)
-                .ThenInclude(x => x.Hotel)
-                .FirstOrDefault(x => x.Id == roomId);
+            return await _context.Rooms.Include(x => x.Roomtype)
+                .ThenInclude(x => x.Hotel).FirstOrDefaultAsync(x => x.Id == roomId);
         }
-        
 
+        
 
     }
 }

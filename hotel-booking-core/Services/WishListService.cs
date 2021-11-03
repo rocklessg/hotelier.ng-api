@@ -75,7 +75,7 @@ namespace hotel_booking_core.Services
             if(wishlist != null)
             {
                 _logger.Information("Initiating remove hotel from customer wishlist");
-                _unitOfWork.WishLists.DeleteAsync(wishlist);
+                _unitOfWork.WishLists.Delete(wishlist);
                 await _unitOfWork.Save();
                 _logger.Information("Hotel successfully removed from customer wishlist");
                 return Response<string>.Success("WishList Removed", "WishList Removed", StatusCodes.Status200OK);
