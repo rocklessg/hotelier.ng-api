@@ -352,5 +352,39 @@ namespace hotel_booking_core.Services
 
             return buffer;
         }
+
+        public async Task<Response<ManagerDetailsResponseDto>> GetManagerDetails(string managerId)
+        {
+            var response = new Response<ManagerDetailsResponseDto>();
+
+            if (managerId == null)
+            {
+                response.Message = "Access Not Granted!";
+                response.Data = null;
+                response.Succeeded = false;
+                response.StatusCode = (int)HttpStatusCode.NotFound;
+                return response;
+            }
+            var manager = await _unitOfWork.Managers.GetManagerStatistics(managerId);
+            var user = await _userManager.FindByIdAsync(managerId);
+            if (manager == null)
+            {
+                response.Message = "Access not Granted!";
+                response.Data = null;
+                response.Succeeded = false;
+                response.StatusCode = (int)HttpStatusCode.NotFound;
+                return response;
+            }
+
+            var result =  _mapper.Map<ManagerDetailsResponseDto>(manager);
+            result.FirstName = user.FirstName;
+            result.LastName = user.LastName;
+            result.Age = user.Age;
+            response.Message = "Manager details Found";
+            response.Data = result;
+            response.Succeeded = true;
+            response.StatusCode = (int)HttpStatusCode.OK;
+            return response;
+        }
     }
 }

@@ -22,6 +22,7 @@ namespace hotel_booking_core.Interfaces
         Task<Response<ManagerResponseDto>> AddManagerAsync(ManagerDto manager);
         Task<Response<string>> UpdateManager(string managerId, UpdateManagerDto updateManager);
         Task<Response<PageResult<IEnumerable<HotelManagersDto>>>> GetAllHotelManagersAsync(PagingDto paging);
+        Task<Response<ManagerDetailsResponseDto>> GetManagerDetails(string managerId);
 
     }
 }

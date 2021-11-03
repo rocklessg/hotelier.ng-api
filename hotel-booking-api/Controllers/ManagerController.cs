@@ -40,7 +40,7 @@ namespace hotel_booking_api.Controllers
 
 
         [HttpPut("UpdateManager")]
-        [Authorize(Policies.Manager)]
+        //[Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -120,6 +120,16 @@ namespace hotel_booking_api.Controllers
         public async Task<IActionResult> GetAllHotelManagers([FromQuery]PagingDto paging)
         {
             var response =  await _managerService.GetAllHotelManagersAsync(paging);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpGet]
+        [Route("Details")]
+        [Authorize(Policy = Policies.Manager)]
+        public async Task<IActionResult> GetManagerDetails()
+        {
+            string managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var response = await _managerService.GetManagerDetails(managerId);
             return StatusCode(response.StatusCode, response);
         }
     }
