@@ -13,7 +13,7 @@ namespace hotel_booking_utilities
     {
         public const string Admin = "Admin";
   
-        public const string HotelManager = "HotelManager";
+        public const string HotelManager = "Manager";
   
         public const string Customer = "Customer";
     }

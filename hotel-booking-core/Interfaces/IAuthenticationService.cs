@@ -3,6 +3,7 @@ using hotel_booking_dto.AuthenticationDtos;
 using System.Threading.Tasks;
 using hotel_booking_dto.RefereshTokenDto;
 using hotel_booking_dto.TokenDto;
+using Microsoft.AspNetCore.Mvc;
 
 namespace hotel_booking_core.Interfaces
 {
