@@ -19,5 +19,6 @@ namespace hotel_booking_data.Repositories.Abstractions
         IQueryable<Review> GetAllReviewsByHotelAsync(string HotelId);
         bool GetHotelWithRoomTypes (string hotelId, RoomTypeRequestDto model);
         Task<List<Booking>> GetCustomersByHotelId (string hotelId);
+        Task<RoomType> GetHotelRoomTypeById(string roomTypeId);
     }
 }

@@ -6,6 +6,7 @@ using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
+using hotel_booking_models.Cloudinary;
 using hotel_booking_utilities.Pagination;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +64,8 @@ namespace hotel_booking_core.Interfaces
         Task<Response<string>> AddRoomTypeToHotel (string hotelId, RoomTypeRequestDto model);
         
         Task<Response<IEnumerable<HotelCustomersDto>>> GetCustomersByHotelId (string hotelId);
-       
+        Task<Response<UpdateImageDto>> UpdateHotelImage(AddImageDto imageDto, string hotelId);
+        Task<Response<UpdateImageDto>> UpdateRoomTypeImage(AddImageDto imageDto, string roomTypeId);
         Task<Response<RoomTypeDetailsDto>> GetRoomTypeDetails(string roomTypeId);
     }
 }

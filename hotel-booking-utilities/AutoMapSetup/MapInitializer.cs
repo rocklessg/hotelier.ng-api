@@ -120,8 +120,9 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(x => x.HotelName, y => y.MapFrom(u => u.Hotel.Name))
                 .ForMember(x => x.DateCreated, y => y.MapFrom(u => u.CreatedAt))
                 .ForMember(x => x.HotelAddress, y => y.MapFrom(u => u.Hotel.Address))
-                .ForMember(x => x.PricePerNight, x => x.MapFrom(u => u.Price))
-                .ForMember(x => x.Thumbnail, x => x.MapFrom(u => u.Thumbnail));
+                .ForMember(x => x.PricePerNight, y => y.MapFrom(u => u.Price))
+                .ForMember(x => x.Thumbnail, y => y.MapFrom(u => u.Thumbnail))
+                .ForMember(x => x.Name, y => y.MapFrom(u => u.Name));
 
 
 
@@ -250,8 +251,7 @@ namespace hotel_booking_utilities.AutoMapSetup
             //Manager Request Map
 
             CreateMap<ManagerRequest, ManagerRequestDto>().ReverseMap();
-            CreateMap<ManagerRequest, ManagerRequestResponseDTo>()
-                .ForMember(x => x.Confirmed, y => y.MapFrom(src => src.ConfirmationFlag ? "Confirmed" : "Notconfirmed"));
+            CreateMap<ManagerRequest, ManagerRequestResponseDTo>();
 
 
             CreateMap<Manager, HotelManagersDto>()

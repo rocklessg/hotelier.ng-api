@@ -5,6 +5,7 @@ using hotel_booking_dto.commons;
 using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.RatingDtos;
 using hotel_booking_models;
+using hotel_booking_models.Cloudinary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -198,7 +199,6 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-
         public async Task<IActionResult> DeleteHotelAsync (string hotelId)
         {
             var result = await _hotelService.DeleteHotelByIdAsync(hotelId);
@@ -274,6 +274,26 @@ namespace hotel_booking_api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [HttpPost]
+        [Route("hotel-image")]
+        [Authorize(Policy = Policies.Manager)]
+        public async Task<IActionResult> UploadHotelImage([FromForm]AddImageDto imageDto, string hotelId)
+        {
+            _logger.Information($"Update Image Attempt for hotel with id = {hotelId}");
+            var result = await _hotelService.UpdateHotelImage(imageDto, hotelId);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("roomType-image")]
+        [Authorize(Policy = Policies.Manager)]
+        public async Task<IActionResult> UploadRoomTypeImage([FromForm] AddImageDto imageDto, string roomTypeId)
+        {
+            _logger.Information($"Update Image Attempt for hotel with id = {roomTypeId}");
+            var result = await _hotelService.UpdateRoomTypeImage(imageDto, roomTypeId);
+            return Ok(result);
+        }
+
 
         [HttpDelete]
         [Route("{roomId}/rooms")]
@@ -287,7 +307,7 @@ namespace hotel_booking_api.Controllers
         }
 
         [HttpGet]
-        [Route("roomTypedetails")]
+        [Route("roomTypedetails/{roomTypeId}")]
         [Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
