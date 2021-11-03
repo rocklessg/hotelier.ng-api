@@ -108,7 +108,7 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("change-password")]
         [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
