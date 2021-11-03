@@ -9,6 +9,7 @@ using hotel_booking_dto.TokenDto;
 using hotel_booking_models;
 using hotel_booking_models.Mail;
 using hotel_booking_utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
 using System;
@@ -124,6 +125,18 @@ namespace hotel_booking_core.Services
             return response;
         }       
       
+        public async Task<Response<bool>> ChangePassword(string id, ChangePasswordDto changePasswordDto)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return Response<bool>.Success("Password Changed successfully", true, StatusCodes.Status200OK);
+            }
+            return Response<bool>.Fail("Ensure that your old password is correct", StatusCodes.Status404NotFound); 
+
+        }
         /// <summary>
         /// Logs in a user
         /// </summary>

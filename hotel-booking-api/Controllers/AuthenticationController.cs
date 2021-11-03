@@ -108,6 +108,16 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
+        [HttpPost]
+        [Route("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            var userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _authService.ChangePassword(userId, changePasswordDto);
+            return Ok(result);
+        }
+
         [AllowAnonymous]
         [HttpPost]
         [Route("refresh-token")]
