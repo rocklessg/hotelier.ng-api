@@ -15,5 +15,6 @@ namespace hotel_booking_core.Interfaces
         Task<Response<string>> ResetPassword(ResetPasswordDto model);
         Task<Response<string>> UpdatePassword(UpdatePasswordDto model);
         Task<Response<RefreshTokenToReturnDto>> RefreshToken(RefreshTokenRequestDto token);
+        Task<bool> ValidateUserRole(string userId, string[] roles);
     }
 }

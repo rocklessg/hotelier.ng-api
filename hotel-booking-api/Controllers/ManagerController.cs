@@ -84,10 +84,11 @@ namespace hotel_booking_api.Controllers
 
         [HttpGet]
         [Route("getall-request")]
-        public async Task<IActionResult> GetAllRequests()
-
+        [Authorize(Policy = Policies.Admin)]
+        public async Task<IActionResult> GetAllRequests([FromQuery]PagingDto paging)
         {
-            var getAll = await _managerService.GetAllManagerRequest();
+            var getAll =  await _managerService.GetAllManagerRequest(paging);
+
             return Ok(getAll);
 
         }
@@ -111,6 +112,21 @@ namespace hotel_booking_api.Controllers
         public async Task<IActionResult> GetAllHotels(string managerId)
         {
             var response = await _managerService.GetAllHotelsAsync(managerId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpGet]
+        [Route("{managerId}/top-customers")]
+        public async Task<IActionResult> GetTopCustomers(string managerId)
+        {
+            var response = await _managerService.GetManagerTopCustomers(managerId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpGet("{managerId}/bookings")]
+        public async Task<IActionResult> GetManagerBookings([FromRoute]string managerId, [FromQuery]PagingDto paging)
+        {
+            var response = await _managerService.GetManagerBookings(managerId, paging.PageSize, paging.PageNumber);
             return StatusCode(response.StatusCode, response);
         }
 

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using hotel_booking_dto.TokenDto;
 using ILogger = Serilog.ILogger;
+using System.Security.Claims;
 
 namespace hotel_booking_api.Controllers
 {
@@ -121,7 +122,14 @@ namespace hotel_booking_api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-
-       
+        [HttpPost("validate-user")]
+        [Authorize]
+        public async Task<IActionResult> ValidateUserRole([FromBody] ValidateUserRoleDto userRoleDto)
+        {
+            _logger.Information("User Role validation attempt");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _authService.ValidateUserRole(userId, userRoleDto.Roles);
+            return result ? Ok() : BadRequest();
+        }
     }
 }

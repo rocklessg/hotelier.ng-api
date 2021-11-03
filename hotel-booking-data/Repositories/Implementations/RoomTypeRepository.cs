@@ -43,6 +43,19 @@ namespace hotel_booking_data.Repositories.Implementations
             return rooms;
         }
 
-        
+        public async Task<RoomType> CheckForRoomTypeAsync(string roomTypeId)
+        {
+            var roomType = await _dbSet.AsNoTracking().Where(x => x.Id == roomTypeId).FirstOrDefaultAsync();
+            return roomType;
+        }
+
+        public async Task<RoomType> GetRoomTypeDetails(string roomTypeId)
+        {
+            return await _dbSet.Where(x => x.Id == roomTypeId)
+                .Include(x => x.Rooms)
+                .ThenInclude(x=>x.Roomtype)
+                .Include(x => x.Hotel)
+                .ThenInclude(x=>x.Ratings).FirstOrDefaultAsync();
+        }
     }
 }

@@ -33,9 +33,11 @@ namespace hotel_booking_data.Repositories.Implementations
             return checkToken ? check : null;
         }
 
-        public async Task<IEnumerable<ManagerRequest>> GetManagerRequest()
+        public IQueryable<ManagerRequest> GetManagerRequest()
         {
-            var check = await _dbSet.Select(x => x).ToListAsync();
+            var check =  _dbSet.Select(x => x)
+                .OrderByDescending(recent => recent.CreatedAt)
+                .OrderBy(recent => recent.ConfirmationFlag);
             return check;
         }
 

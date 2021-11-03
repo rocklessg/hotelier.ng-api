@@ -10,5 +10,6 @@ namespace hotel_booking_data.Repositories.Abstractions
         IQueryable<Booking> GetManagerBookings(string managerId, TransactionFilter filter);
         IQueryable<Booking> GetBookingsByCustomerId(string customerId);
         IQueryable<Booking> GetBookingsByHotelId(string hotelId);
+        IQueryable<Booking> GetBookingsByManagerId(string managerId);
     }
 }

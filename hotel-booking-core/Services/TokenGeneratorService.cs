@@ -30,13 +30,15 @@ namespace hotel_booking_utilities
         /// <returns></returns>
         public async Task<string> GenerateToken(AppUser user)
         {
+            var avatar = user.Avatar ??= "https://cdn3.iconfinder.com/data/icons/sharp-users-vol-1/32/-_Default_Account_Avatar-512.png";
+
             var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.GivenName, user.FirstName),
                 new Claim(ClaimTypes.Surname, user.LastName),
-                new Claim(ClaimTypes.Uri, user.Avatar)
+                new Claim(ClaimTypes.Uri, avatar)
             };
 
             //Gets the roles of the logged in user and adds it to Claims
@@ -52,7 +54,7 @@ namespace hotel_booking_utilities
             (audience: _configuration["JwtSettings:Audience"],
              issuer: _configuration["JwtSettings:Issuer"],
              claims: authClaims,
-             expires: DateTime.Now.AddMinutes(10),
+             expires: DateTime.Now.AddHours(2),
              signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256));
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -60,13 +62,7 @@ namespace hotel_booking_utilities
 
         public Guid GenerateRefreshToken()
         {
-            /*var randomNumber = new byte[32];
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);*/
-            Guid g = Guid.NewGuid();
-
-            return g;
+            return Guid.NewGuid();
         }
 
 
