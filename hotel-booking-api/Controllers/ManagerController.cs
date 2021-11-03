@@ -40,7 +40,7 @@ namespace hotel_booking_api.Controllers
 
 
         [HttpPut("UpdateManager")]
-        //[Authorize(Policy = Policies.Manager)]
+        [Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
