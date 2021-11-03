@@ -14,6 +14,7 @@ using hotel_booking_dto.HotelDtos;
 using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
 using hotel_booking_utilities;
+using hotel_booking_utilities.EmailBodyHelper;
 using hotel_booking_utilities.HttpClientService.Implementation;
 using hotel_booking_utilities.HttpClientService.Interface;
 using hotel_booking_utilities.PaymentGatewaySettings;
@@ -64,6 +65,8 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<PaystackPaymentHandler>();
             services.AddScoped<FlutterwavePaymentHandler>();
+
+            services.AddScoped<IEmailBodyBuilder, EmailBodyBuilder>();
 
 
             services.AddScoped<IHttpClientService, HttpClientService>();

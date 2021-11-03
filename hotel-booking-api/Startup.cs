@@ -7,7 +7,9 @@ using hotel_booking_models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,6 +35,11 @@ namespace hotel_booking_api
         {
             services.AddHttpClient();
             services.AddDbContextAndConfigurations(Environment, Configuration);
+
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>()
+                .AddScoped<IUrlHelper>(x =>
+                    x.GetRequiredService<IUrlHelperFactory>()
+                        .GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext));
 
             // Configure Mailing Service
             services.ConfigureMailService(Configuration);
