@@ -9,6 +9,7 @@ using hotel_booking_dto.TokenDto;
 using hotel_booking_models;
 using hotel_booking_models.Mail;
 using hotel_booking_utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -36,14 +37,13 @@ namespace hotel_booking_core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
         private readonly ITokenRepository _tokenRepository;
-        private readonly IEmailBodyBuilder _emailBodyBuilder;
 
 
        
 
 
         public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ILogger logger,
-            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator, ITokenRepository tokenRepository, IEmailBodyBuilder emailBodyBuilder)
+            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator, ITokenRepository tokenRepository)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -52,7 +52,6 @@ namespace hotel_booking_core.Services
             _unitOfWork = unitOfWork;
             _logger = logger;
             _tokenRepository = tokenRepository;
-            _emailBodyBuilder = emailBodyBuilder;
 
         }
 
@@ -109,8 +108,9 @@ namespace hotel_booking_core.Services
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = TokenConverter.EncodeToken(token);
+            var userRole = await _userManager.GetRolesAsync(user);
 
-            var mailBody = await _emailBodyBuilder.GetEmailBody(user, emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "ResetPassword", encodedToken, controllerName: "Auth");
+            var mailBody = await EmailBodyBuilder.GetEmailBody(user, userRole.ToList(), emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "ResetPassword", encodedToken, controllerName: "Auth");
 
 
             var mailRequest = new MailRequest()
@@ -134,9 +134,20 @@ namespace hotel_booking_core.Services
             response.Message = "Something went wrong. Please try again.";
             response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
             return response;
+        }       
+      
+        public async Task<Response<bool>> ChangePassword(string id, ChangePasswordDto changePasswordDto)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return Response<bool>.Success("Password Changed successfully", true, StatusCodes.Status200OK);
+            }
+            return Response<bool>.Fail("Ensure that your old password is correct", StatusCodes.Status404NotFound); 
+
         }
-
-
         /// <summary>
         /// Logs in a user
         /// </summary>
@@ -196,7 +207,8 @@ namespace hotel_booking_core.Services
                     await _userManager.AddToRoleAsync(user, UserRoles.Customer);
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var encodedToken = TokenConverter.EncodeToken(token);
-                    var mailBody = await _emailBodyBuilder.GetEmailBody(user, emailTempPath: "StaticFiles/Html/ConfirmEmail.html", linkName: "ConfirmEmail", encodedToken, controllerName: "Authentication");
+                    var userRole = await _userManager.GetRolesAsync(user);
+                    var mailBody = await EmailBodyBuilder.GetEmailBody(user, userRole.ToList(), emailTempPath: "StaticFiles/Html/ConfirmEmail.html", linkName: "ConfirmEmail", encodedToken, controllerName: "Authentication");
                     var mailRequest = new MailRequest()
                     {
                         Subject = "Confirm Your Registration",
@@ -257,35 +269,26 @@ namespace hotel_booking_core.Services
                 return response;
             }
 
-            if (model.NewPassword != model.ConfirmPassword)
-            {
-                response.Message = "Password does not match!";
-                response.Succeeded = false;
-                response.Data = null;
-                response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return response;
-            }
-
             var decodedToken = TokenConverter.DecodeToken(model.Token); //Decode incoming token
 
             var purpose = UserManager<AppUser>.ResetPasswordTokenPurpose;
             var tokenProvider = _userManager.Options.Tokens.PasswordResetTokenProvider;
 
-            var token = await _userManager.VerifyUserTokenAsync(user, tokenProvider, purpose, decodedToken);
-            if (token)
+            var isValidToken = await _userManager.VerifyUserTokenAsync(user, tokenProvider, purpose, decodedToken);
+            if (isValidToken)
             {
                 _mapper.Map<AppUser>(model);
                 var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.NewPassword);
-                response.Succeeded = false;
-                response.Data = null;
-                response.Message = GetErrors(result);
+                response.Succeeded = true;
+                response.Data = user.Id;
+                response.Message = "Password has been reset successfully";
+                response.StatusCode = (int)HttpStatusCode.OK;
                 return response;
             }
 
-            response.StatusCode = (int)HttpStatusCode.OK;
-            response.Message = "Password has been reset successfully";
-            response.Succeeded = true;
-            response.Data = user.Id;
+            response.StatusCode = StatusCodes.Status400BadRequest;
+            response.Message = "Invalid Token";
+            response.Succeeded = false;
             return response;
         }
 

@@ -74,7 +74,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<Response<string>>> ResetPassword([FromBody] ResetPasswordDto model)
+        public async Task<ActionResult<Response<string>>> ResetPassword(ResetPasswordDto model)
         {
             _logger.Information($"Reset Password Attempt for {model.Email}");
             var result = await _authService.ResetPassword(model);
@@ -106,6 +106,16 @@ namespace hotel_booking_api.Controllers
 
             var result = await _authService.ForgotPassword(email);
             return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        [Route("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            var userId = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _authService.ChangePassword(userId, changePasswordDto);
+            return Ok(result);
         }
 
         [AllowAnonymous]

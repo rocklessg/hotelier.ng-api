@@ -36,7 +36,15 @@ namespace hotel_booking_utilities.ValidatorSettings
 
             return options;
         }
-       
+
+        public static IRuleBuilder<T, string> Gender<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            var options = ruleBuilder
+                .NotEmpty().WithMessage("Gender must be provided")
+                .Matches("^(?:male|Male|female|Female)$").WithMessage("Gender can only contain alphabeths and must be male or female");
+            return options;
+        }
+
         public static IRuleBuilder<T, string> Address<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             var options = ruleBuilder.NotNull().WithMessage("Address is required")
