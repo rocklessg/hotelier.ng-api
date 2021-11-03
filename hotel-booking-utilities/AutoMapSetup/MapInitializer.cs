@@ -235,6 +235,20 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(d => d.Age, o => o.MapFrom(u => u.AppUser.Age))
                 .ReverseMap();
 
+            CreateMap<Manager, ManagerDetailsResponseDto>()
+                .ForMember(x => x.FirstName, o => o.MapFrom(y => y.AppUser.FirstName))
+                .ForMember(x => x.LastName, o => o.MapFrom(y => y.AppUser.LastName))
+                .ForMember(x => x.ManagerPhone, o => o.MapFrom(y => y.AppUser.PhoneNumber))
+                .ForMember(x => x.Age, o => o.MapFrom(y => y.AppUser.Age))
+                .ForMember(x => x.CompanyName, o => o.MapFrom(y => y.CompanyName))
+                .ForMember(x => x.BusinessEmail, o => o.MapFrom(y => y.BusinessEmail))
+                .ForMember(x => x.BusinessPhone, o => o.MapFrom(y => y.BusinessPhone))
+                .ForMember(x => x.CompanyAddress, o => o.MapFrom(y => y.CompanyAddress))
+                .ForMember(x => x.AccountName, o => o.MapFrom(y => y.AccountName))
+                .ForMember(x => x.State, o => o.MapFrom(y => y.State))
+                .ForMember(x => x.AccountNumber, o => o.MapFrom(y => y.AccountNumber))
+                .ReverseMap();
+
 
             //AppUser Maps
             CreateMap<AppUser, ManagerResponseDto>().ReverseMap();

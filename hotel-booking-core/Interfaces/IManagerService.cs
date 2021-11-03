@@ -24,6 +24,7 @@ namespace hotel_booking_core.Interfaces
         Task<Response<IEnumerable<TopManagerCustomers>>> GetManagerTopCustomers(string managerId);
         Task<Response<string>> UpdateManager(string managerId, UpdateManagerDto updateManager);
         Task<Response<PageResult<IEnumerable<HotelManagersDto>>>> GetAllHotelManagersAsync(PagingDto paging);
+        Task<Response<ManagerDetailsResponseDto>> GetManagerDetails(string managerId);
         Task<Response<PageResult<IEnumerable<BookingResponseDto>>>> GetManagerBookings(string managerId, int pageSize, int pageNumber);
 
     }
