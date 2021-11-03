@@ -91,7 +91,6 @@ namespace hotel_booking_api
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hotel Management Api v1"));
-            dbContext.Database.MigrateAsync();
             HbaSeeder.SeedData(dbContext, userManager, roleManager).GetAwaiter().GetResult();
 
             app.UseHttpsRedirection();

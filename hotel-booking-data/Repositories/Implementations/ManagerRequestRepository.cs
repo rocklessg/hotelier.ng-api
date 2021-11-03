@@ -35,7 +35,9 @@ namespace hotel_booking_data.Repositories.Implementations
 
         public IQueryable<ManagerRequest> GetManagerRequest()
         {
-            var check =  _dbSet.Select(x => x);
+            var check =  _dbSet.Select(x => x)
+                .OrderByDescending(recent => recent.CreatedAt)
+                .OrderBy(recent => recent.ConfirmationFlag);
             return check;
         }
 
