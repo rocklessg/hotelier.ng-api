@@ -28,7 +28,8 @@ namespace hotel_booking_utilities.EmailBodyHelper
             {
                 if (role == UserRoles.Admin || role == UserRoles.HotelManager)
                 {
-                    link = _url.Action(linkName, controllerName, new { user.Email, token }, scheme);
+                    //link = _url.Action(linkName, controllerName, new { user.Email, token }, scheme);
+                    link = $"https://hoteldotnetmvc.herokuapp.com/{controllerName}/{linkName}/{user.Email}/{token}";
                 }
                 else
                 {

@@ -110,7 +110,7 @@ namespace hotel_booking_core.Services
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = TokenConverter.EncodeToken(token);
 
-            var mailBody = await _emailBodyBuilder.GetEmailBody(user, emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "ResetPassword", encodedToken, controllerName: "Authentication");
+            var mailBody = await _emailBodyBuilder.GetEmailBody(user, emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "ResetPassword", encodedToken, controllerName: "Auth");
 
 
             var mailRequest = new MailRequest()
