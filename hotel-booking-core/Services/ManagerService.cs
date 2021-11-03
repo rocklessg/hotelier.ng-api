@@ -195,7 +195,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<string>> SoftDeleteManagerAsync(string managerId)
         {
             Manager manager = await _unitOfWork.Managers.GetManagerAsync(managerId);
-            Response<string> response = new();
+           var response = new Response<string>();
 
             if (manager != null)
             {
@@ -274,6 +274,7 @@ namespace hotel_booking_core.Services
                     result = await _mailService.SendEmailAsync(mailRequest);
                     if (result)
                     {
+                        check.ConfirmationFlag = true;
                         check.ExpiresAt = DateTime.UtcNow.AddHours(24);
                         _unitOfWork.ManagerRequest.Update(check);
                         await _unitOfWork.Save();
@@ -319,13 +320,13 @@ namespace hotel_booking_core.Services
             return Response<bool>.Fail("Invalid email or token", StatusCodes.Status404NotFound);
         }
 
-        public async Task<Response<IEnumerable<ManagerRequestResponseDTo>>> GetAllManagerRequest()
+        public async Task<Response<PageResult<IEnumerable<ManagerRequestResponseDTo>>>> GetAllManagerRequest(PagingDto paging)
         {
-            var getAllManagersRequest = await _unitOfWork.ManagerRequest.GetManagerRequest();
+            var getAllManagersRequest = _unitOfWork.ManagerRequest.GetManagerRequest();
             
-            var mapResponse = _mapper.Map<List<ManagerRequestResponseDTo>>(getAllManagersRequest);
+            var mapResponse = await getAllManagersRequest.PaginationAsync<ManagerRequest, ManagerRequestResponseDTo>(paging.PageSize, paging.PageNumber, _mapper);
 
-            return Response<IEnumerable<ManagerRequestResponseDTo>>
+            return Response<PageResult<IEnumerable<ManagerRequestResponseDTo>>>
                 .Success("All manager requests", mapResponse, StatusCodes.Status200OK); 
         }
 

@@ -1,4 +1,5 @@
-﻿using hotel_booking_models;
+﻿using hotel_booking_dto.HotelDtos;
+using hotel_booking_models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,5 +17,8 @@ namespace hotel_booking_data.Repositories.Abstractions
         IQueryable<Hotel> GetHotelsByRating();
         IQueryable<Hotel> GetTopDeals();
         IQueryable<Review> GetAllReviewsByHotelAsync(string HotelId);
+        bool GetHotelWithRoomTypes (string hotelId, RoomTypeRequestDto model);
+        Task<List<Booking>> GetCustomersByHotelId (string hotelId);
+        Task<RoomType> GetHotelRoomTypeById(string roomTypeId);
     }
 }

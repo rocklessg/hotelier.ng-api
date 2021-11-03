@@ -84,7 +84,7 @@ namespace hotel_booking_core.Services
                 
         }
 
-        public async Task<Response<UpdateUserImageDto>> UpdatePhoto(AddImageDto imageDto, string userId)
+        public async Task<Response<UpdateImageDto>> UpdatePhoto(AddImageDto imageDto, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -96,9 +96,9 @@ namespace hotel_booking_core.Services
                 user.PublicId = upload.PublicId;
                 await _userManager.UpdateAsync(user);
 
-                return Response<UpdateUserImageDto>.Success("image upload successful", new UpdateUserImageDto { Url = url });
+                return Response<UpdateImageDto>.Success("image upload successful", new UpdateImageDto { Url = url });
             }
-            return Response<UpdateUserImageDto>.Fail("user not found");
+            return Response<UpdateImageDto>.Fail("user not found");
 
         }
 

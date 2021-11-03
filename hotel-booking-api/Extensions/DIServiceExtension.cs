@@ -31,7 +31,7 @@ namespace hotel_booking_api.Extensions
 {
     public static class DIServiceExtension
     {
-        public static void AddDependencyInjection(this IServiceCollection services)
+        public static void AddDependencyInjection (this IServiceCollection services)
         {
             // Add Service Injections Here
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -52,14 +52,14 @@ namespace hotel_booking_api.Extensions
 
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IWishListService, WishListService>();
-           
+
 
             services.AddScoped<IHotelStatisticsService, HotelStatisticsService>();
-            
+
             services.AddScoped<IManagerRepository, ManagerRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<ITokenRepository, TokenRepository>();
-            
+
 
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IPaymentService, PaymentService>();
@@ -94,6 +94,7 @@ namespace hotel_booking_api.Extensions
             services.AddTransient<IValidator<HotelBookingRequestDto>, HotelBookingRequestDtoValidator>();
             services.AddTransient<IValidator<AddRatingDto>, AddRatingDtoValidator>();
             services.AddTransient<IValidator<TransactionFilter>, TransactionFilterValidator>();
+            services.AddTransient<IValidator<RoomTypeRequestDto>, RoomTypeRequestDtoValidator>();
         }
     }
 }
