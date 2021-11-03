@@ -112,7 +112,7 @@ namespace hotel_booking_core.Services
 
             if (amenity != null)
             {
-                _unitOfWork.Amenities.DeleteAsync(amenity);
+                _unitOfWork.Amenities.Delete(amenity);
                 await _unitOfWork.Save();
 
                 response.Message = $"Amenity with Id = {amenity.Id} deleted successfully";

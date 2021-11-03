@@ -294,8 +294,20 @@ namespace hotel_booking_api.Controllers
             return Ok(result);
         }
 
+
+        [HttpDelete]
+        [Route("{roomId}/rooms")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteRoomByIdAsync(string roomId)
+        {
+            var response = await _hotelService.DeleteHotelRoomByIdAsync(roomId);
+            return StatusCode(response.StatusCode, response);
+        }
+
         [HttpGet]
-        [Route("roomTypedetails")]
+        [Route("roomTypedetails/{roomTypeId}")]
         [Authorize(Policy = Policies.Manager)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
