@@ -26,6 +26,7 @@ using hotel_booking_utilities.Validators.ReviewValidators;
 using hotel_booking_utilities.Validators.ManagerValidators;
 using Microsoft.Extensions.DependencyInjection;
 using hotel_booking_utilities.Validators.AdminValidators;
+using hotel_booking_dto.ManagerDtos;
 
 namespace hotel_booking_api.Extensions
 {
@@ -66,8 +67,6 @@ namespace hotel_booking_api.Extensions
             services.AddScoped<PaystackPaymentHandler>();
             services.AddScoped<FlutterwavePaymentHandler>();
 
-            services.AddScoped<IEmailBodyBuilder, EmailBodyBuilder>();
-
 
             services.AddScoped<IHttpClientService, HttpClientService>();
 
@@ -96,6 +95,7 @@ namespace hotel_booking_api.Extensions
             services.AddTransient<IValidator<TransactionFilter>, TransactionFilterValidator>();
             services.AddTransient<IValidator<RoomTypeRequestDto>, RoomTypeRequestDtoValidator>();
             services.AddTransient<IValidator<ChangePasswordDto>, ChangePasswordValidator>();
+            services.AddTransient<IValidator<ManagerDto>, AddManagerValidation>();
         }
     }
 }

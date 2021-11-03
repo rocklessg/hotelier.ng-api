@@ -11,6 +11,8 @@ namespace hotel_booking_utilities.Validators.AuthenticationValidators
             RuleFor(user => user.NewPassword).Password();
             RuleFor(user => user.ConfirmPassword).Password();
             RuleFor(user => user.Email).EmailAddress();
+            RuleFor(x => x.NewPassword)
+                .Equal(x => x.ConfirmPassword).WithMessage("Password does not match");
         }
     }
 }

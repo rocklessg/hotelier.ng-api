@@ -31,50 +31,52 @@ namespace hotel_booking_core.Services
         private readonly IMailService _mailService;
         private readonly ILogger _logger;
         private readonly UserManager<AppUser> _userManager;
-        private readonly IEmailBodyBuilder _emailBodyBuilder;
 
         public ManagerService(IMapper mapper, IUnitOfWork unitOfWork, 
-            IMailService mailService, ILogger logger, UserManager<AppUser> userManager, IEmailBodyBuilder emailBodyBuilder)
+            IMailService mailService, ILogger logger, UserManager<AppUser> userManager)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _mailService = mailService;
             _logger = logger;
-            _emailBodyBuilder = emailBodyBuilder;
         }
 
         public async Task<Response<ManagerResponseDto>> AddManagerAsync(ManagerDto managerDto)
         {
             var getPotentialManager = await _unitOfWork.ManagerRequest.GetHotelManagerByEmailToken(email: managerDto.BusinessEmail, token: managerDto.Token);
-            var expired = getPotentialManager.ExpiresAt < DateTime.Now.AddMinutes(-5);
-            if (expired)
+            if (getPotentialManager != null)
             {
-                return Response<ManagerResponseDto>.Fail("Link has expired", StatusCodes.Status405MethodNotAllowed);
-            }
-            var appUser = _mapper.Map<AppUser>(managerDto);
-            var manager = _mapper.Map<Manager>(managerDto);
-            var hotel = _mapper.Map<Hotel>(managerDto);
-            manager.AppUserId = appUser.Id;
-            hotel.ManagerId = manager.AppUserId;
-            appUser.Manager = manager;
-            manager.Hotels = new List<Hotel>() { hotel };
-            var result = await _userManager.CreateAsync(appUser, managerDto.Password);
-                
-            if (result.Succeeded)
-            {
-                var managerResponse = _mapper.Map<ManagerResponseDto>(manager);
-
-                var response = new Response<ManagerResponseDto>()
+                var expired = getPotentialManager.ExpiresAt < DateTime.Now.AddMinutes(-5);
+                if (expired)
                 {
-                    StatusCode = StatusCodes.Status200OK,
-                    Succeeded = true,
-                    Data = managerResponse,
-                    Message = $"{manager.CompanyName} hotel with ID: {manager.AppUserId}: registered successfully"
-                };
-                return response;
+                    return Response<ManagerResponseDto>.Fail("Link has expired", StatusCodes.Status400BadRequest);
+                }
+                var appUser = _mapper.Map<AppUser>(managerDto);
+                var manager = _mapper.Map<Manager>(managerDto);
+                var hotel = _mapper.Map<Hotel>(managerDto);
+                manager.AppUserId = appUser.Id;
+                hotel.ManagerId = manager.AppUserId;
+                appUser.Manager = manager;
+                manager.Hotels = new List<Hotel>() { hotel };
+                var result = await _userManager.CreateAsync(appUser, managerDto.Password);
+                
+                if (result.Succeeded)
+                {
+                    var managerResponse = _mapper.Map<ManagerResponseDto>(manager);
+
+                    var response = new Response<ManagerResponseDto>()
+                    {
+                        StatusCode = StatusCodes.Status200OK,
+                        Succeeded = true,
+                        Data = managerResponse,
+                        Message = $"{manager.CompanyName} hotel with ID: {manager.AppUserId}: registered successfully"
+                    };
+                    return response;
+                }
+                return Response<ManagerResponseDto>.Fail("Registration Failed", StatusCodes.Status400BadRequest);
             }
-            return Response<ManagerResponseDto>.Fail("Registration Failed", StatusCodes.Status400BadRequest);
+            return Response<ManagerResponseDto>.Fail("Invalid Token", StatusCodes.Status400BadRequest);
         }
 
         public async Task<Response<IEnumerable<HotelBasicDto>>> GetAllHotelsAsync(string managerId)
@@ -260,9 +262,7 @@ namespace hotel_booking_core.Services
                 if (getUser == null && check != null)
                 {
                     var newGuid = Guid.Parse(check.Token);
-                    var mailBody = await _emailBodyBuilder.GetEmailBody(linkName: "SendManagerInvite",
-                        emailTempPath: "StaticFiles/Html/ManagerInvite.html", token: Encode(newGuid), email,
-                        controllerName: "Manager");
+                    var mailBody = await EmailBodyBuilder.GetEmailBody(emailTempPath: "StaticFiles/Html/ManagerInvite.html", token: Encode(newGuid), email);
 
                     var mailRequest = new MailRequest()
                     {
@@ -329,9 +329,6 @@ namespace hotel_booking_core.Services
             return Response<PageResult<IEnumerable<ManagerRequestResponseDTo>>>
                 .Success("All manager requests", mapResponse, StatusCodes.Status200OK); 
         }
-
-
-       
 
         private string Encode(Guid guid)
         {
