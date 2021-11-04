@@ -5,7 +5,7 @@ namespace hotel_booking_core.Interfaces
 {
     public interface IPaymentService
     {
-        Task<string> InitializePayment(decimal amount, Customer customer, string paymentService, string bookingId, string transactionRef, string redirect_url);
+        Task<bool> InitializePayment(decimal amount, Customer customer, string paymentService, string bookingId, string transactionRef);
         Task<bool> VerifyTransaction(string transactionRef, string paymentMethod, string transactionId = null);
     }
 }

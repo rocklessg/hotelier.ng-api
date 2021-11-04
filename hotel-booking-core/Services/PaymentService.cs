@@ -24,7 +24,7 @@ namespace hotel_booking_core.Services
             _paystack = paystack;
             _flutterwave = flutterwave;
         }
-        public async Task<string> InitializePayment(decimal amount, Customer customer, string paymentService, string bookingId, string transactionRef, string redirect_url)
+        public async Task<bool> InitializePayment(decimal amount, Customer customer, string paymentService, string bookingId, string transactionRef)
         {
 
             Payment payment = new()
@@ -39,41 +39,7 @@ namespace hotel_booking_core.Services
             await _unitOfWork.Payments.InsertAsync(payment);
             await _unitOfWork.Save();
 
-            try
-            {
-                if (paymentService.ToLower() == Payments.Paystack)
-                {
-                    TransactionInitializeRequest request = new()
-                    {
-                        AmountInKobo = (int)(amount * 100),
-                        Email = customer.AppUser.Email,
-                        Reference = transactionRef,
-                        CallbackUrl = redirect_url
-                    };
-                    return _paystack.InitializePayment(request).Data.AuthorizationUrl;
-                } else if(paymentService.ToLower() == Payments.Flutterwave)
-                {
-                    FlutterwaveRequestDTO request = new()
-                    {
-                        Amount = amount,
-                        TransactionReference = transactionRef,
-                        RedirectUrl = redirect_url,
-                        PaymentOptions = new List<string>() { "card", "mobilemoney", "ussd"},
-                        Customer = new() { Email = customer.AppUser.Email, Name = $"{customer.AppUser.FirstName} {customer.AppUser.LastName}"}
-                    };
-                    var response = await _flutterwave.InitializePayment(request);
-                    return response.Data.Link;
-                }
-                throw new PaymentException("Invalid Payment Service");
-            }
-            catch (PaymentException)
-            {
-                throw;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return true;
         }
 
         public async Task<bool> VerifyTransaction(string transactionRef, string paymentMethod, string transactionId = null)
