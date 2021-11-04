@@ -89,7 +89,7 @@ namespace hotel_booking_core.Services
 
             decimal amount = (room.Roomtype.Price - (room.Roomtype.Price * room.Roomtype.Discount)) * (decimal)numberOfNights;
 
-            string transactionRef = $"{ReferenceGen.Generate()}";
+            string transactionRef = $"{Guid.NewGuid()}";
 
             string authorizationUrl = await _paymentService.InitializePayment(amount, customer, bookingDto.PaymentService, booking.Id, transactionRef, _configuration["Payment:RedirectUrl"]);
             HotelBookingResponseDto bookingResponse = _mapper.Map<HotelBookingResponseDto>(booking);
