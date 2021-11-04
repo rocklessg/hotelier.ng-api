@@ -6,9 +6,9 @@ using hotel_booking_dto.AuthenticationDtos;
 using hotel_booking_dto.BookingDtos;
 using hotel_booking_dto.CustomerDtos;
 using hotel_booking_dto.HotelDtos;
+using hotel_booking_dto.ManagerDtos;
 using hotel_booking_dto.RatingDtos;
 using hotel_booking_dto.ReviewDtos;
-using hotel_booking_dto.ManagerDtos;
 using hotel_booking_dto.RoomDtos;
 using hotel_booking_models;
 using System.Linq;
@@ -228,13 +228,6 @@ namespace hotel_booking_utilities.AutoMapSetup
                 .ForMember(hotel => hotel.HotelState, u => u.MapFrom(hotel => hotel.State))
                 .ReverseMap();
 
-            CreateMap<Manager, ManagerResponseDto>()
-                .ForMember(d => d.FirstName, o => o.MapFrom(u => u.AppUser.FirstName))
-                .ForMember(d => d.LastName, o => o.MapFrom(u => u.AppUser.LastName))
-                .ForMember(d => d.Gender, o => o.MapFrom(u => u.AppUser.Gender))
-                .ForMember(d => d.Age, o => o.MapFrom(u => u.AppUser.Age))
-                .ReverseMap();
-
             CreateMap<Manager, ManagerDetailsResponseDto>()
                 .ForMember(x => x.FirstName, o => o.MapFrom(y => y.AppUser.FirstName))
                 .ForMember(x => x.LastName, o => o.MapFrom(y => y.AppUser.LastName))
@@ -251,7 +244,6 @@ namespace hotel_booking_utilities.AutoMapSetup
 
 
             //AppUser Maps
-            CreateMap<AppUser, ManagerResponseDto>().ReverseMap();
             CreateMap<Customer, TopManagerCustomers>()
                 .ForMember(d => d.FirstName, o => o.MapFrom(u => u.AppUser.FirstName))
                 .ForMember(d => d.LastName, o => o.MapFrom(u => u.AppUser.LastName))
