@@ -64,11 +64,15 @@ namespace hotel_booking_core.Services
                 manager.AppUserId = appUser.Id;
                 hotel.ManagerId = manager.AppUserId;
                 appUser.Manager = manager;
+                appUser.IsActive = true;
+                appUser.EmailConfirmed = true;
                 manager.Hotels = new List<Hotel>() { hotel };
                 var result = await _userManager.CreateAsync(appUser, managerDto.Password);
                 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(appUser, "Manager");
+                    await _unitOfWork.Save();
                     var response = new Response<bool>()
                     {
                         StatusCode = StatusCodes.Status200OK,

@@ -48,6 +48,19 @@ namespace hotel_booking_core.Services
             {
                 var upload = await _imageService.UploadAsync(imageDto.Image);
                 string url = upload.Url.ToString();
+                if (!hotel.Galleries.Any())
+                {
+                    var gallery = new Gallery
+                    {
+                        ImageUrl = url
+                    };
+                    hotel.Galleries.Add(gallery);
+
+                    _unitOfWork.Hotels.Update(hotel);
+                    await _unitOfWork.Save();
+
+                    return Response<UpdateImageDto>.Success("image upload successful", new UpdateImageDto { Url = url });
+                }
                 var getHotelGallery = hotel.Galleries.FirstOrDefault();
                 getHotelGallery.ImageUrl = url;
                 _unitOfWork.Hotels.Update(hotel);
