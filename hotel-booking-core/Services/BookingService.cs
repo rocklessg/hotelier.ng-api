@@ -91,9 +91,8 @@ namespace hotel_booking_core.Services
 
             string transactionRef = $"{Guid.NewGuid()}";
 
-            string authorizationUrl = await _paymentService.InitializePayment(amount, customer, bookingDto.PaymentService, booking.Id, transactionRef, _configuration["Payment:RedirectUrl"]);
+            await _paymentService.InitializePayment(amount, customer, bookingDto.PaymentService, booking.Id, transactionRef);
             HotelBookingResponseDto bookingResponse = _mapper.Map<HotelBookingResponseDto>(booking);
-            bookingResponse.PaymentUrl = authorizationUrl;
             Response<HotelBookingResponseDto> response = new Response<HotelBookingResponseDto>()
             {
                 Data = bookingResponse,

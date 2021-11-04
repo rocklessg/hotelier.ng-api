@@ -20,6 +20,5 @@ namespace hotel_booking_dto.HotelDtos
         public bool PaymentStatus { get; set; }
         public decimal Price { get; set; }
         public string PaymentReference { get; set; }
-        public string PaymentUrl { get; set; }
     }
 }
