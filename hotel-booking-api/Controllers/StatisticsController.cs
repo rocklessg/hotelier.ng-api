@@ -1,12 +1,9 @@
 ﻿using hotel_booking_core.Interfaces;
-using hotel_booking_dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Extensions.Logging;
+using Serilog;
 using System.Threading.Tasks;
-using ILogger = Serilog.ILogger;
-
 
 namespace hotel_booking_api.Controllers
 {
@@ -16,8 +13,6 @@ namespace hotel_booking_api.Controllers
     {
         private readonly IHotelStatisticsService _hotelStatisticsService;
         private readonly ILogger _logger;
-
-
         public StatisticsController(IHotelStatisticsService hotelStatisticsService, ILogger logger)
         {
             _hotelStatisticsService = hotelStatisticsService;
@@ -41,8 +36,8 @@ namespace hotel_booking_api.Controllers
         [HttpGet("{managerId}/hotelManager")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]/*
+        [Authorize(Roles = "Manager")]*/
         public async Task<IActionResult> GetHotelManagerStatistics(string managerId)
         {
             _logger.Information($"About Getting Hotel Manager Statistics for {managerId}");

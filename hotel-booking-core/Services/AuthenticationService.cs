@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
 using hotel_booking_core.Interface;
 using hotel_booking_core.Interfaces;
+using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_data.UnitOfWork.Abstraction;
 using hotel_booking_dto;
 using hotel_booking_dto.AuthenticationDtos;
+using hotel_booking_dto.TokenDto;
 using hotel_booking_models;
 using hotel_booking_models.Mail;
 using hotel_booking_utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.Globalization;
 using System.IO;
@@ -17,7 +21,10 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
-using Serilog;
+using hotel_booking_utilities.EmailBodyHelper;
+using Microsoft.AspNetCore.WebUtilities;
+using Org.BouncyCastle.Asn1.Ocsp;
+using PayStack.Net;
 
 namespace hotel_booking_core.Services
 {
@@ -29,9 +36,14 @@ namespace hotel_booking_core.Services
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
+        private readonly ITokenRepository _tokenRepository;
+
+
+       
+
 
         public AuthenticationService(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, ILogger logger,
-            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator)
+            IMailService mailService, IMapper mapper, ITokenGeneratorService tokenGenerator, ITokenRepository tokenRepository)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -39,6 +51,8 @@ namespace hotel_booking_core.Services
             _mailService = mailService;
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _tokenRepository = tokenRepository;
+
         }
 
         /// <summary>
@@ -94,8 +108,10 @@ namespace hotel_booking_core.Services
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = TokenConverter.EncodeToken(token);
+            var userRole = await _userManager.GetRolesAsync(user);
 
-            var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "reset-password", encodedToken);
+            var mailBody = await EmailBodyBuilder.GetEmailBody(user, userRole.ToList(), emailTempPath: "StaticFiles/Html/ForgotPassword.html", linkName: "ResetPassword", encodedToken, controllerName: "Auth");
+
 
             var mailRequest = new MailRequest()
             {
@@ -120,6 +136,18 @@ namespace hotel_booking_core.Services
             return response;
         }       
       
+        public async Task<Response<bool>> ChangePassword(string id, ChangePasswordDto changePasswordDto)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return Response<bool>.Success("Password Changed successfully", true, StatusCodes.Status200OK);
+            }
+            return Response<bool>.Fail("Ensure that your old password is correct", StatusCodes.Status404NotFound); 
+
+        }
         /// <summary>
         /// Logs in a user
         /// </summary>
@@ -128,11 +156,12 @@ namespace hotel_booking_core.Services
         public async Task<Response<LoginResponseDto>> Login(LoginDto model)
         {
             var response = new Response<LoginResponseDto>();
-
+            _logger.Information("Login Attempt");
             var validityResult = await ValidateUser(model);
 
             if (!validityResult.Succeeded)
             {
+                _logger.Error("Login operation failed");
                 response.Message = validityResult.Message;
                 response.StatusCode = validityResult.StatusCode;
                 response.Succeeded = false;
@@ -140,11 +169,19 @@ namespace hotel_booking_core.Services
             }
 
             var user = await _userManager.FindByEmailAsync(model.Email);
+            var refreshToken = _tokenGenerator.GenerateRefreshToken();
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7); //sets refresh token for 7 days
             var result = new LoginResponseDto()
             {
                 Id = user.Id,
-                Token = await _tokenGenerator.GenerateToken(user)
+                Token = await _tokenGenerator.GenerateToken(user),
+                RefreshToken = refreshToken
             };
+            
+            await _userManager.UpdateAsync(user);
+
+            _logger.Information("User successfully logged in");
             response.StatusCode = (int)HttpStatusCode.OK;
             response.Message = "Login Successfully";
             response.Data = result;
@@ -170,7 +207,8 @@ namespace hotel_booking_core.Services
                     await _userManager.AddToRoleAsync(user, UserRoles.Customer);
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var encodedToken = TokenConverter.EncodeToken(token);
-                    var mailBody = await GetEmailBody(user, emailTempPath: "StaticFiles/Html/ConfirmEmail.html", linkName: "confirm-email", encodedToken);
+                    var userRole = await _userManager.GetRolesAsync(user);
+                    var mailBody = await EmailBodyBuilder.GetEmailBody(user, userRole.ToList(), emailTempPath: "StaticFiles/Html/ConfirmEmail.html", linkName: "ConfirmEmail", encodedToken, controllerName: "Authentication");
                     var mailRequest = new MailRequest()
                     {
                         Subject = "Confirm Your Registration",
@@ -219,6 +257,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<string>> ResetPassword(ResetPasswordDto model)
         {
             var response = new Response<string>();
+            _logger.Information("Reset password attempt");
             var user = await _userManager.FindByEmailAsync(model.Email);
             
             if (user == null)
@@ -230,35 +269,26 @@ namespace hotel_booking_core.Services
                 return response;
             }
 
-            if (model.NewPassword != model.ConfirmPassword)
-            {
-                response.Message = "Password does not match!";
-                response.Succeeded = false;
-                response.Data = null;
-                response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return response;
-            }
-
             var decodedToken = TokenConverter.DecodeToken(model.Token); //Decode incoming token
 
             var purpose = UserManager<AppUser>.ResetPasswordTokenPurpose;
             var tokenProvider = _userManager.Options.Tokens.PasswordResetTokenProvider;
 
-            var token = await _userManager.VerifyUserTokenAsync(user, tokenProvider, purpose, decodedToken);
-            if (token)
+            var isValidToken = await _userManager.VerifyUserTokenAsync(user, tokenProvider, purpose, decodedToken);
+            if (isValidToken)
             {
                 _mapper.Map<AppUser>(model);
                 var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.NewPassword);
-                response.Succeeded = false;
-                response.Data = null;
-                response.Message = GetErrors(result);
+                response.Succeeded = true;
+                response.Data = user.Id;
+                response.Message = "Password has been reset successfully";
+                response.StatusCode = (int)HttpStatusCode.OK;
                 return response;
             }
 
-            response.StatusCode = (int)HttpStatusCode.OK;
-            response.Message = "Password has been reset successfully";
-            response.Succeeded = true;
-            response.Data = user.Id;
+            response.StatusCode = StatusCodes.Status400BadRequest;
+            response.Message = "Invalid Token";
+            response.Succeeded = false;
             return response;
         }
 
@@ -330,25 +360,56 @@ namespace hotel_booking_core.Services
             return result.Errors.Aggregate(string.Empty, (current, err) => current + err.Description + "\n");
         }
 
-        /// <summary>
-        /// Generates and encapsulates the link to be sent to the user in a html template.
-        /// </summary>
-        /// <param name="user"></param>
-        /// <param name="emailTempPath"></param>
-        /// <param name="linkName"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        private static async Task<string> GetEmailBody(AppUser user, string emailTempPath, string linkName, string token)
+        
+      
+
+        public async Task<Response<RefreshTokenToReturnDto>> RefreshToken(RefreshTokenRequestDto token)
         {
-            TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
-            var userName = textInfo.ToTitleCase(user.FirstName);
+            var response = new Response<RefreshTokenToReturnDto>();
+            var refreshToken = token.RefreshToken;
+            var userId = token.UserId;
 
+            var user = await _tokenRepository.GetUserByRefreshToken(refreshToken, userId);
 
-            var link = $"http://www.example.com/{linkName}/{token}/{user.Email}";
-            var temp = await File.ReadAllTextAsync(Path.Combine(Directory.GetCurrentDirectory(), emailTempPath));
-            var newTemp =  temp.Replace("**link**", link);
-            var emailBody = newTemp.Replace("**User**", userName);
-            return emailBody;
+            if (user.RefreshToken != refreshToken|| user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                response.Data = null;
+                response.Message = "Invalid request";
+                response.StatusCode = (int) HttpStatusCode.BadRequest;
+                response.Succeeded = false;
+                return response;
+            }
+
+            var result = new RefreshTokenToReturnDto
+            {
+                NewJwtAccessToken = await _tokenGenerator.GenerateToken(user),
+                NewRefreshToken = _tokenGenerator.GenerateRefreshToken()
+            };
+            user.RefreshToken = result.NewRefreshToken;
+            await _userManager.UpdateAsync(user);
+
+            response.Data = result;
+            response.Message = "Token Successfully refreshed";
+            response.StatusCode = (int)HttpStatusCode.OK;
+            response.Succeeded = true;
+            return response;
+        }
+
+        public async Task<bool> ValidateUserRole(string userId, string[] roles)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var userRoles = await _userManager.GetRolesAsync(user);
+            bool result = false;
+            foreach (var role in userRoles)
+            {
+                if (roles.Contains(role))
+                {
+                    result = true;
+                    break;
+                }
+            }
+            _logger.Information($"User with ID {userId} was {(result ? "Validated" : "Not validated")}");
+            return result;
         }
     }
 }

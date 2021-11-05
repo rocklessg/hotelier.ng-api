@@ -11,9 +11,10 @@ namespace hotel_booking_core.Interfaces
     public interface ICustomerService
     {
         Task<Response<string>> UpdateCustomer(string CustomerId, UpdateCustomerDto updateCustomer);
-        Task<Response<UpdateUserImageDto>> UpdatePhoto(AddImageDto imageDto, string userId);
+        Task<Response<UpdateImageDto>> UpdatePhoto(AddImageDto imageDto, string userId);
         Task<Response<PageResult<IEnumerable<GetUsersResponseDto>>>> GetAllCustomersAsync(PagingDto pagenator);
         Task<Response<PageResult<IEnumerable<CustomerWishListDto>>>> GetCustomerWishList(string customerId, PagingDto paging);
+        Task<Response<CustomerDetailsToReturnDto>> GetCustomerDetails(string userId);
         Task<Response<PageResult<IEnumerable<CustomerHotelsResponseDto>>>> GetCustomerHotelsAsync(string customerId, PagingDto paging);
     }
 }

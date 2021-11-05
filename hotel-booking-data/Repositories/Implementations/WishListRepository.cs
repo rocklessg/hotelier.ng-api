@@ -3,6 +3,7 @@ using hotel_booking_data.Repositories.Abstractions;
 using hotel_booking_models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
@@ -23,6 +24,13 @@ namespace hotel_booking_data.Repositories.Implementations
                                              .ThenInclude(y => y.Galleries);
             return customerWishlist;
 
+        }
+
+        public async Task<WishList> CheckWishListAsync(string customerId, string hotelId)
+        {
+            return await _dbSet.Where(w => w.CustomerId == customerId)
+                .Where(w => w.HotelId == hotelId)
+                .FirstOrDefaultAsync();
         }
     }
 }

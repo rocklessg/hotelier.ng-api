@@ -26,6 +26,7 @@ namespace hotel_booking_data.Contexts
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<WishList> WishLists { get; set; }
         public DbSet<Gallery> Galleries { get; set; }
+        public DbSet<ManagerRequest> ManagerRequests { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -62,6 +63,8 @@ namespace hotel_booking_data.Contexts
                 .HasOne(bc => bc.Hotel)
                 .WithMany(c => c.WishLists)
                 .HasForeignKey(bc => bc.HotelId);
+          
+                
         }
     }
 }

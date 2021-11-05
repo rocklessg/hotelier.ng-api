@@ -7,6 +7,9 @@ using hotel_booking_models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,7 +33,13 @@ namespace hotel_booking_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
             services.AddDbContextAndConfigurations(Environment, Configuration);
+
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>()
+                .AddScoped<IUrlHelper>(x =>
+                    x.GetRequiredService<IUrlHelperFactory>()
+                        .GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext));
 
             // Configure Mailing Service
             services.ConfigureMailService(Configuration);
@@ -89,16 +98,17 @@ namespace hotel_booking_api
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hotel Management Api v1"));
-
+  
             HbaSeeder.SeedData(dbContext, userManager, roleManager).GetAwaiter().GetResult();
 
             app.UseHttpsRedirection();
 
             app.UseMiddleware<ExceptionMiddleware>();
-
+            
+            app.UseAuthentication();
             app.UseRouting();
 
-            app.UseAuthentication();
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

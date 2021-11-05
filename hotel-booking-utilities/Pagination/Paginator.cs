@@ -22,7 +22,7 @@ namespace hotel_booking_utilities.Pagination
             pageResult.NumberOfPages = count % pageResult.PageSize != 0
                     ? count / pageResult.PageSize + 1
                     : count / pageResult.PageSize;
-            var sourceList = await querable.Skip(pageResult.CurrentPage - 1).Take(pageResult.PageSize).ToListAsync();
+            var sourceList = await querable.Skip((pageResult.CurrentPage - 1) * pageResult.PageSize).Take(pageResult.PageSize).ToListAsync();
             var destinationList = mapper.Map<IEnumerable<TSource>, IEnumerable<TDestination>>(sourceList);
             pageResult.PageItems = destinationList;
             return pageResult;
