@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System;
 using System.Linq.Expressions;
 using System.Linq;
+using hotel_booking_utilities.Pagination;
+using hotel_booking_dto.CustomerDtos;
+using hotel_booking_dto.commons;
 
 namespace hotel_booking_data.Repositories.Implementations
 {
@@ -33,10 +36,11 @@ namespace hotel_booking_data.Repositories.Implementations
            return _customers.Include(x => x.AppUser);
         }
 
-        public Task<IQueryable<Customer>> GetCustomerHotelsAsync(string customerId)
+        public IQueryable<WishList> GetCustomerHotelsAsync(string customerId)
         {
-            var customerHotels = _customers.Where(x => x.AppUserId == customerId).Include(x => x.WishLists);
-            return (Task<IQueryable<Customer>>)customerHotels;
+            var customerHotels = _context.WishLists.Where(x => x.CustomerId == customerId)
+                .Include(x => x.Hotel);
+            return customerHotels;
         }
     }
 }

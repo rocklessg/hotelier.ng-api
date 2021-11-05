@@ -75,7 +75,7 @@ namespace hotel_booking_api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Customer")]
+       // [Authorize(Roles = "Customer")]
         public async Task<IActionResult> GetCustomerWishList([FromQuery] PagingDto paging)
         {
             string customerId = _userManager.GetUserId(User);
@@ -84,5 +84,12 @@ namespace hotel_booking_api.Controllers
             _logger.Information($"Retrieved the paginated wishlist for the customer with ID {customerId}");
             return StatusCode(result.StatusCode, result);
         }
-}
+
+        [HttpGet("{customerId}/whishlist")]
+        public async Task<IActionResult> GetCustomerHotelsIdAsync(string customerId,[FromQuery]PagingDto paging)
+        {
+            var result = await _customerService.GetCustomerHotelsAsync(customerId, paging);
+            return StatusCode(result.StatusCode, result);
+        }
+    }
 }

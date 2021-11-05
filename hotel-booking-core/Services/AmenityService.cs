@@ -78,7 +78,7 @@ namespace hotel_booking_core.Services
         public async Task<Response<IEnumerable<AmenityDto>>> GetAmenityByHotelIdAsync(string hotelId)
         {
             var response = new Response<IEnumerable<AmenityDto>>();
-            var hotel = _unitOfWork.Hotels.GetHotelById(hotelId);
+            var hotel = await _unitOfWork.Amenities.GetAmenityByHotelIdAsync(hotelId);
             if (hotel is null)
             {
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -87,11 +87,11 @@ namespace hotel_booking_core.Services
                 return response;
             }
 
-            var amenities = await _unitOfWork.Amenities.GetAmenityByHotelIdAsync(hotelId);
+           // var amenities = await _unitOfWork.Amenities.GetAmenityByHotelIdAsync(hotelId);
 
-            var amenitiesOfHotel = amenities;
+           // var amenitiesOfHotel = amenities;
             var amenityList = new List<AmenityDto>();
-            foreach (var amenity in amenitiesOfHotel)
+            foreach (var amenity in hotel)
             {
                 amenityList.Add(_mapper.Map<AmenityDto>(amenity));
             }

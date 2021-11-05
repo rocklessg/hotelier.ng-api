@@ -19,9 +19,9 @@ using hotel_booking_utilities.Pagination;
 
 namespace hotel_booking_core.Services
 {
-    public class CustomerService :  ICustomerService
+    public class CustomerService : ICustomerService
     {
-       
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly IImageService _imageService;
         private readonly UserManager<AppUser> _userManager;
@@ -40,7 +40,7 @@ namespace hotel_booking_core.Services
         {
             var response = new Response<string>();
 
-            var customer =  _unitOfWork.Customers.GetCustomer(customerId);
+            var customer = _unitOfWork.Customers.GetCustomer(customerId);
 
             using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -81,7 +81,7 @@ namespace hotel_booking_core.Services
                 transaction.Complete();
                 return response;
             }
-                
+
         }
 
         public async Task<Response<UpdateUserImageDto>> UpdatePhoto(AddImageDto imageDto, string userId)
@@ -114,11 +114,11 @@ namespace hotel_booking_core.Services
 
         public async Task<Response<PageResult<IEnumerable<GetUsersResponseDto>>>> GetAllCustomersAsync(PagingDto pagenator)
         {
-            var customers =  _unitOfWork.Customers.GetAllUsers();
-            var customersList = await customers.PaginationAsync<Customer, GetUsersResponseDto>(pagenator.PageSize,pagenator.PageNumber, _mapper);
+            var customers = _unitOfWork.Customers.GetAllUsers();
+            var customersList = await customers.PaginationAsync<Customer, GetUsersResponseDto>(pagenator.PageSize, pagenator.PageNumber, _mapper);
             var response = new Response<PageResult<IEnumerable<GetUsersResponseDto>>>();
 
-            if(customersList != null)
+            if (customersList != null)
             {
                 response.Data = customersList;
                 response.StatusCode = (int)HttpStatusCode.OK;
@@ -157,33 +157,24 @@ namespace hotel_booking_core.Services
             return response;
         }
 
-        public async Task<Response<IEnumerable<CustomerHotelsResponseDto>>> GetCustomerHotelsIdAsync(string customerId)
+        public async Task<Response<PageResult<IEnumerable<CustomerHotelsResponseDto>>>> GetCustomerHotelsAsync(string customerId, PagingDto paging)
         {
-            var response = new Response<IEnumerable<CustomerHotelsResponseDto>>();
-            var hotel = _unitOfWork.Hotels.GetHotelById(customerId);
-            if (hotel is null)
+            var customerWishlist = _unitOfWork.Customers.GetCustomerHotelsAsync(customerId);
+            var pageResult = await customerWishlist.PaginationAsync<WishList, CustomerHotelsResponseDto>(paging.PageSize, paging.PageNumber, _mapper);
+            var response = new Response<PageResult<IEnumerable<CustomerHotelsResponseDto>>>();
+
+            if (pageResult.PageItems.Count() > 0)
             {
-                response.StatusCode = (int)HttpStatusCode.BadRequest;
-                response.Message = "Hotel does not exist";
-                response.Succeeded = false;
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Succeeded = true;
+                response.Data = pageResult;
+                response.Message = $"Wish List Successfully loaded";
                 return response;
             }
-
-            var customerHotels = await _unitOfWork.Customers.GetCustomerHotelsAsync(customerId);
-
-            var customerWishList = customerHotels;
-            var wishedHotels = new List<CustomerHotelsResponseDto>();
-            foreach (var wishHotel in customerWishList)
-            {
-                wishedHotels.Add(_mapper.Map<CustomerHotelsResponseDto>(wishHotel));
-            }
-
-            response.StatusCode = (int)HttpStatusCode.OK;
-            response.Succeeded = true;
-            response.Data = wishedHotels;
-            response.Message = $"Your wish list hotel with ID {hotel.Id}";
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.Message = "No hotel in your wish list yet";
+            response.Succeeded = false;
             return response;
-
         }
     }
 }

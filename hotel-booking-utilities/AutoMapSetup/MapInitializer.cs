@@ -83,6 +83,15 @@ namespace hotel_booking_utilities.AutoMapSetup
            
             //Customer
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
+            CreateMap<WishList, CustomerHotelsResponseDto>()
+                .ForMember(x => x.HotelName, y => y.MapFrom(z => z.Hotel.Name))
+                .ForMember(x => x.Description, y => y.MapFrom(z => z.Hotel.Description))
+                .ForMember(x => x.Email, y => y.MapFrom(z => z.Hotel.Email))
+                .ForMember(x => x.Phone, y => y.MapFrom(z => z.Hotel.Phone))
+                .ForMember(x => x.State, y => y.MapFrom(z => z.Hotel.State))
+                .ForMember(x => x.City, y => y.MapFrom(z => z.Hotel.City))
+                .ForMember(x => x.Address, y => y.MapFrom(z => z.Hotel.Address))
+                .ForMember(x => x.HotelId, y => y.MapFrom(z => z.Hotel.Id));
 
             // aminity
             CreateMap<Amenity, AmenityDto>();
