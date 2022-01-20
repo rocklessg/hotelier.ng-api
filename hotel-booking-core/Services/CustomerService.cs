@@ -14,6 +14,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Transactions;
 using Serilog;
+using System.Linq;
 
 namespace hotel_booking_core.Services
 {
