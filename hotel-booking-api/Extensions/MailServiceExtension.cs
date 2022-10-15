@@ -23,7 +23,6 @@ namespace hotel_booking_api.Extensions
             };
 
             services.AddSingleton(emailConfiguratioin);
-                
         }
 
     }

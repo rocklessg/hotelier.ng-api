@@ -73,7 +73,7 @@ namespace hotel_booking_data.Repositories.Implementations
 
         }
 
-        public async Task<Hotel> GetHotelById(string hotelId) 
+        public async Task<Hotel> GetHotelById(string hotelId)
         {
             var hotel = await _context.Hotels.Where(x => x.Id == hotelId).FirstOrDefaultAsync();
             return hotel;
