@@ -12,9 +12,9 @@ namespace hotel_booking_utilities
     public class UserRoles
     {
         public const string Admin = "Admin";
-  
+
         public const string HotelManager = "HotelManager";
-  
+
         public const string Customer = "Customer";
     }
 }

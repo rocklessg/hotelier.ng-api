@@ -19,7 +19,7 @@ namespace hotel_booking_data.Repositories.Implementations
         {
             _context = context;
         }
-        
+
         public IQueryable<Booking> GetAllTransactions(TransactionFilter filter)
         {
             var bookings = _context.Bookings.AsQueryable();

@@ -15,12 +15,12 @@ namespace hotel_booking_data.Seeder
         public static async Task SeedData(HbaDbContext dbContext, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             var baseDir = Directory.GetCurrentDirectory();
-           
+
             await dbContext.Database.EnsureCreatedAsync();
-            
+
             if (!dbContext.Users.Any())
             {
-                List<string> roles = new List<string> { "Admin", "Manager", "Customer" };
+                List<string> roles = new() { "Admin", "Manager", "Customer" };
 
                 foreach (var role in roles)
                 {
@@ -62,7 +62,6 @@ namespace hotel_booking_data.Seeder
                 }
             }
 
-            
             // Bookings and Payment
             if (!dbContext.Bookings.Any())
             {
@@ -94,9 +93,9 @@ namespace hotel_booking_data.Seeder
             await dbContext.SaveChangesAsync();
         }
 
-         static string FilePath(string folderName, string fileName)
-            {
-                return Path.Combine(folderName, fileName);
-            }
+        static string FilePath(string folderName, string fileName)
+        {
+            return Path.Combine(folderName, fileName);
+        }
     }
 }
